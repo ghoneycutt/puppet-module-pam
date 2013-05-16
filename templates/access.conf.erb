@@ -1,0 +1,11 @@
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+#
+
+# allow only the groups listed
+<% scope.lookupvar('pam::allowed_users').each do |user| -%>
++ : <%= user %> : ALL
+<% end -%>
+
+# default deny
+- : ALL : ALL

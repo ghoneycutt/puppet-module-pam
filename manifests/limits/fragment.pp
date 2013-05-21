@@ -1,6 +1,20 @@
-# == Define: pam::limits::fragment
+# # Class: pam::limits::fragment #
 #
-# Places a fragment in /etc/security/limits.d/
+# Places a fragment in $limits_d_dir directory
+#
+# ## Example usage ##
+# #Add the file example.conf in the pam module to the limits_d_dir with the name "80-nproc.conf"
+# pam::limits::fragment { '80-nproc':
+#   source => "puppet:///modules/pam/example.conf",
+# }
+#
+# ## Parameters ##
+#
+# source
+# ------
+# Path to the fragment file
+#
+# - *Required*
 #
 define pam::limits::fragment (
   $source,

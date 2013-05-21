@@ -94,17 +94,107 @@ Content template of $pam_d_sshd_path. If undef, parameter is set based on the OS
 
 system_auth_file
 ----------------
-Content template of sytem-auth.
+Path to system-auth.
 
 - *Default*: '/etc/pam.d/system-auth'
 
-system_auth_file_ac
+system_auth_ac_file
 -------------------
-Content template of sytem-auth-ac.
+Path to system-auth-ac
 
 - *Default*: '/etc/pam.d/system-auth-ac'
 
-$system_auth_ac_auth_lines     = undef,
-$system_auth_ac_account_lines  = undef,
-$system_auth_ac_password_lines = undef,
-$system_auth_ac_session_lines  = undef,
+system_auth_ac_auth_lines
+-------------------------
+Content template of $system_auth_ac_file. If undef, parameter is set based on the OS version.
+
+- *Default*: undef, default is set based on OS version
+
+system_auth_ac_account_lines
+----------------------------
+Content template of $system_auth_ac_file. If undef, parameter is set based on the OS version.
+
+- *Default*: undef, default is set based on OS version
+
+system_auth_ac_password_lines
+-----------------------------
+Content template of $system_auth_ac_file. If undef, parameter is set based on the OS version.
+
+- *Default*: undef, default is set based on OS version
+
+system_auth_ac_session_lines
+----------------------------
+Content template of $system_auth_ac_file. If undef, parameter is set based on the OS version.
+
+- *Default*: undef, default is set based on OS version
+
+===
+
+# pam::accesslogin define #
+Manages login access
+See PAM_ACCESS(8)
+
+## Parameters for `pam::accesslogin` define ##
+
+access_conf_path
+----------------
+Path to access.conf.
+
+- *Default*: '/etc/security/access.conf'
+
+access_conf_owner
+-----------------
+Owner of access.conf.
+
+- *Default*: 'root'
+
+access_conf_group
+-----------------
+Group of access.conf.
+
+- *Default*: 'root'
+
+access_conf_mode
+----------------
+Mode of access.conf.
+
+- *Default*: '0644'
+
+access_conf_template
+--------------------
+Content template of access.conf.
+
+- *Default*: 'pam/access.conf.erb'
+
+===
+
+# pam::limits define #
+Manage PAM limits.conf
+
+## Parameters for `pam::limits` define ##
+
+config_file
+-----------
+Path to limits.conf
+
+- *Default*: '/etc/security/limits.conf'
+
+limits_d_dir
+------------
+Path to limits.d directory
+
+- *Default*: '/etc/security/limits.d'
+
+===
+
+# pam::limits::fragment define #
+Places a fragment in $limits_d_dir directory
+
+## Parameters for `pam::limits::fragment` ##
+
+source
+------
+Path to the fragment file
+
+- *Required*
+===

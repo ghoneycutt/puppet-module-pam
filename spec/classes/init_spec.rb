@@ -2,73 +2,86 @@ require 'spec_helper'
 
 describe 'pam' do
 
-	let :facts do 
-		{ 
-			:osfamily => 'redhat', 
-			:lsbmajdistrelease => '5',
-		}
-	end
 
-	describe 'has correct packages installed' do
+	describe 'packages' do
 
-		it do
-			should contain_package('pam_package').with({
-				'ensure' => 'installed',
-				'name'   => ['pam', 'util-linux'],
-			})
-		end
+    context 'with class defaults on rhel 5' do
+      let :facts do
+        {
+          :osfamily          => 'redhat',
+          :lsbmajdistrelease => '5',
+        }
+      end
 
-        context 'with package_name => foo' do
+      it do
+        should contain_package('pam_package').with({
+          'ensure' => 'installed',
+          'name'   => ['pam', 'util-linux'],
+        })
+      end
+    end
+
+    context 'with specifying package_name on valid platform' do
+      let :facts do
+        {
+          :osfamily          => 'redhat',
+          :lsbmajdistrelease => '5',
+        }
+      end
+
 			let(:params) { {:package_name => 'foo'} }
+
 			it do
-    	    	should contain_package('pam_package').with({
-        	    	'ensure' => 'installed',
+    	  should contain_package('pam_package').with({
+          'ensure' => 'installed',
 					'name'   => 'foo',
 				})
 			end
 		end
 	end
 
-	describe 'pam_system_auth_ac' do
+	describe 'config files' do
 
-		it do
+    context 'defaults for rhel 5' do
+      let :facts do
+        {
+          :osfamily          => 'redhat',
+          :lsbmajdistrelease => '5',
+        }
+      end
 
-			should contain_file('pam_system_auth_ac').with({ 
-				'ensure'  => 'file',
-				'path'    => '/etc/pam.d/system-auth-ac',
-				'owner'   => 'root', 
-				'group'   => 'root', 
-				'mode'    => '0644',
-			})
+      it do
+        should contain_file('pam_system_auth_ac').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/system-auth-ac',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
 
-		end
+      should contain_file('pam_system_auth').with({
+        'ensure' => 'symlink',
+        'path'   => '/etc/pam.d/system-auth',
+        'owner'  => 'root',
+        'group'  => 'root',
+      })
 
+      should contain_file('pam_d_login').with({
+        'ensure' => 'file',
+        'path'   => '/etc/pam.d/login',
+        'owner'  => 'root',
+        'group'  => 'root',
+        'mode'   => '0644',
+      })
+
+      should contain_file('pam_d_sshd').with({
+        'ensure' => 'file',
+        'path'   => '/etc/pam.d/sshd',
+        'owner'  => 'root',
+        'group'  => 'root',
+        'mode'   => '0644',
+      })
+      end
+    end
 	end
-
-	it do
-		should contain_file('pam_system_auth').with({
-			'ensure' => 'symlink',
-			'path'   => '/etc/pam.d/system-auth',
-			'owner'  => 'root',
-			'group'  => 'root', 
-		})
-	
-		should contain_file('pam_d_login').with({
-			'ensure' => 'file',
-			'path'   => '/etc/pam.d/login',
-			'owner'  => 'root',
-			'group'  => 'root',
-			'mode'   => '0644',
-		})
-
-		should contain_file('pam_d_sshd').with({
-			'ensure' => 'file',
-			'path'   => '/etc/pam.d/sshd',
-			'owner'  => 'root',
-			'group'  => 'root',
-			'mode'   => '0644',
-		})
-	end
-
 end
-

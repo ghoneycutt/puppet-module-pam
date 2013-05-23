@@ -14,12 +14,6 @@ This module has been tested to work on the following systems.
 
 # Parameters #
 
-allowed_users
--------------
-Array of users allowed to log in.
-
-- *Default*: root
-
 package_name
 ------------
 Array of packages providing the pam functionality. If undef, parameter is set based on the OS version.
@@ -165,6 +159,12 @@ access_conf_template
 Content template of access.conf.
 
 - *Default*: 'pam/access.conf.erb'
+
+allowed
+-------------
+Array of users and groups allowed to log in.
+
+- *Default*: root
 
 ===
 

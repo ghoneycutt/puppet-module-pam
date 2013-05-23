@@ -4,12 +4,6 @@
 # 
 # # Parameters #
 # 
-# allowed_users
-# -------------
-# Array of users allowed to log in.
-# 
-# - *Default*: root
-# 
 # package_name
 # ------------
 # Array of packages providing the pam functionality. If undef, parameter is set based on the OS version.
@@ -119,7 +113,6 @@
 # - *Default*: undef, default is set based on OS version
 # 
 class pam (
-  $allowed_users                 = 'root',
   $package_name                  = undef,
   $pam_d_login_oracle_options    = 'UNSET',
   $pam_d_login_path              = '/etc/pam.d/login',

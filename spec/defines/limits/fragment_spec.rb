@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe 'pam::limits::fragment' do
    let(:title) { 'foo' }
-   let :params do
-     { :source => 'bar' }
-   end
+      let :params do
+        { :source => 'puppet:///modules/pam/example.conf' }
+      end
    let :facts do
     {
       :osfamily          => 'redhat',
@@ -19,10 +19,11 @@ describe 'pam::limits::fragment' do
   end
 
   describe 'fragment config file' do
-    context 'with custom fragment file' do
+    context 'with no params' do
       it do
         should contain_file('/etc/security/limits.d/foo.conf').with({
           'ensure' => 'file',
+          'source' => 'puppet:///modules/pam/example.conf',
           'owner'  => 'root',
           'group'  => 'root',
           'mode'   => '0644',

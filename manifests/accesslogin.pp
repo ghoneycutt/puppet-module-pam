@@ -34,12 +34,19 @@
 # 
 # - *Default*: 'pam/access.conf.erb'
 # 
+# allowed
+# -------
+# Array of users and groups allowed to log in.
+#
+# - *Default*: root
+#
 class pam::accesslogin (
   $access_conf_path     = '/etc/security/access.conf',
   $access_conf_owner    = 'root',
   $access_conf_group    = 'root',
   $access_conf_mode     = '0644',
   $access_conf_template = 'pam/access.conf.erb',
+  $allowed              = 'root',
 ) {
 
   require 'pam'

@@ -3,7 +3,7 @@
 #
 
 # allow only the groups listed
-<% scope.lookupvar('pam::allowed_users').each do |user| -%>
+<% scope.lookupvar('allowed').each do |user| -%>
 + : <%= user %> : ALL
 <% end -%>
 

@@ -7,8 +7,10 @@ describe 'pam::limits::fragment' do
       { :source => 'puppet:///modules/pam/example.conf' }
     }
     let(:facts) {
-      { :osfamily => 'RedHat',
-        :lsbmajdistrelease => '5', }
+      {
+        :osfamily          => 'RedHat',
+        :lsbmajdistrelease => '5',
+      }
     }
 
     it { should include_class('pam') }
@@ -17,9 +19,9 @@ describe 'pam::limits::fragment' do
     it {
       should contain_file('/etc/security/limits.d/80-nproc.conf').with({
         'source' => 'puppet:///modules/pam/example.conf',
-	'owner'  => 'root',
-	'group'  => 'root',
-	'mode'   => '0644',
+        'owner'  => 'root',
+        'group'  => 'root',
+        'mode'   => '0644',
       })
     }
   end

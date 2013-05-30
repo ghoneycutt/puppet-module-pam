@@ -1,9 +1,10 @@
+# -*- coding: undecided -*-
 require 'spec_helper'
 
 describe 'pam' do
 
 
-	describe 'packages' do
+  describe 'packages' do
 
     context 'with class defaults on rhel 5' do
       let :facts do
@@ -29,18 +30,18 @@ describe 'pam' do
         }
       end
 
-			let(:params) { {:package_name => 'foo'} }
-
-			it do
-    	  should contain_package('pam_package').with({
+      let(:params) { {:package_name => 'foo'} }
+      
+      it do
+        should contain_package('pam_package').with({
           'ensure' => 'installed',
-					'name'   => 'foo',
+	  'name'   => 'foo',
 				})
-			end
-		end
-	end
+      end
+    end
+  end
 
-	describe 'config files' do
+  describe 'config files' do
 
     context 'defaults for rhel 5' do
       let :facts do
@@ -83,5 +84,5 @@ describe 'pam' do
       })
       end
     end
-	end
+  end
 end

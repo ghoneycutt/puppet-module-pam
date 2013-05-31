@@ -2,12 +2,6 @@
 #
 # Places a fragment in $limits_d_dir directory
 #
-# ## Example usage ##
-# #Add the file example.conf in the pam module to the limits_d_dir with the name "80-nproc.conf"
-# pam::limits::fragment { '80-nproc':
-#   source => "puppet:///modules/pam/example.conf",
-# }
-#
 # ## Parameters ##
 #
 # source
@@ -15,6 +9,12 @@
 # Path to the fragment file
 #
 # - *Required*
+#
+# ## Example usage ##
+# # Add the file example.conf in the pam module to the limits_d_dir with the name "80-nproc.conf"
+# pam::limits::fragment { '80-nproc':
+#   source => "puppet:///modules/pam/limits.nproc",
+# }
 #
 define pam::limits::fragment (
   $source,

@@ -194,7 +194,6 @@ Places a fragment in $limits_d_dir directory
 
 source
 ------
-Path to the fragment file
+String - Path to the fragment file, such as 'puppet:///modules/pam/limits.nproc'
 
 - *Required*
-===

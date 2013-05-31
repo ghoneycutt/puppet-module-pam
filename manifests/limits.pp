@@ -7,15 +7,15 @@
 # config_file
 # -----------
 # Path to limits.conf
-# 
+#
 # - *Default*: '/etc/security/limits.conf'
-# 
+#
 # limits_d_dir
 # ------------
 # Path to limits.d directory
-# 
+#
 # - *Default*: '/etc/security/limits.d'
-# 
+#
 class pam::limits (
   $config_file  = '/etc/security/limits.conf',
   $limits_d_dir = '/etc/security/limits.d',

@@ -1,8 +1,6 @@
 # -*- coding: undecided -*-
 require 'spec_helper'
-
 describe 'pam' do
-
 
   describe 'packages' do
 
@@ -35,7 +33,7 @@ describe 'pam' do
       it do
         should contain_package('pam_package').with({
           'ensure' => 'installed',
-	  'name'   => 'foo',
+      	  'name'   => 'foo',
 				})
       end
     end

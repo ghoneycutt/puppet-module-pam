@@ -97,5 +97,17 @@ aliases:    files
         })
       }
     end
+
+    context 'with config_file set to invalid value' do
+      let :params do
+        { :config_file => 'not/an/absolute/path' }
+      end
+
+      it do
+        expect {
+          should include_class('nsswitch')
+        }.to raise_error(Puppet::Error)
+      end
+    end
   end
 end

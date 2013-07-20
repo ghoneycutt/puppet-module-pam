@@ -1,11 +1,11 @@
 # This file is being maintained by Puppet.
 # DO NOT EDIT
 
-passwd:     files [!NOTFOUND=return]<% if ensure_ldap == 'present' %> ldap<% end %>
-shadow:     files [!NOTFOUND=return]<% if ensure_ldap == 'present' %> ldap<% end %>
-group:      files<% if ensure_ldap == 'present' %> ldap<% end %>
+passwd:     files [!NOTFOUND=return]<% if @ensure_ldap == 'present' %> ldap<% end %>
+shadow:     files [!NOTFOUND=return]<% if @ensure_ldap == 'present' %> ldap<% end %>
+group:      files<% if @ensure_ldap == 'present' %> ldap<% end %>
 
-sudoers:    files [!NOTFOUND=return]<% if ensure_ldap == 'present' %> ldap<% end %>
+sudoers:    files [!NOTFOUND=return]<% if @ensure_ldap == 'present' %> ldap<% end %>
 
 hosts:      files dns
 
@@ -13,10 +13,10 @@ bootparams: files
 ethers:     files
 netmasks:   files
 networks:   files
-protocols:  files<% if ensure_ldap == 'present' %> ldap<% end %>
+protocols:  files<% if @ensure_ldap == 'present' %> ldap<% end %>
 rpc:        files
-services:   files<% if ensure_ldap == 'present' %> ldap<% end %>
-netgroup:   files<% if ensure_ldap == 'present' %> ldap<% end %>
+services:   files<% if @ensure_ldap == 'present' %> ldap<% end %>
+netgroup:   files<% if @ensure_ldap == 'present' %> ldap<% end %>
 publickey:  files
-automount:  files<% if ensure_ldap == 'present' %> ldap<% end %>
+automount:  files<% if @ensure_ldap == 'present' %> ldap<% end %>
 aliases:    files

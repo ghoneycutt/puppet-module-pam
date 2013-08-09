@@ -1,11 +1,11 @@
 # This file is being maintained by Puppet.
 # DO NOT EDIT
 
-passwd:     files [!NOTFOUND=return]<% if @ensure_ldap == 'present' %> ldap<% end %>
-shadow:     files [!NOTFOUND=return]<% if @ensure_ldap == 'present' %> ldap<% end %>
-group:      files<% if @ensure_ldap == 'present' %> ldap<% end %>
+passwd:     files<% if @ensure_ldap == 'present' %> ldap<% end %><% if @ensure_qas == 'present' %> <%= qas_nss_module %><% end %>
+shadow:     files<% if @ensure_ldap == 'present' %> ldap<% end %>
+group:      files<% if @ensure_ldap == 'present' %> ldap<% end %><% if @ensure_qas == 'present' %> <%= qas_nss_module %><% end %>
 
-sudoers:    files [!NOTFOUND=return]<% if @ensure_ldap == 'present' %> ldap<% end %>
+sudoers:    files<% if @ensure_ldap == 'present' %> ldap<% end %>
 
 hosts:      files dns
 
@@ -16,7 +16,7 @@ networks:   files
 protocols:  files<% if @ensure_ldap == 'present' %> ldap<% end %>
 rpc:        files
 services:   files<% if @ensure_ldap == 'present' %> ldap<% end %>
-netgroup:   files<% if @ensure_ldap == 'present' %> ldap<% end %>
+netgroup:   files<% if @ensure_ldap == 'present' %> ldap<% end %><% if @ensure_qas == 'present' %> nis<% end %>
 publickey:  files
-automount:  files<% if @ensure_ldap == 'present' %> ldap<% end %>
+automount:  files<% if @ensure_ldap == 'present' %> ldap<% end %><% if @ensure_qas == 'present' %> nis<% end %>
 aliases:    files

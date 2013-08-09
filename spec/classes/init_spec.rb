@@ -17,11 +17,11 @@ describe 'nsswitch' do
 %{# This file is being maintained by Puppet.
 # DO NOT EDIT
 
-passwd:     files [!NOTFOUND=return]
-shadow:     files [!NOTFOUND=return]
+passwd:     files
+shadow:     files
 group:      files
 
-sudoers:    files [!NOTFOUND=return]
+sudoers:    files
 
 hosts:      files dns
 
@@ -58,11 +58,11 @@ aliases:    files
 %{# This file is being maintained by Puppet.
 # DO NOT EDIT
 
-passwd:     files [!NOTFOUND=return] ldap
-shadow:     files [!NOTFOUND=return] ldap
+passwd:     files ldap
+shadow:     files ldap
 group:      files ldap
 
-sudoers:    files [!NOTFOUND=return] ldap
+sudoers:    files ldap
 
 hosts:      files dns
 
@@ -76,6 +76,47 @@ services:   files ldap
 netgroup:   files ldap
 publickey:  files
 automount:  files ldap
+aliases:    files
+})
+      }
+    end
+
+    context 'with qas enabled' do
+      let :params do
+        { :ensure_qas => 'present' }
+      end
+
+      it {
+        should include_class('nsswitch')
+        should contain_file('nsswitch_config_file').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/nsswitch.conf',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+        should contain_file('nsswitch_config_file').with_content(
+%{# This file is being maintained by Puppet.
+# DO NOT EDIT
+
+passwd:     files vas4
+shadow:     files
+group:      files vas4
+
+sudoers:    files
+
+hosts:      files dns
+
+bootparams: files
+ethers:     files
+netmasks:   files
+networks:   files
+protocols:  files
+rpc:        files
+services:   files
+netgroup:   files
+publickey:  files
+automount:  files
 aliases:    files
 })
       }

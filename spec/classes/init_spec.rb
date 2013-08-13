@@ -81,9 +81,9 @@ aliases:    files
       }
     end
 
-    context 'with qas enabled' do
+    context 'with vas enabled' do
       let :params do
-        { :ensure_qas => 'present' }
+        { :ensure_vas => 'present' }
       end
 
       it {
@@ -114,9 +114,53 @@ networks:   files
 protocols:  files
 rpc:        files
 services:   files
-netgroup:   files
+netgroup:   files nis
 publickey:  files
-automount:  files
+automount:  files nis
+aliases:    files
+})
+      }
+    end
+
+    context 'with vas and ldap both enabled' do
+      let :params do
+        {
+          :ensure_ldap => 'present',
+          :ensure_vas  => 'present',
+        }
+      end
+
+      it {
+        should include_class('nsswitch')
+        should contain_file('nsswitch_config_file').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/nsswitch.conf',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+        should contain_file('nsswitch_config_file').with_content(
+%{# This file is being maintained by Puppet.
+# DO NOT EDIT
+
+passwd:     files ldap vas4
+shadow:     files ldap
+group:      files ldap vas4
+
+sudoers:    files ldap
+
+hosts:      files dns
+
+bootparams: files
+ethers:     files
+netmasks:   files
+networks:   files
+protocols:  files ldap
+rpc:        files
+services:   files ldap
+netgroup:   files ldap nis
+publickey:  files
+automount:  files ldap nis
 aliases:    files
 })
       }

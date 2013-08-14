@@ -46,13 +46,15 @@ class pam::accesslogin (
 
   require 'pam'
 
-  file { 'access_conf':
-    ensure  => file,
-    path    => $access_conf_path,
-    content => template($access_conf_template),
-    owner   => $access_conf_owner,
-    group   => $access_conf_group,
-    mode    => $access_conf_mode,
-    require => Package['pam_package'],
+  if $::osfamily == 'redhat' {
+    file { 'access_conf':
+      ensure  => file,
+      path    => $access_conf_path,
+      content => template($access_conf_template),
+      owner   => $access_conf_owner,
+      group   => $access_conf_group,
+      mode    => $access_conf_mode,
+      require => Package['pam_package'],
+    }
   }
 }

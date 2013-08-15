@@ -19,9 +19,14 @@
 class pam::limits (
   $config_file  = '/etc/security/limits.conf',
   $limits_d_dir = '/etc/security/limits.d',
+  $fragments = undef,
 ) {
 
   include pam
+
+  if $limits != undef {
+    create_resources('pam::limits::fragment',$fragments)
+  }
 
   file { 'limits_conf':
     ensure  => file,

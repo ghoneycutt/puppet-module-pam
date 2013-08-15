@@ -13,11 +13,23 @@
 # ## Example usage ##
 # # Add the file example.conf in the pam module to the limits_d_dir with the name "80-nproc.conf"
 # pam::limits::fragment { '80-nproc':
-#   source => "puppet:///modules/pam/limits.nproc",
+#   #source => "puppet:///modules/pam/limits.nproc",
+#   content => '* soft nofile 2048',
 # }
 #
+
+
+in hiera
+---
+common::users:
+  80-nproc:
+    content:
+      - '* soft nofile 2048'
+      - '* hard nofile 8192'
+
+
 define pam::limits::fragment (
-  $source,
+  $content,
 ) {
 
   include pam
@@ -25,7 +37,8 @@ define pam::limits::fragment (
 
   file { "${pam::limits::limits_d_dir}/${name}.conf":
     ensure  => file,
-    source  => $source,
+    #source => $source,
+    content => $line,
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

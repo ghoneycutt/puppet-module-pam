@@ -23,13 +23,15 @@ class pam::limits (
 
   include pam
 
-  file { 'limits_conf':
-    ensure  => file,
-    path    => $config_file,
-    source  => 'puppet:///modules/pam/limits.conf',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    require => Package['pam_package'],
+  if $::osfamily == 'redhat' {
+    file { 'limits_conf':
+      ensure  => file,
+      path    => $config_file,
+      source  => 'puppet:///modules/pam/limits.conf',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      require => Package['pam_package'],
+    }
   }
 }

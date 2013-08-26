@@ -1,18 +1,27 @@
-# pam module #
+# pam module
+
 
 [![Build Status](
 https://api.travis-ci.org/ghoneycutt/puppet-module-pam.png?branch=master)](https://travis-ci.org/ghoneycutt/puppet-module-pam)
 
-This module manages bits around PAM.
+This module manages PAM including accesslogin and limits.conf with functionality to create limits fragments for use in other modules.
 
-# Compatibility #
+===
 
-This module has been tested to work on the following systems.
+# Compatibility
+
+This module has been tested to work on the following systems using Puppet v3 and Ruby 1.8.7
 
  * EL 5
  * EL 6
+ * Solaris 10
 
-# Parameters #
+===
+
+# Parameters
+
+## class pam
+
 
 allowed_users
 -------------
@@ -160,11 +169,11 @@ Content template of $system_auth_ac_file. If undef, parameter is set based on th
 
 ===
 
-# pam::accesslogin define #
+# define pam::accesslogin
 Manages login access
 See PAM_ACCESS(8)
 
-## Parameters for `pam::accesslogin` define ##
+## Parameters for `pam::accesslogin` define
 
 access_conf_path
 ----------------
@@ -198,10 +207,10 @@ Content template of access.conf.
 
 ===
 
-# pam::limits define #
+# pam::limits define
 Manage PAM limits.conf
 
-## Parameters for `pam::limits` define ##
+## Parameters for `pam::limits` define
 
 config_file
 -----------
@@ -217,10 +226,10 @@ Path to limits.d directory
 
 ===
 
-# pam::limits::fragment define #
+# pam::limits::fragment define
 Places a fragment in $limits_d_dir directory
 
-## Parameters for `pam::limits::fragment` ##
+## Parameters for `pam::limits::fragment`
 
 source
 ------

@@ -1,20 +1,6 @@
-# # Class: pam::limits #
+# == Class: pam::limits
 #
 # Manage PAM limits.conf
-#
-# ## Parameters ##
-#
-# config_file
-# -----------
-# Path to limits.conf
-#
-# - *Default*: '/etc/security/limits.conf'
-#
-# limits_d_dir
-# ------------
-# Path to limits.d directory
-#
-# - *Default*: '/etc/security/limits.d'
 #
 class pam::limits (
   $config_file  = '/etc/security/limits.conf',

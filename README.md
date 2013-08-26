@@ -26,6 +26,12 @@ Array of packages providing the pam functionality. If undef, parameter is set ba
 
 - *Default*: undef, default is set based on OS version
 
+pam_conf_file
+-------------
+Path to pam.conf
+
+- *Default*: '/etc/pam.conf'
+
 pam_d_login_oracle_options
 --------------------------
 Allow array of extra lines at the bottom of pam.d/login for oracle systems on EL5.
@@ -89,6 +95,30 @@ Mode of $pam_d_sshd_path
 pam_d_sshd_template
 -------------------
 Content template of $pam_d_sshd_path. If undef, parameter is set based on the OS version.
+
+- *Default*: undef, default is set based on OS version
+
+pam_auth_lines
+-------------------------
+Content for PAM auth. If undef, parameter is set based on the OS version.
+
+- *Default*: undef, default is set based on OS version
+
+pam_account_lines
+----------------------------
+Content for PAM account. If undef, parameter is set based on the OS version.
+
+- *Default*: undef, default is set based on OS version
+
+pam_password_lines
+-----------------------------
+Content for PAM password. If undef, parameter is set based on the OS version.
+
+- *Default*: undef, default is set based on OS version
+
+pam_session_lines
+----------------------------
+Content for PAM session. If undef, parameter is set based on the OS version.
 
 - *Default*: undef, default is set based on OS version
 

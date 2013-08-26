@@ -16,6 +16,12 @@
 #
 # - *Default*: undef, default is set based on OS version
 #
+# pam_conf_file
+# -------------
+# Path to pam.conf
+#
+# - *Default*: '/etc/pam.conf'
+#
 # pam_d_login_oracle_options
 # --------------------------
 # Allow array of extra lines at the bottom of pam.d/login for oracle systems on EL5.
@@ -170,8 +176,6 @@ class pam (
 ) {
 
   include nsswitch
-  include pam::accesslogin
-  include pam::limits
 
   case $::osfamily {
     'redhat': {
@@ -180,25 +184,25 @@ class pam (
           $default_pam_d_login_template = 'pam/login.el5.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.el5.erb'
           $default_package_name         = [ 'pam',
-                                      'util-linux' ]
+                                            'util-linux' ]
 
           $default_pam_auth_lines = [ 'auth        required      pam_env.so',
-                              'auth        sufficient    pam_unix.so nullok try_first_pass',
-                              'auth        requisite     pam_succeed_if.so uid >= 500 quiet',
-                              'auth        required      pam_deny.so']
+                                      'auth        sufficient    pam_unix.so nullok try_first_pass',
+                                      'auth        requisite     pam_succeed_if.so uid >= 500 quiet',
+                                      'auth        required      pam_deny.so']
 
           $default_pam_account_lines = [ 'account     required      pam_unix.so',
-                              'account     sufficient    pam_succeed_if.so uid < 500 quiet',
-                              'account     required      pam_permit.so']
+                                          'account     sufficient    pam_succeed_if.so uid < 500 quiet',
+                                          'account     required      pam_permit.so']
 
           $default_pam_password_lines = [ 'password    requisite     pam_cracklib.so try_first_pass retry=3',
-                              'password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok',
-                              'password    required      pam_deny.so']
+                                          'password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok',
+                                          'password    required      pam_deny.so']
 
           $default_pam_session_lines = [ 'session     optional      pam_keyinit.so revoke',
-                              'session     required      pam_limits.so',
-                              'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
-                              'session     required      pam_unix.so']
+                                          'session     required      pam_limits.so',
+                                          'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
+                                          'session     required      pam_unix.so']
         }
         '6': {
           $default_pam_d_login_template = 'pam/login.el6.erb'
@@ -206,27 +210,27 @@ class pam (
           $default_package_name         = 'pam'
 
           $default_pam_auth_lines = [ 'auth        required      pam_env.so',
-                              'auth        sufficient    pam_fprintd.so',
-                              'auth        sufficient    pam_unix.so nullok try_first_pass',
-                              'auth        requisite     pam_succeed_if.so uid >= 500 quiet',
-                              'auth        required      pam_deny.so']
+                                      'auth        sufficient    pam_fprintd.so',
+                                      'auth        sufficient    pam_unix.so nullok try_first_pass',
+                                      'auth        requisite     pam_succeed_if.so uid >= 500 quiet',
+                                      'auth        required      pam_deny.so']
 
           $default_pam_account_lines = [ 'account     required      pam_unix.so',
-                              'account     sufficient    pam_localuser.so',
-                              'account     sufficient    pam_succeed_if.so uid < 500 quiet',
-                              'account     required      pam_permit.so']
+                                          'account     sufficient    pam_localuser.so',
+                                          'account     sufficient    pam_succeed_if.so uid < 500 quiet',
+                                          'account     required      pam_permit.so']
 
           $default_pam_password_lines = [ 'password    requisite     pam_cracklib.so try_first_pass retry=3 type=',
-                              'password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok',
-                              'password    required      pam_deny.so']
+                                          'password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok',
+                                          'password    required      pam_deny.so']
 
           $default_pam_session_lines = [ 'session     optional      pam_keyinit.so revoke',
-                              'session     required      pam_limits.so',
-                              'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
-                              'session     required      pam_unix.so']
+                                          'session     required      pam_limits.so',
+                                          'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
+                                          'session     required      pam_unix.so']
         }
         default: {
-          fail("${module_name} is only supported on EL 5 and 6. Your lsbmajdistrelease is identified as ${::lsbmajdistrelease}")
+          fail("Pam is only supported on EL 5 and 6. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
         }
       }
     }
@@ -234,33 +238,33 @@ class pam (
       case $::kernelrelease {
         '5.10': {
           $default_pam_auth_lines = ['login   auth requisite          pam_authtok_get.so.1',
-                              'login   auth required           pam_dhkeys.so.1',
-                              'login   auth required           pam_unix_cred.so.1',
-                              'login   auth required           pam_unix_auth.so.1',
-                              'login   auth required           pam_dial_auth.so.1',
-                              'passwd  auth required           pam_passwd_auth.so.1',
-                              'other   auth requisite          pam_authtok_get.so.1',
-                              'other   auth required           pam_dhkeys.so.1',
-                              'other   auth required           pam_unix_cred.so.1',
-                              'other   auth required           pam_unix_auth.so.1']
+                                      'login   auth required           pam_dhkeys.so.1',
+                                      'login   auth required           pam_unix_cred.so.1',
+                                      'login   auth required           pam_unix_auth.so.1',
+                                      'login   auth required           pam_dial_auth.so.1',
+                                      'passwd  auth required           pam_passwd_auth.so.1',
+                                      'other   auth requisite          pam_authtok_get.so.1',
+                                      'other   auth required           pam_dhkeys.so.1',
+                                      'other   auth required           pam_unix_cred.so.1',
+                                      'other   auth required           pam_unix_auth.so.1']
 
           $default_pam_account_lines = ['other   account requisite       pam_roles.so.1',
-                              'other   account required        pam_unix_account.so.1']
+                                        'other   account required        pam_unix_account.so.1']
 
           $default_pam_password_lines = ['other   password required       pam_dhkeys.so.1',
-                              'other   password requisite      pam_authtok_get.so.1',
-                              'other   password requisite      pam_authtok_check.so.1',
-                              'other   password required       pam_authtok_store.so.1']
+                                          'other   password requisite      pam_authtok_get.so.1',
+                                          'other   password requisite      pam_authtok_check.so.1',
+                                          'other   password required       pam_authtok_store.so.1']
 
           $default_pam_session_lines = ['other   session required        pam_unix_session.so.1']
         }
         default: {
-          fail("${module_name} is only supported on Solaris 10. Your kernelrelease is identified as ${::kernelrelease}")
+          fail("Pam is only supported on Solaris 10. Your kernelrelease is identified as <${::kernelrelease}>.")
         }
       }
     }
     default: {
-      fail("${module_name} is only supported on RedHat and Solaris systems. Your osfamily is identified as ${::osfamily}")
+      fail("Pam is only supported on RedHat and Solaris osfamilies. Your osfamily is identified as <${::osfamily}>.")
     }
   }
 
@@ -287,7 +291,7 @@ class pam (
       $my_pam_auth_lines = $default_pam_auth_lines
     } else {
       $my_pam_auth_lines = $system_auth_ac_auth_lines
-      notify {'Deprecation notice: `$system_auth_ac_auth_lines` has been deprecated in `pam` class and will be removed in a future version. Use $pam_auth_lines instead.':}
+      notify { 'Deprecation notice: `$system_auth_ac_auth_lines` has been deprecated in `pam` class and will be removed in a future version. Use $pam_auth_lines instead.': }
     }
   } else {
     $my_pam_auth_lines = $pam_auth_lines
@@ -298,7 +302,7 @@ class pam (
       $my_pam_account_lines = $default_pam_account_lines
     } else {
       $my_pam_account_lines = $system_auth_ac_account_lines
-      notify {'Deprecation notice: `$system_auth_ac_account_lines` has been deprecated in `pam` class and will be removed in a future version. Use $pam_account_lines instead.':}
+      notify { 'Deprecation notice: `$system_auth_ac_account_lines` has been deprecated in `pam` class and will be removed in a future version. Use $pam_account_lines instead.': }
     }
   } else {
     $my_pam_account_lines = $pam_account_lines
@@ -309,7 +313,7 @@ class pam (
       $my_pam_password_lines = $default_pam_password_lines
     } else {
       $my_pam_password_lines = $system_auth_ac_password_lines
-      notify {'Deprecation notice: `$system_auth_ac_password_lines` has been deprecated in `pam` class and will be removed in a future version. Use $pam_password_lines instead.':}
+      notify { 'Deprecation notice: `$system_auth_ac_password_lines` has been deprecated in `pam` class and will be removed in a future version. Use $pam_password_lines instead.': }
     }
   } else {
     $my_pam_password_lines = $pam_password_lines
@@ -320,7 +324,7 @@ class pam (
       $my_pam_session_lines = $default_pam_session_lines
     } else {
       $my_pam_session_lines = $system_auth_ac_session_lines
-      notify {'Deprecation notice: `$system_auth_ac_session_lines` has been deprecated in `pam` class and will be removed in a future version. Use $pam_session_lines instead.':}
+      notify { 'Deprecation notice: `$system_auth_ac_session_lines` has been deprecated in `pam` class and will be removed in a future version. Use $pam_session_lines instead.': }
     }
   } else {
     $my_pam_session_lines = $pam_session_lines
@@ -328,6 +332,10 @@ class pam (
 
   case $::osfamily {
     'redhat': {
+
+      include pam::accesslogin
+      include pam::limits
+
       package { 'pam_package':
         ensure => installed,
         name   => $my_package_name,
@@ -350,7 +358,27 @@ class pam (
         group   => $pam_d_sshd_group,
         mode    => $pam_d_sshd_mode,
       }
+
+      file { 'pam_system_auth_ac':
+        ensure  => file,
+        path    => $system_auth_ac_file,
+        content => template('pam/system-auth-ac.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['pam_package'],
+      }
+
+      file { 'pam_system_auth':
+        ensure  => symlink,
+        path    => $system_auth_file,
+        target  => $system_auth_ac_file,
+        owner   => 'root',
+        group   => 'root',
+        require => Package['pam_package'],
+      }
     }
+
     'solaris': {
       file { 'pam_conf':
         ensure  => file,
@@ -362,29 +390,7 @@ class pam (
       }
     }
     default: {
-      fail("${module_name} is only supported on RedHat and Solaris systems. Your osfamily is identified as ${::osfamily}")
+      fail("Pam is only supported on RedHat and Solaris osfamilies. Your osfamily is identified as <${::osfamily}>.")
     }
   }
-
-  if $::osfamily == 'redhat' {
-    file { 'pam_system_auth_ac':
-      ensure  => file,
-      path    => $system_auth_ac_file,
-      content => template('pam/system-auth-ac.erb'),
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      require => Package['pam_package'],
-    }
-
-    file { 'pam_system_auth':
-      ensure  => symlink,
-      path    => $system_auth_file,
-      target  => $system_auth_ac_file,
-      owner   => 'root',
-      group   => 'root',
-      require => Package['pam_package'],
-    }
-  }
-
 }

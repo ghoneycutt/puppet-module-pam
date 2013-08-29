@@ -35,6 +35,22 @@ describe 'pam' do
       end
     end
 
+    context 'with class defaults on osfamily suse with lsbmajdistrelease 11' do
+      let :facts do
+        {
+          :osfamily          => 'Suse',
+          :lsbmajdistrelease => '11',
+        }
+      end
+
+      it do
+        should contain_package('pam_package').with({
+          'ensure' => 'installed',
+          'name'   => 'pam',
+        })
+      end
+    end
+
     context 'with specifying package_name on valid platform' do
       let :facts do
         {
@@ -118,6 +134,93 @@ describe 'pam' do
       should contain_file('pam_system_auth').with({
         'ensure' => 'symlink',
         'path'   => '/etc/pam.d/system-auth',
+        'owner'  => 'root',
+        'group'  => 'root',
+      })
+
+      should contain_file('pam_d_login').with({
+        'ensure' => 'file',
+        'path'   => '/etc/pam.d/login',
+        'owner'  => 'root',
+        'group'  => 'root',
+        'mode'   => '0644',
+      })
+
+      should contain_file('pam_d_sshd').with({
+        'ensure' => 'file',
+        'path'   => '/etc/pam.d/sshd',
+        'owner'  => 'root',
+        'group'  => 'root',
+        'mode'   => '0644',
+      })
+      end
+    end
+
+    context 'defaults on osfamily suse with lsbmajdistrelease 11' do
+      let :facts do
+        {
+          :osfamily          => 'Suse',
+          :lsbmajdistrelease => '11',
+        }
+      end
+
+      it do
+        should contain_file('pam_common_auth_pc').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/common-auth-pc',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+
+      should contain_file('pam_common_auth').with({
+        'ensure' => 'symlink',
+        'path'   => '/etc/pam.d/common-auth',
+        'owner'  => 'root',
+        'group'  => 'root',
+      })
+
+      should contain_file('pam_common_account_pc').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/common-account-pc',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+
+      should contain_file('pam_common_account').with({
+        'ensure' => 'symlink',
+        'path'   => '/etc/pam.d/common-account',
+        'owner'  => 'root',
+        'group'  => 'root',
+      })
+
+      should contain_file('pam_common_password_pc').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/common-password-pc',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+
+      should contain_file('pam_common_password').with({
+        'ensure' => 'symlink',
+        'path'   => '/etc/pam.d/common-password',
+        'owner'  => 'root',
+        'group'  => 'root',
+      })
+
+      should contain_file('pam_common_session_pc').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/common-session-pc',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+
+      should contain_file('pam_common_session').with({
+        'ensure' => 'symlink',
+        'path'   => '/etc/pam.d/common-session',
         'owner'  => 'root',
         'group'  => 'root',
       })

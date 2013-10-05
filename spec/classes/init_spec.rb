@@ -35,6 +35,22 @@ describe 'pam' do
       end
     end
 
+    context 'with class defaults on osfamily debian with lsbmajdistrelease 12' do
+      let :facts do
+        {
+          :osfamily          => 'Debian',
+          :lsbmajdistrelease => '12',
+        }
+      end
+
+      it do
+        should contain_package('pam_package').with({
+          'ensure' => 'installed',
+          'name'   => 'libpam0g',
+        })
+      end
+    end
+
     context 'with class defaults on osfamily suse with lsbmajdistrelease 11' do
       let :facts do
         {
@@ -137,6 +153,65 @@ describe 'pam' do
         'owner'  => 'root',
         'group'  => 'root',
       })
+
+      should contain_file('pam_d_login').with({
+        'ensure' => 'file',
+        'path'   => '/etc/pam.d/login',
+        'owner'  => 'root',
+        'group'  => 'root',
+        'mode'   => '0644',
+      })
+
+      should contain_file('pam_d_sshd').with({
+        'ensure' => 'file',
+        'path'   => '/etc/pam.d/sshd',
+        'owner'  => 'root',
+        'group'  => 'root',
+        'mode'   => '0644',
+      })
+      end
+    end
+
+    context 'defaults on osfamily debian with lsbmajdistrelease 12' do
+      let :facts do
+        {
+          :osfamily          => 'Debian',
+          :lsbmajdistrelease => '12',
+        }
+      end
+
+      it do
+        should contain_file('pam_common_auth').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/common-auth',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+
+      should contain_file('pam_common_account').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/common-account',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+
+      should contain_file('pam_common_password').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/common-password',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+
+      should contain_file('pam_common_session').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/common-session',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
 
       should contain_file('pam_d_login').with({
         'ensure' => 'file',

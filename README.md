@@ -14,8 +14,9 @@ This module has been tested to work on the following systems using Puppet v3 and
 
  * EL 5
  * EL 6
- * Suse 11
  * Solaris 10
+ * Suse 11
+ * Ubuntu 12.04 LTS
 
 ===
 
@@ -109,25 +110,25 @@ Content template of $pam_d_sshd_path. If undef, parameter is set based on the OS
 - *Default*: undef, default is set based on OS version
 
 pam_auth_lines
--------------------------
+--------------
 Content for PAM auth. If undef, parameter is set based on the OS version.
 
 - *Default*: undef, default is set based on OS version
 
 pam_account_lines
-----------------------------
+-----------------
 Content for PAM account. If undef, parameter is set based on the OS version.
 
 - *Default*: undef, default is set based on OS version
 
 pam_password_lines
------------------------------
+------------------
 Content for PAM password. If undef, parameter is set based on the OS version.
 
 - *Default*: undef, default is set based on OS version
 
 pam_session_lines
-----------------------------
+-----------------
 Content for PAM session. If undef, parameter is set based on the OS version.
 
 - *Default*: undef, default is set based on OS version
@@ -145,40 +146,46 @@ Path to common-auth-pc. Used on Suse.
 - *Default*: '/etc/pam.d/common-auth-pc'
 
 common_account_file
-----------------
+-------------------
 Path to common-account. Used on Suse.
 
 - *Default*: '/etc/pam.d/common-account'
 
 common_account_pc_file
--------------------
+----------------------
 Path to common-account-pc. Used on Suse.
 
 - *Default*: '/etc/pam.d/common-account-pc'
 
 common_password_file
-----------------
+--------------------
 Path to common-password. Used on Suse.
 
 - *Default*: '/etc/pam.d/common-password'
 
 common_password_pc_file
--------------------
+-----------------------
 Path to common-password-pc. Used on Suse.
 
 - *Default*: '/etc/pam.d/common-password-pc'
 
 common_session_file
-----------------
+-------------------
 Path to common-session. Used on Suse.
 
 - *Default*: '/etc/pam.d/common-session'
 
 common_session_pc_file
--------------------
+----------------------
 Path to common-session-pc. Used on Suse.
 
 - *Default*: '/etc/pam.d/common-session-pc'
+
+common_session_noninteractive_file
+----------------------------------
+Path to common-session-noninteractive, which is the same as common-session-pc used on Suse. Used on Ubuntu 12.04 LTS.
+
+- *Default*: '/etc/pam.d/common-session-noninteractive'
 
 system_auth_file
 ----------------

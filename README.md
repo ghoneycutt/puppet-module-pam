@@ -14,6 +14,7 @@ This module has been tested to work on the following systems using Puppet v3 and
 
  * EL 5
  * EL 6
+ * Suse 11
  * Solaris 10
 
 ===
@@ -131,15 +132,63 @@ Content for PAM session. If undef, parameter is set based on the OS version.
 
 - *Default*: undef, default is set based on OS version
 
+common_auth_file
+----------------
+Path to common-auth. Used on Suse.
+
+- *Default*: '/etc/pam.d/common-auth'
+
+common_auth_pc_file
+-------------------
+Path to common-auth-pc. Used on Suse.
+
+- *Default*: '/etc/pam.d/common-auth-pc'
+
+common_account_file
+----------------
+Path to common-account. Used on Suse.
+
+- *Default*: '/etc/pam.d/common-account'
+
+common_account_pc_file
+-------------------
+Path to common-account-pc. Used on Suse.
+
+- *Default*: '/etc/pam.d/common-account-pc'
+
+common_password_file
+----------------
+Path to common-password. Used on Suse.
+
+- *Default*: '/etc/pam.d/common-password'
+
+common_password_pc_file
+-------------------
+Path to common-password-pc. Used on Suse.
+
+- *Default*: '/etc/pam.d/common-password-pc'
+
+common_session_file
+----------------
+Path to common-session. Used on Suse.
+
+- *Default*: '/etc/pam.d/common-session'
+
+common_session_pc_file
+-------------------
+Path to common-session-pc. Used on Suse.
+
+- *Default*: '/etc/pam.d/common-session-pc'
+
 system_auth_file
 ----------------
-Path to system-auth.
+Path to system-auth. Used on RedHat.
 
 - *Default*: '/etc/pam.d/system-auth'
 
 system_auth_ac_file
 -------------------
-Path to system-auth-ac
+Path to system-auth-ac. Used on RedHat.
 
 - *Default*: '/etc/pam.d/system-auth-ac'
 

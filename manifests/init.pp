@@ -3,38 +3,39 @@
 # This module manages bits around PAM.
 #
 class pam (
-  $allowed_users                 = 'root',
-  $package_name                  = undef,
-  $pam_conf_file                 = '/etc/pam.conf',
-  $pam_d_login_oracle_options    = 'UNSET',
-  $pam_d_login_path              = '/etc/pam.d/login',
-  $pam_d_login_owner             = 'root',
-  $pam_d_login_group             = 'root',
-  $pam_d_login_mode              = '0644',
-  $pam_d_login_template          = undef,
-  $pam_d_sshd_path               = '/etc/pam.d/sshd',
-  $pam_d_sshd_owner              = 'root',
-  $pam_d_sshd_group              = 'root',
-  $pam_d_sshd_mode               = '0644',
-  $pam_d_sshd_template           = undef,
-  $pam_auth_lines                = undef,
-  $pam_account_lines             = undef,
-  $pam_password_lines            = undef,
-  $pam_session_lines             = undef,
-  $common_auth_file              = '/etc/pam.d/common-auth',
-  $common_auth_pc_file           = '/etc/pam.d/common-auth-pc',
-  $common_account_file           = '/etc/pam.d/common-account',
-  $common_account_pc_file        = '/etc/pam.d/common-account-pc',
-  $common_password_file          = '/etc/pam.d/common-password',
-  $common_password_pc_file       = '/etc/pam.d/common-password-pc',
-  $common_session_file           = '/etc/pam.d/common-session',
-  $common_session_pc_file        = '/etc/pam.d/common-session-pc',
-  $system_auth_file              = '/etc/pam.d/system-auth',
-  $system_auth_ac_file           = '/etc/pam.d/system-auth-ac',
-  $system_auth_ac_auth_lines     = undef,
-  $system_auth_ac_account_lines  = undef,
-  $system_auth_ac_password_lines = undef,
-  $system_auth_ac_session_lines  = undef,
+  $allowed_users                       = 'root',
+  $package_name                        = undef,
+  $pam_conf_file                       = '/etc/pam.conf',
+  $pam_d_login_oracle_options          = 'UNSET',
+  $pam_d_login_path                    = '/etc/pam.d/login',
+  $pam_d_login_owner                   = 'root',
+  $pam_d_login_group                   = 'root',
+  $pam_d_login_mode                    = '0644',
+  $pam_d_login_template                = undef,
+  $pam_d_sshd_path                     = '/etc/pam.d/sshd',
+  $pam_d_sshd_owner                    = 'root',
+  $pam_d_sshd_group                    = 'root',
+  $pam_d_sshd_mode                     = '0644',
+  $pam_d_sshd_template                 = undef,
+  $pam_auth_lines                      = undef,
+  $pam_account_lines                   = undef,
+  $pam_password_lines                  = undef,
+  $pam_session_lines                   = undef,
+  $common_auth_file                    = '/etc/pam.d/common-auth',
+  $common_auth_pc_file                 = '/etc/pam.d/common-auth-pc',
+  $common_account_file                 = '/etc/pam.d/common-account',
+  $common_account_pc_file              = '/etc/pam.d/common-account-pc',
+  $common_password_file                = '/etc/pam.d/common-password',
+  $common_password_pc_file             = '/etc/pam.d/common-password-pc',
+  $common_session_file                 = '/etc/pam.d/common-session',
+  $common_session_pc_file              = '/etc/pam.d/common-session-pc',
+  $common_session_noninteractive_file  = '/etc/pam.d/common-session-noninteractive',
+  $system_auth_file                    = '/etc/pam.d/system-auth',
+  $system_auth_ac_file                 = '/etc/pam.d/system-auth-ac',
+  $system_auth_ac_auth_lines           = undef,
+  $system_auth_ac_account_lines        = undef,
+  $system_auth_ac_password_lines       = undef,
+  $system_auth_ac_session_lines        = undef,
 ) {
 
   include nsswitch
@@ -120,6 +121,43 @@ class pam (
         }
       }
     }
+    'debian': {
+      case $::operatingsystem {
+        'Ubuntu': {
+          case $::lsbmajdistrelease {
+            '12': {
+              $default_pam_d_login_template = 'pam/login.ubuntu12.erb'
+              $default_pam_d_sshd_template  = 'pam/sshd.ubuntu12.erb'
+              $default_package_name         = 'libpam0g'
+
+              $default_pam_auth_lines = [ 'auth  [success=1 default=ignore]  pam_unix.so nullok_secure',
+                                          'auth  requisite     pam_deny.so',
+                                          'auth  required      pam_permit.so']
+
+              $default_pam_account_lines = [ 'account [success=1 new_authtok_reqd=done default=ignore]  pam_unix.so',
+                                              'account requisite     pam_deny.so',
+                                              'account required      pam_permit.so']
+
+              $default_pam_password_lines = [ 'password  [success=1 default=ignore]  pam_unix.so obscure sha512',
+                                              'password  requisite     pam_deny.so',
+                                              'password  required      pam_permit.so']
+
+              $default_pam_session_lines = [ 'session [default=1]   pam_permit.so',
+                                              'session requisite     pam_deny.so',
+                                              'session required      pam_permit.so',
+                                              'session optional      pam_umask.so',
+                                              'session required      pam_unix.so']
+            }
+            default: {
+              fail("Pam is only supported on Ubuntu 12. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
+            }
+          }
+        }
+        default: {
+          fail("Pam is only supported on operatingsystem Ubuntu of the Debian osfamily. Your operatingsystem is <${::operatingsystem}>.")
+        }
+      }
+    }
     'solaris': {
       case $::kernelrelease {
         '5.10': {
@@ -150,7 +188,7 @@ class pam (
       }
     }
     default: {
-      fail("Pam is only supported on RedHat, Suse and Solaris osfamilies. Your osfamily is identified as <${::osfamily}>.")
+      fail("Pam is only supported on RedHat, Suse, Debian and Solaris osfamilies. Your osfamily is identified as <${::osfamily}>.")
     }
   }
 
@@ -217,7 +255,7 @@ class pam (
   }
 
   case $::osfamily {
-    'redhat', 'suse': {
+    'redhat', 'suse', 'debian': {
 
       include pam::accesslogin
       include pam::limits
@@ -245,7 +283,61 @@ class pam (
         mode    => $pam_d_sshd_mode,
       }
 
-      if $::osfamily == 'Suse' {
+      if $::osfamily == 'Debian' {
+
+        file { 'pam_common_auth':
+          ensure  => file,
+          path    => $common_auth_file,
+          content => template('pam/common-auth-pc.erb'),
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0644',
+          require => Package['pam_package'],
+        }
+
+        file { 'pam_common_account':
+          ensure  => file,
+          path    => $common_account_file,
+          content => template('pam/common-account-pc.erb'),
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0644',
+          require => Package['pam_package'],
+        }
+
+        file { 'pam_common_password':
+          ensure  => file,
+          path    => $common_password_file,
+          content => template('pam/common-password-pc.erb'),
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0644',
+          require => Package['pam_package'],
+        }
+
+        file { 'pam_common_noninteractive_session':
+          ensure  => file,
+          path    => $common_session_noninteractive_file,
+          content => template('pam/common-session-pc.erb'),
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0644',
+          require => Package['pam_package'],
+        }
+
+        file { 'pam_common_session':
+          ensure  => file,
+          path    => $common_session_file,
+          content => template('pam/common-session-pc.erb'),
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0644',
+          require => Package['pam_package'],
+        }
+
+      }
+
+      elsif $::osfamily == 'Suse' {
 
         file { 'pam_common_auth_pc':
           ensure  => file,

@@ -35,22 +35,6 @@ describe 'pam' do
       end
     end
 
-    context 'with class defaults on osfamily debian with lsbmajdistrelease 12' do
-      let :facts do
-        {
-          :osfamily          => 'Debian',
-          :lsbmajdistrelease => '12',
-        }
-      end
-
-      it do
-        should contain_package('pam_package').with({
-          'ensure' => 'installed',
-          'name'   => 'libpam0g',
-        })
-      end
-    end
-
     context 'with class defaults on osfamily suse with lsbmajdistrelease 11' do
       let :facts do
         {
@@ -172,12 +156,20 @@ describe 'pam' do
       end
     end
 
-    context 'defaults on osfamily debian with lsbmajdistrelease 12' do
+    context 'with class defaults on Ubuntu 12.04 LTS' do
       let :facts do
         {
+          :operatingsystem   => 'Ubuntu',
           :osfamily          => 'Debian',
           :lsbmajdistrelease => '12',
         }
+      end
+
+      it do
+        should contain_package('pam_package').with({
+          'ensure' => 'installed',
+          'name'   => 'libpam0g',
+        })
       end
 
       it do

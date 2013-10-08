@@ -99,6 +99,23 @@ class pam (
     }
     'suse': {
       case $::lsbmajdistrelease {
+        '10': {
+          $default_pam_d_login_template = 'pam/login.suse10.erb'
+          $default_pam_d_sshd_template  = 'pam/sshd.suse10.erb'
+          $default_package_name         = 'pam'
+
+          $default_pam_auth_lines = [ 'auth    required    pam_env.so',
+                                      'auth    required    pam_unix2.so']
+
+          $default_pam_account_lines = [ 'account    required    pam_unix2.so']
+
+          $default_pam_password_lines = [ 'password    required    pam_pwcheck.so  nullok',
+                                          'password    required    pam_unix2.so  nullok use_authtok']
+
+          $default_pam_session_lines = [ 'session    required    pam_limits.so',
+                                          'session    required    pam_unix2.so']
+        }
+
         '11': {
           $default_pam_d_login_template = 'pam/login.suse11.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.suse11.erb'
@@ -117,7 +134,7 @@ class pam (
                                           'session    optional    pam_umask.so']
         }
         default: {
-          fail("Pam is only supported on Suse 11. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
+          fail("Pam is only supported on Suse 11 and 10. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
         }
       }
     }
@@ -339,80 +356,128 @@ class pam (
 
       elsif $::osfamily == 'Suse' {
 
-        file { 'pam_common_auth_pc':
-          ensure  => file,
-          path    => $common_auth_pc_file,
-          content => template('pam/common-auth-pc.erb'),
-          owner   => 'root',
-          group   => 'root',
-          mode    => '0644',
-          require => Package['pam_package'],
+        if $::lsbmajdistrelease == '10' {
+
+          file { 'pam_common_auth':
+            ensure  => file,
+            path    => $common_auth_file,
+            content => template('pam/common-auth-pc.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            require => Package['pam_package'],
+          }
+
+          file { 'pam_common_account':
+            ensure  => file,
+            path    => $common_account_file,
+            content => template('pam/common-account-pc.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            require => Package['pam_package'],
+          }
+
+          file { 'pam_common_password':
+            ensure  => file,
+            path    => $common_password_file,
+            content => template('pam/common-password-pc.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            require => Package['pam_package'],
+          }
+
+          file { 'pam_common_session':
+            ensure  => file,
+            path    => $common_session_file,
+            content => template('pam/common-session-pc.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            require => Package['pam_package'],
+          }
+
         }
 
-        file { 'pam_common_auth':
-          ensure  => symlink,
-          path    => $common_auth_file,
-          target  => $common_auth_pc_file,
-          owner   => 'root',
-          group   => 'root',
-          require => Package['pam_package'],
-        }
+        if $::lsbmajdistrelease == '11' {
 
-        file { 'pam_common_account_pc':
-          ensure  => file,
-          path    => $common_account_pc_file,
-          content => template('pam/common-account-pc.erb'),
-          owner   => 'root',
-          group   => 'root',
-          mode    => '0644',
-          require => Package['pam_package'],
-        }
+          file { 'pam_common_auth_pc':
+            ensure  => file,
+            path    => $common_auth_pc_file,
+            content => template('pam/common-auth-pc.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            require => Package['pam_package'],
+          }
 
-        file { 'pam_common_account':
-          ensure  => symlink,
-          path    => $common_account_file,
-          target  => $common_account_pc_file,
-          owner   => 'root',
-          group   => 'root',
-          require => Package['pam_package'],
-        }
+          file { 'pam_common_account_pc':
+            ensure  => file,
+            path    => $common_account_pc_file,
+            content => template('pam/common-account-pc.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            require => Package['pam_package'],
+          }
 
-        file { 'pam_common_password_pc':
-          ensure  => file,
-          path    => $common_password_pc_file,
-          content => template('pam/common-password-pc.erb'),
-          owner   => 'root',
-          group   => 'root',
-          mode    => '0644',
-          require => Package['pam_package'],
-        }
+          file { 'pam_common_password_pc':
+            ensure  => file,
+            path    =>  $common_password_pc_file,
+            content => template('pam/common-password-pc.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            require => Package['pam_package'],
+          }
 
-        file { 'pam_common_password':
-          ensure  => symlink,
-          path    => $common_password_file,
-          target  => $common_password_pc_file,
-          owner   => 'root',
-          group   => 'root',
-          require => Package['pam_package'],
-        }
+          file { 'pam_common_session_pc':
+            ensure  => file,
+            path    => $common_session_pc_file,
+            content => template('pam/common-session-pc.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            require => Package['pam_package'],
+          }
 
-        file { 'pam_common_session_pc':
-          ensure  => file,
-          path    => $common_session_pc_file,
-          content => template('pam/common-session-pc.erb'),
-          owner   => 'root',
-          group   => 'root',
-          mode    => '0644',
-          require => Package['pam_package'],
-        }
+          file { 'pam_common_session':
+            ensure  => symlink,
+            path    => $common_session_file,
+            target  => $common_session_pc_file,
+            owner   => 'root',
+            group   => 'root',
+            require => Package['pam_package'],
+          }
 
-        file { 'pam_common_session':
-          ensure  => symlink,
-          path    => $common_session_file,
-          target  => $common_session_pc_file,
-          owner   => 'root',
-          group   => 'root',
-          require => Package['pam_package'],
+          file { 'pam_common_password':
+            ensure  => symlink,
+            path    => $common_password_file,
+            target  => $common_password_pc_file,
+            owner   => 'root',
+            group   => 'root',
+            require => Package['pam_package'],
+          }
+
+          file { 'pam_common_account':
+            ensure  => symlink,
+            path    => $common_account_file,
+            target  => $common_account_pc_file,
+            owner   => 'root',
+            group   => 'root',
+            require => Package['pam_package'],
+          }
+
+          file { 'pam_common_auth':
+            ensure  => symlink,
+            path    => $common_auth_file,
+            target  => $common_auth_pc_file,
+            owner   => 'root',
+            group   => 'root',
+            require => Package['pam_package'],
+          }
+
         }
 
       } else {

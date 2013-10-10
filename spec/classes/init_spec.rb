@@ -248,13 +248,6 @@ describe 'pam' do
       end
 
       it do
-        should contain_package('pam_package').with({
-          'ensure' => 'installed',
-          'name'   => 'pam',
-        })
-      end
-
-      it do
         should contain_file('pam_common_auth').with({
           'ensure'  => 'file',
           'path'    => '/etc/pam.d/common-auth',

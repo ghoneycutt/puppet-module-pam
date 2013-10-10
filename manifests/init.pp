@@ -134,7 +134,7 @@ class pam (
                                           'session    optional    pam_umask.so']
         }
         default: {
-          fail("Pam is only supported on Suse 11 and 10. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
+          fail("Pam is only supported on Suse 10 and 11. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
         }
       }
     }

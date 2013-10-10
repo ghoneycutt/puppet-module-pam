@@ -15,6 +15,7 @@ This module has been tested to work on the following systems using Puppet v3 and
  * EL 5
  * EL 6
  * Solaris 10
+ * Suse 10
  * Suse 11
  * Ubuntu 12.04 LTS
 

@@ -6,6 +6,7 @@ class pam (
   $allowed_users                       = 'root',
   $package_name                        = undef,
   $pam_conf_file                       = '/etc/pam.conf',
+  $services                            = undef,
   $pam_d_login_oracle_options          = 'UNSET',
   $pam_d_login_path                    = '/etc/pam.d/login',
   $pam_d_login_owner                   = 'root',
@@ -21,6 +22,7 @@ class pam (
   $pam_account_lines                   = undef,
   $pam_password_lines                  = undef,
   $pam_session_lines                   = undef,
+  $pam_d_other_file                    = '/etc/pam.d/other',
   $common_auth_file                    = '/etc/pam.d/common-auth',
   $common_auth_pc_file                 = '/etc/pam.d/common-auth-pc',
   $common_account_file                 = '/etc/pam.d/common-account',
@@ -99,6 +101,24 @@ class pam (
     }
     'suse': {
       case $::lsbmajdistrelease {
+        '9': {
+          $default_pam_d_login_template = 'pam/login.suse9.erb'
+          $default_pam_d_sshd_template  = 'pam/sshd.suse9.erb'
+          $default_package_name         = [ 'pam', 'pam-modules' ]
+
+          $default_pam_auth_lines = [ 'auth     required pam_warn.so',
+                                      'auth     required pam_unix2.so  #nullok set_setrpc']
+
+          $default_pam_account_lines = [ 'account  required pam_warn.so',
+                                          'account  required pam_unix2.so']
+
+          $default_pam_password_lines = [ 'password required pam_warn.so',
+                                          'password required pam_pwcheck.so  use_cracklib']
+
+          $default_pam_session_lines = [ 'session  required pam_warn.so',
+                                          'session  required pam_unix2.so  debug # none or trace']
+        }
+
         '10': {
           $default_pam_d_login_template = 'pam/login.suse10.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.suse10.erb'
@@ -271,6 +291,10 @@ class pam (
     $my_pam_session_lines = $pam_session_lines
   }
 
+  if $services != undef {
+    create_resources('pam::service',$services)
+  }
+
   case $::osfamily {
     'redhat', 'suse', 'debian': {
 
@@ -377,6 +401,17 @@ class pam (
         }
         'Suse': {
           case $::lsbmajdistrelease {
+            '9': {
+
+              file { 'pam_other':
+                ensure  => file,
+                path    => $pam_d_other_file,
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0644',
+                content => template('pam/pam.conf.erb'),
+              }
+            }
             '10': {
 
               file { 'pam_common_auth':
@@ -498,7 +533,7 @@ class pam (
               }
             }
             default : {
-              fail("Pam is only supported on Suse 10 and 11. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
+              fail("Pam is only supported on Suse 9, 10 and 11. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
             }
           }
         }

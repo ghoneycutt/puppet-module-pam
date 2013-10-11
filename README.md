@@ -15,6 +15,7 @@ This module has been tested to work on the following systems using Puppet v3 and
  * EL 5
  * EL 6
  * Solaris 10
+ * Suse 9
  * Suse 10
  * Suse 11
  * Ubuntu 12.04 LTS
@@ -133,6 +134,12 @@ pam_session_lines
 Content for PAM session. If undef, parameter is set based on the OS version.
 
 - *Default*: undef, default is set based on OS version
+
+pam_d_other_file
+----------------
+Path to other. Used on Suse.
+
+- *Default*: '/etc/pam.d/other'
 
 common_auth_file
 ----------------
@@ -293,3 +300,29 @@ source
 String - Path to the fragment file, such as 'puppet:///modules/pam/limits.nproc'
 
 - *Required*
+
+===
+
+# pam::service
+Manage PAM file for specific service
+
+## Usage
+you can specify a hash for to manage the services in Hiera
+<pre>
+pam::services:
+  "sudo":
+    content : "auth     required       pam_unix2.so"
+</pre>
+
+## Paramteters for `pam::service`
+
+pam_config_dir
+--------------
+Path to PAM files
+
+- *Default*: '/etc/pam.d/'
+
+content
+-------
+Content of the PAM file for the service
+

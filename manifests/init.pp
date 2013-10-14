@@ -106,17 +106,17 @@ class pam (
           $default_pam_d_sshd_template  = 'pam/sshd.suse9.erb'
           $default_package_name         = [ 'pam', 'pam-modules' ]
 
-          $default_pam_auth_lines = [ 'auth  required pam_warn.so',
-                                      'auth     required       pam_unix2.so  #nullok set_setrpc']
+          $default_pam_auth_lines = [ 'auth     required pam_warn.so',
+                                      'auth     required pam_unix2.so  #nullok set_setrpc']
 
           $default_pam_account_lines = [ 'account  required pam_warn.so',
-                                          'account  required       pam_unix2.so']
+                                          'account  required pam_unix2.so']
 
-          $default_pam_password_lines = [ 'password required  pam_warn.so',
+          $default_pam_password_lines = [ 'password required pam_warn.so',
                                           'password required pam_pwcheck.so  use_cracklib']
 
-          $default_pam_session_lines = [ 'session  required       pam_warn.so',
-                                          'session  required       pam_unix2.so  debug # none or trace']
+          $default_pam_session_lines = [ 'session  required pam_warn.so',
+                                          'session  required pam_unix2.so  debug # none or trace']
         }
 
         '10': {

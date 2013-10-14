@@ -3,7 +3,7 @@
 # Manage PAM file for a specifc service
 #
 define pam::service (
-  $pam_config_dir = '/etc/pam.d/',
+  $pam_config_dir = '/etc/pam.d',
   $content        = undef,
 ) {
 
@@ -11,7 +11,7 @@ define pam::service (
 
   file { "pam.d-service-${name}":
     ensure  => file,
-    path    => "${pam_config_dir}${name}",
+    path    => "${pam_config_dir}/${name}",
     content => $content,
     owner   => 'root',
     group   => 'root',

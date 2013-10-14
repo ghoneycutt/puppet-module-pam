@@ -291,6 +291,24 @@ describe 'pam' do
           'group'   => 'root',
           'mode'    => '0644',
         })
+        should contain_file('pam_other').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+# Auth
+auth     required pam_warn.so
+auth     required pam_unix2.so  #nullok set_setrpc
+
+# Account
+account  required pam_warn.so
+account  required pam_unix2.so
+
+# Password
+password required pam_warn.so
+password required pam_pwcheck.so  use_cracklib
+
+# Session
+session  required pam_warn.so
+session  required pam_unix2.so  debug # none or trace
+")
       end
     end
 

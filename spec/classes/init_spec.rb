@@ -476,5 +476,47 @@ session  required pam_unix2.so  debug # none or trace
         })
       end
     end
+    context 'defaults on osfamily solaris with kernelrelease 5.11' do
+      let :facts do
+        {
+          :osfamily      => 'Solaris',
+          :kernelrelease => '5.11',
+        }
+      end
+
+      it do
+        should contain_file('pam_other').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/other',
+          'owner'   => 'root',
+          'group'   => 'sys',
+          'mode'    => '0644',
+        })
+        should contain_file('pam_other').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+# Auth
+auth definitive         pam_user_policy.so.1
+auth requisite          pam_authtok_get.so.1
+auth required           pam_dhkeys.so.1
+auth required           pam_unix_auth.so.1
+auth required           pam_unix_cred.so.1
+
+# Account
+account requisite       pam_roles.so.1
+account definitive      pam_user_policy.so.1
+account required        pam_unix_account.so.1
+account required        pam_tsol_account.so.1
+
+# Password
+password definitive     pam_user_policy.so.1
+password include        pam_authtok_common
+password required       pam_authtok_store.so.1
+
+# Session
+session definitive      pam_user_policy.so.1
+session required        pam_unix_session.so.1
+")
+      end
+    end
   end
 end

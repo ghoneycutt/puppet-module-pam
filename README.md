@@ -314,7 +314,7 @@ pam::services:
     content : "auth     required       pam_unix2.so"
 </pre>
 
-## Paramteters for `pam::services`
+## Paramteters for `pam::service`
 
 pam_config_dir
 --------------

@@ -15,6 +15,7 @@ This module has been tested to work on the following systems using Puppet v3 and
  * EL 5
  * EL 6
  * Solaris 10
+ * Solaris 11
  * Suse 10
  * Suse 11
  * Ubuntu 12.04 LTS
@@ -133,6 +134,12 @@ pam_session_lines
 Content for PAM session. If undef, parameter is set based on the OS version.
 
 - *Default*: undef, default is set based on OS version
+
+pam_d_other_file
+----------------
+Path to other. Used on Suse.
+
+- *Default*: '/etc/pam.d/other'
 
 common_auth_file
 ----------------

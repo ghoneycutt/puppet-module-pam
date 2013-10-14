@@ -51,6 +51,22 @@ describe 'pam' do
       end
     end
 
+    context 'with class defaults on osfamily suse with lsbmajdistrelease 9' do
+      let :facts do
+        {
+          :osfamily          => 'Suse',
+          :lsbmajdistrelease => '9',
+        }
+      end
+
+      it do
+        should contain_package('pam_package').with({
+          'ensure' => 'installed',
+          'name'   => ["pam", "pam-modules"],
+        })
+      end
+    end
+
     context 'with class defaults on osfamily suse with lsbmajdistrelease 10' do
       let :facts do
         {
@@ -87,6 +103,26 @@ describe 'pam' do
   end
 
   describe 'config files' do
+
+    context 'with specifying services' do
+      let (:params) { {:services => { 'testservice' => { 'content' => 'foo' } } } }
+      let :facts do
+        {
+          :osfamily          => 'Suse',
+          :lsbmajdistrelease => '9',
+        }
+      end
+      it do
+        should contain_file('pam.d-service-testservice').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/testservice',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+        should contain_file('pam.d-service-testservice').with_content('foo')
+      end
+    end
 
     context 'defaults on osfamily redhat with lsbmajdistrelease 5' do
       let :facts do
@@ -236,6 +272,25 @@ describe 'pam' do
         'group'  => 'root',
         'mode'   => '0644',
       })
+      end
+    end
+
+    context 'defaults on osfamily suse with lsbmajdistrelease 9' do
+      let :facts do
+        {
+          :osfamily          => 'Suse',
+          :lsbmajdistrelease => '9',
+        }
+      end
+
+      it do
+        should contain_file('pam_other').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/other',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
       end
     end
 

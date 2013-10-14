@@ -104,6 +104,26 @@ describe 'pam' do
 
   describe 'config files' do
 
+    context 'with specifying services' do
+      let (:params) { {:services => { 'testservice' => { 'content' => 'foo' } } } }
+      let :facts do
+        {
+          :osfamily          => 'Suse',
+          :lsbmajdistrelease => '9',
+        }
+      end
+      it do
+        should contain_file('pam.d-service-testservice').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/testservice',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+        should contain_file('pam.d-service-testservice').with_content('foo')
+      end
+    end
+
     context 'defaults on osfamily redhat with lsbmajdistrelease 5' do
       let :facts do
         {

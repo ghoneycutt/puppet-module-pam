@@ -6,6 +6,7 @@ class pam (
   $allowed_users                       = 'root',
   $package_name                        = undef,
   $pam_conf_file                       = '/etc/pam.conf',
+  $services                            = undef,
   $pam_d_login_oracle_options          = 'UNSET',
   $pam_d_login_path                    = '/etc/pam.d/login',
   $pam_d_login_owner                   = 'root',
@@ -288,6 +289,10 @@ class pam (
     }
   } else {
     $my_pam_session_lines = $pam_session_lines
+  }
+
+  if $services != undef {
+    create_resources('pam::service',$services)
   }
 
   case $::osfamily {

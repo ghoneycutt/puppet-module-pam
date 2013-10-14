@@ -300,3 +300,29 @@ source
 String - Path to the fragment file, such as 'puppet:///modules/pam/limits.nproc'
 
 - *Required*
+
+===
+
+# pam::service
+Manage PAM file for specific service
+
+## Usage
+you can specify a hash for to manage the services in Hiera
+<pre>
+pam::services:
+  "sudo":
+    content : "auth     required       pam_unix2.so"
+</pre>
+
+## Paramteters for `pam::services`
+
+pam_config_dir
+--------------
+Path to PAM files
+
+- *Default*: '/etc/pam.d/'
+
+content
+-------
+Content of the PAM file for the service
+

@@ -403,5 +403,23 @@ describe 'pam' do
         })
       end
     end
+    context 'defaults on osfamily solaris with kernelrelease 5.11' do
+      let :facts do
+        {
+          :osfamily      => 'Solaris',
+          :kernelrelease => '5.11',
+        }
+      end
+
+      it do
+        should contain_file('pam_conf').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/other',
+          'owner'   => 'root',
+          'group'   => 'sys',
+          'mode'    => '0644',
+        })
+      end
+    end
   end
 end

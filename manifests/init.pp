@@ -21,6 +21,7 @@ class pam (
   $pam_account_lines                   = undef,
   $pam_password_lines                  = undef,
   $pam_session_lines                   = undef,
+  $pam_d_other_file                    = '/etc/pam.d/other',
   $common_auth_file                    = '/etc/pam.d/common-auth',
   $common_auth_pc_file                 = '/etc/pam.d/common-auth-pc',
   $common_account_file                 = '/etc/pam.d/common-account',
@@ -199,8 +200,29 @@ class pam (
 
           $default_pam_session_lines = ['other   session required        pam_unix_session.so.1']
         }
+
+        '5.11': {
+          $default_pam_auth_lines = ['auth definitive         pam_user_policy.so.1',
+                                      'auth requisite          pam_authtok_get.so.1',
+                                      'auth required           pam_dhkeys.so.1',
+                                      'auth required           pam_unix_auth.so.1',
+                                      'auth required           pam_unix_cred.so.1']
+
+          $default_pam_account_lines = ['account requisite       pam_roles.so.1',
+                                        'account definitive      pam_user_policy.so.1',
+                                        'account required        pam_unix_account.so.1',
+                                        'account required        pam_tsol_account.so.1']
+
+          $default_pam_password_lines = ['password definitive     pam_user_policy.so.1',
+                                          'password include        pam_authtok_common',
+                                          'password required       pam_authtok_store.so.1']
+
+          $default_pam_session_lines = ['session definitive      pam_user_policy.so.1',
+                                        'session required        pam_unix_session.so.1']
+        }
+
         default: {
-          fail("Pam is only supported on Solaris 10. Your kernelrelease is identified as <${::kernelrelease}>.")
+          fail("Pam is only supported on Solaris 10 and 11. Your kernelrelease is identified as <${::kernelrelease}>.")
         }
       }
     }
@@ -509,13 +531,30 @@ class pam (
     }
 
     'solaris': {
-      file { 'pam_conf':
-        ensure  => file,
-        path    => $pam_conf_file,
-        owner   => 'root',
-        group   => 'sys',
-        mode    => '0644',
-        content => template('pam/pam.conf.erb'),
+      case $::kernelrelease {
+        '5.10': {
+          file { 'pam_conf':
+            ensure  => file,
+            path    => $pam_conf_file,
+            owner   => 'root',
+            group   => 'sys',
+            mode    => '0644',
+            content => template('pam/pam.conf.erb'),
+          }
+        }
+        '5.11': {
+          file { 'pam_conf':
+            ensure  => file,
+            path    => $pam_d_other_file,
+            owner   => 'root',
+            group   => 'sys',
+            mode    => '0644',
+            content => template('pam/pam.conf.erb'),
+          }
+        }
+        default: {
+          fail("Pam is only supported on Solaris 10 and 11. Your kernelrelease is identified as <${::kernelrelease}>.")
+        }
       }
     }
     default: {

@@ -543,7 +543,7 @@ class pam (
           }
         }
         '5.11': {
-          file { 'pam_conf':
+          file { 'pam_other':
             ensure  => file,
             path    => $pam_d_other_file,
             owner   => 'root',

@@ -788,5 +788,117 @@ session required        pam_unix_session.so.1
 ")
       end
     end
+    context 'with ensure_vas=present on osfamily redhat with lsbmajdistrelease 5' do
+      let (:params) do
+        {
+          :ensure_vas => 'present',
+        }
+      end
+      let :facts do
+        {
+          :osfamily          => 'RedHat',
+          :lsbmajdistrelease => '5',
+        }
+      end
+      it do
+        should contain_file('pam_system_auth_ac').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/system-auth-ac',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+        should contain_file('pam_system_auth_ac') \
+          .with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) \
+          .with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) \
+          .with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) \
+          .with_content(/session[\s]+required[\s]+pam_vas3.so/)
+      end
+    end
+    context 'with ensure_vas=present on osfamily redhat with lsbmajdistrelease 6' do
+      let (:params) do
+        {
+          :ensure_vas => 'present',
+        }
+      end
+      let :facts do
+        {
+          :osfamily          => 'RedHat',
+          :lsbmajdistrelease => '6',
+        }
+      end
+      it do
+        should contain_file('pam_system_auth_ac').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/system-auth-ac',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+        should contain_file('pam_system_auth_ac') \
+          .with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) \
+          .with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) \
+          .with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) \
+          .with_content(/session[\s]+required[\s]+pam_vas3.so/)
+      end
+    end
+
+    context 'with ensure_vas=present and vas_major_version=3 on osfamily redhat with lsbmajdistrelease 5' do
+      let (:params) do
+        {
+          :ensure_vas        => 'present',
+          :vas_major_version => '3',
+        }
+      end
+      let :facts do
+        {
+          :osfamily          => 'RedHat',
+          :lsbmajdistrelease => '5',
+        }
+      end
+      it do
+        should contain_file('pam_system_auth_ac').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/system-auth-ac',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+        should contain_file('pam_system_auth_ac') \
+          .with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) \
+          .with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) \
+          .with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) \
+          .with_content(/session[\s]+required[\s]+pam_vas3.so/)
+      end
+    end
+
+    context 'with ensure_vas=present and vas_major_version=3 on osfamily redhat with lsbmajdistrelease 6' do
+      let (:params) do
+        {
+          :ensure_vas        => 'present',
+          :vas_major_version => '3',
+        }
+      end
+      let :facts do
+        {
+          :osfamily          => 'RedHat',
+          :lsbmajdistrelease => '6',
+        }
+      end
+      it do
+        should contain_file('pam_system_auth_ac').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/system-auth-ac',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+        should contain_file('pam_system_auth_ac') \
+          .with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) \
+          .with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) \
+          .with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) \
+          .with_content(/session[\s]+required[\s]+pam_vas3.so/)
+      end
+    end
   end
 end

@@ -1,9 +1,9 @@
 # This file is being maintained by Puppet.
 # DO NOT EDIT
 
-passwd:     files<% if @ensure_ldap == 'present' %> ldap<% end %><% if @ensure_vas == 'present' %> <%= vas_nss_module %><% end %>
+passwd:     files<% if @ensure_ldap == 'present' %> ldap<% end %><% if @ensure_vas == 'present' %> <%= @vas_nss_module_passwd %><% end %>
 shadow:     files<% if @ensure_ldap == 'present' %> ldap<% end %>
-group:      files<% if @ensure_ldap == 'present' %> ldap<% end %><% if @ensure_vas == 'present' %> <%= vas_nss_module %><% end %>
+group:      files<% if @ensure_ldap == 'present' %> ldap<% end %><% if @ensure_vas == 'present' %> <%= @vas_nss_module_group %><% end %>
 
 sudoers:    files<% if @ensure_ldap == 'present' %> ldap<% end %>
 
@@ -15,8 +15,8 @@ netmasks:   files
 networks:   files
 protocols:  files<% if @ensure_ldap == 'present' %> ldap<% end %>
 rpc:        files
-services:   files<% if @ensure_ldap == 'present' %> ldap<% end %>
-netgroup:   files<% if @ensure_ldap == 'present' %> ldap<% end %><% if @ensure_vas == 'present' %> nis<% end %>
+services:   files<% if @ensure_ldap == 'present' %> ldap<% end %><% if @ensure_vas == 'present' %><% if @vas_nss_module_services != '' %> <%= @vas_nss_module_services %><% end %><% end %>
+netgroup:   files<% if @ensure_ldap == 'present' %> ldap<% end %><% if @ensure_vas == 'present' %><% if @vas_nss_module_netgroup != '' %> <%= @vas_nss_module_netgroup %><% end %><% end %>
 publickey:  files
-automount:  files<% if @ensure_ldap == 'present' %> ldap<% end %><% if @ensure_vas == 'present' %> nis<% end %>
-aliases:    files
+automount:  files<% if @ensure_ldap == 'present' %> ldap<% end %><% if @ensure_vas == 'present' %><% if @vas_nss_module_automount != '' %> <%= @vas_nss_module_automount %><% end %><% end %>
+aliases:    files<% if @ensure_vas == 'present' %><% if @vas_nss_module_aliases != '' %> <%= @vas_nss_module_aliases %><% end %><% end %>

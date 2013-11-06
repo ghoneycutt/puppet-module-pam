@@ -4,6 +4,7 @@
 #
 class pam (
   $allowed_users                       = 'root',
+  $ensure_vas                          = 'absent',
   $package_name                        = undef,
   $pam_conf_file                       = '/etc/pam.conf',
   $services                            = undef,
@@ -39,6 +40,7 @@ class pam (
   $system_auth_ac_account_lines        = undef,
   $system_auth_ac_password_lines       = undef,
   $system_auth_ac_session_lines        = undef,
+  $vas_major_version                   = '4',
 ) {
 
   include nsswitch
@@ -52,48 +54,135 @@ class pam (
           $default_package_name         = [ 'pam',
                                             'util-linux' ]
 
-          $default_pam_auth_lines = [ 'auth        required      pam_env.so',
-                                      'auth        sufficient    pam_unix.so nullok try_first_pass',
-                                      'auth        requisite     pam_succeed_if.so uid >= 500 quiet',
-                                      'auth        required      pam_deny.so']
+          if $ensure_vas == 'present' {
+            case $vas_major_version {
+              '3': {
+                $default_pam_auth_lines = [ 'auth        required      pam_env.so',
+                                            'auth        sufficient    pam_vas3.so show_lockout_msg get_nonvas_pass store_creds',
+                                            'auth        requisite     pam_vas3.so echo_return',
+                                            'auth        sufficient    pam_unix.so nullok try_first_pass use_first_pass',
+                                            'auth        requisite     pam_succeed_if.so uid >= 500 quiet',
+                                            'auth        required      pam_deny.so']
+              }
+              '4': {
+                $default_pam_auth_lines = [ 'auth        required      pam_env.so',
+                                            'auth        sufficient    pam_vas3.so show_lockout_msg get_nonvas_pass',
+                                            'auth        requisite     pam_vas3.so echo_return',
+                                            'auth        sufficient    pam_unix.so nullok try_first_pass use_first_pass',
+                                            'auth        requisite     pam_succeed_if.so uid >= 500 quiet',
+                                            'auth        required      pam_deny.so']
+              }
+              default: {
+                fail("Pam is only supported with vas_major_version 3 or 4. Your vas_major_version is <${vas_major_version}>.")
+              }
+            }
 
-          $default_pam_account_lines = [ 'account     required      pam_unix.so',
-                                          'account     sufficient    pam_succeed_if.so uid < 500 quiet',
-                                          'account     required      pam_permit.so']
+            $default_pam_account_lines = [ 'account     sufficient    pam_vas3.so',
+                                            'account     requisite     pam_vas3.so echo_return',
+                                            'account     required      pam_unix.so',
+                                            'account     sufficient    pam_succeed_if.so uid < 500 quiet',
+                                            'account     required      pam_permit.so']
 
-          $default_pam_password_lines = [ 'password    requisite     pam_cracklib.so try_first_pass retry=3',
-                                          'password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok',
-                                          'password    required      pam_deny.so']
+            $default_pam_password_lines = [ 'password    sufficient    pam_vas3.so',
+                                            'password    requisite     pam_vas3.so echo_return',
+                                            'password    requisite     pam_cracklib.so try_first_pass retry=3 type=',
+                                            'password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok',
+                                            'password    required      pam_deny.so']
 
-          $default_pam_session_lines = [ 'session     optional      pam_keyinit.so revoke',
-                                          'session     required      pam_limits.so',
-                                          'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
-                                          'session     required      pam_unix.so']
+            $default_pam_session_lines = [ 'session     optional      pam_keyinit.so revoke',
+                                            'session     required      pam_limits.so',
+                                            'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
+                                            'session     required      pam_vas3.so show_lockout_msg',
+                                            'session     requisite     pam_vas3.so echo_return',
+                                            'session     required      pam_unix.so']
+          } else {
+            $default_pam_auth_lines = [ 'auth        required      pam_env.so',
+                                        'auth        sufficient    pam_unix.so nullok try_first_pass',
+                                        'auth        requisite     pam_succeed_if.so uid >= 500 quiet',
+                                        'auth        required      pam_deny.so']
+
+            $default_pam_account_lines = [ 'account     required      pam_unix.so',
+                                            'account     sufficient    pam_succeed_if.so uid < 500 quiet',
+                                            'account     required      pam_permit.so']
+
+            $default_pam_password_lines = [ 'password    requisite     pam_cracklib.so try_first_pass retry=3',
+                                            'password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok',
+                                            'password    required      pam_deny.so']
+
+            $default_pam_session_lines = [ 'session     optional      pam_keyinit.so revoke',
+                                            'session     required      pam_limits.so',
+                                            'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
+                                            'session     required      pam_unix.so']
+          }
         }
         '6': {
           $default_pam_d_login_template = 'pam/login.el6.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.el6.erb'
           $default_package_name         = 'pam'
 
-          $default_pam_auth_lines = [ 'auth        required      pam_env.so',
-                                      'auth        sufficient    pam_fprintd.so',
-                                      'auth        sufficient    pam_unix.so nullok try_first_pass',
-                                      'auth        requisite     pam_succeed_if.so uid >= 500 quiet',
-                                      'auth        required      pam_deny.so']
+          if $ensure_vas == 'present' {
+            case $vas_major_version {
+              '3': {
+                $default_pam_auth_lines = [ 'auth        required      pam_env.so',
+                                            'auth        sufficient    pam_vas3.so show_lockout_msg get_nonvas_pass store_creds',
+                                            'auth        requisite     pam_vas3.so echo_return',
+                                            'auth        sufficient    pam_unix.so nullok try_first_pass use_first_pass',
+                                            'auth        requisite     pam_succeed_if.so uid >= 500 quiet',
+                                            'auth        required      pam_deny.so']
+              }
+              '4': {
+                $default_pam_auth_lines = [ 'auth        required      pam_env.so',
+                                            'auth        sufficient    pam_vas3.so show_lockout_msg get_nonvas_pass',
+                                            'auth        requisite     pam_vas3.so echo_return',
+                                            'auth        sufficient    pam_unix.so nullok try_first_pass use_first_pass',
+                                            'auth        requisite     pam_succeed_if.so uid >= 500 quiet',
+                                            'auth        required      pam_deny.so']
+              }
+              default: {
+                fail("Pam is only supported with vas_major_version 3 or 4. Your vas_major_version is <${vas_major_version}>.")
+              }
+            }
 
-          $default_pam_account_lines = [ 'account     required      pam_unix.so',
-                                          'account     sufficient    pam_localuser.so',
-                                          'account     sufficient    pam_succeed_if.so uid < 500 quiet',
-                                          'account     required      pam_permit.so']
+            $default_pam_account_lines = [ 'account     sufficient    pam_vas3.so',
+                                            'account     requisite     pam_vas3.so echo_return',
+                                            'account     required      pam_unix.so',
+                                            'account     sufficient    pam_localuser.so',
+                                            'account     sufficient    pam_succeed_if.so uid < 500 quiet',
+                                            'account     required      pam_permit.so']
 
-          $default_pam_password_lines = [ 'password    requisite     pam_cracklib.so try_first_pass retry=3 type=',
-                                          'password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok',
-                                          'password    required      pam_deny.so']
+            $default_pam_password_lines = [ 'password    sufficient    pam_vas3.so',
+                                            'password    requisite     pam_vas3.so echo_return',
+                                            'password    requisite     pam_cracklib.so try_first_pass retry=3 type=',
+                                            'password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok',
+                                            'password    required      pam_deny.so']
 
-          $default_pam_session_lines = [ 'session     optional      pam_keyinit.so revoke',
-                                          'session     required      pam_limits.so',
-                                          'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
-                                          'session     required      pam_unix.so']
+            $default_pam_session_lines = [ 'session     optional      pam_keyinit.so revoke',
+                                            'session     required      pam_limits.so',
+                                            'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
+                                            'session     required      pam_vas3.so show_lockout_msg',
+                                            'session     requisite     pam_vas3.so echo_return',
+                                            'session     required      pam_unix.so']
+          } else {
+            $default_pam_auth_lines = [ 'auth        required      pam_env.so',
+                                        'auth        sufficient    pam_fprintd.so',
+                                        'auth        sufficient    pam_unix.so nullok try_first_pass',
+                                        'auth        requisite     pam_succeed_if.so uid >= 500 quiet',
+                                        'auth        required      pam_deny.so']
+
+            $default_pam_account_lines = [ 'account     required      pam_unix.so',
+                                            'account     sufficient    pam_localuser.so',
+                                            'account     sufficient    pam_succeed_if.so uid < 500 quiet',
+                                            'account     required      pam_permit.so']
+
+            $default_pam_password_lines = [ 'password    requisite     pam_cracklib.so try_first_pass retry=3 type=',
+                                            'password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok',
+                                            'password    required      pam_deny.so']
+
+            $default_pam_session_lines = [ 'session     optional      pam_keyinit.so revoke',
+                                            'session     required      pam_limits.so',
+                                            'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
+                                            'session     required      pam_unix.so']
+          }
         }
         default: {
           fail("Pam is only supported on EL 5 and 6. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")

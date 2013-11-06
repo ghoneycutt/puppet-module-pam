@@ -7,6 +7,7 @@ class pam (
   $package_name                        = undef,
   $pam_conf_file                       = '/etc/pam.conf',
   $services                            = undef,
+  $limits_fragments                    = undef,
   $pam_d_login_oracle_options          = 'UNSET',
   $pam_d_login_path                    = '/etc/pam.d/login',
   $pam_d_login_owner                   = 'root',
@@ -314,6 +315,10 @@ class pam (
 
   if $services != undef {
     create_resources('pam::service',$services)
+  }
+
+  if $limits_fragments != undef {
+    create_resources('pam::limits::fragments',$limits_fragments)
   }
 
   case $::osfamily {

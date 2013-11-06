@@ -34,6 +34,12 @@ Array of users allowed to log in.
 
 - *Default*: root
 
+limits_fragments
+----------------
+Hash of fragments to pass to pam::limits::fragments
+
+- *Default*: undef
+
 package_name
 ------------
 Array of packages providing the pam functionality. If undef, parameter is set based on the OS version.

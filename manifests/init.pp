@@ -407,7 +407,7 @@ class pam (
   }
 
   if $limits_fragments != undef {
-    create_resources('pam::limits::fragments',$limits_fragments)
+    create_resources('pam::limits::fragment',$limits_fragments)
   }
 
   case $::osfamily {

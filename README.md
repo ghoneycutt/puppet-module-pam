@@ -34,6 +34,12 @@ Array of users allowed to log in.
 
 - *Default*: root
 
+limits_fragments
+----------------
+Hash of fragments to pass to pam::limits::fragments
+
+- *Default*: undef
+
 package_name
 ------------
 Array of packages providing the pam functionality. If undef, parameter is set based on the OS version.
@@ -295,12 +301,17 @@ Path to limits.d directory
 Places a fragment in $limits_d_dir directory
 
 ## Parameters for `pam::limits::fragment`
+Source or list **must** be set.
 
 source
 ------
 String - Path to the fragment file, such as 'puppet:///modules/pam/limits.nproc'
 
-- *Required*
+- *Default*: 'UNSET'
+
+list
+----
+Array of lines to add to the fragment file
 
 ===
 
@@ -326,4 +337,33 @@ Path to PAM files
 content
 -------
 Content of the PAM file for the service
+
+===
+
+# Hiera example for limits_fragments
+<pre>
+pam::limits_fragments:
+  custom:
+    list:
+      - '* soft nofile 2048'
+      - '* hard nofile 8192'
+      - '* soft as 3145728'
+      - '* hard as 4194304'
+      - '* hard maxlogins 300'
+      - '* soft cpu 720'
+      - '* hard cpu 1440'
+</pre>
+
+This would create /etc/security/limits.d/custom.conf with content
+<pre>
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+* soft nofile 2048
+* hard nofile 8192
+* soft as 3145728
+* hard as 4194304
+* hard maxlogins 300
+* soft cpu 720
+* hard cpu 1440
+</pre>
 

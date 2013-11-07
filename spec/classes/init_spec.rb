@@ -214,6 +214,7 @@ session    include      system-auth
 session    required     pam_loginuid.so
 ")
       end
+      it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) }
     end
 
     context 'defaults on osfamily redhat with lsbmajdistrelease 6' do
@@ -315,6 +316,7 @@ session    optional     pam_keyinit.so force revoke
 session    include      password-auth
 ")
       end
+      it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) }
     end
 
     context 'with class defaults on Ubuntu 12.04 LTS' do
@@ -808,13 +810,12 @@ session required        pam_unix_session.so.1
           'group'   => 'root',
           'mode'    => '0644',
         })
-        should contain_file('pam_system_auth_ac') \
-          .with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) \
-          .with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) \
-          .with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) \
-          .with_content(/session[\s]+required[\s]+pam_vas3.so/)
-        should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/)
       end
+      it { should contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_system_auth_ac').with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_system_auth_ac').with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_system_auth_ac').with_content(/session[\s]+required[\s]+pam_vas3.so/) }
+      it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) }
     end
     context 'with ensure_vas=present and default vas_major_version (4) on osfamily redhat with lsbmajdistrelease 6' do
       let (:params) do
@@ -836,13 +837,12 @@ session required        pam_unix_session.so.1
           'group'   => 'root',
           'mode'    => '0644',
         })
-        should contain_file('pam_system_auth_ac') \
-          .with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) \
-          .with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) \
-          .with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) \
-          .with_content(/session[\s]+required[\s]+pam_vas3.so/)
-        should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/)
       end
+      it { should contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_system_auth_ac').with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_system_auth_ac').with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_system_auth_ac').with_content(/session[\s]+required[\s]+pam_vas3.so/) }
+      it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) }
     end
 
     context 'with ensure_vas=present and vas_major_version=3 on osfamily redhat with lsbmajdistrelease 5' do
@@ -866,12 +866,11 @@ session required        pam_unix_session.so.1
           'group'   => 'root',
           'mode'    => '0644',
         })
-        should contain_file('pam_system_auth_ac') \
-          .with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) \
-          .with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) \
-          .with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) \
-          .with_content(/session[\s]+required[\s]+pam_vas3.so/)
       end
+      it { should contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) }
+      it { should contain_file('pam_system_auth_ac').with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_system_auth_ac').with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_system_auth_ac').with_content(/session[\s]+required[\s]+pam_vas3.so/) }
     end
 
     context 'with ensure_vas=present and vas_major_version=3 on osfamily redhat with lsbmajdistrelease 6' do
@@ -895,12 +894,11 @@ session required        pam_unix_session.so.1
           'group'   => 'root',
           'mode'    => '0644',
         })
-        should contain_file('pam_system_auth_ac') \
-          .with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) \
-          .with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) \
-          .with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) \
-          .with_content(/session[\s]+required[\s]+pam_vas3.so/)
       end
+      it { should contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) }
+      it { should contain_file('pam_system_auth_ac').with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_system_auth_ac').with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_system_auth_ac').with_content(/session[\s]+required[\s]+pam_vas3.so/) }
     end
     context 'with ensure_vas=present and unsupported vas_major_version on osfamily redhat with lsbmajdistrelease 5' do
       let (:params) do

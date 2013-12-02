@@ -122,6 +122,105 @@ aliases:    files
       }
     end
 
+    context 'with vas enabled and vas_nss_module_passwd set' do
+      let :params do
+        {
+          :ensure_vas            => 'present',
+          :vas_nss_module_passwd => 'vas3 nis',
+        }
+      end
+
+      it {
+        should include_class('nsswitch')
+        should contain_file('nsswitch_config_file').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/nsswitch.conf',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+        should contain_file('nsswitch_config_file').with_content(/passwd:[\s]+files vas3 nis$/)
+      }
+    end
+
+    context 'with vas enabled and vas_nss_module_group set' do
+      let :params do
+        {
+          :ensure_vas           => 'present',
+          :vas_nss_module_group => 'nis',
+        }
+      end
+
+      it {
+        should contain_file('nsswitch_config_file').with_content(/group:[\s]+files nis$/)
+      }
+    end
+
+    context 'with vas enabled and vas_nss_module_netgroup set' do
+      let :params do
+        {
+          :ensure_vas              => 'present',
+          :vas_nss_module_netgroup => 'nisplus',
+        }
+      end
+
+      it {
+        should contain_file('nsswitch_config_file').with_content(/netgroup:[\s]+files nisplus$/)
+      }
+    end
+
+    context 'with vas enabled and vas_nss_module_automount set' do
+      let :params do
+        {
+          :ensure_vas               => 'present',
+          :vas_nss_module_automount => 'nisplus',
+        }
+      end
+
+      it {
+        should contain_file('nsswitch_config_file').with_content(/automount:[\s]+files nisplus$/)
+      }
+    end
+
+    context 'with vas enabled and vas_nss_module_automount set empty' do
+      let :params do
+        {
+          :ensure_vas               => 'present',
+          :vas_nss_module_automount => '',
+        }
+      end
+
+      it {
+        should contain_file('nsswitch_config_file').with_content(/automount:[\s]+files$/)
+      }
+    end
+
+    context 'with vas enabled and vas_nss_module_aliases set' do
+      let :params do
+        {
+          :ensure_vas             => 'present',
+          :vas_nss_module_aliases => 'nis',
+        }
+      end
+
+      it {
+        should contain_file('nsswitch_config_file').with_content(/aliases:[\s]+files nis$/)
+      }
+    end
+
+    context 'with vas enabled and vas_nss_module_services set' do
+      let :params do
+        {
+          :ensure_vas              => 'present',
+          :vas_nss_module_services => 'nis',
+        }
+      end
+
+      it {
+        should contain_file('nsswitch_config_file').with_content(/services:[\s]+files nis$/)
+      }
+    end
+
     context 'with vas and ldap both enabled' do
       let :params do
         {

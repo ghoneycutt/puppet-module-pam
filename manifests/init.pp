@@ -46,7 +46,7 @@ class pam (
   include nsswitch
 
   case $::osfamily {
-    'redhat': {
+    'RedHat': {
       case $::lsbmajdistrelease {
         '5': {
           $default_pam_d_login_template = 'pam/login.el5.erb'
@@ -189,7 +189,7 @@ class pam (
         }
       }
     }
-    'suse': {
+    'Suse': {
       case $::lsbmajdistrelease {
         '9': {
           $default_pam_d_login_template = 'pam/login.suse9.erb'
@@ -248,44 +248,73 @@ class pam (
         }
       }
     }
-    'debian': {
-      case $::operatingsystem {
+    'Debian': {
+      case $::lsbdistid {
         'Ubuntu': {
-          case $::lsbmajdistrelease {
-            '12': {
+          case $::lsbdistrelease {
+            '12.04': {
               $default_pam_d_login_template = 'pam/login.ubuntu12.erb'
               $default_pam_d_sshd_template  = 'pam/sshd.ubuntu12.erb'
               $default_package_name         = 'libpam0g'
 
-              $default_pam_auth_lines = [ 'auth  [success=1 default=ignore]  pam_unix.so nullok_secure',
-                                          'auth  requisite     pam_deny.so',
-                                          'auth  required      pam_permit.so']
+              if $ensure_vas == 'present' {
+                $default_pam_auth_lines = [ 'auth        required    pam_env.so',
+                                            'auth        sufficient  pam_vas3.so show_lockout_msg get_nonvas_pass store_creds',
+                                            'auth        requisite   pam_vas3.so echo_return',
+                                            'auth        required    pam_unix.so use_first_pass']
 
-              $default_pam_account_lines = [ 'account [success=1 new_authtok_reqd=done default=ignore]  pam_unix.so',
-                                              'account requisite     pam_deny.so',
-                                              'account required      pam_permit.so']
 
-              $default_pam_password_lines = [ 'password  [success=1 default=ignore]  pam_unix.so obscure sha512',
-                                              'password  requisite     pam_deny.so',
-                                              'password  required      pam_permit.so']
+                $default_pam_account_lines = [ 'account sufficient  pam_vas3.so',
+                                                'account requisite   pam_vas3.so echo_return',
+                                                'account [success=1 new_authtok_reqd=done default=ignore]  pam_unix.so',
+                                                'account requisite   pam_deny.so',
+                                                'account required    pam_permit.so']
 
-              $default_pam_session_lines = [ 'session [default=1]   pam_permit.so',
-                                              'session requisite     pam_deny.so',
-                                              'session required      pam_permit.so',
-                                              'session optional      pam_umask.so',
-                                              'session required      pam_unix.so']
+                $default_pam_password_lines = [ 'password sufficient  pam_vas3.so',
+                                                'password  requisite pam_vas3.so echo_return',
+                                                'password  [success=1 default=ignore]  pam_unix.so obscure sha512',
+                                                'password  requisite pam_deny.so',
+                                                'password  required  pam_permit.so']
+
+                $default_pam_session_lines = [ 'session  [default=1] pam_permit.so',
+                                                'session requisite pam_deny.so',
+                                                'session required  pam_permit.so',
+                                                'session optional  pam_umask.so',
+                                                'session required  pam_vas3.so create_homedir',
+                                                'session requisite pam_vas3.so echo_return',
+                                                'session required  pam_unix.so']
+              } else {
+
+                $default_pam_auth_lines = [ 'auth  [success=1 default=ignore]  pam_unix.so nullok_secure',
+                                            'auth  requisite     pam_deny.so',
+                                            'auth  required      pam_permit.so']
+
+                $default_pam_account_lines = [ 'account [success=1 new_authtok_reqd=done default=ignore]  pam_unix.so',
+                                                'account requisite     pam_deny.so',
+                                                'account required      pam_permit.so']
+
+                $default_pam_password_lines = [ 'password  [success=1 default=ignore]  pam_unix.so obscure sha512',
+                                                'password  requisite     pam_deny.so',
+                                                'password  required      pam_permit.so']
+
+                $default_pam_session_lines = [ 'session [default=1]   pam_permit.so',
+                                                'session requisite     pam_deny.so',
+                                                'session required      pam_permit.so',
+                                                'session optional      pam_umask.so',
+                                                'session required      pam_unix.so']
+              }
             }
             default: {
-              fail("Pam is only supported on Ubuntu 12. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
+              fail("Pam is only supported on Ubuntu 12.04. Your lsbdistrelease is identified as <${::lsbdistrelease}>.")
             }
           }
         }
         default: {
-          fail("Pam is only supported on operatingsystem Ubuntu of the Debian osfamily. Your operatingsystem is <${::operatingsystem}>.")
+          fail("Pam is only supported on lsbdistid Ubuntu of the Debian osfamily. Your lsbdistid is <${::lsbdistid}>.")
         }
       }
     }
-    'solaris': {
+    'Solaris': {
       case $::kernelrelease {
         '5.10': {
           $default_pam_auth_lines = ['login   auth requisite          pam_authtok_get.so.1',
@@ -411,7 +440,7 @@ class pam (
   }
 
   case $::osfamily {
-    'redhat', 'suse', 'debian': {
+    'RedHat', 'Suse', 'Debian': {
 
       include pam::accesslogin
       include pam::limits
@@ -440,7 +469,7 @@ class pam (
       }
 
       case $::osfamily {
-        'redhat': {
+        'RedHat': {
 
           file { 'pam_system_auth_ac':
             ensure  => file,
@@ -462,7 +491,7 @@ class pam (
           }
 
         }
-        'debian' : {
+        'Debian' : {
 
           file { 'pam_common_auth':
             ensure  => file,
@@ -658,7 +687,7 @@ class pam (
       }
     }
 
-    'solaris': {
+    'Solaris': {
       case $::kernelrelease {
         '5.10': {
           file { 'pam_conf':

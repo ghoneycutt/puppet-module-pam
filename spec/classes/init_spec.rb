@@ -1114,6 +1114,61 @@ session required        pam_unix_session.so.1
       it { should contain_file('pam_system_auth_ac').with_content(/session[\s]+required[\s]+pam_vas3.so/) }
     end
 
+    context 'with ensure_vas=present and default vas_major_version (4) on osfamily Suse with lsbmajdistrelease 10' do
+      let (:params) do
+        {
+          :ensure_vas => 'present',
+        }
+      end
+      let :facts do
+        {
+          :osfamily          => 'Suse',
+          :lsbmajdistrelease => '10',
+        }
+      end
+
+      it {
+        should contain_file('pam_common_auth').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/common-auth',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+      }
+
+      it { should contain_file('pam_common_auth').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+auth        required    pam_env.so
+auth        sufficient  pam_vas3.so   show_lockout_msg get_nonvas_pass store_creds
+auth        requisite   pam_vas3.so echo_return
+auth        required    pam_unix2.so use_first_pass
+")
+
+      it { should contain_file('pam_common_account').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+account sufficient  pam_vas3.so
+account requisite   pam_vas3.so echo_return
+account required    pam_unix2.so
+")
+
+      it { should contain_file('pam_common_password').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+password sufficient  pam_vas3.so
+password  requisite pam_vas3.so echo_return
+password  requisite pam_pwcheck.so nullok
+password  required  pam_unix2.so use_authtok nullok
+")
+
+      it { should contain_file('pam_common_session').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+session required  pam_limits.so
+session required  pam_vas3.so
+session requisite pam_vas3.so echo_return
+session required  pam_unix2.so
+")
+    end
+
     context 'with ensure_vas=present and vas_major_version=3 on Ubuntu 12.04 LTS' do
       let (:params) do
         {

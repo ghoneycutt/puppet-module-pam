@@ -1,0 +1,23 @@
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+#%PAM-1.0
+
+# Auth
+<% auth_directives.each do |auth_directive| -%>
+auth <%= auth_directive['control'] %> <%= auth_directive['module-path'] %> <%= auth_directive['module-arguments'] %>
+<% end -%>
+
+# Account
+<% account_directives.each do |account_directive| -%>
+account <%= account_directive['control'] %> <%= account_directive['module-path'] %> <%= account_directive['module-arguments'] %>
+<% end -%>
+
+# Session
+<% session_directives.each do |session_directive| -%>
+password <%= session_directive['control'] %> <%= session_directive['module-path'] %> <%= session_directive['module-arguments'] %>
+<% end -%>
+
+# Password
+<% password_directives.each do |password_directive| -%>
+session <%= password_directive['control'] %> <%= password_directive['module-path'] %> <%= password_directive['module-arguments'] %>
+<% end -%>

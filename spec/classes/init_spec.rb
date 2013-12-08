@@ -165,7 +165,12 @@ describe 'pam' do
   describe 'config files' do
 
     context 'with specifying services param' do
-      let (:params) { {:services => { 'testservice' => { 'content' => 'foo' } } } }
+
+      service_settings = {"auth_directives" => [{'control' => 'required',
+                         'module-path' => 'pam_nologin.so',
+                         'module-arguments' => 'no_warn'}]}
+
+      let (:params) { {:services => { 'testservice' => service_settings } } }
       let :facts do
         {
           :osfamily          => 'Suse',
@@ -183,7 +188,7 @@ describe 'pam' do
         })
       }
 
-      it { should contain_file('pam.d-service-testservice').with_content('foo') }
+      it { should contain_file('pam.d-service-testservice').with_content(/auth required pam_nologin.so no_warn/) }
     end
 
     context 'with specifying services param as invalid type (non-hash)' do

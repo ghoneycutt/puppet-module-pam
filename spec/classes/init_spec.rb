@@ -11,7 +11,7 @@ describe 'pam' do
 
       it 'should fail' do
         expect {
-          should include_class('pam')
+          should contain_class('pam')
         }.to raise_error(Puppet::Error,/Pam is only supported on EL 5 and 6. Your lsbmajdistrelease is identified as <4>./)
       end
     end
@@ -25,7 +25,7 @@ describe 'pam' do
 
       it 'should fail' do
         expect {
-          should include_class('pam')
+          should contain_class('pam')
         }.to raise_error(Puppet::Error,/Pam is only supported on Suse 10 and 11. Your lsbmajdistrelease is identified as <8>./)
       end
     end
@@ -40,7 +40,7 @@ describe 'pam' do
 
       it 'should fail' do
         expect {
-          should include_class('pam')
+          should contain_class('pam')
         }.to raise_error(Puppet::Error,/Pam is only supported on lsbdistid Ubuntu of the Debian osfamily. Your lsbdistid is <Debian>./)
       end
     end
@@ -55,7 +55,7 @@ describe 'pam' do
 
       it 'should fail' do
         expect {
-          should include_class('pam')
+          should contain_class('pam')
         }.to raise_error(Puppet::Error,/Pam is only supported on Ubuntu 12.04. Your lsbdistrelease is identified as <10.04>./)
       end
     end
@@ -233,7 +233,7 @@ describe 'pam' do
 
       it 'should fail' do
         expect {
-          should include_class('pam')
+          should contain_class('pam')
         }.to raise_error(Puppet::Error)
       end
 
@@ -1461,8 +1461,8 @@ session   include        common-session
         }
       end
 
-      it { should include_class('pam::accesslogin') }
-      it { should include_class('pam::limits') }
+      it { should contain_class('pam::accesslogin') }
+      it { should contain_class('pam::limits') }
 
       it {
         should contain_package('pam_package').with({
@@ -1641,7 +1641,7 @@ session required  pam_unix.so
 
       it 'should fail' do
         expect {
-          should include_class('pam')
+          should contain_class('pam')
         }.to raise_error(Puppet::Error,/Pam is only supported with vas_major_version 3 or 4/)
       end
     end
@@ -1662,7 +1662,7 @@ session required  pam_unix.so
 
       it 'should fail' do
         expect {
-          should include_class('pam')
+          should contain_class('pam')
         }.to raise_error(Puppet::Error,/Pam is only supported with vas_major_version 3 or 4/)
       end
     end

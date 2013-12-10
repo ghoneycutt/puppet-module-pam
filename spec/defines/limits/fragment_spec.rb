@@ -13,8 +13,8 @@ describe 'pam::limits::fragment' do
       }
     }
 
-    it { should include_class('pam') }
-    it { should include_class('pam::limits') }
+    it { should contain_class('pam') }
+    it { should contain_class('pam::limits') }
 
     it {
       should contain_file('/etc/security/limits.d/80-nproc.conf').with({
@@ -40,8 +40,8 @@ describe 'pam::limits::fragment' do
       }
     }
 
-    it { should include_class('pam') }
-    it { should include_class('pam::limits') }
+    it { should contain_class('pam') }
+    it { should contain_class('pam::limits') }
 
     it {
       should contain_file('/etc/security/limits.d/80-nproc.conf').with({
@@ -76,8 +76,8 @@ root soft nproc unlimited
       }
     }
 
-    it { should include_class('pam') }
-    it { should include_class('pam::limits') }
+    it { should contain_class('pam') }
+    it { should contain_class('pam::limits') }
 
     it {
       should contain_file('/etc/security/limits.d/80-nproc.conf').with({
@@ -107,7 +107,7 @@ root soft nproc unlimited
 
     it 'should fail' do
       expect {
-        should include_class('pam::limits')
+        should contain_class('pam::limits')
       }.to raise_error(Puppet::Error,/pam::limits::fragment must specify source or list./)
     end
   end

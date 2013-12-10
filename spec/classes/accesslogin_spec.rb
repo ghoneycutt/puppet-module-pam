@@ -9,7 +9,7 @@ describe 'pam::accesslogin' do
         }
       end
       it do
-        should include_class('pam')
+        should contain_class('pam')
         should contain_file('access_conf').with({
           'ensure' => 'file',
           'path'   => '/etc/security/access.conf',
@@ -42,7 +42,7 @@ describe 'pam::accesslogin' do
           'class {"pam": allowed_users => ["foo","bar"] }'
       end
       it do
-        should include_class('pam')
+        should contain_class('pam')
         should contain_file('access_conf').with({
           'ensure' => 'file',
           'path'   => '/etc/security/access.conf',
@@ -83,7 +83,7 @@ describe 'pam::accesslogin' do
       end
 
       it do
-        should include_class('pam')
+        should contain_class('pam')
         should contain_file('access_conf').with({
           'ensure' => 'file',
           'path'   => '/custom/security/access.conf',

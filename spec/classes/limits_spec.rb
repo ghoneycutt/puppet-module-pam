@@ -9,7 +9,7 @@ describe 'pam::limits' do
         }
       end
       it {
-        should include_class('pam')
+        should contain_class('pam')
         should contain_file('limits_conf').with({
           'ensure' => 'file',
           'path'   => '/etc/security/limits.conf',
@@ -33,7 +33,7 @@ describe 'pam::limits' do
       end
 
       it {
-        should include_class('pam')
+        should contain_class('pam')
         should contain_file('limits_conf').with({
           'ensure' => 'file',
           'path'   => '/custom/security/limits.conf',

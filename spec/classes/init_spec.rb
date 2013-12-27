@@ -1,11 +1,12 @@
 require 'spec_helper'
-
 describe 'nsswitch' do
+
+  it { should compile.with_all_deps }
 
   describe 'included class' do
     context 'with defaults' do
       it {
-        should include_class('nsswitch')
+        should contain_class('nsswitch')
         should contain_file('nsswitch_config_file').with({
           'ensure'  => 'file',
           'path'    => '/etc/nsswitch.conf',
@@ -46,7 +47,7 @@ aliases:    files
       end
 
       it {
-        should include_class('nsswitch')
+        should contain_class('nsswitch')
         should contain_file('nsswitch_config_file').with({
           'ensure'  => 'file',
           'path'    => '/etc/nsswitch.conf',
@@ -87,7 +88,7 @@ aliases:    files
       end
 
       it {
-        should include_class('nsswitch')
+        should contain_class('nsswitch')
         should contain_file('nsswitch_config_file').with({
           'ensure'  => 'file',
           'path'    => '/etc/nsswitch.conf',
@@ -131,7 +132,7 @@ aliases:    files
       end
 
       it {
-        should include_class('nsswitch')
+        should contain_class('nsswitch')
         should contain_file('nsswitch_config_file').with({
           'ensure'  => 'file',
           'path'    => '/etc/nsswitch.conf',
@@ -230,7 +231,7 @@ aliases:    files
       end
 
       it {
-        should include_class('nsswitch')
+        should contain_class('nsswitch')
         should contain_file('nsswitch_config_file').with({
           'ensure'  => 'file',
           'path'    => '/etc/nsswitch.conf',
@@ -271,7 +272,7 @@ aliases:    files
       end
 
       it {
-        should include_class('nsswitch')
+        should contain_class('nsswitch')
         should contain_file('nsswitch_config_file').with({
           'ensure'  => 'file',
           'path'    => '/path/to/nsswitch.conf',
@@ -289,7 +290,7 @@ aliases:    files
 
       it do
         expect {
-          should include_class('nsswitch')
+          should contain_class('nsswitch')
         }.to raise_error(Puppet::Error)
       end
     end

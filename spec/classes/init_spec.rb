@@ -69,7 +69,7 @@ describe 'pam' do
 
       it 'should fail' do
         expect {
-          should include_class('pam')
+          should contain_class('pam')
         }.to raise_error(Puppet::Error,/Pam is only supported on Solaris 10 and 11. Your kernelrelease is identified as <5.9>./)
       end
     end

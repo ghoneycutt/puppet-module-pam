@@ -283,6 +283,70 @@ aliases:    files
       }
     end
 
+    context 'with default options on osfamily Solaris' do
+      let :facts do
+      {
+        :osfamily => 'Solaris',
+      }
+      end
+
+      it {
+        should contain_file('nsswitch_config_file').with_content(/^printers:   user files$/)
+        should contain_file('nsswitch_config_file').with_content(/^ipnodes:    files dns$/)
+        should contain_file('nsswitch_config_file').with_content(/^auth_attr:  files$/)
+        should contain_file('nsswitch_config_file').with_content(/^prof_attr:  files$/)
+        should contain_file('nsswitch_config_file').with_content(/^project:    files$/)
+      }
+    end
+
+    context 'with default options on osfamily RedHat' do
+      let :facts do
+      {
+        :osfamily => 'RedHat',
+      }
+      end
+
+      it {
+        should_not contain_file('nsswitch_config_file').with_content(/^printers:   user files$/)
+        should_not contain_file('nsswitch_config_file').with_content(/^ipnodes:    files dns$/)
+        should_not contain_file('nsswitch_config_file').with_content(/^auth_attr:  files$/)
+        should_not contain_file('nsswitch_config_file').with_content(/^prof_attr:  files$/)
+        should_not contain_file('nsswitch_config_file').with_content(/^project:    files$/)
+      }
+    end
+
+    context 'with default options on osfamily Suse' do
+      let :facts do
+      {
+        :osfamily => 'Suse',
+      }
+      end
+
+      it {
+        should_not contain_file('nsswitch_config_file').with_content(/^printers:   user files$/)
+        should_not contain_file('nsswitch_config_file').with_content(/^ipnodes:    files dns$/)
+        should_not contain_file('nsswitch_config_file').with_content(/^auth_attr:  files$/)
+        should_not contain_file('nsswitch_config_file').with_content(/^prof_attr:  files$/)
+        should_not contain_file('nsswitch_config_file').with_content(/^project:    files$/)
+      }
+    end
+
+    context 'with default options on osfamily Debian' do
+      let :facts do
+      {
+        :osfamily => 'Debian',
+      }
+      end
+
+      it {
+        should_not contain_file('nsswitch_config_file').with_content(/^printers:   user files$/)
+        should_not contain_file('nsswitch_config_file').with_content(/^ipnodes:    files dns$/)
+        should_not contain_file('nsswitch_config_file').with_content(/^auth_attr:  files$/)
+        should_not contain_file('nsswitch_config_file').with_content(/^prof_attr:  files$/)
+        should_not contain_file('nsswitch_config_file').with_content(/^project:    files$/)
+      }
+    end
+
     context 'with config_file set to invalid value' do
       let :params do
         { :config_file => 'not/an/absolute/path' }

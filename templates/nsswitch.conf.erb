@@ -8,6 +8,9 @@ group:      files<% if @ensure_ldap == 'present' %> ldap<% end %><% if @ensure_v
 sudoers:    files<% if @ensure_ldap == 'present' %> ldap<% end %>
 
 hosts:      files dns
+<% if @nsswitch_ipnodes_real != nil -%>
+ipnodes:    <%= @nsswitch_ipnodes_real %>
+<% end -%>
 
 bootparams: files
 ethers:     files
@@ -20,3 +23,15 @@ netgroup:   files<% if @ensure_ldap == 'present' %> ldap<% end %><% if @ensure_v
 publickey:  files
 automount:  files<% if @ensure_ldap == 'present' %> ldap<% end %><% if @ensure_vas == 'present' %><% if @vas_nss_module_automount != '' %> <%= @vas_nss_module_automount %><% end %><% end %>
 aliases:    files<% if @ensure_vas == 'present' %><% if @vas_nss_module_aliases != '' %> <%= @vas_nss_module_aliases %><% end %><% end %>
+<% if @nsswitch_printers_real != nil -%>
+printers:   <%= @nsswitch_printers_real %>
+<% end -%>
+<% if @nsswitch_auth_attr_real != nil -%>
+auth_attr:  <%= @nsswitch_auth_attr_real %>
+<% end -%>
+<% if @nsswitch_prof_attr_real != nil -%>
+prof_attr:  <%= @nsswitch_prof_attr_real %>
+<% end -%>
+<% if @nsswitch_project_real != nil -%>
+project:    <%= @nsswitch_project_real %>
+<% end -%>

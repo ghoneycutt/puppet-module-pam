@@ -1,6 +1,5 @@
 ---
 env:
-- PUPPET_VERSION=2.7.23
 - PUPPET_VERSION=3.3.2
 - PUPPET_VERSION=3.4.2
 notifications:
@@ -12,7 +11,6 @@ rvm:
 matrix:
   fast_finish: true
   allow_failures:
-  - env: PUPPET_VERSION=2.7.23
   - rvm: 2.0.0
 language: ruby
 before_script: "gem install --no-ri --no-rdoc bundler"

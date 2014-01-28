@@ -8,4 +8,4 @@ description 'Manages PAM, including specifying users and groups in access.conf, 
 project_page 'https://github.com/ghoneycutt/puppet-module-pam'
 
 dependency 'ghoneycutt/nsswitch', '>= 0.0.1'
-dependency 'puppetlabs/stdlib',   '3.2.x'
+dependency 'puppetlabs/stdlib',   '>= 3.2.0'

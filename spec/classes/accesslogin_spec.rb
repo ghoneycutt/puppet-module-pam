@@ -8,15 +8,21 @@ describe 'pam::accesslogin' do
           :lsbmajdistrelease => '5',
         }
       end
-      it do
-        should contain_class('pam')
+
+      it { should contain_class('pam') }
+
+      it {
         should contain_file('access_conf').with({
-          'ensure' => 'file',
-          'path'   => '/etc/security/access.conf',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-          })
+          'ensure'  => 'file',
+          'path'    => '/etc/security/access.conf',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+          'require' => [ 'Package[pam]', 'Package[util-linux]' ],
+        })
+      }
+
+      it {
         should contain_file('access_conf').with_content(
 %{# This file is being maintained by Puppet.
 # DO NOT EDIT
@@ -28,7 +34,7 @@ describe 'pam::accesslogin' do
 # default deny
 - : ALL : ALL
 })
-      end
+      }
     end
 
     context 'with multiple users on supported platform' do
@@ -41,15 +47,21 @@ describe 'pam::accesslogin' do
       let(:pre_condition) do
           'class {"pam": allowed_users => ["foo","bar"] }'
       end
-      it do
-        should contain_class('pam')
+
+      it { should contain_class('pam') }
+
+      it {
         should contain_file('access_conf').with({
-          'ensure' => 'file',
-          'path'   => '/etc/security/access.conf',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-          })
+          'ensure'  => 'file',
+          'path'    => '/etc/security/access.conf',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+          'require' => [ 'Package[pam]', 'Package[util-linux]' ],
+        })
+      }
+
+      it {
         should contain_file('access_conf').with_content(
 %{# This file is being maintained by Puppet.
 # DO NOT EDIT
@@ -62,7 +74,7 @@ describe 'pam::accesslogin' do
 # default deny
 - : ALL : ALL
 })
-      end
+      }
     end
 
     context 'with custom values on supported platform' do
@@ -82,16 +94,18 @@ describe 'pam::accesslogin' do
         }
       end
 
-      it do
-        should contain_class('pam')
+      it { should contain_class('pam') }
+
+      it {
         should contain_file('access_conf').with({
-          'ensure' => 'file',
-          'path'   => '/custom/security/access.conf',
-          'owner'  => 'guido',
-          'group'  => 'guido',
-          'mode'   => '0777',
-          })
-      end
+          'ensure'  => 'file',
+          'path'    => '/custom/security/access.conf',
+          'owner'   => 'guido',
+          'group'   => 'guido',
+          'mode'    => '0777',
+          'require' => [ 'Package[pam]', 'Package[util-linux]' ],
+        })
+      }
     end
   end
 end

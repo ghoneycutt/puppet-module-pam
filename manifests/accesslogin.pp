@@ -21,6 +21,6 @@ class pam::accesslogin (
     owner   => $access_conf_owner,
     group   => $access_conf_group,
     mode    => $access_conf_mode,
-    require => Package['pam_package'],
+    require => Package[$pam::my_package_name],
   }
 }

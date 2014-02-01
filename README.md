@@ -42,7 +42,7 @@ Hash of fragments to pass to pam::limits::fragments
 
 package_name
 ------------
-Array of packages providing the pam functionality. If undef, parameter is set based on the OS version.
+String or Array of packages providing the pam functionality. If undef, parameter is set based on the OS version.
 
 - *Default*: undef, default is set based on OS version
 

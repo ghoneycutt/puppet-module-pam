@@ -8,15 +8,18 @@ describe 'pam::limits' do
           :lsbmajdistrelease => '5',
         }
       end
+
+      it { should contain_class('pam') }
+
       it {
-        should contain_class('pam')
         should contain_file('limits_conf').with({
-          'ensure' => 'file',
-          'path'   => '/etc/security/limits.conf',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-          })
+          'ensure'  => 'file',
+          'path'    => '/etc/security/limits.conf',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+          'require' => [ 'Package[pam]', 'Package[util-linux]' ],
+        })
       }
     end
 
@@ -32,15 +35,17 @@ describe 'pam::limits' do
         { :config_file  => '/custom/security/limits.conf' }
       end
 
+      it { should contain_class('pam') }
+
       it {
-        should contain_class('pam')
         should contain_file('limits_conf').with({
-          'ensure' => 'file',
-          'path'   => '/custom/security/limits.conf',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-          })
+          'ensure'  => 'file',
+          'path'    => '/custom/security/limits.conf',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+          'require' => [ 'Package[pam]', 'Package[util-linux]' ],
+        })
       }
     end
   end

@@ -489,9 +489,8 @@ class pam (
       include pam::accesslogin
       include pam::limits
 
-      package { 'pam_package':
+      package { $my_package_name:
         ensure => installed,
-        name   => $my_package_name,
       }
 
       file { 'pam_d_login':
@@ -522,7 +521,7 @@ class pam (
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            require => Package['pam_package'],
+            require => Package[$my_package_name],
           }
 
           file { 'pam_system_auth':
@@ -531,7 +530,7 @@ class pam (
             target  => $system_auth_ac_file,
             owner   => 'root',
             group   => 'root',
-            require => Package['pam_package'],
+            require => Package[$my_package_name],
           }
 
         }
@@ -544,7 +543,7 @@ class pam (
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            require => Package['pam_package'],
+            require => Package[$my_package_name],
           }
 
           file { 'pam_common_account':
@@ -554,7 +553,7 @@ class pam (
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            require => Package['pam_package'],
+            require => Package[$my_package_name],
           }
 
           file { 'pam_common_password':
@@ -564,7 +563,7 @@ class pam (
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            require => Package['pam_package'],
+            require => Package[$my_package_name],
           }
 
           file { 'pam_common_noninteractive_session':
@@ -574,7 +573,7 @@ class pam (
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            require => Package['pam_package'],
+            require => Package[$my_package_name],
           }
 
           file { 'pam_common_session':
@@ -584,7 +583,7 @@ class pam (
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            require => Package['pam_package'],
+            require => Package[$my_package_name],
           }
         }
         'Suse': {
@@ -609,7 +608,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package['pam_package'],
+                require => Package[$my_package_name],
               }
 
               file { 'pam_common_account':
@@ -619,7 +618,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package['pam_package'],
+                require => Package[$my_package_name],
               }
 
               file { 'pam_common_password':
@@ -629,7 +628,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package['pam_package'],
+                require => Package[$my_package_name],
               }
 
               file { 'pam_common_session':
@@ -639,7 +638,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package['pam_package'],
+                require => Package[$my_package_name],
               }
             }
             '11': {
@@ -651,7 +650,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package['pam_package'],
+                require => Package[$my_package_name],
               }
 
               file { 'pam_common_account_pc':
@@ -661,7 +660,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package['pam_package'],
+                require => Package[$my_package_name],
               }
 
               file { 'pam_common_password_pc':
@@ -671,7 +670,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package['pam_package'],
+                require => Package[$my_package_name],
               }
 
               file { 'pam_common_session_pc':
@@ -681,7 +680,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package['pam_package'],
+                require => Package[$my_package_name],
               }
 
               file { 'pam_common_session':
@@ -690,7 +689,7 @@ class pam (
                 target  => $common_session_pc_file,
                 owner   => 'root',
                 group   => 'root',
-                require => Package['pam_package'],
+                require => Package[$my_package_name],
               }
 
               file { 'pam_common_password':
@@ -699,7 +698,7 @@ class pam (
                 target  => $common_password_pc_file,
                 owner   => 'root',
                 group   => 'root',
-                require => Package['pam_package'],
+                require => Package[$my_package_name],
               }
 
               file { 'pam_common_account':
@@ -708,7 +707,7 @@ class pam (
                 target  => $common_account_pc_file,
                 owner   => 'root',
                 group   => 'root',
-                require => Package['pam_package'],
+                require => Package[$my_package_name],
               }
 
               file { 'pam_common_auth':
@@ -717,7 +716,7 @@ class pam (
                 target  => $common_auth_pc_file,
                 owner   => 'root',
                 group   => 'root',
-                require => Package['pam_package'],
+                require => Package[$my_package_name],
               }
             }
             default : {

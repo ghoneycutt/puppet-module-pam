@@ -85,12 +85,13 @@ describe 'pam' do
         }
       end
 
-      it {
-        should contain_package('pam_package').with({
-          'ensure' => 'installed',
-          'name'   => ['pam', 'util-linux'],
-        })
-      }
+      ['pam', 'util-linux'].each do |pkg|
+        it {
+          should contain_package(pkg).with({
+            'ensure' => 'installed',
+          })
+        }
+      end
     end
 
     context 'with default params on osfamily RedHat with lsbmajdistrelease 6' do
@@ -102,9 +103,8 @@ describe 'pam' do
       end
 
       it do
-        should contain_package('pam_package').with({
+        should contain_package('pam').with({
           'ensure' => 'installed',
-          'name'   => 'pam',
         })
       end
     end
@@ -117,12 +117,13 @@ describe 'pam' do
         }
       end
 
-      it {
-        should contain_package('pam_package').with({
-          'ensure' => 'installed',
-          'name'   => ["pam", "pam-modules"],
-        })
-      }
+      ['pam', 'pam-modules'].each do |pkg|
+        it {
+          should contain_package(pkg).with({
+            'ensure' => 'installed',
+          })
+        }
+      end
     end
 
     context 'with default params on osfamily Suse with lsbmajdistrelease 10' do
@@ -134,9 +135,8 @@ describe 'pam' do
       end
 
       it {
-        should contain_package('pam_package').with({
+        should contain_package('pam').with({
           'ensure' => 'installed',
-          'name'   => 'pam',
         })
       }
     end
@@ -150,9 +150,8 @@ describe 'pam' do
       end
 
       it {
-        should contain_package('pam_package').with({
+        should contain_package('pam').with({
           'ensure' => 'installed',
-          'name'   => 'pam',
         })
       }
     end
@@ -190,9 +189,8 @@ describe 'pam' do
       let(:params) { {:package_name => 'foo'} }
 
       it {
-        should contain_package('pam_package').with({
+        should contain_package('foo').with({
           'ensure' => 'installed',
-          'name'   => 'foo',
         })
       }
     end
@@ -469,9 +467,8 @@ session    include      password-auth
       end
 
       it {
-        should contain_package('pam_package').with({
+        should contain_package('libpam0g').with({
           'ensure' => 'installed',
-          'name'   => 'libpam0g',
         })
       }
 
@@ -1465,9 +1462,8 @@ session   include        common-session
       it { should contain_class('pam::limits') }
 
       it {
-        should contain_package('pam_package').with({
+        should contain_package('libpam0g').with({
           'ensure' => 'installed',
-          'name'   => 'libpam0g',
         })
       }
 

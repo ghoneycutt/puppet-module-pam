@@ -37,6 +37,6 @@ define pam::limits::fragment (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => Package['pam_package'],
+    require => Package[$pam::my_package_name],
   }
 }

@@ -18,10 +18,11 @@ describe 'pam::limits::fragment' do
 
     it {
       should contain_file('/etc/security/limits.d/80-nproc.conf').with({
-        'source' => 'puppet:///modules/pam/example.conf',
-        'owner'  => 'root',
-        'group'  => 'root',
-        'mode'   => '0644',
+        'source'  => 'puppet:///modules/pam/example.conf',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0644',
+        'require' => [ 'Package[pam]', 'Package[util-linux]' ],
       })
     }
   end
@@ -48,6 +49,7 @@ describe 'pam::limits::fragment' do
         'owner'   => 'root',
         'group'   => 'root',
         'mode'    => '0644',
+        'require' => [ 'Package[pam]', 'Package[util-linux]' ],
       })
     }
     it { should contain_file('/etc/security/limits.d/80-nproc.conf').with_content(
@@ -84,6 +86,7 @@ root soft nproc unlimited
         'owner'   => 'root',
         'group'   => 'root',
         'mode'    => '0644',
+        'require' => [ 'Package[pam]', 'Package[util-linux]' ],
       })
     }
     it { should contain_file('/etc/security/limits.d/80-nproc.conf').with_content(

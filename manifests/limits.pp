@@ -9,6 +9,15 @@ class pam::limits (
 
   include pam
 
+  file { 'limits_d':
+    ensure  => directory,
+    path    => $limits_d_dir,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    require => Package[$pam::my_package_name],
+  }
+
   file { 'limits_conf':
     ensure  => file,
     path    => $config_file,

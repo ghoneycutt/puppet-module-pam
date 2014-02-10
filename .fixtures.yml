@@ -4,5 +4,8 @@ fixtures:
       repo: 'git://github.com/puppetlabs/puppetlabs-stdlib.git'
       ref: '3.2.0'
     'nsswitch': 'git://github.com/ghoneycutt/puppet-module-nsswitch.git'
+    'common':
+      repo: 'git://github.com/ghoneycutt/puppet-module-common.git'
+      ref: 'v1.0.2'
   symlinks:
     pam: "#{source_dir}"

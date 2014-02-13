@@ -75,3 +75,33 @@ vas_nss_module_services
 Source for vas to be included in the services database.
 
 - *Default*: ''
+
+nsswitch_ipnodes
+----------------
+String of list of sources for ipnodes database. 'USE_DEFAULTS' allows the module to choose defaults based on the platform.
+
+- *Default*: 'USE_DEFAULTS'
+
+nsswitch_printers
+-----------------
+String of list of sources for printers database. 'USE_DEFAULTS' allows the module to choose defaults based on the platform.
+
+- *Default*: 'USE_DEFAULTS'
+
+nsswitch_auth_attr
+------------------
+String of list of sources for auth_attr database. 'USE_DEFAULTS' allows the module to choose defaults based on the platform.
+
+- *Default*: 'USE_DEFAULTS'
+
+nsswitch_prof_attr
+------------------
+String of list of sources for prof_attr database. 'USE_DEFAULTS' allows the module to choose defaults based on the platform.
+
+- *Default*: 'USE_DEFAULTS'
+
+nsswitch_project
+----------------
+String of list of sources for project database. 'USE_DEFAULTS' allows the module to choose defaults based on the platform.
+
+- *Default*: 'USE_DEFAULTS'

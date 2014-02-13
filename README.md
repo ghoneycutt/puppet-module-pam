@@ -39,3 +39,39 @@ vas_nss_module
 Name of NSS module to use for VAS.
 
 - *Default*: 'vas4'
+
+vas_nss_module_passwd
+---------------------
+Source for vas to be included in the passwd database.
+
+- *Default*:'vas4'
+
+vas_nss_module_group
+--------------------
+Source for vas to be included in the group database.
+
+- *Default*:'vas4'
+
+vas_nss_module_automount
+------------------------
+Source for vas to be included in the automount database.
+
+- *Default*:'nis'
+
+vas_nss_module_netgroup
+-----------------------
+Source for vas to be included in the netgroup database.
+
+- *Default*:'nis'
+
+vas_nss_module_aliases
+----------------------
+Source for vas to be included in the aliases database.
+
+- *Default*:''
+
+vas_nss_module_services
+-----------------------
+Source for vas to be included in the services database.
+
+- *Default*: ''

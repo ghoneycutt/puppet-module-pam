@@ -79,28 +79,23 @@ class nsswitch (
   }
 
   if $nsswitch_ipnodes_real != undef {
-    validate_re($nsswitch_ipnodes_real, '^(files|files dns)$',
-      'Valid values for nsswitch_ipnodes are \'files\' and \'files dns\'.')
+    validate_string($nsswitch_ipnodes_real)
   }
 
   if $nsswitch_printers_real != undef {
-    validate_re($nsswitch_printers_real, '^(user|user files)$',
-      'Valid values for nsswitch_printers are \'user\' and \'user files\'.')
+    validate_string($nsswitch_printers_real)
   }
 
   if $nsswitch_auth_attr_real != undef {
-    validate_re($nsswitch_auth_attr_real, '^(files)$',
-      'Valid value for nsswitch_auth_attr is \'files\'.')
+    validate_string($nsswitch_auth_attr_real)
   }
 
   if $nsswitch_prof_attr_real != undef {
-    validate_re($nsswitch_prof_attr_real, '^(files)$',
-      'Valid value for nsswitch_prof_attr is \'files\'.')
+    validate_string($nsswitch_prof_attr_real)
   }
 
   if $nsswitch_project_real != undef {
-    validate_re($nsswitch_project_real, '^(files)$',
-      'Valid value for nsswitch_project is \'files\'.')
+    validate_string($nsswitch_project_real)
   }
 
   file { 'nsswitch_config_file':

@@ -7,7 +7,10 @@ Puppet module to manage nsswitch that optionally allows for LDAP and VAS integra
 
 ===
 
-# Compatibility #
+# Compatibility
+
+Puppet v3 with Ruby 1.8.7, 1.9.3, and 2.0.0
+
   * EL 5
   * EL 6
   * Solaris 10

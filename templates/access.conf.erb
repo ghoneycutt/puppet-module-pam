@@ -3,8 +3,12 @@
 #
 
 # allow only the groups listed
+<% if scope.lookupvar('pam::allowed_users').class == String -%>
++ : <%= scope.lookupvar('pam::allowed_users') %> : ALL
+<% else -%>
 <% scope.lookupvar('pam::allowed_users').each do |user| -%>
 + : <%= user %> : ALL
+<% end -%>
 <% end -%>
 
 # default deny

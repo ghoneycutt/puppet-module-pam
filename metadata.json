@@ -1,0 +1,143 @@
+{
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": "3.2.x"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": "3.x"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "5",
+        "6"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "5",
+        "6"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "5",
+        "6"
+      ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "5",
+        "6"
+      ]
+    },
+    {
+      "operatingsystem": "Solaris",
+      "operatingsystemrelease": [
+        "10",
+        "11"
+      ]
+    },
+    {
+      "operatingsystem": "SLES",
+      "operatingsystemrelease": [
+        "9",
+        "10",
+        "11"
+      ]
+    },
+    {
+      "operatingsystem": "SLED",
+      "operatingsystemrelease": [
+        "9",
+        "10",
+        "11"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "12.04"
+      ]
+    }
+  ],
+  "name": "ghoneycutt-pam",
+  "version": "2.4.4",
+  "source": "git://github.com/ghoneycutt/puppet-module-pam.git",
+  "author": "ghoneycutt",
+  "license": "Apache License, Version 2.0",
+  "summary": "Manage PAM",
+  "description": "Manages PAM, including specifying users and groups in access.conf, limits.conf, and limits fragments",
+  "project_page": "https://github.com/ghoneycutt/puppet-module-pam",
+  "dependencies": [
+    {
+      "name": "ghoneycutt/common",
+      "version_requirement": ">= 1.0.2"
+    },
+    {
+      "name": "ghoneycutt/nsswitch",
+      "version_requirement": ">= 0.0.1"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 3.2.0"
+    }
+  ],
+  "types": [
+
+  ],
+  "checksums": {
+    "CHANGELOG": "0a5a2276499688d1c10adebf4fd7a734",
+    "Gemfile": "6992d521994d948eb6e48acd733a07bf",
+    "Gemfile.lock": "873e125e8afe971046172cf5e775871d",
+    "LICENSE": "567e6cc3941d464d60c74d1f4abd5f46",
+    "Modulefile": "23e21a70a33d93debf5d97733622881c",
+    "README.md": "69c89d72f202c011ac8f3b0803cc0651",
+    "Rakefile": "8ff6a0f7db638421d1742c5d365d0266",
+    "files/limits.conf": "2486c66ab9728a793f068ed060c0df61",
+    "manifests/accesslogin.pp": "e5dd82ec627fa88a449cf1f46be5077e",
+    "manifests/init.pp": "2ca6fff698f940f8f518e5155f0725fc",
+    "manifests/limits/fragment.pp": "6486a3db8487e4817937a08bc3c18a53",
+    "manifests/limits.pp": "2b87e2f69d38c99694be5f02845bbf0f",
+    "manifests/service.pp": "9e97853aff8c57df48c8d01c30424d23",
+    "spec/classes/accesslogin_spec.rb": "326a485b8a7fad24ce75f0bcfb6f7236",
+    "spec/classes/init_spec.rb": "a2ecd4ceb389066afac5aa462dee6539",
+    "spec/classes/limits_spec.rb": "f243fbe2e25f7f4e47bd2bced260e468",
+    "spec/defines/limits/fragment_spec.rb": "19aeaf03de246fa093bba518db62957e",
+    "spec/spec_helper.rb": "3ea886dd135e120afa31e0aab12e85b0",
+    "templates/access.conf.erb": "ea58821ac228601dbcc0d630ec5bf846",
+    "templates/common-account-pc.erb": "d154847942fffc7ffc32b0ff50ff167f",
+    "templates/common-auth-pc.erb": "978cdfa44f891a8ff0fb241821234ae4",
+    "templates/common-password-pc.erb": "0c27eb1892ec5c47ea45aeccb69e62e1",
+    "templates/common-session-pc.erb": "174e1593dc1233203f631a3b1314039b",
+    "templates/limits_fragment.erb": "77b74efcaabe248d37fdfdef44c039db",
+    "templates/login.el5.erb": "4620b35626e60972786c9918a0b8c785",
+    "templates/login.el6.erb": "29ff08f4ad171f7e8fec322adc5e6b7e",
+    "templates/login.suse10.erb": "2671d53ddd752b460824d85fb5fca117",
+    "templates/login.suse11.erb": "a0048dd6e06b22dfb67ef6a8b3993622",
+    "templates/login.suse9.erb": "bb25c062346aecacfd1f7d35489488ff",
+    "templates/login.ubuntu12.erb": "9132227aa9395a2eae0a3a06e976fff5",
+    "templates/pam.conf.erb": "69dd0a7e44d4edd6bd473748522144f1",
+    "templates/sshd.el5.erb": "f05cbf5af26c88985db2903fd5783980",
+    "templates/sshd.el6.erb": "875e7b232894cf1b8376e60a9942252a",
+    "templates/sshd.suse10.erb": "02c48dd13be8a686bfa8e9edce4781c7",
+    "templates/sshd.suse11.erb": "cf067eb979b671aa3831a4fcf5ccd286",
+    "templates/sshd.suse9.erb": "2f1b94f03d8e73acf9458e3b90ade3f3",
+    "templates/sshd.ubuntu12.erb": "6553874362b469944fbf1bc9f6845195",
+    "templates/system-auth-ac.erb": "69dd0a7e44d4edd6bd473748522144f1",
+    "tests/init.pp": "1b580110b1308350f9b09e1bbca0551e"
+  }
+}

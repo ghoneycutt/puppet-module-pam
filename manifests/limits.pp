@@ -7,7 +7,24 @@ class pam::limits (
   $limits_d_dir = '/etc/security/limits.d',
 ) {
 
+  # validate params
+  validate_absolute_path($config_file)
+  validate_absolute_path($limits_d_dir)
+
   include pam
+
+  # ensure target exists
+  include common
+  common::mkdir_p { $limits_d_dir: }
+
+  file { 'limits_d':
+    ensure  => directory,
+    path    => $limits_d_dir,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    require => Package[$pam::my_package_name],
+  }
 
   file { 'limits_conf':
     ensure  => file,

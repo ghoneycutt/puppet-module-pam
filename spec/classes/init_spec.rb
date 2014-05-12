@@ -966,7 +966,6 @@ session   include        common-session
       it { should contain_file('pam_conf').with_content("# This file is being maintained by Puppet.
 # DO NOT EDIT
 # Auth
-# login service (explicit because of pam_dial_auth)
 login   auth requisite          pam_authtok_get.so.1
 login   auth required           pam_dhkeys.so.1
 login   auth required           pam_unix_auth.so.1
@@ -977,7 +976,6 @@ other   auth required           pam_dhkeys.so.1
 other   auth required           pam_unix_auth.so.1
 
 # Account
-# cron service (explicit because of non-usage of pam_roles.so.1)
 cron    account required        pam_projects.so.1
 cron    account required        pam_unix_account.so.1
 other   account requisite       pam_roles.so.1
@@ -1087,35 +1085,6 @@ session definitive      pam_user_policy.so.1
 session required        pam_unix_session.so.1
 ")
       }
-    end
-
-    context 'with ensure_vas=present and default vas_major_version (4) on osfamily Solaris with kernelrelease 5.9' do
-      let (:params) do
-        {
-          :ensure_vas => 'present',
-        }
-      end
-      let :facts do
-        {
-          :osfamily          => 'Solaris',
-          :kernelrelease => '5.9',
-        }
-      end
-
-      it {
-        should contain_file('pam_conf').with({
-          'ensure'  => 'file',
-          'path'    => '/etc/pam.conf',
-          'owner'   => 'root',
-          'group'   => 'sys',
-          'mode'    => '0644',
-        })
-      }
-
-      it { should contain_file('pam_conf').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) }
-      it { should contain_file('pam_conf').with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) }
-      it { should contain_file('pam_conf').with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) }
-      it { should contain_file('pam_conf').with_content(/session[\s]+required[\s]+pam_vas3.so/) }
     end
 
     context 'with ensure_vas=present and default vas_major_version (4) on osfamily RedHat with lsbmajdistrelease 5' do

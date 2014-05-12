@@ -361,8 +361,7 @@ class pam (
     'Solaris': {
       case $::kernelrelease {
         '5.9': {
-          $default_pam_auth_lines = [ '# login service (explicit because of pam_dial_auth)',
-                                      'login   auth requisite          pam_authtok_get.so.1',
+          $default_pam_auth_lines = [ 'login   auth requisite          pam_authtok_get.so.1',
                                       'login   auth required           pam_dhkeys.so.1',
                                       'login   auth required           pam_unix_auth.so.1',
                                       'login   auth required           pam_dial_auth.so.1',
@@ -371,8 +370,7 @@ class pam (
                                       'other   auth required           pam_dhkeys.so.1',
                                       'other   auth required           pam_unix_auth.so.1']
 
-          $default_pam_account_lines = ['# cron service (explicit because of non-usage of pam_roles.so.1)',
-                                        'cron    account required        pam_projects.so.1',
+          $default_pam_account_lines = ['cron    account required        pam_projects.so.1',
                                         'cron    account required        pam_unix_account.so.1',
                                         'other   account requisite       pam_roles.so.1',
                                         'other   account required        pam_projects.so.1',

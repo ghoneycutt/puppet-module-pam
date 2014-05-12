@@ -14,6 +14,7 @@ This module has been tested to work on the following systems using Puppet v3 wit
 
  * EL 5
  * EL 6
+ * Solaris 9
  * Solaris 10
  * Solaris 11
  * Suse 9

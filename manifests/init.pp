@@ -360,6 +360,29 @@ class pam (
     }
     'Solaris': {
       case $::kernelrelease {
+        '5.9': {
+          $default_pam_auth_lines = [ 'login   auth requisite          pam_authtok_get.so.1',
+                                      'login   auth required           pam_dhkeys.so.1',
+                                      'login   auth required           pam_unix_auth.so.1',
+                                      'login   auth required           pam_dial_auth.so.1',
+                                      'passwd  auth required           pam_passwd_auth.so.1',
+                                      'other   auth requisite          pam_authtok_get.so.1',
+                                      'other   auth required           pam_dhkeys.so.1',
+                                      'other   auth required           pam_unix_auth.so.1']
+
+          $default_pam_account_lines = ['cron    account required        pam_projects.so.1',
+                                        'cron    account required        pam_unix_account.so.1',
+                                        'other   account requisite       pam_roles.so.1',
+                                        'other   account required        pam_projects.so.1',
+                                        'other   account required        pam_unix_account.so.1']
+
+          $default_pam_password_lines = [ 'other   password required       pam_dhkeys.so.1',
+                                          'other   password requisite      pam_authtok_get.so.1',
+                                          'other   password requisite      pam_authtok_check.so.1',
+                                          'other   password required       pam_authtok_store.so.1']
+
+          $default_pam_session_lines = ['other   session required        pam_unix_session.so.1']
+        }
         '5.10': {
           $default_pam_auth_lines = [ 'login   auth requisite          pam_authtok_get.so.1',
                                       'login   auth required           pam_dhkeys.so.1',
@@ -404,7 +427,7 @@ class pam (
         }
 
         default: {
-          fail("Pam is only supported on Solaris 10 and 11. Your kernelrelease is identified as <${::kernelrelease}>.")
+          fail("Pam is only supported on Solaris 9, 10 and 11. Your kernelrelease is identified as <${::kernelrelease}>.")
         }
       }
     }
@@ -732,7 +755,7 @@ class pam (
 
     'Solaris': {
       case $::kernelrelease {
-        '5.10': {
+        '5.9','5.10': {
           file { 'pam_conf':
             ensure  => file,
             path    => $pam_conf_file,
@@ -753,7 +776,7 @@ class pam (
           }
         }
         default: {
-          fail("Pam is only supported on Solaris 10 and 11. Your kernelrelease is identified as <${::kernelrelease}>.")
+          fail("Pam is only supported on Solaris 9, 10 and 11. Your kernelrelease is identified as <${::kernelrelease}>.")
         }
       }
     }

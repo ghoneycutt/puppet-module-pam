@@ -60,17 +60,17 @@ describe 'pam' do
       end
     end
 
-    context 'with defaults params on Solaris 9' do
+    context 'with defaults params on Solaris 8' do
       let(:facts) do
         { :osfamily      => 'Solaris',
-          :kernelrelease => '5.9',
+          :kernelrelease => '5.8',
         }
       end
 
       it 'should fail' do
         expect {
           should contain_class('pam')
-        }.to raise_error(Puppet::Error,/Pam is only supported on Solaris 10 and 11. Your kernelrelease is identified as <5.9>./)
+        }.to raise_error(Puppet::Error,/Pam is only supported on Solaris 9, 10 and 11. Your kernelrelease is identified as <5.8>./)
       end
     end
   end
@@ -154,6 +154,17 @@ describe 'pam' do
           'ensure' => 'installed',
         })
       }
+    end
+
+    context 'with default params on Solaris 9' do
+      let :facts do
+        {
+          :osfamily      => 'Solaris',
+          :kernelrelease => '5.9',
+        }
+      end
+
+      it { should_not contain_package('pam_package') }
     end
 
     context 'with default params on Solaris 10' do
@@ -930,6 +941,55 @@ account   include        common-account
 password  include        common-password
 session   required       pam_loginuid.so
 session   include        common-session
+")
+      }
+    end
+
+    context 'with default params on osfamily Solaris with kernelrelease 5.9' do
+      let :facts do
+        {
+          :osfamily      => 'Solaris',
+          :kernelrelease => '5.9',
+        }
+      end
+
+      it {
+        should contain_file('pam_conf').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.conf',
+          'owner'   => 'root',
+          'group'   => 'sys',
+          'mode'    => '0644',
+        })
+      }
+
+      it { should contain_file('pam_conf').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+# Auth
+login   auth requisite          pam_authtok_get.so.1
+login   auth required           pam_dhkeys.so.1
+login   auth required           pam_unix_auth.so.1
+login   auth required           pam_dial_auth.so.1
+passwd  auth required           pam_passwd_auth.so.1
+other   auth requisite          pam_authtok_get.so.1
+other   auth required           pam_dhkeys.so.1
+other   auth required           pam_unix_auth.so.1
+
+# Account
+cron    account required        pam_projects.so.1
+cron    account required        pam_unix_account.so.1
+other   account requisite       pam_roles.so.1
+other   account required        pam_projects.so.1
+other   account required        pam_unix_account.so.1
+
+# Password
+other   password required       pam_dhkeys.so.1
+other   password requisite      pam_authtok_get.so.1
+other   password requisite      pam_authtok_check.so.1
+other   password required       pam_authtok_store.so.1
+
+# Session
+other   session required        pam_unix_session.so.1
 ")
       }
     end

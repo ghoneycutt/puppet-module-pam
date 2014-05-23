@@ -3,13 +3,21 @@
 # Manage PAM limits.conf
 #
 class pam::limits (
-  $config_file  = '/etc/security/limits.conf',
-  $limits_d_dir = '/etc/security/limits.d',
+  $config_file       = '/etc/security/limits.conf',
+  $config_file_mode  = '0640',
+  $limits_d_dir      = '/etc/security/limits.d',
+  $limits_d_dir_mode = '0750',
 ) {
 
   # validate params
   validate_absolute_path($config_file)
   validate_absolute_path($limits_d_dir)
+
+  validate_re($config_file_mode, '^[0-7]{4}$',
+    "pam::limits::config_file_mode is <${config_file_mode}> and must be a valid four digit mode in octal notation.")
+
+  validate_re($limits_d_dir_mode, '^[0-7]{4}$',
+    "pam::limits::limits_d_dir_mode is <${limits_d_dir_mode}> and must be a valid four digit mode in octal notation.")
 
   include pam
 
@@ -22,7 +30,7 @@ class pam::limits (
     path    => $limits_d_dir,
     owner   => 'root',
     group   => 'root',
-    mode    => '0755',
+    mode    => $limits_d_dir_mode,
     require => Package[$pam::my_package_name],
   }
 
@@ -32,7 +40,7 @@ class pam::limits (
     source  => 'puppet:///modules/pam/limits.conf',
     owner   => 'root',
     group   => 'root',
-    mode    => '0644',
+    mode    => $config_file_mode,
     require => Package[$pam::my_package_name],
   }
 }

@@ -279,10 +279,10 @@ Content template of access.conf.
 
 ===
 
-# pam::limits define
+# class pam::limits
 Manage PAM limits.conf
 
-## Parameters for `pam::limits` define
+## Parameters for `pam::limits`
 
 config_file
 -----------
@@ -290,11 +290,23 @@ Path to limits.conf
 
 - *Default*: '/etc/security/limits.conf'
 
+config_file_mode
+----------------
+Mode for config_file.
+
+- *Default*: '0640'
+
 limits_d_dir
 ------------
 Path to limits.d directory
 
 - *Default*: '/etc/security/limits.d'
+
+limits_d_dir_mode
+-----------------
+Mode for limits_d_dir.
+
+- *Default*: '0750'
 
 ===
 

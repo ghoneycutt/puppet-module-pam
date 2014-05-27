@@ -3,12 +3,21 @@
 #
 
 # allow only the groups listed
-<% if scope.lookupvar('pam::allowed_users').class == String -%>
-+ : <%= scope.lookupvar('pam::allowed_users') %> : ALL
-<% else -%>
-<% scope.lookupvar('pam::allowed_users').each do |user| -%>
-+ : <%= user %> : ALL
+<%
+entries = scope.lookupvar('pam::allowed_users')    
+-%>
+<% if entries.is_a? Hash -%>
+<% entries.each do |key, value| -%>
++ : <%= key %> : <% if value.is_a? Array -%><%= value.join(' ') %><% elsif value.is_a? String -%><%= value %><% else -%>ALL<% end %>
 <% end -%>
+<% elsif entries.is_a? Array -%>
+<% entries.each do |key| -%>
++ : <%= key %> : ALL
+<% end -%>
+<% elsif entries.is_a? String -%>
++ : <%= entries %> : ALL
+<% else -%>
++ : root : ALL
 <% end -%>
 
 # default deny

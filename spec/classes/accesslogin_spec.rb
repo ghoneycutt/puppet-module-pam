@@ -77,6 +77,33 @@ describe 'pam::accesslogin' do
       }
     end
 
+    context 'with allowed users set to hash with a string value' do
+      let(:facts) do
+        {
+          :osfamily          => 'RedHat',
+          :lsbmajdistrelease => '5',
+        }
+      end
+      let(:pre_condition) do
+          'class {"pam": allowed_users => {"username1" => "cron", "username2" => "tty0"} }'
+      end
+      it { should contain_file('access_conf').with_content(/^\+ : username1 : cron$/)}
+      it { should contain_file('access_conf').with_content(/^\+ : username2 : tty0$/)}
+    end
+
+    context 'with allowed users set to hash with a hash of arrays' do
+      let(:facts) do
+        {
+          :osfamily          => 'RedHat',
+          :lsbmajdistrelease => '5',
+        }
+      end
+      let(:pre_condition) do
+          'class {"pam": allowed_users => {"username" => ["cron", "tty0"]} }'
+      end
+      it { should contain_file('access_conf').with_content(/^\+ : username : cron tty0$/)}
+    end
+
     context 'with custom values on supported platform' do
       let(:facts) do
         {

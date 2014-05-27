@@ -31,9 +31,18 @@ This module has been tested to work on the following systems using Puppet v3 wit
 
 allowed_users
 -------------
-Array of users allowed to log in.
+Hash or array of users allowed to log in.
 
 - *Default*: root
+
+# Hiera example for allowed_users
+<pre>
+pam::allowed_users:
+  'username1':
+    - 'crond'
+    - 'tty0'
+  'username2': 'tty1'
+</pre>
 
 limits_fragments
 ----------------

@@ -5,6 +5,14 @@
 # allow only the groups listed
 <% if scope.lookupvar('pam::allowed_users').class == String -%>
 + : <%= scope.lookupvar('pam::allowed_users') %> : ALL
+<% elsif scope.lookupvar('pam::allowed_users').class == Hash -%>
+<% scope.lookupvar('pam::allowed_users').sort.each do |key, value| -%>
+<% if value.is_a? Array -%>
++ : <%= key %> : <%= value.join(' ') %>
+<% elsif value.is_a? String -%>
++ : <%= key %> : <%= value %>
+<% end -%>
+<% end -%>
 <% else -%>
 <% scope.lookupvar('pam::allowed_users').each do |user| -%>
 + : <%= user %> : ALL

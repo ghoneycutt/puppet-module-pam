@@ -13,9 +13,9 @@ session    include      system-auth
 session    optional     pam_console.so
 # pam_selinux.so open should only be followed by sessions to be executed in the user context
 session    required     pam_selinux.so open
-<% if pam_d_login_oracle_options != 'UNSET' -%>
+<% if @pam_d_login_oracle_options != 'UNSET' -%>
 # oracle options
-<% pam_d_login_oracle_options.each do |option| -%>
+<% @pam_d_login_oracle_options.each do |option| -%>
 <%= option %>
 <% end -%>
 <% end -%>

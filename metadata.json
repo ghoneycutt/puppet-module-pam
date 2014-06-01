@@ -1,4 +1,12 @@
 {
+  "name": "ghoneycutt-pam",
+  "version": "2.6.1",
+  "author": "ghoneycutt",
+  "summary": "Manage PAM",
+  "license": "Apache License, Version 2.0",
+  "source": "git://github.com/ghoneycutt/puppet-module-pam.git",
+  "project_page": "https://github.com/ghoneycutt/puppet-module-pam",
+  "issues_url": "https://github.com/ghoneycutt/puppet-module-pam/issues",
   "requirements": [
     {
       "name": "pe",
@@ -75,30 +83,9 @@
       ]
     }
   ],
-  "name": "ghoneycutt-pam",
-  "version": "2.6.0",
-  "source": "git://github.com/ghoneycutt/puppet-module-pam.git",
-  "author": "ghoneycutt",
-  "license": "Apache License, Version 2.0",
-  "summary": "Manage PAM",
   "description": "Manages PAM, including specifying users and groups in access.conf, limits.conf, and limits fragments",
-  "project_page": "https://github.com/ghoneycutt/puppet-module-pam",
-  "dependencies": [
-    {
-      "name": "ghoneycutt/common",
-      "version_requirement": ">= 1.0.2"
-    },
-    {
-      "name": "ghoneycutt/nsswitch",
-      "version_requirement": ">= 1.1.0"
-    },
-    {
-      "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 3.2.0"
-    }
-  ],
   "types": [
-
+  
   ],
   "checksums": {
     "CHANGELOG": "0a5a2276499688d1c10adebf4fd7a734",
@@ -140,5 +127,22 @@
     "templates/sshd.ubuntu12.erb": "6553874362b469944fbf1bc9f6845195",
     "templates/system-auth-ac.erb": "69dd0a7e44d4edd6bd473748522144f1",
     "tests/init.pp": "1b580110b1308350f9b09e1bbca0551e"
-  }
+  },
+  "dependencies": [
+    {
+      "name": "ghoneycutt/common",
+      "version_requirement": ">= 1.0.2"
+    },
+    {
+      "name": "ghoneycutt/nsswitch",
+      "version_requirement": ">= 1.1.0"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 3.2.0"
+    },
+    {"name":"ghoneycutt/common","version_requirement":">= 1.0.2"},
+    {"name":"ghoneycutt/nsswitch","version_requirement":">= 1.1.0"},
+    {"name":"puppetlabs/stdlib","version_requirement":">= 3.2.0"}
+  ]
 }

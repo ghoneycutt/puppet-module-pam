@@ -104,6 +104,19 @@ describe 'pam::accesslogin' do
       it { should contain_file('access_conf').with_content(/^\+ : username : cron tty0$/)}
     end
 
+    context 'with allowed users set as a string' do
+      let(:facts) do
+        {
+          :osfamily          => 'RedHat',
+          :lsbmajdistrelease => '5',
+        }
+      end
+      let(:pre_condition) do
+          'class {"pam": allowed_users => "username"}'
+      end
+      it { should contain_file('access_conf').with_content(/^\+ : username : ALL$/)}
+    end
+
     context 'with custom values on supported platform' do
       let(:facts) do
         {

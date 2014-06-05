@@ -31,7 +31,7 @@ This module has been tested to work on the following systems using Puppet v3 wit
 
 allowed_users
 -------------
-Hash or array of users allowed to log in.
+String, hash or array of users allowed to log in.
 
 - *Default*: root
 
@@ -42,6 +42,7 @@ pam::allowed_users:
     - 'crond'
     - 'tty0'
   'username2': 'tty1'
+   - 'username'
 </pre>
 
 limits_fragments

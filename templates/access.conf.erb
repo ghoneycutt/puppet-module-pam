@@ -6,18 +6,18 @@
 <%
 entries = scope.lookupvar('pam::allowed_users')    
 -%>
-<% entries.each do |entry| -%>
-<%if entry.is_a? Hash -%>
-<% entry.sort.each do |key, value| -%>
-<% if value.is_a? String -%>
-+ : <%= key %> : <%= value %>
-<% elsif value.is_a? Array -%>
-+ : <%= key %> : <%= value.join(' ') %>
+<% if entries.is_a? Hash -%>
+<% entries.each do |key, value| -%>
++ : <%= key %> : <% if value.is_a? Array -%><%= value.join(' ') %><% elsif value.is_a? String -%><%= value %><% else -%>ALL<% end %>
 <% end -%>
+<% elsif entries.is_a? Array -%>
+<% entries.each do |key| -%>
++ : <%= key %> : ALL
 <% end -%>
-<% elsif entry.is_a? String -%>
-+ : <%= entry %> : ALL
-<% end -%>
+<% elsif entries.is_a? String -%>
++ : <%= entries %> : ALL
+<% else -%>
++ : root : ALL
 <% end -%>
 
 # default deny

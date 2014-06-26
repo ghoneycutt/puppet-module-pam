@@ -31,9 +31,31 @@ This module has been tested to work on the following systems using Puppet v3 wit
 
 allowed_users
 -------------
-Array of users allowed to log in.
+Hash of strings and arrays to configure users and origins in access.conf.
 
 - *Default*: root
+
+# Hiera example for allowed_users
+<pre>
+pam::allowed_users:
+  'username':
+  'username1':
+    - 'cron'
+    - 'tty0'
+  'username2': 'tty1'
+</pre>
+
+This would create /etc/security/access.conf with content.
+<pre>
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+#
+
+#allow only the groups listed
++ : username : ALL
++ : username1 : cron tty0
++ : username2 : tty1
+</pre>
 
 limits_fragments
 ----------------

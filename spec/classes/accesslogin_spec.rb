@@ -77,6 +77,63 @@ describe 'pam::accesslogin' do
       }
     end
 
+    context 'with hash entry containing string values' do
+      let(:facts) do
+        {
+          :osfamily          => 'RedHat',
+          :lsbmajdistrelease => '5',
+        }
+      end
+      let(:pre_condition) do
+          'class {"pam": allowed_users => {"username1" => "cron", "username2" => "tty0"} }'
+      end
+      it { should contain_file('access_conf').with_content(/^\+ : username1 : cron$/)}
+      it { should contain_file('access_conf').with_content(/^\+ : username2 : tty0$/)}
+    end
+
+    context 'with hash entry containing array of values' do
+      let(:facts) do
+        {
+          :osfamily          => 'RedHat',
+          :lsbmajdistrelease => '5',
+        }
+      end
+      let(:pre_condition) do
+          'class {"pam": allowed_users => {"username" => ["cron", "tty0"]} }'
+      end
+      it { should contain_file('access_conf').with_content(/^\+ : username : cron tty0$/)}
+    end
+
+    context 'with hash entry containing no value should default to "ALL"' do
+      let(:facts) do
+        {
+          :osfamily          => 'RedHat',
+          :lsbmajdistrelease => '5',
+        }
+      end
+      let(:pre_condition) do
+          'class {"pam": allowed_users => {"username" => {} }}'
+      end
+      it { should contain_file('access_conf').with_content(/^\+ : username : ALL$/)}
+    end
+    
+    context 'with hash entries containing string, array and empty hash' do
+      let(:facts) do
+        {
+          :osfamily          => 'RedHat',
+          :lsbmajdistrelease => '5',
+        }
+      end
+      let(:pre_condition) do
+          'class {"pam": allowed_users => {"username" => "tty5", "username1" => ["cron", "tty0"], "username2" => "cron", "username3" => "tty0", "username4" => {}}}'
+      end
+      it { should contain_file('access_conf').with_content(/^\+ : username : tty5$/)}
+      it { should contain_file('access_conf').with_content(/^\+ : username1 : cron tty0$/)}
+      it { should contain_file('access_conf').with_content(/^\+ : username2 : cron$/)}
+      it { should contain_file('access_conf').with_content(/^\+ : username3 : tty0$/)}
+      it { should contain_file('access_conf').with_content(/^\+ : username4 : ALL$/)}
+    end
+
     context 'with custom values on supported platform' do
       let(:facts) do
         {

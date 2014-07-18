@@ -53,6 +53,36 @@ Path to pam.conf
 
 - *Default*: '/etc/pam.conf'
 
+pam_d_cron_path
+----------------
+PAM cron path
+
+- *Default*: '/etc/pam.d/cron'
+
+pam_d_cron_owner
+-----------------
+Owner of $pam_d_cron_path
+
+- *Default*: 'root'
+
+pam_d_cron_group
+-----------------
+Group of $pam_d_cron_path
+
+- *Default*: 'root'
+
+pam_d_cron_mode
+----------------
+Mode of $pam_d_cron_path
+
+- *Default*: '0644'
+
+pam_d_cron_template
+--------------------
+Content template of $pam_d_cron_path. If undef, parameter is set based on the OS version.
+
+- *Default*: undef, default is set based on OS version
+
 pam_d_login_oracle_options
 --------------------------
 Allow array of extra lines at the bottom of pam.d/login for oracle systems on EL5.
@@ -86,6 +116,36 @@ Mode of $pam_d_login_path
 pam_d_login_template
 --------------------
 Content template of $pam_d_login_path. If undef, parameter is set based on the OS version.
+
+- *Default*: undef, default is set based on OS version
+
+pam_d_passwd_path
+----------------
+PAM passwd path
+
+- *Default*: '/etc/pam.d/passwd'
+
+pam_d_passwd_owner
+-----------------
+Owner of $pam_d_passwd_path
+
+- *Default*: 'root'
+
+pam_d_passwd_group
+-----------------
+Group of $pam_d_passwd_path
+
+- *Default*: 'root'
+
+pam_d_passwd_mode
+----------------
+Mode of $pam_d_passwd_path
+
+- *Default*: '0644'
+
+pam_d_passwd_template
+--------------------
+Content template of $pam_d_passwd_path. If undef, parameter is set based on the OS version.
 
 - *Default*: undef, default is set based on OS version
 

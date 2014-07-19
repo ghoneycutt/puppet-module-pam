@@ -31,9 +31,52 @@ This module has been tested to work on the following systems using Puppet v3 wit
 
 allowed_users
 -------------
-Array of users allowed to log in.
+Array or Hash of strings and/or arrays to configure users and origins in access.conf. The default allows the root user/group from origin 'ALL'.
 
-- *Default*: root
+- *Default*: 'root'
+
+# Hiera example for allowed_users
+<pre>
+# as an array where the origin for each is 'ALL'
+pam::allowed_users:
+  - root
+  - ops
+  - devs
+</pre>
+
+This would create /etc/security/access.conf with the following content.
+<pre>
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+#
+
+#allow only the groups listed
++ : root : ALL
++ : ops : ALL
++ : devs : ALL
+</pre>
+
+<pre>
+# as a hash where the user/group can optionally specify the origin
+pam::allowed_users:
+  'username':
+  'username1':
+    - 'cron'
+    - 'tty0'
+  'username2': 'tty1'
+</pre>
+
+This would create /etc/security/access.conf with the following content.
+<pre>
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+#
+
+#allow only the groups listed
++ : username : ALL
++ : username1 : cron tty0
++ : username2 : tty1
+</pre>
 
 limits_fragments
 ----------------

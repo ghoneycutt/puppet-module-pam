@@ -37,7 +37,7 @@ describe 'pam::accesslogin' do
       }
     end
 
-    context 'with multiple users on supported platform' do
+    context 'with multiple users on supported platform expressed as an array' do
       let(:facts) do
         {
           :osfamily          => 'RedHat',
@@ -116,7 +116,7 @@ describe 'pam::accesslogin' do
       end
       it { should contain_file('access_conf').with_content(/^\+ : username : ALL$/)}
     end
-    
+
     context 'with hash entries containing string, array and empty hash' do
       let(:facts) do
         {

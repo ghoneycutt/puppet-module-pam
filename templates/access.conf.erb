@@ -4,7 +4,7 @@
 
 # allow only the groups listed
 <%
-entries = scope.lookupvar('pam::allowed_users')    
+entries = scope.lookupvar('pam::allowed_users')
 -%>
 <% if entries.is_a? Hash -%>
 <% entries.each do |key, value| -%>

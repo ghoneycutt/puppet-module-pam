@@ -4,8 +4,8 @@ describe 'pam::accesslogin' do
     context 'with default values on supported platform' do
       let(:facts) do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                   => 'RedHat',
+          :operatingsystemmajrelease  => '5',
         }
       end
 
@@ -40,8 +40,8 @@ describe 'pam::accesslogin' do
     context 'with multiple users on supported platform expressed as an array' do
       let(:facts) do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                   => 'RedHat',
+          :operatingsystemmajrelease  => '5',
         }
       end
       let(:pre_condition) do
@@ -80,8 +80,8 @@ describe 'pam::accesslogin' do
     context 'with hash entry containing string values' do
       let(:facts) do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                   => 'RedHat',
+          :operatingsystemmajrelease  => '5',
         }
       end
       let(:pre_condition) do
@@ -94,8 +94,8 @@ describe 'pam::accesslogin' do
     context 'with hash entry containing array of values' do
       let(:facts) do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                   => 'RedHat',
+          :operatingsystemmajrelease  => '5',
         }
       end
       let(:pre_condition) do
@@ -107,8 +107,8 @@ describe 'pam::accesslogin' do
     context 'with hash entry containing no value should default to "ALL"' do
       let(:facts) do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                   => 'RedHat',
+          :operatingsystemmajrelease  => '5',
         }
       end
       let(:pre_condition) do
@@ -120,8 +120,8 @@ describe 'pam::accesslogin' do
     context 'with hash entries containing string, array and empty hash' do
       let(:facts) do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                   => 'RedHat',
+          :operatingsystemmajrelease  => '5',
         }
       end
       let(:pre_condition) do
@@ -137,8 +137,8 @@ describe 'pam::accesslogin' do
     context 'with custom values on supported platform' do
       let(:facts) do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                   => 'RedHat',
+          :operatingsystemmajrelease  => '5',
         }
       end
 

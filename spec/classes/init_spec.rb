@@ -12,7 +12,7 @@ describe 'pam' do
       it 'should fail' do
         expect {
           should contain_class('pam')
-        }.to raise_error(Puppet::Error,/Pam is only supported on EL 5, 6 and 7. Your lsbmajdistrelease is identified as <4>./)
+        }.to raise_error(Puppet::Error,/Pam is only supported on EL 5, 6 and 7. Your Your operatingsystemmajrelease is identified as <4>./)
       end
     end
 
@@ -77,11 +77,11 @@ describe 'pam' do
 
   describe 'packages' do
 
-    context 'with default params on osfamily RedHat with lsbmajdistrelease 5' do
+    context 'with default params on osfamily RedHat with operatingsystemmajrelease 5' do
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '5',
         }
       end
 
@@ -94,11 +94,11 @@ describe 'pam' do
       end
     end
 
-    context 'with default params on osfamily RedHat with lsbmajdistrelease 6' do
+    context 'with default params on osfamily RedHat with operatingsystemmajrelease 6' do
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '6',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '6',
         }
       end
 
@@ -109,11 +109,11 @@ describe 'pam' do
       end
     end
 
-    context 'with default params on osfamily RedHat with lsbmajdistrelease 7' do
+    context 'with default params on osfamily RedHat with operatingsystemmajrelease 7' do
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '7',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '7',
         }
       end
 
@@ -222,8 +222,8 @@ describe 'pam' do
     context 'with specifying package_name on valid platform' do
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '5',
         }
       end
 
@@ -278,11 +278,11 @@ describe 'pam' do
 
     end
 
-    context 'with default params on osfamily RedHat with lsbmajdistrelease 5' do
+    context 'with default params on osfamily RedHat with operatingsystemmajrelease 5' do
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '5',
         }
       end
 
@@ -384,11 +384,11 @@ session    required     pam_loginuid.so
       it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) }
     end
 
-    context 'with default params on osfamily RedHat with lsbmajdistrelease 6' do
+    context 'with default params on osfamily RedHat with operatingsystemmajrelease 6' do
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '6',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '6',
         }
       end
 
@@ -498,11 +498,11 @@ session    include      password-auth
       it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) }
     end
 
-    context 'with default params on osfamily RedHat with lsbmajdistrelease 7' do
+    context 'with default params on osfamily RedHat with operatingsystemmajrelease 7' do
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '7',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '7',
         }
       end
 
@@ -1392,7 +1392,7 @@ session required        pam_unix_session.so.1
       }
     end
 
-    context 'with ensure_vas=present and default vas_major_version (4) on osfamily RedHat with lsbmajdistrelease 5' do
+    context 'with ensure_vas=present and default vas_major_version (4) on osfamily RedHat with operatingsystemmajrelease 5' do
       let (:params) do
         {
           :ensure_vas => 'present',
@@ -1400,8 +1400,8 @@ session required        pam_unix_session.so.1
       end
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '5',
         }
       end
 
@@ -1422,7 +1422,7 @@ session required        pam_unix_session.so.1
       it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) }
     end
 
-    context 'with ensure_vas=present and default vas_major_version (4) on osfamily RedHat with lsbmajdistrelease 6' do
+    context 'with ensure_vas=present and default vas_major_version (4) on osfamily RedHat with operatingsystemmajrelease 6' do
       let (:params) do
         {
           :ensure_vas => 'present',
@@ -1430,8 +1430,8 @@ session required        pam_unix_session.so.1
       end
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '6',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '6',
         }
       end
 
@@ -1452,7 +1452,7 @@ session required        pam_unix_session.so.1
       it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) }
     end
 
-    context 'with ensure_vas=present and default vas_major_version (4) on osfamily RedHat with lsbmajdistrelease 7' do
+    context 'with ensure_vas=present and default vas_major_version (4) on osfamily RedHat with operatingsystemmajrelease 7' do
       let (:params) do
         {
           :ensure_vas => 'present',
@@ -1460,8 +1460,8 @@ session required        pam_unix_session.so.1
       end
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '7',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '7',
         }
       end
 
@@ -1482,7 +1482,7 @@ session required        pam_unix_session.so.1
       it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) }
     end
 
-    context 'with ensure_vas=present and vas_major_version=3 on osfamily RedHat with lsbmajdistrelease 5' do
+    context 'with ensure_vas=present and vas_major_version=3 on osfamily RedHat with operatingsystemmajrelease 5' do
       let (:params) do
         {
           :ensure_vas        => 'present',
@@ -1491,8 +1491,8 @@ session required        pam_unix_session.so.1
       end
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '5',
         }
       end
 
@@ -1512,7 +1512,7 @@ session required        pam_unix_session.so.1
       it { should contain_file('pam_system_auth_ac').with_content(/session[\s]+required[\s]+pam_vas3.so/) }
     end
 
-    context 'with ensure_vas=present and vas_major_version=3 on osfamily RedHat with lsbmajdistrelease 6' do
+    context 'with ensure_vas=present and vas_major_version=3 on osfamily RedHat with operatingsystemmajrelease 6' do
       let (:params) do
         {
           :ensure_vas        => 'present',
@@ -1521,8 +1521,8 @@ session required        pam_unix_session.so.1
       end
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '6',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '6',
         }
       end
 
@@ -2274,7 +2274,7 @@ other   session  required        pam_unix_session.so.1
       }
     end
 
-    context 'with ensure_vas=present and unsupported vas_major_version on osfamily RedHat with lsbmajdistrelease 5' do
+    context 'with ensure_vas=present and unsupported vas_major_version on osfamily RedHat with operatingsystemmajrelease 5' do
       let (:params) do
         {
           :ensure_vas        => 'present',
@@ -2283,8 +2283,8 @@ other   session  required        pam_unix_session.so.1
       end
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '5',
         }
       end
 
@@ -2295,7 +2295,7 @@ other   session  required        pam_unix_session.so.1
       end
     end
 
-    context 'with ensure_vas=present and unsupported vas_major_version on osfamily RedHat with lsbmajdistrelease 5' do
+    context 'with ensure_vas=present and unsupported vas_major_version on osfamily RedHat with operatingsystemmajrelease 5' do
       let (:params) do
         {
           :ensure_vas        => 'present',
@@ -2304,8 +2304,8 @@ other   session  required        pam_unix_session.so.1
       end
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '5',
         }
       end
 
@@ -2316,7 +2316,7 @@ other   session  required        pam_unix_session.so.1
       end
     end
 
-    context 'with ensure_vas=present and unsupported vas_major_version on osfamily RedHat with lsbmajdistrelease 6' do
+    context 'with ensure_vas=present and unsupported vas_major_version on osfamily RedHat with operatingsystemmajrelease 6' do
       let (:params) do
         {
           :ensure_vas        => 'present',
@@ -2325,8 +2325,8 @@ other   session  required        pam_unix_session.so.1
       end
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '6',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '6',
         }
       end
 
@@ -2337,7 +2337,7 @@ other   session  required        pam_unix_session.so.1
       end
     end
 
-    context 'with ensure_vas=present and unsupported vas_major_version on osfamily RedHat with lsbmajdistrelease 7' do
+    context 'with ensure_vas=present and unsupported vas_major_version on osfamily RedHat with operatingsystemmajrelease 7' do
       let (:params) do
         {
           :ensure_vas        => 'present',
@@ -2346,8 +2346,8 @@ other   session  required        pam_unix_session.so.1
       end
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '7',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '7',
         }
       end
 

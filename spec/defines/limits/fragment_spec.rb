@@ -8,8 +8,8 @@ describe 'pam::limits::fragment' do
     }
     let(:facts) {
       {
-        :osfamily          => 'RedHat',
-        :lsbmajdistrelease => '5',
+        :osfamily                   => 'RedHat',
+        :operatingsystemmajrelease  => '5',
       }
     }
 
@@ -36,8 +36,8 @@ describe 'pam::limits::fragment' do
     }
     let(:facts) {
       {
-        :osfamily          => 'RedHat',
-        :lsbmajdistrelease => '5',
+        :osfamily                   => 'RedHat',
+        :operatingsystemmajrelease  => '5',
       }
     }
 
@@ -73,8 +73,8 @@ root soft nproc unlimited
     }
     let(:facts) {
       {
-        :osfamily          => 'RedHat',
-        :lsbmajdistrelease => '5',
+        :osfamily                   => 'RedHat',
+        :operatingsystemmajrelease  => '5',
       }
     }
 
@@ -103,8 +103,8 @@ root soft nproc unlimited
     let(:title) { '80-nproc' }
     let(:facts) {
       {
-        :osfamily          => 'RedHat',
-        :lsbmajdistrelease => '5',
+        :osfamily                   => 'RedHat',
+        :operatingsystemmajrelease  => '5',
       }
     }
 

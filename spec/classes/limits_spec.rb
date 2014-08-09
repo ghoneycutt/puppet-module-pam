@@ -4,8 +4,8 @@ describe 'pam::limits' do
     context 'ensure file exists with default values for params on a supported platform' do
       let(:facts) do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                   => 'RedHat',
+          :operatingsystemmajrelease  => '5',
         }
       end
 
@@ -32,8 +32,8 @@ describe 'pam::limits' do
       end
       let(:facts) do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                   => 'RedHat',
+          :operatingsystemmajrelease  => '5',
         }
       end
 
@@ -55,8 +55,8 @@ describe 'pam::limits' do
       let(:params) { { :config_file => 'custom/security/limits.conf' } }
       let(:facts) do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                   => 'RedHat',
+          :operatingsystemmajrelease  => '5',
         }
       end
 
@@ -71,8 +71,8 @@ describe 'pam::limits' do
       let(:params) { { :config_file_mode => '666' } }
       let(:facts) do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                   => 'RedHat',
+          :operatingsystemmajrelease  => '5',
         }
       end
 
@@ -88,8 +88,8 @@ describe 'pam::limits' do
     context 'ensure directory exists with default values for params on a supported platform' do
       let(:facts) do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                   => 'RedHat',
+          :operatingsystemmajrelease  => '5',
         }
       end
 
@@ -112,8 +112,8 @@ describe 'pam::limits' do
     context 'ensure directory exists with custom values for params on a supported platform' do
       let(:facts) do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                   => 'RedHat',
+          :operatingsystemmajrelease  => '5',
         }
       end
 
@@ -144,8 +144,8 @@ describe 'pam::limits' do
       let(:params) { { :limits_d_dir => 'custom/security/limits.d' } }
       let(:facts) do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                   => 'RedHat',
+          :operatingsystemmajrelease  => '5',
         }
       end
 
@@ -160,8 +160,8 @@ describe 'pam::limits' do
       let(:params) { { :limits_d_dir_mode => '777' } }
       let(:facts) do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                   => 'RedHat',
+          :operatingsystemmajrelease  => '5',
         }
       end
 

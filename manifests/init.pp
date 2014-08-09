@@ -47,7 +47,7 @@ class pam (
 
   case $::osfamily {
     'RedHat': {
-      case $::lsbmajdistrelease {
+      case $::operatingsystemmajrelease {
         '5': {
           $default_pam_d_login_template = 'pam/login.el5.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.el5.erb'
@@ -185,12 +185,12 @@ class pam (
           }
         }
         default: {
-          fail("Pam is only supported on EL 5 and 6. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
+          fail("Pam is only supported on EL 5 and 6. Your operatingsystemmajrelease is identified as <${::operatingsystemmajrelease}>.")
         }
       }
     }
     'Suse': {
-      case $::lsbmajdistrelease {
+      case $::operatingsystemmajrelease {
         '9': {
           $default_pam_d_login_template = 'pam/login.suse9.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.suse9.erb'
@@ -288,7 +288,7 @@ class pam (
             }
         }
         default: {
-          fail("Pam is only supported on Suse 10 and 11. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
+          fail("Pam is only supported on Suse 10 and 11. Your operatingsystemmajrelease is identified as <${::operatingsystemmajrelease}>.")
         }
       }
     }
@@ -610,7 +610,7 @@ class pam (
           }
         }
         'Suse': {
-          case $::lsbmajdistrelease {
+          case $::operatingsystemmajrelease {
             '9': {
 
               file { 'pam_other':
@@ -743,7 +743,7 @@ class pam (
               }
             }
             default : {
-              fail("Pam is only supported on Suse 9, 10 and 11. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
+              fail("Pam is only supported on Suse 9, 10 and 11. Your operatingsystemmajrelease is identified as <${::operatingsystemmajrelease}>.")
             }
           }
         }

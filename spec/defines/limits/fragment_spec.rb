@@ -9,7 +9,7 @@ describe 'pam::limits::fragment' do
     let(:facts) {
       {
         :osfamily          => 'RedHat',
-        :lsbmajdistrelease => '5',
+        :operatingsystemmajrelease => '5',
       }
     }
 
@@ -37,7 +37,7 @@ describe 'pam::limits::fragment' do
     let(:facts) {
       {
         :osfamily          => 'RedHat',
-        :lsbmajdistrelease => '5',
+        :operatingsystemmajrelease => '5',
       }
     }
 
@@ -74,7 +74,7 @@ root soft nproc unlimited
     let(:facts) {
       {
         :osfamily          => 'RedHat',
-        :lsbmajdistrelease => '5',
+        :operatingsystemmajrelease => '5',
       }
     }
 
@@ -104,7 +104,7 @@ root soft nproc unlimited
     let(:facts) {
       {
         :osfamily          => 'RedHat',
-        :lsbmajdistrelease => '5',
+        :operatingsystemmajrelease => '5',
       }
     }
 

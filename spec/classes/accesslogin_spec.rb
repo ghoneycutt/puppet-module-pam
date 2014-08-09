@@ -5,7 +5,7 @@ describe 'pam::accesslogin' do
       let(:facts) do
         {
           :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :operatingsystemmajrelease => '5',
         }
       end
 
@@ -41,7 +41,7 @@ describe 'pam::accesslogin' do
       let(:facts) do
         {
           :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :operatingsystemmajrelease => '5',
         }
       end
       let(:pre_condition) do
@@ -81,7 +81,7 @@ describe 'pam::accesslogin' do
       let(:facts) do
         {
           :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :operatingsystemmajrelease => '5',
         }
       end
       let(:pre_condition) do
@@ -95,7 +95,7 @@ describe 'pam::accesslogin' do
       let(:facts) do
         {
           :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :operatingsystemmajrelease => '5',
         }
       end
       let(:pre_condition) do
@@ -108,7 +108,7 @@ describe 'pam::accesslogin' do
       let(:facts) do
         {
           :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :operatingsystemmajrelease => '5',
         }
       end
       let(:pre_condition) do
@@ -121,7 +121,7 @@ describe 'pam::accesslogin' do
       let(:facts) do
         {
           :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :operatingsystemmajrelease => '5',
         }
       end
       let(:pre_condition) do
@@ -138,7 +138,7 @@ describe 'pam::accesslogin' do
       let(:facts) do
         {
           :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :operatingsystemmajrelease => '5',
         }
       end
 

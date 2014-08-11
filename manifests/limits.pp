@@ -22,7 +22,6 @@ class pam::limits (
   include pam
 
   # ensure target exists
-  include common
   common::mkdir_p { $limits_d_dir: }
 
   file { 'limits_d':

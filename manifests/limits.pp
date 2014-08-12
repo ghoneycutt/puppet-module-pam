@@ -30,7 +30,9 @@ class pam::limits (
     owner   => 'root',
     group   => 'root',
     mode    => $limits_d_dir_mode,
-    require => Package[$pam::my_package_name],
+    require => [ Package[$pam::my_package_name],
+                Common::Mkdir_p[$limits_d_dir],
+                ],
   }
 
   file { 'limits_conf':

@@ -95,6 +95,8 @@ describe 'pam::limits' do
 
       it { should contain_class('pam') }
 
+      it { should contain_common__mkdir_p('/etc/security/limits.d') }
+
       it {
         should contain_file('limits_d').with({
           'ensure'  => 'directory',
@@ -102,7 +104,7 @@ describe 'pam::limits' do
           'owner'   => 'root',
           'group'   => 'root',
           'mode'    => '0750',
-          'require' => [ 'Package[pam]', 'Package[util-linux]' ],
+          'require' => [ 'Package[pam]', 'Package[util-linux]', 'Common::Mkdir_p[/etc/security/limits.d]' ],
         })
       }
     end
@@ -124,6 +126,8 @@ describe 'pam::limits' do
 
       it { should contain_class('pam') }
 
+      it { should contain_common__mkdir_p('/custom/security/limits.d') }
+
       it {
         should contain_file('limits_d').with({
           'ensure'  => 'directory',
@@ -131,7 +135,7 @@ describe 'pam::limits' do
           'owner'   => 'root',
           'group'   => 'root',
           'mode'    => '0700',
-          'require' => [ 'Package[pam]', 'Package[util-linux]' ],
+          'require' => [ 'Package[pam]', 'Package[util-linux]', 'Common::Mkdir_p[/custom/security/limits.d]' ],
         })
       }
     end

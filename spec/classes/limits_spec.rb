@@ -123,7 +123,6 @@ describe 'pam::limits' do
       end
 
       it { should contain_class('pam') }
-      it { should contain_class('common') }
 
       it {
         should contain_file('limits_d').with({

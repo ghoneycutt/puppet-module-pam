@@ -47,7 +47,7 @@ class pam (
 
   case $::osfamily {
     'RedHat': {
-      case $::lsbmajdistrelease {
+      case $::operatingsystemmajrelease {
         '5': {
           $default_pam_d_login_template = 'pam/login.el5.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.el5.erb'
@@ -185,7 +185,7 @@ class pam (
           }
         }
         default: {
-          fail("Pam is only supported on EL 5 and 6. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
+          fail("Pam is only supported on EL 5 and 6. Your operatingsystemmajrelease is identified as <${::operatingsystemmajrelease}>.")
         }
       }
     }

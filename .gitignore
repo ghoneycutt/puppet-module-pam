@@ -28,3 +28,6 @@ doc/
 coverage/
 spec/fixtures/modules/*
 Gemfile.lock
+
+# Beaker
+.vagrant/

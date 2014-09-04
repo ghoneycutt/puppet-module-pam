@@ -40,6 +40,8 @@ class pam (
   $system_auth_ac_account_lines        = undef,
   $system_auth_ac_password_lines       = undef,
   $system_auth_ac_session_lines        = undef,
+  $password_auth_file                  = '/etc/pam.d/password-auth',
+  $password_auth_ac_file               = '/etc/pam.d/password-auth-ac',
   $vas_major_version                   = '4',
 ) {
 
@@ -164,7 +166,6 @@ class pam (
                                             'session     required      pam_unix.so']
           } else {
             $default_pam_auth_lines = [ 'auth        required      pam_env.so',
-                                        'auth        sufficient    pam_fprintd.so',
                                         'auth        sufficient    pam_unix.so nullok try_first_pass',
                                         'auth        requisite     pam_succeed_if.so uid >= 500 quiet',
                                         'auth        required      pam_deny.so']
@@ -554,6 +555,27 @@ class pam (
             owner   => 'root',
             group   => 'root',
             require => Package[$my_package_name],
+          }
+
+          if $::lsbmajdistrelease >= 6 {
+            file { 'pam_password_auth_ac':
+              ensure  => file,
+              path    => $password_auth_ac_file,
+              content => template('pam/password-auth-ac.erb'),
+              owner   => 'root',
+              group   => 'root',
+              mode    => '0644',
+              require => Package[$my_package_name],
+            }
+
+            file { 'pam_password_auth':
+              ensure  => symlink,
+              path    => $password_auth_file,
+              target  => $password_auth_ac_file,
+              owner   => 'root',
+              group   => 'root',
+              require => Package[$my_package_name],
+            }
           }
 
         }

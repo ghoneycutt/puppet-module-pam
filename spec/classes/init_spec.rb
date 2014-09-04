@@ -301,6 +301,10 @@ session     required      pam_unix.so
         })
       }
 
+      it { should_not contain_file('pam_password_auth_ac') }
+
+      it { should_not contain_file('pam_password_auth') }
+
       it {
         should contain_file('pam_d_login').with({
           'ensure' => 'file',
@@ -375,7 +379,6 @@ session    required     pam_loginuid.so
 # DO NOT EDIT
 # Auth
 auth        required      pam_env.so
-auth        sufficient    pam_fprintd.so
 auth        sufficient    pam_unix.so nullok try_first_pass
 auth        requisite     pam_succeed_if.so uid >= 500 quiet
 auth        required      pam_deny.so
@@ -403,6 +406,41 @@ session     required      pam_unix.so
         should contain_file('pam_system_auth').with({
           'ensure' => 'symlink',
           'path'   => '/etc/pam.d/system-auth',
+          'owner'  => 'root',
+          'group'  => 'root',
+        })
+      }
+
+      it {
+        should contain_file('pam_password_auth_ac').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/password-auth-ac',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+      }
+
+      it { should contain_file('pam_password_auth_ac').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+# Auth
+auth       include      system-auth
+
+# Account
+account    include      system-auth
+
+# Password
+password   include      system-auth
+
+# Session
+session    include      system-auth
+")
+      }
+
+      it {
+        should contain_file('pam_password_auth').with({
+          'ensure' => 'symlink',
+          'path'   => '/etc/pam.d/password-auth',
           'owner'  => 'root',
           'group'  => 'root',
         })

@@ -92,4 +92,31 @@ session     required      pam_unix.so
 EXPECTED
     it { should contain(expected_content) }
   end
+
+  describe file('/etc/pam.d/password-auth') do
+    it { should be_linked_to '/etc/pam.d/password-auth-ac' }
+  end
+
+  describe file('/etc/pam.d/password-auth-ac') do
+    it { should be_file }
+    it { should be_mode 644 }
+    it { should be_owned_by 'root' }
+    it { should be_grouped_into 'root' }
+    expected_content = (<<EXPECTED).split(/\n/)
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+# Auth
+auth       include      system-auth
+
+# Account
+account    include      system-auth
+
+# Password
+password   include      system-auth
+
+# Session
+session    include      system-auth
+EXPECTED
+    it { should contain(expected_content) }
+  end
 end

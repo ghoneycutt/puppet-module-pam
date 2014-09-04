@@ -148,8 +148,8 @@ describe 'pam::limits' do
       let(:params) { { :purge_limits_d_dir => true } }
       let(:facts) do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                   => 'RedHat',
+          :operatingsystemmajrelease  => '5',
         }
       end
 
@@ -203,8 +203,8 @@ describe 'pam::limits' do
       let(:params) { { :purge_limits_d_dir => 'foo' } }
       let(:facts) do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+          :osfamily                   => 'RedHat',
+          :operatingsystemmajrelease  => '5',
         }
       end
 

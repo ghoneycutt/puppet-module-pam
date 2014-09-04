@@ -557,7 +557,7 @@ class pam (
             require => Package[$my_package_name],
           }
 
-          if $::lsbmajdistrelease >= 6 {
+          if $::operatingsystemmajrelease >= 6 {
             file { 'pam_password_auth_ac':
               ensure  => file,
               path    => $password_auth_ac_file,

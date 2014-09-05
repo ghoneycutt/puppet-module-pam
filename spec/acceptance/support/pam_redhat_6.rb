@@ -68,7 +68,6 @@ EXPECTED
 # DO NOT EDIT
 # Auth
 auth        required      pam_env.so
-auth        sufficient    pam_fprintd.so
 auth        sufficient    pam_unix.so nullok try_first_pass
 auth        requisite     pam_succeed_if.so uid >= 500 quiet
 auth        required      pam_deny.so

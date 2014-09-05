@@ -349,8 +349,8 @@ class pam (
               }
             }
             '14.04': {
-              $default_pam_d_login_template = 'pam/login.ubuntu12.erb'
-              $default_pam_d_sshd_template  = 'pam/sshd.ubuntu12.erb'
+              $default_pam_d_login_template = 'pam/login.ubuntu14.erb'
+              $default_pam_d_sshd_template  = 'pam/sshd.ubuntu14.erb'
               $default_package_name         = 'libpam0g'
               
               $default_pam_auth_lines = [ 'auth  [success=1 default=ignore]  pam_unix.so nullok_secure',

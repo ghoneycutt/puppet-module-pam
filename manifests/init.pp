@@ -15,11 +15,13 @@ class pam (
   $pam_d_login_group                   = 'root',
   $pam_d_login_mode                    = '0644',
   $pam_d_login_template                = undef,
+  $pam_d_login_template_content        = undef,
   $pam_d_sshd_path                     = '/etc/pam.d/sshd',
   $pam_d_sshd_owner                    = 'root',
   $pam_d_sshd_group                    = 'root',
   $pam_d_sshd_mode                     = '0644',
   $pam_d_sshd_template                 = undef,
+  $pam_d_sshd_template_content         = undef,
   $pam_auth_lines                      = undef,
   $pam_account_lines                   = undef,
   $pam_password_lines                  = undef,
@@ -541,10 +543,22 @@ class pam (
         ensure => installed,
       }
 
+      if $pam_d_login_template_content == undef {
+        $my_pam_d_login_template_content = template($my_pam_d_login_template)
+      } else {
+        $my_pam_d_login_template_content = $pam_d_login_template_content
+      }
+
+      if $pam_d_sshd_template_content == undef {
+        $my_pam_d_sshd_template_content  = template($my_pam_d_sshd_template)
+      } else {
+        $my_pam_d_sshd_template_content  = $pam_d_sshd_template_content
+      }
+
       file { 'pam_d_login':
         ensure  => file,
         path    => $pam_d_login_path,
-        content => template($my_pam_d_login_template),
+        content => $my_pam_d_login_template_content,
         owner   => $pam_d_login_owner,
         group   => $pam_d_login_group,
         mode    => $pam_d_login_mode,
@@ -553,7 +567,7 @@ class pam (
       file { 'pam_d_sshd':
         ensure  => file,
         path    => $pam_d_sshd_path,
-        content => template($my_pam_d_sshd_template),
+        content => $my_pam_d_sshd_template_content,
         owner   => $pam_d_sshd_owner,
         group   => $pam_d_sshd_group,
         mode    => $pam_d_sshd_mode,

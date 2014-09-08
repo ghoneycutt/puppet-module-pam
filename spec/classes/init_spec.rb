@@ -56,7 +56,7 @@ describe 'pam' do
       it 'should fail' do
         expect {
           should contain_class('pam')
-        }.to raise_error(Puppet::Error,/Pam is only supported on Ubuntu 12.04. Your lsbdistrelease is identified as <10.04>./)
+        }.to raise_error(Puppet::Error,/Pam is only supported on Ubuntu 12.04 and 14.04. Your lsbdistrelease is identified as <10.04>./)
       end
     end
 

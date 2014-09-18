@@ -298,6 +298,41 @@ Content template of $system_auth_ac_file. If undef, parameter is set based on th
 
 - *Default*: undef, default is set based on OS version
 
+password_auth_file
+----------------
+Path to password-auth. Used on RedHat.
+
+- *Default*: '/etc/pam.d/password-auth'
+
+password_auth_ac_file
+-------------------
+Path to password-auth-ac. Used on RedHat.
+
+- *Default*: '/etc/pam.d/password-auth-ac'
+
+pam_password_auth_lines
+-------------------------
+Content template of $password_auth_ac_file. If undef, parameter is set based on the OS version.
+
+- *Default*: undef, default is set based on OS version
+
+pam_password_account_lines
+----------------------------
+Content template of $password_auth_ac_file. If undef, parameter is set based on the OS version.
+
+- *Default*: undef, default is set based on OS version
+
+pam_password_pswd_lines 
+-----------------------------
+Content template of $password_auth_ac_file. If undef, parameter is set based on the OS version.
+
+- *Default*: undef, default is set based on OS version
+
+pam_password_session_lines 
+----------------------------
+Content template of $password_auth_ac_file. If undef, parameter is set based on the OS version.
+
+- *Default*: undef, default is set based on OS version
 ===
 
 # define pam::accesslogin

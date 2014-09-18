@@ -530,7 +530,6 @@ session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet 
 session     required      pam_unix.so
 ")
       }
-
       it {
         should contain_file('pam_system_auth').with({
           'ensure' => 'symlink',
@@ -539,7 +538,6 @@ session     required      pam_unix.so
           'group'  => 'root',
         })
       }
-
       it {
         should contain_file('pam_d_login').with({
           'ensure' => 'file',
@@ -598,6 +596,49 @@ session    include      password-auth
       }
 
       it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) }
+      it {
+        should contain_file('pam_password_auth_ac').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/password-auth-ac',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+      }
+	  it { should contain_file('pam_password_auth_ac').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+# Auth
+auth        required      pam_env.so
+auth        sufficient    pam_unix.so nullok try_first_pass
+auth        requisite     pam_succeed_if.so uid >= 500 quiet
+auth        required      pam_deny.so
+
+# Account
+account     required      pam_unix.so
+account     sufficient    pam_localuser.so
+account     sufficient    pam_succeed_if.so uid < 500 quiet
+account     required      pam_permit.so
+
+# Password
+password    requisite     pam_cracklib.so try_first_pass retry=3 type=
+password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok
+password    required      pam_deny.so
+
+# Session
+session     optional      pam_keyinit.so revoke
+session     required      pam_limits.so
+session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid
+session     required      pam_unix.so
+")
+      }
+	  it {
+        should contain_file('pam_password_auth').with({
+          'ensure' => 'symlink',
+          'path'   => '/etc/pam.d/password-auth',
+          'owner'  => 'root',
+          'group'  => 'root',
+        })
+      }
     end
 
     context 'with login_pam_access => sufficient on osfamily RedHat with operatingsystemmajrelease 6' do
@@ -1794,6 +1835,21 @@ session required        pam_unix_session.so.1
       it { should contain_file('pam_system_auth_ac').with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) }
       it { should contain_file('pam_system_auth_ac').with_content(/session[\s]+required[\s]+pam_vas3.so/) }
       it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) }
+      it {
+        should contain_file('pam_password_auth_ac').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/password-auth-ac',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+      }
+
+      it { should contain_file('pam_password_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so create_homedir get_nonvas_pass/) }
+      it { should contain_file('pam_password_auth_ac').with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_password_auth_ac').with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_password_auth_ac').with_content(/session[\s]+required[\s]+pam_limits.so/) }
+      it { should_not contain_file('pam_password_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) }
     end
 
     context 'with ensure_vas=present and vas_major_version=3 on osfamily RedHat with operatingsystemmajrelease 5' do
@@ -1973,14 +2029,24 @@ session   optional  pam_mail.so standard
         })
       }
 
-      it { should contain_file('pam_d_sshd').with_content("#%PAM-1.0
-auth      include   common-auth
-auth      required  pam_nologin.so
-account   include   common-account
-password  include   common-password
-session   include   common-session
-")
+      it { should contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) }
+      it { should contain_file('pam_system_auth_ac').with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_system_auth_ac').with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_system_auth_ac').with_content(/session[\s]+required[\s]+pam_vas3.so/) }
+      it {
+        should contain_file('pam_password_auth_ac').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/password-auth-ac',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
       }
+
+      it { should contain_file('pam_password_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so create_homedir get_nonvas_pass/) }
+      it { should contain_file('pam_password_auth_ac').with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_password_auth_ac').with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_password_auth_ac').with_content(/session[\s]+required[\s]+pam_vas3.so/) }
     end
 
     context 'with ensure_vas=present on osfamily Suse with lsbmajdistrelease 11' do

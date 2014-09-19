@@ -305,55 +305,8 @@ session     required      pam_unix.so
 
       it { should_not contain_file('pam_password_auth') }
 
-      it {
-        should contain_file('pam_d_login').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/login',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-        })
-      }
-
-      it { should contain_file('pam_d_login').with_content("#%PAM-1.0
-auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so
-auth       include      system-auth
-account    required     pam_nologin.so
-account    include      system-auth
-account    required     pam_access.so
-password   include      system-auth
-# pam_selinux.so close should be the first session rule
-session    required     pam_selinux.so close
-session    optional     pam_keyinit.so force revoke
-session    required     pam_loginuid.so
-session    include      system-auth
-session    optional     pam_console.so
-# pam_selinux.so open should only be followed by sessions to be executed in the user context
-session    required     pam_selinux.so open
-")
-      }
-
-      it {
-        should contain_file('pam_d_sshd').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/sshd',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-        })
-      }
-
-      it { should contain_file('pam_d_sshd').with_content("#%PAM-1.0
-auth       include      system-auth
-account    required     pam_nologin.so
-account    include      system-auth
-account    required     pam_access.so
-password   include      system-auth
-session    optional     pam_keyinit.so force revoke
-session    include      system-auth
-session    required     pam_loginuid.so
-")
-      }
+      it_behaves_like "pam_d_login-el5"
+      it_behaves_like "pam_d_sshd-el5"
 
       it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) }
     end
@@ -446,62 +399,8 @@ session    include      system-auth
         })
       }
 
-      it {
-        should contain_file('pam_d_login').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/login',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-        })
-      }
-
-      it { should contain_file('pam_d_login').with_content("#%PAM-1.0
-auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so
-auth       include      system-auth
-account    required     pam_nologin.so
-account    include      system-auth
-account    required     pam_access.so
-password   include      system-auth
-# pam_selinux.so close should be the first session rule
-session    required     pam_selinux.so close
-session    required     pam_loginuid.so
-session    optional     pam_console.so
-# pam_selinux.so open should only be followed by sessions to be executed in the user context
-session    required     pam_selinux.so open
-session    required     pam_namespace.so
-session    optional     pam_keyinit.so force revoke
-session    include      system-auth
--session   optional     pam_ck_connector.so
-")
-      }
-
-      it {
-        should contain_file('pam_d_sshd').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/sshd',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-        })
-      }
-
-      it { should contain_file('pam_d_sshd').with_content("#%PAM-1.0
-auth       required     pam_sepermit.so
-auth       include      password-auth
-account    required     pam_access.so
-account    required     pam_nologin.so
-account    include      password-auth
-password   include      password-auth
-# pam_selinux.so close should be the first session rule
-session    required     pam_selinux.so close
-session    required     pam_loginuid.so
-# pam_selinux.so open should only be followed by sessions to be executed in the user context
-session    required     pam_selinux.so open env_params
-session    optional     pam_keyinit.so force revoke
-session    include      password-auth
-")
-      }
+      it_behaves_like "pam_d_login-el6"
+      it_behaves_like "pam_d_sshd-el6"
 
       it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) }
     end
@@ -613,57 +512,9 @@ session required      pam_unix.so
 ")
       }
 
-      it {
-        should contain_file('pam_d_login').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/login',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-        })
-      }
+      it_behaves_like "pam_d_login-ubuntu12.04"
+      it_behaves_like "pam_d_sshd-ubuntu12.04"
 
-      it { should contain_file('pam_d_login').with_content("auth     optional   pam_faildelay.so  delay=3000000
-auth     [success=ok new_authtok_reqd=ok ignore=ignore user_unknown=bad default=die] pam_securetty.so
-auth     requisite  pam_nologin.so
-session  [success=ok ignore=ignore module_unknown=ignore default=bad] pam_selinux.so close
-session  required   pam_env.so readenv=1
-session  required   pam_env.so readenv=1 envfile=/etc/default/locale
-@include common-auth
-auth     optional   pam_group.so
-session  required   pam_limits.so
-session  optional   pam_lastlog.so
-session  optional   pam_motd.so
-session  optional   pam_mail.so standard
-@include common-account
-@include common-session
-@include common-password
-session  [success=ok ignore=ignore module_unknown=ignore default=bad] pam_selinux.so open
-")
-      }
-
-      it {
-        should contain_file('pam_d_sshd').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/sshd',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-        })
-      }
-
-      it { should contain_file('pam_d_sshd').with_content("auth       required     pam_env.so # [1]
-auth       required     pam_env.so envfile=/etc/default/locale
-@include common-auth
-account    required     pam_nologin.so
-@include common-account
-@include common-session
-session    optional     pam_motd.so # [1]
-session    optional     pam_mail.so standard noenv # [1]
-session    required     pam_limits.so
-@include common-password
-")
-      }
     end
 
     context 'with default params on osfamily Suse with lsbmajdistrelease 9' do
@@ -780,47 +631,9 @@ session  required  pam_unix2.so
 ")
       }
 
-      it {
-        should contain_file('pam_d_login').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/login',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-        })
-      }
+      it_behaves_like "pam_d_login-suse10"
+      it_behaves_like "pam_d_sshd-suse10"
 
-      it { should contain_file('pam_d_login').with_content("#%PAM-1.0
-auth      required  pam_securetty.so
-auth      include   common-auth
-auth      required  pam_nologin.so
-account   include   common-account
-password  include   common-password
-session   include   common-session
-session   required  pam_lastlog.so nowtmp
-session   required  pam_resmgr.so
-session   optional  pam_mail.so standard
-")
-      }
-
-      it {
-        should contain_file('pam_d_sshd').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/sshd',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-        })
-      }
-
-      it { should contain_file('pam_d_sshd').with_content("#%PAM-1.0
-auth      include   common-auth
-auth      required  pam_nologin.so
-account   include   common-account
-password  include   common-password
-session   include   common-session
-")
-      }
     end
 
     context 'with default params on osfamily Suse with lsbmajdistrelease 11' do
@@ -935,52 +748,8 @@ session  optional  pam_umask.so
         })
       }
 
-      it {
-        should contain_file('pam_d_login').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/login',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-        })
-      }
-
-      it { should contain_file('pam_d_login').with_content("#%PAM-1.0
-auth      requisite      pam_nologin.so
-auth      [user_unknown=ignore success=ok ignore=ignore auth_err=die default=bad]        pam_securetty.so
-auth      include        common-auth
-account   include        common-account
-account   required       pam_access.so
-password  include        common-password
-session   required       pam_loginuid.so
-session   include        common-session
-session   required       pam_lastlog.so  nowtmp
-session   optional       pam_mail.so standard
-session   optional       pam_ck_connector.so
-")
-      }
-
-      it {
-        should contain_file('pam_d_sshd').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/sshd',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-        })
-      }
-
-      it { should contain_file('pam_d_sshd').with_content("#%PAM-1.0
-auth      requisite      pam_nologin.so
-auth      include        common-auth
-account   required       pam_access.so
-account   requisite      pam_nologin.so
-account   include        common-account
-password  include        common-password
-session   required       pam_loginuid.so
-session   include        common-session
-")
-      }
+      it_behaves_like "pam_d_login-suse11"
+      it_behaves_like "pam_d_sshd-suse11"
     end
 
     context 'with default params on osfamily Solaris with kernelrelease 5.9' do
@@ -1329,47 +1098,9 @@ session  required   pam_unix2.so
 ")
       }
 
-      it {
-        should contain_file('pam_d_login').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/login',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-        })
-      }
+      it_behaves_like "pam_d_login-suse10"
+      it_behaves_like "pam_d_sshd-suse10"
 
-      it { should contain_file('pam_d_login').with_content("#%PAM-1.0
-auth      required  pam_securetty.so
-auth      include   common-auth
-auth      required  pam_nologin.so
-account   include   common-account
-password  include   common-password
-session   include   common-session
-session   required  pam_lastlog.so nowtmp
-session   required  pam_resmgr.so
-session   optional  pam_mail.so standard
-")
-      }
-
-      it {
-        should contain_file('pam_d_sshd').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/sshd',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-        })
-      }
-
-      it { should contain_file('pam_d_sshd').with_content("#%PAM-1.0
-auth      include   common-auth
-auth      required  pam_nologin.so
-account   include   common-account
-password  include   common-password
-session   include   common-session
-")
-      }
     end
 
     context 'with ensure_vas=present on osfamily Suse with lsbmajdistrelease 11' do
@@ -1492,53 +1223,9 @@ session  optional   pam_umask.so
           'group'  => 'root',
         })
       }
+      it_behaves_like "pam_d_login-suse11"
+      it_behaves_like "pam_d_sshd-suse11"
 
-      it {
-        should contain_file('pam_d_login').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/login',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-        })
-      }
-
-      it { should contain_file('pam_d_login').with_content("#%PAM-1.0
-auth      requisite      pam_nologin.so
-auth      [user_unknown=ignore success=ok ignore=ignore auth_err=die default=bad]        pam_securetty.so
-auth      include        common-auth
-account   include        common-account
-account   required       pam_access.so
-password  include        common-password
-session   required       pam_loginuid.so
-session   include        common-session
-session   required       pam_lastlog.so  nowtmp
-session   optional       pam_mail.so standard
-session   optional       pam_ck_connector.so
-")
-      }
-
-      it {
-        should contain_file('pam_d_sshd').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/sshd',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-        })
-      }
-
-      it { should contain_file('pam_d_sshd').with_content("#%PAM-1.0
-auth      requisite      pam_nologin.so
-auth      include        common-auth
-account   required       pam_access.so
-account   requisite      pam_nologin.so
-account   include        common-account
-password  include        common-password
-session   required       pam_loginuid.so
-session   include        common-session
-")
-      }
     end
 
     context 'with ensure_vas=present and vas_major_version=3 on Ubuntu 12.04 LTS' do
@@ -1565,57 +1252,8 @@ session   include        common-session
         })
       }
 
-      it {
-        should contain_file('pam_d_login').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/login',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-        })
-      }
-
-      it { should contain_file('pam_d_login').with_content("auth     optional   pam_faildelay.so  delay=3000000
-auth     [success=ok new_authtok_reqd=ok ignore=ignore user_unknown=bad default=die] pam_securetty.so
-auth     requisite  pam_nologin.so
-session  [success=ok ignore=ignore module_unknown=ignore default=bad] pam_selinux.so close
-session  required   pam_env.so readenv=1
-session  required   pam_env.so readenv=1 envfile=/etc/default/locale
-@include common-auth
-auth     optional   pam_group.so
-session  required   pam_limits.so
-session  optional   pam_lastlog.so
-session  optional   pam_motd.so
-session  optional   pam_mail.so standard
-@include common-account
-@include common-session
-@include common-password
-session  [success=ok ignore=ignore module_unknown=ignore default=bad] pam_selinux.so open
-")
-      }
-
-      it {
-        should contain_file('pam_d_sshd').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/sshd',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-        })
-      }
-
-      it { should contain_file('pam_d_sshd').with_content("auth       required     pam_env.so # [1]
-auth       required     pam_env.so envfile=/etc/default/locale
-@include common-auth
-account    required     pam_nologin.so
-@include common-account
-@include common-session
-session    optional     pam_motd.so # [1]
-session    optional     pam_mail.so standard noenv # [1]
-session    required     pam_limits.so
-@include common-password
-")
-      }
+      it_behaves_like "pam_d_login-ubuntu12.04"
+      it_behaves_like "pam_d_sshd-ubuntu12.04"
 
       it {
         should contain_file('pam_common_auth').with({

@@ -4,6 +4,8 @@
 #
 class pam (
   $allowed_users                       = 'root',
+  $login_pam_access                    = 'required',
+  $sshd_pam_access                     = 'required',
   $ensure_vas                          = 'absent',
   $package_name                        = undef,
   $pam_conf_file                       = '/etc/pam.conf',
@@ -435,6 +437,11 @@ class pam (
       fail("Pam is only supported on RedHat, Suse, Debian and Solaris osfamilies. Your osfamily is identified as <${::osfamily}>.")
     }
   }
+
+  $valid_pam_access_values = ['^required$', '^requisite$', '^sufficient$', '^optional$', '^absent$']
+
+  validate_re($login_pam_access, $valid_pam_access_values)
+  validate_re($sshd_pam_access, $valid_pam_access_values)
 
   if $package_name == undef {
     $my_package_name = $default_package_name

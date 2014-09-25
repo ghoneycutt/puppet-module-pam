@@ -37,12 +37,14 @@ class pam (
   $common_session_pc_file              = '/etc/pam.d/common-session-pc',
   $common_session_noninteractive_file  = '/etc/pam.d/common-session-noninteractive',
   $system_auth_file                    = '/etc/pam.d/system-auth',
+  $system_auth_target                  = 'system-auth-ac',
   $system_auth_ac_file                 = '/etc/pam.d/system-auth-ac',
   $system_auth_ac_auth_lines           = undef,
   $system_auth_ac_account_lines        = undef,
   $system_auth_ac_password_lines       = undef,
   $system_auth_ac_session_lines        = undef,
   $password_auth_file                  = '/etc/pam.d/password-auth',
+  $password_auth_target                = 'password-auth-ac',
   $password_auth_ac_file               = '/etc/pam.d/password-auth-ac',
   $vas_major_version                   = '4',
 ) {
@@ -558,7 +560,7 @@ class pam (
           file { 'pam_system_auth':
             ensure  => symlink,
             path    => $system_auth_file,
-            target  => $system_auth_ac_file,
+            target  => $system_auth_target,
             owner   => 'root',
             group   => 'root',
             require => Package[$my_package_name],
@@ -578,7 +580,7 @@ class pam (
             file { 'pam_password_auth':
               ensure  => symlink,
               path    => $password_auth_file,
-              target  => $password_auth_ac_file,
+              target  => $password_auth_target,
               owner   => 'root',
               group   => 'root',
               require => Package[$my_package_name],

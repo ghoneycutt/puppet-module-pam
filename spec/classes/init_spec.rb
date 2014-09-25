@@ -296,6 +296,7 @@ session     required      pam_unix.so
         should contain_file('pam_system_auth').with({
           'ensure' => 'symlink',
           'path'   => '/etc/pam.d/system-auth',
+          'target' => 'system-auth-ac',
           'owner'  => 'root',
           'group'  => 'root',
         })
@@ -359,6 +360,7 @@ session     required      pam_unix.so
         should contain_file('pam_system_auth').with({
           'ensure' => 'symlink',
           'path'   => '/etc/pam.d/system-auth',
+          'target' => 'system-auth-ac',
           'owner'  => 'root',
           'group'  => 'root',
         })
@@ -394,6 +396,7 @@ session    include      system-auth
         should contain_file('pam_password_auth').with({
           'ensure' => 'symlink',
           'path'   => '/etc/pam.d/password-auth',
+          'target' => 'password-auth-ac',
           'owner'  => 'root',
           'group'  => 'root',
         })

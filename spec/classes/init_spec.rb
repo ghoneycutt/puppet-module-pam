@@ -1,9 +1,17 @@
 require 'spec_helper'
 describe 'nsswitch' do
 
-  it { should compile.with_all_deps }
-
   describe 'with default values for all parameters' do
+    context 'on an unsupported osfamily' do
+      let(:facts) { { :osfamily => 'unsupported' } }
+
+      it do
+        expect {
+          should contain_class('nsswitch')
+        }.to raise_error(Puppet::Error)
+      end
+    end
+
     context 'on osfamily Solaris' do
       let(:facts) { { :osfamily => 'Solaris' } }
 
@@ -96,11 +104,61 @@ aliases:    files
         }
       end
     end
+
+    context 'on RedHat 7' do
+      let(:facts) do
+        { :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '7',
+        }
+      end
+
+      it { should contain_class('nsswitch') }
+
+      it {
+        should contain_file('nsswitch_config_file').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/nsswitch.conf',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+      }
+
+      it {
+        should contain_file('nsswitch_config_file').with_content(
+%{# This file is being maintained by Puppet.
+# DO NOT EDIT
+
+passwd:     files sss
+shadow:     files sss
+group:      files sss
+
+sudoers:    files
+
+hosts:      files dns myhostname
+
+bootparams: nisplus [NOTFOUND=return] files
+ethers:     files
+netmasks:   files
+networks:   files
+protocols:  files
+rpc:        files
+services:   files sss
+netgroup:   files sss
+publickey:  nisplus
+automount:  files sss
+aliases:    files nisplus
+})
+      }
+    end
   end
 
   context 'with ldap enabled' do
     let :params do
       { :ensure_ldap => 'present' }
+    end
+    let :facts do
+      { :osfamily => 'Debian' }
     end
 
     it {
@@ -142,6 +200,9 @@ aliases:    files
   context 'with vas enabled' do
     let :params do
       { :ensure_vas => 'present' }
+    end
+    let :facts do
+      { :osfamily => 'Debian' }
     end
 
     it {
@@ -187,6 +248,9 @@ aliases:    files
         :vas_nss_module_passwd => 'vas3 nis',
       }
     end
+    let :facts do
+      { :osfamily => 'Debian' }
+    end
 
     it {
       should contain_class('nsswitch')
@@ -208,6 +272,9 @@ aliases:    files
         :vas_nss_module_group => 'nis',
       }
     end
+    let :facts do
+      { :osfamily => 'Debian' }
+    end
 
     it {
       should contain_file('nsswitch_config_file').with_content(/group:[\s]+files nis$/)
@@ -220,6 +287,9 @@ aliases:    files
         :ensure_vas              => 'present',
         :vas_nss_module_netgroup => 'nisplus',
       }
+    end
+    let :facts do
+      { :osfamily => 'Debian' }
     end
 
     it {
@@ -234,6 +304,9 @@ aliases:    files
         :vas_nss_module_automount => 'nisplus',
       }
     end
+    let :facts do
+      { :osfamily => 'Debian' }
+    end
 
     it {
       should contain_file('nsswitch_config_file').with_content(/automount:[\s]+files nisplus$/)
@@ -246,6 +319,9 @@ aliases:    files
         :ensure_vas               => 'present',
         :vas_nss_module_automount => '',
       }
+    end
+    let :facts do
+      { :osfamily => 'Debian' }
     end
 
     it {
@@ -260,6 +336,9 @@ aliases:    files
         :vas_nss_module_aliases => 'nis',
       }
     end
+    let :facts do
+      { :osfamily => 'Debian' }
+    end
 
     it {
       should contain_file('nsswitch_config_file').with_content(/aliases:[\s]+files nis$/)
@@ -273,6 +352,9 @@ aliases:    files
         :vas_nss_module_services => 'nis',
       }
     end
+    let :facts do
+      { :osfamily => 'Debian' }
+    end
 
     it {
       should contain_file('nsswitch_config_file').with_content(/services:[\s]+files nis$/)
@@ -285,6 +367,9 @@ aliases:    files
         :ensure_ldap => 'present',
         :ensure_vas  => 'present',
       }
+    end
+    let :facts do
+      { :osfamily => 'Debian' }
     end
 
     it {
@@ -326,6 +411,9 @@ aliases:    files
   context 'with config_file set' do
     let :params do
       { :config_file => '/path/to/nsswitch.conf' }
+    end
+    let :facts do
+      { :osfamily => 'Debian' }
     end
 
     it {

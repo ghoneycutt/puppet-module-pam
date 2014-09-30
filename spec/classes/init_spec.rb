@@ -125,7 +125,7 @@ describe 'pam' do
         :packages           => ['pam_package', ],
         :files              => [
           { :prefix         => 'pam_',
-            :types          => ['other', ],
+            :types          => ['cron', 'login', 'passwd', 'other', ],
             :group          => 'sys',
           }, ],
       },
@@ -298,7 +298,7 @@ describe 'pam' do
 
             file[:types].each do |type|
               filename = "#{file[:prefix]}#{type}#{file[:suffix]}"
-              path = "#{dirpath}#{file[:prefix]}#{type}#{file[:suffix]}"
+              path = "#{dirpath}#{filename}"
               path.gsub! '_', '-'
               path.sub! 'pam-', ''
               path.sub! 'noninteractive-session', 'session-noninteractive'
@@ -322,7 +322,7 @@ describe 'pam' do
 
               if file[:symlink]
                 symlinkname = "#{file[:prefix]}#{type}"
-                symlinkpath = "#{dirpath}#{file[:prefix]}#{type}"
+                symlinkpath = "#{dirpath}#{symlinkname}"
                 symlinkpath.gsub! '_', '-'
                 symlinkpath.sub! 'pam-', ''
                 it {

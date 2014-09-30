@@ -1676,6 +1676,175 @@ session   include        common-session
       }
     end
 
+    context 'with ensure_vas=present on osfamily Suse with lsbmajdistrelease 12' do
+      let(:params) { { :ensure_vas => 'present' } }
+      let :facts do
+        {
+          :osfamily          => 'Suse',
+          :lsbmajdistrelease => '11',
+        }
+      end
+
+      it {
+        should contain_file('pam_common_auth_pc').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/common-auth-pc',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+      }
+
+      it { should contain_file('pam_common_auth_pc').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+auth  required    pam_env.so
+auth  sufficient  pam_vas3.so create_homedir get_nonvas_pass
+auth  requisite   pam_vas3.so echo_return
+auth  required    pam_unix2.so use_first_pass
+")
+      }
+
+      it {
+        should contain_file('pam_common_auth').with({
+          'ensure' => 'symlink',
+          'path'   => '/etc/pam.d/common-auth',
+          'owner'  => 'root',
+          'group'  => 'root',
+        })
+      }
+
+      it {
+        should contain_file('pam_common_account_pc').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/common-account-pc',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+      }
+
+      it { should contain_file('pam_common_account_pc').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+account  sufficient  pam_vas3.so
+account  requisite   pam_vas3.so echo_return
+account  required    pam_unix2.so
+")
+      }
+
+      it {
+        should contain_file('pam_common_account').with({
+          'ensure' => 'symlink',
+          'path'   => '/etc/pam.d/common-account',
+          'owner'  => 'root',
+          'group'  => 'root',
+        })
+      }
+
+      it {
+        should contain_file('pam_common_password_pc').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/common-password-pc',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+      }
+
+      it { should contain_file('pam_common_password_pc').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+password  sufficient  pam_vas3.so
+password  requisite   pam_vas3.so echo_return
+password  requisite   pam_pwcheck.so nullok cracklib
+password  required    pam_unix2.so use_authtok nullok
+")
+      }
+
+      it {
+        should contain_file('pam_common_password').with({
+          'ensure' => 'symlink',
+          'path'   => '/etc/pam.d/common-password',
+          'owner'  => 'root',
+          'group'  => 'root',
+        })
+      }
+
+      it {
+        should contain_file('pam_common_session_pc').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/common-session-pc',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+      }
+
+      it { should contain_file('pam_common_session_pc').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+session  required   pam_limits.so
+session  required   pam_vas3.so create_homedir
+session  requisite  pam_vas3.so echo_return
+session  required   pam_unix2.so
+session  optional   pam_umask.so
+")
+      }
+
+      it {
+        should contain_file('pam_common_session').with({
+          'ensure' => 'symlink',
+          'path'   => '/etc/pam.d/common-session',
+          'owner'  => 'root',
+          'group'  => 'root',
+        })
+      }
+
+      it {
+        should contain_file('pam_d_login').with({
+          'ensure' => 'file',
+          'path'   => '/etc/pam.d/login',
+          'owner'  => 'root',
+          'group'  => 'root',
+          'mode'   => '0644',
+        })
+      }
+
+      it { should contain_file('pam_d_login').with_content("#%PAM-1.0
+auth      requisite      pam_nologin.so
+auth      [user_unknown=ignore success=ok ignore=ignore auth_err=die default=bad]        pam_securetty.so
+auth      include        common-auth
+account   include        common-account
+account   required       pam_access.so
+password  include        common-password
+session   required       pam_loginuid.so
+session   include        common-session
+session   required       pam_lastlog.so  nowtmp
+session   optional       pam_mail.so standard
+session   optional       pam_ck_connector.so
+")
+      }
+
+      it {
+        should contain_file('pam_d_sshd').with({
+          'ensure' => 'file',
+          'path'   => '/etc/pam.d/sshd',
+          'owner'  => 'root',
+          'group'  => 'root',
+          'mode'   => '0644',
+        })
+      }
+
+      it { should contain_file('pam_d_sshd').with_content("#%PAM-1.0
+auth      requisite      pam_nologin.so
+auth      include        common-auth
+account   required       pam_access.so
+account   requisite      pam_nologin.so
+account   include        common-account
+password  include        common-password
+session   required       pam_loginuid.so
+session   include        common-session
+")
+      }
+    end
+
     context 'with ensure_vas=present and vas_major_version=3 on Ubuntu 12.04 LTS' do
       let (:params) do
         {

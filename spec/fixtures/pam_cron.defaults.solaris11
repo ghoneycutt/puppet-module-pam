@@ -1,0 +1,4 @@
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+account definitive        pam_user_policy.so.1
+account required          pam_unix_account.so.1

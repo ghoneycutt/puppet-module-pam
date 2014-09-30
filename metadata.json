@@ -81,7 +81,8 @@
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "12.04"
+        "12.04",
+        "14.04"
       ]
     }
   ],
@@ -95,11 +96,11 @@
     "Gemfile.lock": "873e125e8afe971046172cf5e775871d",
     "LICENSE": "567e6cc3941d464d60c74d1f4abd5f46",
     "Modulefile": "8571add95d03e21ddcb6e3f90db325db",
-    "README.md": "b5281f1168d191d70f48b89f33c77629",
+    "README.md": "c82a61033650218f1d89b8fa55b236ee",
     "Rakefile": "1cb426d5b98cd8d27b9147563a78ab7c",
     "files/limits.conf": "2486c66ab9728a793f068ed060c0df61",
     "manifests/accesslogin.pp": "e5dd82ec627fa88a449cf1f46be5077e",
-    "manifests/init.pp": "f62340f9c308f4460852ef0f8f6f6111",
+    "manifests/init.pp": "46a9e8348838876cbb16ff533dae0655",
     "manifests/limits/fragment.pp": "6486a3db8487e4817937a08bc3c18a53",
     "manifests/limits.pp": "d064d44cdc109e34a3ca2801beba2276",
     "manifests/service.pp": "9e97853aff8c57df48c8d01c30424d23",
@@ -120,6 +121,7 @@
     "templates/login.suse11.erb": "a0048dd6e06b22dfb67ef6a8b3993622",
     "templates/login.suse9.erb": "bb25c062346aecacfd1f7d35489488ff",
     "templates/login.ubuntu12.erb": "9132227aa9395a2eae0a3a06e976fff5",
+    "templates/login.ubuntu14.erb": "55c19f51a183dcd440e9f09d036c47cb",
     "templates/pam.conf.erb": "69dd0a7e44d4edd6bd473748522144f1",
     "templates/sshd.el5.erb": "f05cbf5af26c88985db2903fd5783980",
     "templates/sshd.el6.erb": "875e7b232894cf1b8376e60a9942252a",
@@ -127,6 +129,7 @@
     "templates/sshd.suse11.erb": "cf067eb979b671aa3831a4fcf5ccd286",
     "templates/sshd.suse9.erb": "2f1b94f03d8e73acf9458e3b90ade3f3",
     "templates/sshd.ubuntu12.erb": "6553874362b469944fbf1bc9f6845195",
+    "templates/sshd.ubuntu14.erb": "bb43b61fab63b630f2f4a5610691a2a1",
     "templates/system-auth-ac.erb": "69dd0a7e44d4edd6bd473748522144f1",
     "tests/init.pp": "1b580110b1308350f9b09e1bbca0551e"
   },

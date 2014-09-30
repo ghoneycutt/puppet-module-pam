@@ -1770,6 +1770,122 @@ other   session  required        pam_unix_session.so.1
       }
     end
 
+    context 'with ensure_vas=present on osfamily Solaris with kernelrelease 5.11' do
+      let(:params) { {
+        :ensure_vas         => 'present',
+        :pam_d_cron_group   => 'sys',
+        :pam_d_login_group  => 'sys',
+        :pam_d_passwd_group => 'sys',
+      } }
+      let :facts do
+        {
+          :osfamily      => 'Solaris',
+          :kernelrelease => '5.11',
+        }
+      end
+
+      it {
+        should contain_file('pam_d_cron').with({
+          'ensure' => 'file',
+          'path'   => '/etc/pam.d/cron',
+          'owner'  => 'root',
+          'group'  => 'sys',
+          'mode'   => '0644',
+        })
+      }
+
+      it { should contain_file('pam_d_cron').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+account definitive        pam_user_policy.so.1
+account sufficient        pam_vas3.so
+account requisite         pam_vas3.so echo_return
+account required          pam_unix_account.so.1
+")
+      }
+
+      it {
+        should contain_file('pam_d_login').with({
+          'ensure' => 'file',
+          'path'   => '/etc/pam.d/login',
+          'owner'  => 'root',
+          'group'  => 'sys',
+          'mode'   => '0644',
+        })
+      }
+
+      it { should contain_file('pam_d_login').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+auth  definitive        pam_user_policy.so.1
+auth  sufficient        pam_vas3.so create_homedir get_nonvas_pass try_first_pass
+auth  requisite         pam_vas3.so echo_return
+auth  requisite         pam_authtok_get.so.1 use_first_pass
+auth  required          pam_dhkeys.so.1
+auth  required          pam_unix_auth.so.1
+auth  required          pam_unix_cred.so.1
+auth  required          pam_dial_auth.so.1
+")
+      }
+
+      it {
+        should contain_file('pam_d_passwd').with({
+          'ensure' => 'file',
+          'path'   => '/etc/pam.d/passwd',
+          'owner'  => 'root',
+          'group'  => 'sys',
+          'mode'   => '0644',
+        })
+      }
+
+      it { should contain_file('pam_d_passwd').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+auth  sufficient        pam_vas3.so create_homedir get_nonvas_pass try_first_pass
+auth  requisite         pam_vas3.so echo_return
+auth  required          pam_passwd_auth.so.1 use_first_pass
+")
+      }
+
+      it {
+        should contain_file('pam_other').with({
+          'ensure' => 'file',
+          'path'   => '/etc/pam.d/other',
+          'owner'  => 'root',
+          'group'  => 'sys',
+          'mode'   => '0644',
+        })
+      }
+
+      it { should contain_file('pam_other').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+# Auth
+auth     required        pam_unix_cred.so.1
+auth     sufficient      pam_vas3.so create_homedir get_nonvas_pass try_first_pass
+auth     requisite       pam_vas3.so echo_return
+auth     requisite       pam_authtok_get.so.1 use_first_pass
+auth     required        pam_dhkeys.so.1
+auth     required        pam_unix_auth.so.1
+
+# Account
+account  requisite       pam_roles.so.1
+account  sufficient      pam_vas3.so
+account  requisite       pam_vas3.so echo_return
+account  required        pam_unix_account.so.1
+
+# Password
+password required        pam_dhkeys.so.1
+password requisite       pam_authtok_get.so.1
+password sufficient      pam_vas3.so
+password requisite       pam_vas3.so echo_return
+password requisite       pam_authtok_check.so.1
+password required        pam_authtok_store.so.1
+
+# Session
+session  required        pam_vas3.so create_homedir
+session  requisite       pam_vas3.so echo_return
+session  required        pam_unix_session.so.1
+")
+      }
+    end
+
     context 'with ensure_vas=present and unsupported vas_major_version on osfamily RedHat with lsbmajdistrelease 5' do
       let (:params) do
         {

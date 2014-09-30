@@ -109,11 +109,11 @@ describe 'pam' do
       end
     end
 
-    context 'with default params on osfamily RedHat with lsbmajdistrelease 7' do
+    context 'with default params on osfamily RedHat with operatingsystemmajrelease 7' do
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '7',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '7',
         }
       end
 
@@ -423,11 +423,11 @@ session    include      system-auth
       it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) }
     end
 
-    context 'with default params on osfamily RedHat with lsbmajdistrelease 7' do
+    context 'with default params on osfamily RedHat with operatingsystemmajrelease 7' do
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '7',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '7',
         }
       end
 
@@ -472,69 +472,50 @@ session     required      pam_unix.so
         should contain_file('pam_system_auth').with({
           'ensure' => 'symlink',
           'path'   => '/etc/pam.d/system-auth',
+          'target' => 'system-auth-ac',
           'owner'  => 'root',
           'group'  => 'root',
         })
       }
 
       it {
-        should contain_file('pam_d_login').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/login',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
+        should contain_file('pam_password_auth_ac').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/password-auth-ac',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
         })
       }
 
-      it { should contain_file('pam_d_login').with_content("#%PAM-1.0
-auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so
-auth       substack     system-auth
-auth       include      postlogin
-account    required     pam_nologin.so
+      it { should contain_file('pam_password_auth_ac').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+# Auth
+auth       include      system-auth
+
+# Account
 account    include      system-auth
+
+# Password
 password   include      system-auth
-# pam_selinux.so close should be the first session rule
-session    required     pam_selinux.so close
-session    required     pam_loginuid.so
-session    optional     pam_console.so
-# pam_selinux.so open should only be followed by sessions to be executed in the user context
-session    required     pam_selinux.so open
-session    required     pam_namespace.so
-session    optional     pam_keyinit.so force revoke
+
+# Session
 session    include      system-auth
-session    include      postlogin
--session   optional     pam_ck_connector.so
 ")
       }
 
       it {
-        should contain_file('pam_d_sshd').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/sshd',
+        should contain_file('pam_password_auth').with({
+          'ensure' => 'symlink',
+          'path'   => '/etc/pam.d/password-auth',
+          'target' => 'password-auth-ac',
           'owner'  => 'root',
           'group'  => 'root',
-          'mode'   => '0644',
         })
       }
 
-      it { should contain_file('pam_d_sshd').with_content("#%PAM-1.0
-auth       required     pam_sepermit.so
-auth       substack     password-auth
-auth       include      postlogin
-account    required     pam_nologin.so
-account    include      password-auth
-password   include      password-auth
-# pam_selinux.so close should be the first session rule
-session    required     pam_selinux.so close
-session    required     pam_loginuid.so
-# pam_selinux.so open should only be followed by sessions to be executed in the user context
-session    required     pam_selinux.so open env_params
-session    optional     pam_keyinit.so force revoke
-session    include      password-auth
-session    include      postlogin
-")
-      }
+      it_behaves_like "pam_d_login-el7"
+      it_behaves_like "pam_d_sshd-el7"
 
       it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) }
     end
@@ -1088,7 +1069,7 @@ session required        pam_unix_session.so.1
       it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) }
     end
 
-    context 'with ensure_vas=present and default vas_major_version (4) on osfamily RedHat with lsbmajdistrelease 7' do
+    context 'with ensure_vas=present and default vas_major_version (4) on osfamily RedHat with operatingsystemmajrelease 7' do
       let (:params) do
         {
           :ensure_vas => 'present',
@@ -1563,7 +1544,7 @@ session required  pam_unix.so
       end
     end
 
-    context 'with ensure_vas=present and unsupported vas_major_version on osfamily RedHat with lsbmajdistrelease 7' do
+    context 'with ensure_vas=present and unsupported vas_major_version on osfamily RedHat with operatingsystemmajrelease 7' do
       let (:params) do
         {
           :ensure_vas        => 'present',
@@ -1572,8 +1553,8 @@ session required  pam_unix.so
       end
       let :facts do
         {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '7',
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '7',
         }
       end
 

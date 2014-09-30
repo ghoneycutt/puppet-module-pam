@@ -93,6 +93,35 @@ shared_examples_for 'pam_d_login-el6' do
   include_context "pam_d_login-params"
 end
 
+shared_examples_for 'pam_d_login-el7' do
+  let(:default_lines) do
+    [
+      '#%PAM-1.0',
+      'auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so',
+      'auth       substack     system-auth',
+      'auth       include      postlogin',
+      'account    required     pam_nologin.so',
+      'account    include      system-auth',
+      'account    required     pam_access.so',
+      'password   include      system-auth',
+      '# pam_selinux.so close should be the first session rule',
+      'session    required     pam_selinux.so close',
+      'session    required     pam_loginuid.so',
+      'session    optional     pam_console.so',
+      '# pam_selinux.so open should only be followed by sessions to be executed in the user context',
+      'session    required     pam_selinux.so open',
+      'session    required     pam_namespace.so',
+      'session    optional     pam_keyinit.so force revoke',
+      'session    include      system-auth',
+      'session    include      postlogin',
+      '-session   optional     pam_ck_connector.so',
+    ]
+  end
+
+  include_context "pam_d_login-default"
+  include_context "pam_d_login-params"
+end
+
 shared_examples_for 'pam_d_login-ubuntu12.04' do
   let(:default_lines) do
     [

@@ -84,6 +84,32 @@ shared_examples_for 'pam_d_sshd-el6' do
   include_context "pam_d_sshd-params"
 end
 
+shared_examples_for 'pam_d_sshd-el7' do
+  let(:default_lines) do
+    [
+      '#%PAM-1.0',
+      'auth       required     pam_sepermit.so',
+      'auth       substack     password-auth',
+      'auth       include      postlogin',
+      'account    required     pam_access.so',
+      'account    required     pam_nologin.so',
+      'account    include      password-auth',
+      'password   include      password-auth',
+      '# pam_selinux.so close should be the first session rule',
+      'session    required     pam_selinux.so close',
+      'session    required     pam_loginuid.so',
+      '# pam_selinux.so open should only be followed by sessions to be executed in the user context',
+      'session    required     pam_selinux.so open env_params',
+      'session    optional     pam_keyinit.so force revoke',
+      'session    include      password-auth',
+      'session    include      postlogin',
+    ]
+  end
+
+  include_context "pam_d_sshd-default"
+  include_context "pam_d_sshd-params"
+end
+
 shared_examples_for 'pam_d_sshd-ubuntu12.04' do
   let(:default_lines) do
     [

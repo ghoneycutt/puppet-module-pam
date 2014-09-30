@@ -1681,6 +1681,116 @@ session required  pam_unix.so
       }
     end
 
+    context 'with ensure_vas=present on osfamily Solaris with kernelrelease 5.10' do
+      let(:params) { { :ensure_vas => 'present' } }
+      let :facts do
+        {
+          :osfamily      => 'Solaris',
+          :kernelrelease => '5.10',
+        }
+      end
+
+      it {
+        should contain_file('pam_conf').with({
+          'ensure' => 'file',
+          'path'   => '/etc/pam.conf',
+          'owner'  => 'root',
+          'group'  => 'sys',
+          'mode'   => '0644',
+        })
+      }
+
+      it { should contain_file('pam_conf').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+# Auth
+login   auth     required        pam_unix_cred.so.1
+login   auth     sufficient      pam_vas3.so create_homedir get_nonvas_pass try_first_pass
+login   auth     requisite       pam_vas3.so echo_return
+login   auth     requisite       pam_authtok_get.so.1 use_first_pass
+login   auth     required        pam_dhkeys.so.1
+login   auth     required        pam_unix_auth.so.1
+login   auth     required        pam_dial_auth.so.1
+rlogin  auth     required        pam_unix_cred.so.1
+rlogin  auth     sufficient      pam_vas3.so create_homedir get_nonvas_pass try_first_pass
+rlogin  auth     requisite       pam_vas3.so echo_return
+rlogin  auth     requisite       pam_authtok_get.so.1 use_first_pass
+rlogin  auth     required        pam_dhkeys.so.1
+rlogin  auth     required        pam_unix_auth.so.1
+krlogin auth     required        pam_unix_cred.so.1
+krlogin auth     sufficient      pam_vas3.so create_homedir get_nonvas_pass try_first_pass
+krlogin auth     requisite       pam_vas3.so echo_return
+krlogin auth     required        pam_krb5.so.1 use_first_pass
+krsh    auth     required        pam_unix_cred.so.1
+krsh    auth     sufficient      pam_vas3.so create_homedir get_nonvas_pass try_first_pass
+krsh    auth     requisite       pam_vas3.so echo_return
+krsh    auth     required        pam_krb5.so.1 use_first_pass
+ktelnet auth     required        pam_unix_cred.so.1
+ktelnet auth     sufficient      pam_vas3.so create_homedir get_nonvas_pass try_first_pass
+ktelnet auth     requisite       pam_vas3.so echo_return
+ktelnet auth     required        pam_krb5.so.1 use_first_pass
+ppp     auth     required        pam_unix_cred.so.1
+ppp     auth     sufficient      pam_vas3.so create_homedir get_nonvas_pass try_first_pass
+ppp     auth     requisite       pam_vas3.so echo_return
+ppp     auth     requisite       pam_authtok_get.so.1 use_first_pass
+ppp     auth     required        pam_dhkeys.so.1
+ppp     auth     required        pam_unix_auth.so.1
+ppp     auth     required        pam_dial_auth.so.1
+other   auth     required        pam_unix_cred.so.1
+other   auth     sufficient      pam_vas3.so create_homedir get_nonvas_pass try_first_pass
+other   auth     requisite       pam_vas3.so echo_return
+other   auth     requisite       pam_authtok_get.so.1 use_first_pass
+other   auth     required        pam_dhkeys.so.1
+other   auth     required        pam_unix_auth.so.1
+passwd  auth     sufficient      pam_vas3.so create_homedir get_nonvas_pass try_first_pass
+passwd  auth     requisite       pam_vas3.so echo_return
+passwd  auth     required        pam_passwd_auth.so.1 use_first_pass
+
+# Account
+cron    account  sufficient      pam_vas3.so
+cron    account  requisite       pam_vas3.so echo_return
+cron    account  required        pam_unix_account.so.1
+other   account  requisite       pam_roles.so.1
+other   account  sufficient      pam_vas3.so
+other   account  requisite       pam_vas3.so echo_return
+other   account  required        pam_unix_account.so.1
+
+# Password
+other   password required        pam_dhkeys.so.1
+other   password requisite       pam_authtok_get.so.1
+other   password sufficient      pam_vas3.so
+other   password requisite       pam_vas3.so echo_return
+other   password requisite       pam_authtok_check.so.1
+other   password required        pam_authtok_store.so.1
+
+# Session
+other   session  required        pam_vas3.so create_homedir
+other   session  requisite       pam_vas3.so echo_return
+other   session  required        pam_unix_session.so.1
+")
+      }
+    end
+
+    context 'with ensure_vas=present and unsupported vas_major_version on osfamily RedHat with lsbmajdistrelease 5' do
+      let (:params) do
+        {
+          :ensure_vas        => 'present',
+          :vas_major_version => '5',
+        }
+      end
+      let :facts do
+        {
+          :osfamily          => 'RedHat',
+          :lsbmajdistrelease => '5',
+        }
+      end
+
+      it 'should fail' do
+        expect {
+          should contain_class('pam')
+        }.to raise_error(Puppet::Error,/Pam is only supported with vas_major_version 3 or 4/)
+      end
+    end
+
     context 'with ensure_vas=present and unsupported vas_major_version on osfamily RedHat with lsbmajdistrelease 5' do
       let (:params) do
         {

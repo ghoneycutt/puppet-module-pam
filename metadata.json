@@ -1,6 +1,6 @@
 {
   "name": "ghoneycutt-pam",
-  "version": "2.7.1",
+  "version": "2.9.0",
   "author": "ghoneycutt",
   "summary": "Manage PAM",
   "license": "Apache License, Version 2.0",
@@ -65,7 +65,8 @@
       "operatingsystemrelease": [
         "9",
         "10",
-        "11"
+        "11",
+        "12"
       ]
     },
     {
@@ -73,7 +74,8 @@
       "operatingsystemrelease": [
         "9",
         "10",
-        "11"
+        "11",
+        "12"
       ]
     },
     {
@@ -129,18 +131,6 @@
     "tests/init.pp": "1b580110b1308350f9b09e1bbca0551e"
   },
   "dependencies": [
-    {
-      "name": "ghoneycutt/common",
-      "version_requirement": ">= 1.0.2"
-    },
-    {
-      "name": "ghoneycutt/nsswitch",
-      "version_requirement": ">= 1.1.0"
-    },
-    {
-      "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 3.2.0"
-    },
     {"name":"ghoneycutt/common","version_requirement":">= 1.0.2"},
     {"name":"ghoneycutt/nsswitch","version_requirement":">= 1.1.0"},
     {"name":"puppetlabs/stdlib","version_requirement":">= 3.2.0"}

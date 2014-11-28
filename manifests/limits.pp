@@ -22,7 +22,41 @@ class pam::limits (
   include pam
 
   # ensure target exists
-  common::mkdir_p { $limits_d_dir: }
+  # If puppet-module-common is installed, use the function from there
+  if defined('common::mkdir_p') {
+    common::mkdir_p { $limits_d_dir: }
+
+    file { 'limits_d':
+      ensure  => directory,
+      path    => $limits_d_dir,
+      owner   => 'root',
+      group   => 'root',
+      mode    => $limits_d_dir_mode,
+      require => [ Package[$pam::my_package_name],
+                Common::Mkdir_p[$limits_d_dir],
+                ],
+    }
+
+  } else {
+
+    # Otherwise fallback and just do an exec
+    exec { "mkdir_p-${limits_d_dir}":
+    command => "mkdir -p ${limits_d_dir}",
+      unless  => "test -d ${limits_d_dir}",
+      path    => '/bin:/usr/bin',
+    }
+
+    file { 'limits_d':
+      ensure  => directory,
+      path    => $limits_d_dir,
+      owner   => 'root',
+      group   => 'root',
+      mode    => $limits_d_dir_mode,
+      require => [ Package[$pam::my_package_name],
+                  Exec["mkdir_p-${limits_d_dir}"],
+                ],
+    }
+  }
 
   file { 'limits_d':
     ensure  => directory,

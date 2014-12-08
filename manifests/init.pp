@@ -226,6 +226,7 @@ class pam (
                                             'session     required      pam_unix.so']
           } else {
             $default_pam_auth_lines = [ 'auth        required      pam_env.so',
+                                        'auth        sufficient    pam_fprintd.so',
                                         'auth        sufficient    pam_unix.so nullok try_first_pass',
                                         'auth        requisite     pam_succeed_if.so uid >= 1000 quiet_success',
                                         'auth        required      pam_deny.so']
@@ -236,7 +237,7 @@ class pam (
                                             'account     required      pam_permit.so']
 
             $default_pam_password_lines = [ 'password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=',
-                                            'password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok',
+                                            'password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok',
                                             'password    required      pam_deny.so']
 
             $default_pam_session_lines = [ 'session     optional      pam_keyinit.so revoke',

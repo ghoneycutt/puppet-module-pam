@@ -43,7 +43,10 @@ class pam (
   $vas_major_version                   = '4',
 ) {
 
-  include nsswitch
+# If puppet-module-nsswitch is installed, set the defaults from there 
+if defined('nsswitch') { 
+  include nsswitch 
+} 
 
   case $::osfamily {
     'RedHat': {

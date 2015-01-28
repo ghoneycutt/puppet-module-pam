@@ -56,7 +56,7 @@ describe 'pam' do
       it 'should fail' do
         expect {
           should contain_class('pam')
-        }.to raise_error(Puppet::Error,/Pam is only supported on Ubuntu 12.04. Your lsbdistrelease is identified as <10.04>./)
+        }.to raise_error(Puppet::Error,/Pam is only supported on Ubuntu 12.04 and 14.04. Your lsbdistrelease is identified as <10.04>./)
       end
     end
 
@@ -990,6 +990,173 @@ session    optional     pam_mail.so standard noenv # [1]
 session    required     pam_limits.so
 @include common-password
 ")
+      }
+    end
+
+    context 'with default params on Ubuntu 14.04 LTS' do
+      let :facts do
+        {
+          :lsbdistid      => 'Ubuntu',
+          :osfamily       => 'Debian',
+          :lsbdistrelease => '14.04',
+        }
+      end
+
+      it {
+        should contain_package('libpam0g').with({
+          'ensure' => 'installed',
+        })
+      }
+
+      it {
+        should contain_file('pam_common_auth').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/common-auth',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+      }
+
+      it { should contain_file('pam_common_auth').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+auth  [success=1 default=ignore]  pam_unix.so nullok_secure
+auth  requisite     pam_deny.so
+auth  required      pam_permit.so
+auth  optional      pam_cap.so
+")
+      }
+
+      it {
+        should contain_file('pam_common_account').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/common-account',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+      }
+
+      it { should contain_file('pam_common_account').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+account [success=1 new_authtok_reqd=done default=ignore]  pam_unix.so
+account requisite     pam_deny.so
+account required      pam_permit.so
+")
+      }
+
+      it {
+        should contain_file('pam_common_password').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/common-password',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+      }
+
+      it { should contain_file('pam_common_password').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+password  [success=1 default=ignore]  pam_unix.so obscure sha512
+password  requisite     pam_deny.so
+password  required      pam_permit.so
+")
+      }
+
+      it { should contain_file('pam_common_noninteractive_session').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/common-session-noninteractive',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+      }
+
+      it { should contain_file('pam_common_noninteractive_session').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+session [default=1]   pam_permit.so
+session requisite     pam_deny.so
+session required      pam_permit.so
+session optional      pam_umask.so
+session required      pam_unix.so
+session optional      pam_systemd.so
+")
+      }
+
+      it { should contain_file('pam_common_session').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/common-session',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+      }
+
+      it { should contain_file('pam_common_session').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+session [default=1]   pam_permit.so
+session requisite     pam_deny.so
+session required      pam_permit.so
+session optional      pam_umask.so
+session required      pam_unix.so
+session optional      pam_systemd.so
+")
+      }
+
+      it {
+        should contain_file('pam_d_login').with({
+          'ensure' => 'file',
+          'path'   => '/etc/pam.d/login',
+          'owner'  => 'root',
+          'group'  => 'root',
+          'mode'   => '0644',
+        })
+      }
+
+      it { should contain_file('pam_d_login').with_content("auth     optional   pam_faildelay.so  delay=3000000
+auth     [success=ok new_authtok_reqd=ok ignore=ignore user_unknown=bad default=die] pam_securetty.so
+auth     requisite  pam_nologin.so
+session  [success=ok ignore=ignore module_unknown=ignore default=bad] pam_selinux.so close
+session  required   pam_env.so readenv=1 envfile=/etc/default/locale
+@include common-auth
+auth     optional   pam_group.so
+session  required   pam_limits.so
+session  optional   pam_lastlog.so
+session  optional   pam_motd.so  motd=/run/motd.dynamic noupdate
+session  optional   pam_motd.so
+session  optional   pam_mail.so standard
+@include common-account
+@include common-session
+@include common-password
+session  [success=ok ignore=ignore module_unknown=ignore default=bad] pam_selinux.so open
+")
+      }
+
+      it {
+        should contain_file('pam_d_sshd').with({
+          'ensure' => 'file',
+          'path'   => '/etc/pam.d/sshd',
+          'owner'  => 'root',
+          'group'  => 'root',
+          'mode'   => '0644',
+        })
+      }
+
+      it { should contain_file('pam_d_sshd').with_content("@include common-auth
+account    required     pam_nologin.so
+@include common-account
+session [success=ok ignore=ignore module_unknown=ignore default=bad]        pam_selinux.so close
+session    required     pam_loginuid.so
+session    optional     pam_keyinit.so force revoke
+@include common-session
+session    optional     pam_motd.so  motd=/run/motd.dynamic noupdate
+session    optional     pam_motd.so # [1]
+session    optional     pam_mail.so standard noenv # [1]
+session    required     pam_limits.so
+session    required     pam_env.so # [1]
+session    required     pam_env.so user_readenv=1 envfile=/etc/default/locale
+session [success=ok ignore=ignore module_unknown=ignore default=bad]        pam_selinux.so open
+@include common-password")
       }
     end
 

@@ -2672,4 +2672,68 @@ other   session  required        pam_unix_session.so.1
       end
     end
   end
+
+  describe 'validating params' do
+    ['required','requisite','sufficient','optional','absent'].each do |value|
+      context "with login_pam_access set to valid value: #{value}" do
+        let :facts do
+          {
+            :osfamily                  => 'RedHat',
+            :operatingsystemmajrelease => '5',
+          }
+        end
+
+        let(:params) {{ :login_pam_access => value }}
+
+        it { should contain_class('pam') }
+      end
+
+      context "with sshd_pam_access set to valid value: #{value}" do
+        let :facts do
+          {
+            :osfamily                  => 'RedHat',
+            :operatingsystemmajrelease => '5',
+          }
+        end
+
+        let(:params) {{ :sshd_pam_access => value }}
+
+        it { should contain_class('pam') }
+      end
+    end
+
+    context 'with login_pam_access set to invalid value' do
+      let :facts do
+        {
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '5',
+        }
+      end
+
+      let(:params) {{ :login_pam_access => 'invalid' }}
+
+      it 'should fail' do
+        expect {
+          should contain_class('pam')
+        }.to raise_error(Puppet::Error,/pam::login_pam_access is <invalid> and must be either 'required', 'requisite', 'sufficient', 'optional' or 'absent'./)
+      end
+    end
+
+    context 'with sshd_pam_access set to invalid value' do
+      let :facts do
+        {
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '5',
+        }
+      end
+
+      let(:params) {{ :sshd_pam_access => 'invalid' }}
+
+      it 'should fail' do
+        expect {
+          should contain_class('pam')
+        }.to raise_error(Puppet::Error,/pam::sshd_pam_access is <invalid> and must be either 'required', 'requisite', 'sufficient', 'optional' or 'absent'./)
+      end
+    end
+  end
 end

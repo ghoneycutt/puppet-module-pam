@@ -80,6 +80,18 @@ This would create /etc/security/access.conf with the following content.
 + : username2 : tty1
 </pre>
 
+login_pam_access
+----------------
+Control module to be used for pam_access.so for login. Valid values are 'required', 'requisite', 'sufficient', 'optional' and 'absent'.
+
+- *Default*: 'required'
+
+sshd_pam_access
+---------------
+Control module to be used for pam_access.so for sshd. Valid values are 'required', 'requisite', 'sufficient', 'optional' and 'absent'.
+
+- *Default*: 'required'
+
 limits_fragments
 ----------------
 Hash of fragments to pass to pam::limits::fragments

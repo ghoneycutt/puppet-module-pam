@@ -351,6 +351,12 @@ Mode for limits_d_dir.
 
 - *Default*: '0750'
 
+purge_limits_d_dir
+------------------
+Boolean to purge the limits.d directory.
+
+- *Default*: false
+
 ===
 
 # pam::limits::fragment define

@@ -20,7 +20,12 @@ class pam::limits (
   validate_re($limits_d_dir_mode, '^[0-7]{4}$',
     "pam::limits::limits_d_dir_mode is <${limits_d_dir_mode}> and must be a valid four digit mode in octal notation.")
 
-  validate_bool($purge_limits_d_dir)
+  if is_string($purge_limits_d_dir) == true {
+    $purge_limits_d_dir_real = str2bool($purge_limits_d_dir)
+  } else {
+    $purge_limits_d_dir_real = $purge_limits_d_dir
+  }
+  validate_bool($purge_limits_d_dir_real)
 
   include pam
 
@@ -33,8 +38,8 @@ class pam::limits (
     owner   => 'root',
     group   => 'root',
     mode    => $limits_d_dir_mode,
-    purge   => $purge_limits_d_dir,
-    recurse => $purge_limits_d_dir,
+    purge   => $purge_limits_d_dir_real,
+    recurse => $purge_limits_d_dir_real,
     require => [ Package[$pam::my_package_name],
                 Common::Mkdir_p[$limits_d_dir],
                 ],

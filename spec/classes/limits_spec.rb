@@ -144,27 +144,54 @@ describe 'pam::limits' do
       }
     end
 
-    context 'when purge_limits_d_dir => true' do
-      let(:params) { { :purge_limits_d_dir => true } }
-      let(:facts) do
-        {
-          :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '5',
+    [true,'true'].each do |value|
+      context "with purge_limits_d_dir set to #{value}" do
+        let(:params) { { :purge_limits_d_dir => value } }
+        let(:facts) do
+          {
+            :osfamily          => 'RedHat',
+            :lsbmajdistrelease => '5',
+          }
+        end
+
+        it {
+          should contain_file('limits_d').with({
+            'ensure'  => 'directory',
+            'path'    => '/etc/security/limits.d',
+            'owner'   => 'root',
+            'group'   => 'root',
+            'mode'    => '0750',
+            'purge'   => 'true',
+            'recurse' => 'true',
+            'require' => [ 'Package[pam]', 'Package[util-linux]', 'Common::Mkdir_p[/etc/security/limits.d]' ],
+          })
         }
       end
+    end
 
-      it {
-        should contain_file('limits_d').with({
-          'ensure'  => 'directory',
-          'path'    => '/etc/security/limits.d',
-          'owner'   => 'root',
-          'group'   => 'root',
-          'mode'    => '0750',
-          'purge'   => 'true',
-          'recurse' => 'true',
-          'require' => [ 'Package[pam]', 'Package[util-linux]', 'Common::Mkdir_p[/etc/security/limits.d]' ],
-        })
-      }
+    [false,'false'].each do |value|
+      context "with purge_limits_d_dir set to #{value}" do
+        let(:params) { { :purge_limits_d_dir => value } }
+        let(:facts) do
+          {
+            :osfamily          => 'RedHat',
+            :lsbmajdistrelease => '5',
+          }
+        end
+
+        it {
+          should contain_file('limits_d').with({
+            'ensure'  => 'directory',
+            'path'    => '/etc/security/limits.d',
+            'owner'   => 'root',
+            'group'   => 'root',
+            'mode'    => '0750',
+            'purge'   => 'false',
+            'recurse' => 'false',
+            'require' => [ 'Package[pam]', 'Package[util-linux]', 'Common::Mkdir_p[/etc/security/limits.d]' ],
+          })
+        }
+      end
     end
 
     context 'with limits_d_dir specified as an invalid path' do
@@ -199,8 +226,8 @@ describe 'pam::limits' do
       end
     end
 
-    context 'when purge_limits_d_dir is invalid' do
-      let(:params) { { :purge_limits_d_dir => 'foo' } }
+    context 'with purge_limits_d_dir set to an invalid value' do
+      let(:params) { { :purge_limits_d_dir => 'invalid' } }
       let(:facts) do
         {
           :osfamily          => 'RedHat',
@@ -211,7 +238,7 @@ describe 'pam::limits' do
       it 'should fail' do
         expect {
           should contain_class('pam::limits')
-        }.to raise_error(Puppet::Error,/not a boolean/)
+        }.to raise_error(Puppet::Error,/str2bool/)
       end
     end
   end

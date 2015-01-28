@@ -114,4 +114,19 @@ root soft nproc unlimited
       }.to raise_error(Puppet::Error,/pam::limits::fragment must specify source or list./)
     end
   end
+
+  context 'on unsupported platform Suse 10.x' do
+    let(:title) { '80-nproc' }
+    let(:facts) {
+      {
+        :osfamily               => 'Suse',
+        :lsbmajdistrelease      => '10',
+      }
+    }
+    it 'should fail' do
+      expect {
+        should contain_class('pam::limits::fragment')
+      }.to raise_error(Puppet::Error,/You can not use pam::limits::fragment together with Suse 10.x releases/)
+    end
+  end
 end

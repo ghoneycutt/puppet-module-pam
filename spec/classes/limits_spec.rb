@@ -51,6 +51,125 @@ describe 'pam::limits' do
       }
     end
 
+    context 'with config_file_source specified as an valid string' do
+      let(:facts) do
+        {
+          :osfamily                  => 'RedHat',
+          :lsbmajdistrelease         => '6',
+          :operatingsystemmajrelease => '6',
+        }
+      end
+
+      let(:params) do
+        {
+          :config_file_source => 'puppet:///modules/pam/own.limits.conf',
+        }
+      end
+
+      it {
+        should contain_file('limits_conf').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/security/limits.conf',
+          'source'  => 'puppet:///modules/pam/own.limits.conf',
+          'content' => nil,
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0640',
+          'require' => [ 'Package[pam]', ],
+        })
+      }
+
+    end
+
+    context 'with config_file_lines specified as an valid array' do
+      let(:facts) do
+        {
+          :osfamily                  => 'RedHat',
+          :lsbmajdistrelease         => '6',
+          :operatingsystemmajrelease => '6',
+        }
+      end
+
+      let(:params) do
+        {
+          :config_file_lines => [ '* soft nofile 2048', '* hard nofile 8192', ]
+        }
+      end
+
+      it {
+        should contain_file('limits_conf').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/security/limits.conf',
+          'source'  => nil,
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0640',
+          'require' => [ 'Package[pam]', ],
+        })
+      }
+
+      it { should contain_file('limits_conf').with_content(/^\* soft nofile 2048$/) }
+      it { should contain_file('limits_conf').with_content(/^\* hard nofile 8192$/) }
+
+    end
+
+    context 'with config_file_lines specified as an invalid string' do
+      let(:facts) do
+        {
+          :osfamily                  => 'RedHat',
+          :lsbmajdistrelease         => '6',
+          :operatingsystemmajrelease => '6',
+        }
+      end
+
+      let(:params) do
+        {
+          :config_file_lines => '* soft nofile 2048',
+
+        }
+      end
+
+      it 'should fail' do
+        expect {
+          should contain_class('pam::limits')
+        }.to raise_error(Puppet::Error,/is not an Array.  It looks to be a String/)
+      end
+
+    end
+
+    context 'with config_file_source specified as an valid string and config_file_lines specified as an valid array' do
+      let(:facts) do
+        {
+          :osfamily                  => 'RedHat',
+          :lsbmajdistrelease         => '6',
+          :operatingsystemmajrelease => '6',
+        }
+      end
+
+      let(:params) do
+        {
+          :config_file_source => 'puppet:///modules/pam/own.limits.conf',
+          :config_file_lines => [ '* soft nofile 2048', '* hard nofile 8192', ]
+        }
+      end
+
+      it {
+        should contain_file('limits_conf').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/security/limits.conf',
+          'source'  => nil,
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0640',
+          'require' => [ 'Package[pam]', ],
+        })
+      }
+
+      it { should contain_file('limits_conf').with_content(/^\* soft nofile 2048$/) }
+      it { should contain_file('limits_conf').with_content(/^\* hard nofile 8192$/) }
+
+    end
+
     context 'with config_file specified as an invalid path' do
       let(:params) { { :config_file => 'custom/security/limits.conf' } }
       let(:facts) do
@@ -241,5 +360,19 @@ describe 'pam::limits' do
         }.to raise_error(Puppet::Error,/str2bool/)
       end
     end
+
+    context 'without fragments support on Suse 10' do
+      let(:facts) do
+        {
+          :osfamily          => 'Suse',
+          :lsbmajdistrelease => '10',
+        }
+      end
+
+      it { should contain_class('pam') }
+      it { should_not contain_common__mkdir_p('/etc/security/limits.d') }
+      it { should_not contain_file('limits_d') }
+    end
+
   end
 end

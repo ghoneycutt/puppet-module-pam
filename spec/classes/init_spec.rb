@@ -4,15 +4,15 @@ describe 'pam' do
   describe 'on unsupported platforms' do
     context 'with defaults params on osfamily RedHat 4' do
       let(:facts) do
-        { :osfamily          => 'RedHat',
-          :lsbmajdistrelease => '4',
+        { :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '4',
         }
       end
 
       it 'should fail' do
         expect {
           should contain_class('pam')
-        }.to raise_error(Puppet::Error,/Pam is only supported on EL 5, 6 and 7. Your Your operatingsystemmajrelease is identified as <4>./)
+        }.to raise_error(Puppet::Error,/Pam is only supported on EL 5, 6 and 7. Your operatingsystemmajrelease is identified as <4>./)
       end
     end
 

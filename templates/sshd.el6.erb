@@ -1,7 +1,9 @@
 #%PAM-1.0
 auth       required     pam_sepermit.so
 auth       include      password-auth
-account    required     pam_access.so
+<% if @sshd_pam_access != 'absent' -%>
+account    <%= @sshd_pam_access %>     pam_access.so
+<% end -%>
 account    required     pam_nologin.so
 account    include      password-auth
 password   include      password-auth

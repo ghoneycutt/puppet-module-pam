@@ -341,6 +341,19 @@ Mode for config_file.
 
 - *Default*: '0640'
 
+config_file_contents
+--------------------
+Limits that should be placed into limits.conf
+
+- *Default*: undef
+
+config_file_source
+------------------
+Source path to a limits.conf
+
+- *Default*: undef
+
+
 limits_d_dir
 ------------
 Path to limits.d directory

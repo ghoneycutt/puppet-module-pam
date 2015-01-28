@@ -49,5 +49,10 @@
 #@faculty        hard    nproc           50
 #ftp             hard    nproc           0
 #@student        -       maxlogins       4
+<% unless @config_file_contents.nil? -%>
+<% @config_file_contents.each do |line| -%>
+<%= line %>
+<% end -%>
+<% end -%>
 
 # End of file

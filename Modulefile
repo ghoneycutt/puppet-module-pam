@@ -1,5 +1,5 @@
 name    'ghoneycutt-pam'
-version '2.11.0'
+version '2.12.0'
 source 'git://github.com/ghoneycutt/puppet-module-pam.git'
 author 'ghoneycutt'
 license 'Apache-2.0'

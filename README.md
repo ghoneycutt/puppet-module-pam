@@ -24,6 +24,8 @@ This module has been tested to work on the following systems using Puppet v3 wit
  * Suse 12
  * Ubuntu 12.04 LTS
 
+EL no longer requires the `redhat-lsb` package.
+
 ===
 
 # Parameters

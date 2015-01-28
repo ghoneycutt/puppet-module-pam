@@ -3,7 +3,7 @@
 # This module manages bits around PAM.
 #
 class pam (
-  $allowed_users                       = 'root',
+  $allowed_users                       = ['root'],
   $ensure_vas                          = 'absent',
   $package_name                        = undef,
   $pam_conf_file                       = '/etc/pam.conf',

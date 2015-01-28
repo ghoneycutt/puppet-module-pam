@@ -75,7 +75,7 @@ describe 'pam::limits' do
           'owner'   => 'root',
           'group'   => 'root',
           'mode'    => '0640',
-          'require' => [ 'Package[pam]', ],
+          'require' => 'Package[pam]',
         })
       }
 
@@ -104,7 +104,7 @@ describe 'pam::limits' do
           'owner'   => 'root',
           'group'   => 'root',
           'mode'    => '0640',
-          'require' => [ 'Package[pam]', ],
+          'require' => 'Package[pam]',
         })
       }
 
@@ -161,7 +161,7 @@ describe 'pam::limits' do
           'owner'   => 'root',
           'group'   => 'root',
           'mode'    => '0640',
-          'require' => [ 'Package[pam]', ],
+          'require' => 'Package[pam]',
         })
       }
 

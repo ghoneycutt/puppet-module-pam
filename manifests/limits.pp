@@ -3,10 +3,11 @@
 # Manage PAM limits.conf
 #
 class pam::limits (
-  $config_file       = '/etc/security/limits.conf',
-  $config_file_mode  = '0640',
-  $limits_d_dir      = '/etc/security/limits.d',
-  $limits_d_dir_mode = '0750',
+  $config_file        = '/etc/security/limits.conf',
+  $config_file_mode   = '0640',
+  $limits_d_dir       = '/etc/security/limits.d',
+  $limits_d_dir_mode  = '0750',
+  $purge_limits_d_dir = false,
 ) {
 
   # validate params
@@ -19,6 +20,13 @@ class pam::limits (
   validate_re($limits_d_dir_mode, '^[0-7]{4}$',
     "pam::limits::limits_d_dir_mode is <${limits_d_dir_mode}> and must be a valid four digit mode in octal notation.")
 
+  if is_string($purge_limits_d_dir) == true {
+    $purge_limits_d_dir_real = str2bool($purge_limits_d_dir)
+  } else {
+    $purge_limits_d_dir_real = $purge_limits_d_dir
+  }
+  validate_bool($purge_limits_d_dir_real)
+
   include pam
 
   # ensure target exists
@@ -30,6 +38,8 @@ class pam::limits (
     owner   => 'root',
     group   => 'root',
     mode    => $limits_d_dir_mode,
+    purge   => $purge_limits_d_dir_real,
+    recurse => $purge_limits_d_dir_real,
     require => [ Package[$pam::my_package_name],
                 Common::Mkdir_p[$limits_d_dir],
                 ],

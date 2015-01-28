@@ -384,6 +384,108 @@ session    required     pam_loginuid.so
       it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) }
     end
 
+    context 'with login_pam_access => sufficient on osfamily RedHat with operatingsystemmajrelease 5' do
+      let :facts do
+        {
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '5',
+        }
+      end
+
+      let(:params) {{ :login_pam_access => 'sufficient' }}
+
+      it { should contain_file('pam_d_login').with_content("#%PAM-1.0
+auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so
+auth       include      system-auth
+account    required     pam_nologin.so
+account    include      system-auth
+account    sufficient     pam_access.so
+password   include      system-auth
+# pam_selinux.so close should be the first session rule
+session    required     pam_selinux.so close
+session    optional     pam_keyinit.so force revoke
+session    required     pam_loginuid.so
+session    include      system-auth
+session    optional     pam_console.so
+# pam_selinux.so open should only be followed by sessions to be executed in the user context
+session    required     pam_selinux.so open
+")
+      }
+    end
+
+    context 'with sshd_pam_access => sufficient on osfamily RedHat with operatingsystemmajrelease 5' do
+      let :facts do
+        {
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '5',
+        }
+      end
+
+      let(:params) {{ :sshd_pam_access => 'sufficient' }}
+
+      it { should contain_file('pam_d_sshd').with_content("#%PAM-1.0
+auth       include      system-auth
+account    required     pam_nologin.so
+account    include      system-auth
+account    sufficient     pam_access.so
+password   include      system-auth
+session    optional     pam_keyinit.so force revoke
+session    include      system-auth
+session    required     pam_loginuid.so
+")
+      }
+    end
+
+    context 'with login_pam_access => absent on osfamily RedHat with operatingsystemmajrelease 5' do
+      let :facts do
+        {
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '5',
+        }
+      end
+
+      let(:params) {{ :login_pam_access => 'absent' }}
+
+      it { should contain_file('pam_d_login').with_content("#%PAM-1.0
+auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so
+auth       include      system-auth
+account    required     pam_nologin.so
+account    include      system-auth
+password   include      system-auth
+# pam_selinux.so close should be the first session rule
+session    required     pam_selinux.so close
+session    optional     pam_keyinit.so force revoke
+session    required     pam_loginuid.so
+session    include      system-auth
+session    optional     pam_console.so
+# pam_selinux.so open should only be followed by sessions to be executed in the user context
+session    required     pam_selinux.so open
+")
+      }
+    end
+
+    context 'with sshd_pam_access => sufficient on osfamily RedHat with operatingsystemmajrelease 5' do
+      let :facts do
+        {
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '5',
+        }
+      end
+
+      let(:params) {{ :sshd_pam_access => 'absent' }}
+
+      it { should contain_file('pam_d_sshd').with_content("#%PAM-1.0
+auth       include      system-auth
+account    required     pam_nologin.so
+account    include      system-auth
+password   include      system-auth
+session    optional     pam_keyinit.so force revoke
+session    include      system-auth
+session    required     pam_loginuid.so
+")
+      }
+    end
+
     context 'with default params on osfamily RedHat with operatingsystemmajrelease 6' do
       let :facts do
         {
@@ -496,6 +598,122 @@ session    include      password-auth
       }
 
       it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) }
+    end
+
+    context 'with login_pam_access => sufficient on osfamily RedHat with operatingsystemmajrelease 6' do
+      let :facts do
+        {
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '6',
+        }
+      end
+
+      let(:params) {{ :login_pam_access => 'sufficient' }}
+
+      it { should contain_file('pam_d_login').with_content("#%PAM-1.0
+auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so
+auth       include      system-auth
+account    required     pam_nologin.so
+account    include      system-auth
+account    sufficient     pam_access.so
+password   include      system-auth
+# pam_selinux.so close should be the first session rule
+session    required     pam_selinux.so close
+session    required     pam_loginuid.so
+session    optional     pam_console.so
+# pam_selinux.so open should only be followed by sessions to be executed in the user context
+session    required     pam_selinux.so open
+session    required     pam_namespace.so
+session    optional     pam_keyinit.so force revoke
+session    include      system-auth
+-session   optional     pam_ck_connector.so
+")
+      }
+    end
+
+    context 'with sshd_pam_access => sufficient on osfamily RedHat with operatingsystemmajrelease 6' do
+      let :facts do
+        {
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '6',
+        }
+      end
+
+      let(:params) {{ :sshd_pam_access => 'sufficient' }}
+
+      it { should contain_file('pam_d_sshd').with_content("#%PAM-1.0
+auth       required     pam_sepermit.so
+auth       include      password-auth
+account    sufficient     pam_access.so
+account    required     pam_nologin.so
+account    include      password-auth
+password   include      password-auth
+# pam_selinux.so close should be the first session rule
+session    required     pam_selinux.so close
+session    required     pam_loginuid.so
+# pam_selinux.so open should only be followed by sessions to be executed in the user context
+session    required     pam_selinux.so open env_params
+session    optional     pam_keyinit.so force revoke
+session    include      password-auth
+")
+      }
+    end
+
+    context 'with login_pam_access => absent on osfamily RedHat with operatingsystemmajrelease 6' do
+      let :facts do
+        {
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '6',
+        }
+      end
+
+      let(:params) {{ :login_pam_access => 'absent' }}
+
+      it { should contain_file('pam_d_login').with_content("#%PAM-1.0
+auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so
+auth       include      system-auth
+account    required     pam_nologin.so
+account    include      system-auth
+password   include      system-auth
+# pam_selinux.so close should be the first session rule
+session    required     pam_selinux.so close
+session    required     pam_loginuid.so
+session    optional     pam_console.so
+# pam_selinux.so open should only be followed by sessions to be executed in the user context
+session    required     pam_selinux.so open
+session    required     pam_namespace.so
+session    optional     pam_keyinit.so force revoke
+session    include      system-auth
+-session   optional     pam_ck_connector.so
+")
+      }
+    end
+
+    context 'with sshd_pam_access => absent on osfamily RedHat with operatingsystemmajrelease 6' do
+      let :facts do
+        {
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => '6',
+        }
+      end
+
+      let(:params) {{ :sshd_pam_access => 'absent' }}
+
+      it { should contain_file('pam_d_sshd').with_content("#%PAM-1.0
+auth       required     pam_sepermit.so
+auth       include      password-auth
+account    required     pam_nologin.so
+account    include      password-auth
+password   include      password-auth
+# pam_selinux.so close should be the first session rule
+session    required     pam_selinux.so close
+session    required     pam_loginuid.so
+# pam_selinux.so open should only be followed by sessions to be executed in the user context
+session    required     pam_selinux.so open env_params
+session    optional     pam_keyinit.so force revoke
+session    include      password-auth
+")
+      }
     end
 
     context 'with default params on osfamily RedHat with operatingsystemmajrelease 7' do
@@ -1083,6 +1301,102 @@ session   optional       pam_ck_connector.so
 auth      requisite      pam_nologin.so
 auth      include        common-auth
 account   required       pam_access.so
+account   requisite      pam_nologin.so
+account   include        common-account
+password  include        common-password
+session   required       pam_loginuid.so
+session   include        common-session
+")
+      }
+    end
+
+    context 'with login_pam_access => sufficient on osfamily Suse with lsbmajdistrelease 11' do
+      let :facts do
+        {
+          :osfamily          => 'Suse',
+          :lsbmajdistrelease => '11',
+        }
+      end
+
+      let(:params) {{ :login_pam_access => 'sufficient' }}
+
+      it { should contain_file('pam_d_login').with_content("#%PAM-1.0
+auth      requisite      pam_nologin.so
+auth      [user_unknown=ignore success=ok ignore=ignore auth_err=die default=bad]        pam_securetty.so
+auth      include        common-auth
+account   include        common-account
+account   sufficient       pam_access.so
+password  include        common-password
+session   required       pam_loginuid.so
+session   include        common-session
+session   required       pam_lastlog.so  nowtmp
+session   optional       pam_mail.so standard
+session   optional       pam_ck_connector.so
+")
+      }
+    end
+
+    context 'with sshd_pam_access => sufficient on osfamily Suse with lsbmajdistrelease 11' do
+      let :facts do
+        {
+          :osfamily          => 'Suse',
+          :lsbmajdistrelease => '11',
+        }
+      end
+
+      let(:params) {{ :sshd_pam_access => 'sufficient' }}
+
+      it { should contain_file('pam_d_sshd').with_content("#%PAM-1.0
+auth      requisite      pam_nologin.so
+auth      include        common-auth
+account   sufficient       pam_access.so
+account   requisite      pam_nologin.so
+account   include        common-account
+password  include        common-password
+session   required       pam_loginuid.so
+session   include        common-session
+")
+      }
+    end
+
+    context 'with login_pam_access => absent on osfamily Suse with lsbmajdistrelease 11' do
+      let :facts do
+        {
+          :osfamily          => 'Suse',
+          :lsbmajdistrelease => '11',
+        }
+      end
+
+      let(:params) {{ :login_pam_access => 'absent' }}
+
+      it { should contain_file('pam_d_login').with_content("#%PAM-1.0
+auth      requisite      pam_nologin.so
+auth      [user_unknown=ignore success=ok ignore=ignore auth_err=die default=bad]        pam_securetty.so
+auth      include        common-auth
+account   include        common-account
+password  include        common-password
+session   required       pam_loginuid.so
+session   include        common-session
+session   required       pam_lastlog.so  nowtmp
+session   optional       pam_mail.so standard
+session   optional       pam_ck_connector.so
+")
+      }
+    end
+
+    context 'with sshd_pam_access => absent on osfamily Suse with lsbmajdistrelease 11' do
+      let :facts do
+        {
+          :osfamily          => 'Suse',
+          :lsbmajdistrelease => '11',
+        }
+      end
+
+      let(:params) {{ :sshd_pam_access => 'absent' }}
+
+      it { should contain_file('pam_d_sshd').with_content("#%PAM-1.0
+auth      requisite      pam_nologin.so
+auth      include        common-auth
 account   requisite      pam_nologin.so
 account   include        common-account
 password  include        common-password

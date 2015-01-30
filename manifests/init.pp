@@ -822,6 +822,9 @@ class pam (
     create_resources('pam::limits::fragment',$limits_fragments)
   }
 
+  validate_absolute_path($password_auth_file)
+  validate_absolute_path($password_auth_ac_file)
+
   case $::osfamily {
     'RedHat', 'Suse', 'Debian': {
 

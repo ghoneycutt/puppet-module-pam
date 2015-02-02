@@ -605,7 +605,7 @@ session    include      password-auth
           'mode'    => '0644',
         })
       }
-	  it { should contain_file('pam_password_auth_ac').with_content("# This file is being maintained by Puppet.
+      it { should contain_file('pam_password_auth_ac').with_content("# This file is being maintained by Puppet.
 # DO NOT EDIT
 # Auth
 auth        required      pam_env.so
@@ -631,7 +631,7 @@ session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet 
 session     required      pam_unix.so
 ")
       }
-	  it {
+      it {
         should contain_file('pam_password_auth').with({
           'ensure' => 'symlink',
           'path'   => '/etc/pam.d/password-auth',
@@ -641,238 +641,20 @@ session     required      pam_unix.so
       }
     end
 
-    context 'with login_pam_access => sufficient on osfamily RedHat with operatingsystemmajrelease 6' do
-      let :facts do
-        {
-          :osfamily                  => 'RedHat',
-          :operatingsystemmajrelease => '6',
-        }
-      end
-
-      let(:params) {{ :login_pam_access => 'sufficient' }}
-
-      it { should contain_file('pam_d_login').with_content("#%PAM-1.0
-auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so
-auth       include      system-auth
-account    required     pam_nologin.so
-account    include      system-auth
-account    sufficient     pam_access.so
-password   include      system-auth
-# pam_selinux.so close should be the first session rule
-session    required     pam_selinux.so close
-session    required     pam_loginuid.so
-session    optional     pam_console.so
-# pam_selinux.so open should only be followed by sessions to be executed in the user context
-session    required     pam_selinux.so open
-session    required     pam_namespace.so
-session    optional     pam_keyinit.so force revoke
-session    include      system-auth
--session   optional     pam_ck_connector.so
-")
+  context 'pam_password_auth_ac set to a non absolute path' do
+    let(:params) { { :pam_password_auth_ac => 'invalid/path' } }
+    let(:facts) do
+      { :osfamily          => 'RedHat',
+        :lsbmajdistrelease => '6',
       }
     end
 
-    context 'with sshd_pam_access => sufficient on osfamily RedHat with operatingsystemmajrelease 6' do
-      let :facts do
-        {
-          :osfamily                  => 'RedHat',
-          :operatingsystemmajrelease => '6',
-        }
-      end
-
-      let(:params) {{ :sshd_pam_access => 'sufficient' }}
-
-      it { should contain_file('pam_d_sshd').with_content("#%PAM-1.0
-auth       required     pam_sepermit.so
-auth       include      password-auth
-account    sufficient     pam_access.so
-account    required     pam_nologin.so
-account    include      password-auth
-password   include      password-auth
-# pam_selinux.so close should be the first session rule
-session    required     pam_selinux.so close
-session    required     pam_loginuid.so
-# pam_selinux.so open should only be followed by sessions to be executed in the user context
-session    required     pam_selinux.so open env_params
-session    optional     pam_keyinit.so force revoke
-session    include      password-auth
-")
-      }
+    it 'should fail' do
+      expect {
+        should contain_class('pam')
+      }.to raise_error(Puppet::Error)
     end
-
-    context 'with login_pam_access => absent on osfamily RedHat with operatingsystemmajrelease 6' do
-      let :facts do
-        {
-          :osfamily                  => 'RedHat',
-          :operatingsystemmajrelease => '6',
-        }
-      end
-
-      let(:params) {{ :login_pam_access => 'absent' }}
-
-      it { should contain_file('pam_d_login').with_content("#%PAM-1.0
-auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so
-auth       include      system-auth
-account    required     pam_nologin.so
-account    include      system-auth
-password   include      system-auth
-# pam_selinux.so close should be the first session rule
-session    required     pam_selinux.so close
-session    required     pam_loginuid.so
-session    optional     pam_console.so
-# pam_selinux.so open should only be followed by sessions to be executed in the user context
-session    required     pam_selinux.so open
-session    required     pam_namespace.so
-session    optional     pam_keyinit.so force revoke
-session    include      system-auth
--session   optional     pam_ck_connector.so
-")
-      }
-    end
-
-    context 'with sshd_pam_access => absent on osfamily RedHat with operatingsystemmajrelease 6' do
-      let :facts do
-        {
-          :osfamily                  => 'RedHat',
-          :operatingsystemmajrelease => '6',
-        }
-      end
-
-      let(:params) {{ :sshd_pam_access => 'absent' }}
-
-      it { should contain_file('pam_d_sshd').with_content("#%PAM-1.0
-auth       required     pam_sepermit.so
-auth       include      password-auth
-account    required     pam_nologin.so
-account    include      password-auth
-password   include      password-auth
-# pam_selinux.so close should be the first session rule
-session    required     pam_selinux.so close
-session    required     pam_loginuid.so
-# pam_selinux.so open should only be followed by sessions to be executed in the user context
-session    required     pam_selinux.so open env_params
-session    optional     pam_keyinit.so force revoke
-session    include      password-auth
-")
-      }
-    end
-
-    context 'with default params on osfamily RedHat with operatingsystemmajrelease 7' do
-      let :facts do
-        {
-          :osfamily                  => 'RedHat',
-          :operatingsystemmajrelease => '7',
-        }
-      end
-
-      it {
-        should contain_file('pam_system_auth_ac').with({
-          'ensure'  => 'file',
-          'path'    => '/etc/pam.d/system-auth-ac',
-          'owner'   => 'root',
-          'group'   => 'root',
-          'mode'    => '0644',
-        })
-      }
-      it { should contain_file('pam_system_auth_ac').with_content("# This file is being maintained by Puppet.
-# DO NOT EDIT
-# Auth
-auth        required      pam_env.so
-auth        sufficient    pam_fprintd.so
-auth        sufficient    pam_unix.so nullok try_first_pass
-auth        requisite     pam_succeed_if.so uid >= 1000 quiet_success
-auth        required      pam_deny.so
-
-# Account
-account     required      pam_unix.so
-account     sufficient    pam_localuser.so
-account     sufficient    pam_succeed_if.so uid < 1000 quiet
-account     required      pam_permit.so
-
-# Password
-password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=
-password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok
-password    required      pam_deny.so
-
-# Session
-session     optional      pam_keyinit.so revoke
-session     required      pam_limits.so
--session    optional      pam_systemd.so
-session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid
-session     required      pam_unix.so
-")
-      }
-
-      it {
-        should contain_file('pam_system_auth').with({
-          'ensure' => 'symlink',
-          'path'   => '/etc/pam.d/system-auth',
-          'owner'  => 'root',
-          'group'  => 'root',
-        })
-      }
-
-      it {
-        should contain_file('pam_d_login').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/login',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-        })
-      }
-
-      it { should contain_file('pam_d_login').with_content("#%PAM-1.0
-auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so
-auth       substack     system-auth
-auth       include      postlogin
-account    required     pam_nologin.so
-account    include      system-auth
-password   include      system-auth
-# pam_selinux.so close should be the first session rule
-session    required     pam_selinux.so close
-session    required     pam_loginuid.so
-session    optional     pam_console.so
-# pam_selinux.so open should only be followed by sessions to be executed in the user context
-session    required     pam_selinux.so open
-session    required     pam_namespace.so
-session    optional     pam_keyinit.so force revoke
-session    include      system-auth
-session    include      postlogin
--session   optional     pam_ck_connector.so
-")
-      }
-
-      it {
-        should contain_file('pam_d_sshd').with({
-          'ensure' => 'file',
-          'path'   => '/etc/pam.d/sshd',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-        })
-      }
-
-      it { should contain_file('pam_d_sshd').with_content("#%PAM-1.0
-auth       required     pam_sepermit.so
-auth       substack     password-auth
-auth       include      postlogin
-account    required     pam_nologin.so
-account    include      password-auth
-password   include      password-auth
-# pam_selinux.so close should be the first session rule
-session    required     pam_selinux.so close
-session    required     pam_loginuid.so
-# pam_selinux.so open should only be followed by sessions to be executed in the user context
-session    required     pam_selinux.so open env_params
-session    optional     pam_keyinit.so force revoke
-session    include      password-auth
-session    include      postlogin
-")
-      }
-
-      it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) }
-    end
+  end
 
     context 'with default params on Ubuntu 12.04 LTS' do
       let :facts do
@@ -1121,7 +903,7 @@ account  required  pam_unix2.so
           'owner'   => 'root',
           'group'   => 'root',
           'mode'    => '0644',
-         })
+        })
       }
 
       it { should contain_file('pam_common_password').with_content("# This file is being maintained by Puppet.
@@ -1138,7 +920,7 @@ password  required  pam_unix2.so nullok use_authtok
           'owner'   => 'root',
           'group'   => 'root',
           'mode'    => '0644',
-         })
+        })
       }
 
       it { should contain_file('pam_common_session').with_content("# This file is being maintained by Puppet.

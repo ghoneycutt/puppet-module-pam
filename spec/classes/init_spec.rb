@@ -598,6 +598,64 @@ session    include      password-auth
       }
 
       it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so/) }
+      it {
+        should contain_file('pam_password_auth_ac').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/password-auth-ac',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+      }
+      it { should contain_file('pam_password_auth_ac').with_content("# This file is being maintained by Puppet.
+# DO NOT EDIT
+# Auth
+auth        required      pam_env.so
+auth        sufficient    pam_unix.so nullok try_first_pass
+auth        requisite     pam_succeed_if.so uid >= 500 quiet
+auth        required      pam_deny.so
+
+# Account
+account     required      pam_unix.so
+account     sufficient    pam_localuser.so
+account     sufficient    pam_succeed_if.so uid < 500 quiet
+account     required      pam_permit.so
+
+# Password
+password    requisite     pam_cracklib.so try_first_pass retry=3 type=
+password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok
+password    required      pam_deny.so
+
+# Session
+session     optional      pam_keyinit.so revoke
+session     required      pam_limits.so
+session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid
+session     required      pam_unix.so
+")
+      }
+      it {
+        should contain_file('pam_password_auth').with({
+          'ensure' => 'symlink',
+          'path'   => '/etc/pam.d/password-auth',
+          'owner'  => 'root',
+          'group'  => 'root',
+        })
+      }
+    end
+  end
+
+  context 'pam_password_auth_ac set to a non absolute path on osfamily RedHat with operatingsystemmajrelease 6' do
+    let(:params) { { :pam_password_auth_ac => 'invalid/path' } }
+    let(:facts) do
+      { :osfamily          => 'RedHat',
+        :lsbmajdistrelease => '6',
+      }
+    end
+
+    it 'should fail' do
+      expect {
+        should contain_class('pam')
+      }.to raise_error(Puppet::Error)
     end
 
     context 'with login_pam_access => sufficient on osfamily RedHat with operatingsystemmajrelease 6' do
@@ -1080,7 +1138,7 @@ account  required  pam_unix2.so
           'owner'   => 'root',
           'group'   => 'root',
           'mode'    => '0644',
-         })
+        })
       }
 
       it { should contain_file('pam_common_password').with_content("# This file is being maintained by Puppet.
@@ -1097,7 +1155,7 @@ password  required  pam_unix2.so nullok use_authtok
           'owner'   => 'root',
           'group'   => 'root',
           'mode'    => '0644',
-         })
+        })
       }
 
       it { should contain_file('pam_common_session').with_content("# This file is being maintained by Puppet.
@@ -1764,6 +1822,21 @@ session required        pam_unix_session.so.1
       it { should contain_file('pam_system_auth_ac').with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) }
       it { should contain_file('pam_system_auth_ac').with_content(/session[\s]+required[\s]+pam_vas3.so/) }
       it { should_not contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) }
+      it {
+        should contain_file('pam_password_auth_ac').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/password-auth-ac',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+      }
+
+      it { should contain_file('pam_password_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so create_homedir get_nonvas_pass/) }
+      it { should contain_file('pam_password_auth_ac').with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_password_auth_ac').with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_password_auth_ac').with_content(/session[\s]+required[\s]+pam_limits.so/) }
+      it { should_not contain_file('pam_password_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) }
     end
 
     context 'with ensure_vas=present and default vas_major_version (4) on osfamily RedHat with operatingsystemmajrelease 7' do
@@ -1854,6 +1927,20 @@ session required        pam_unix_session.so.1
       it { should contain_file('pam_system_auth_ac').with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) }
       it { should contain_file('pam_system_auth_ac').with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) }
       it { should contain_file('pam_system_auth_ac').with_content(/session[\s]+required[\s]+pam_vas3.so/) }
+      it {
+        should contain_file('pam_password_auth_ac').with({
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/password-auth-ac',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+      }
+
+      it { should contain_file('pam_password_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so create_homedir get_nonvas_pass/) }
+      it { should contain_file('pam_password_auth_ac').with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_password_auth_ac').with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) }
+      it { should contain_file('pam_password_auth_ac').with_content(/session[\s]+required[\s]+pam_vas3.so/) }
     end
 
     context 'with ensure_vas=present on osfamily Suse with lsbmajdistrelease 10' do
@@ -1909,7 +1996,7 @@ account  required    pam_unix2.so
           'owner'   => 'root',
           'group'   => 'root',
           'mode'    => '0644',
-         })
+        })
       }
 
       it { should contain_file('pam_common_password').with_content("# This file is being maintained by Puppet.
@@ -1928,7 +2015,7 @@ password  required    pam_unix2.so use_authtok nullok
           'owner'   => 'root',
           'group'   => 'root',
           'mode'    => '0644',
-         })
+        })
       }
 
       it { should contain_file('pam_common_session').with_content("# This file is being maintained by Puppet.

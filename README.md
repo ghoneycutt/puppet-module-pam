@@ -355,6 +355,20 @@ Mode for config_file.
 
 - *Default*: '0640'
 
+config_file_lines
+--------------------
+Ordered array of limits that should be placed into limits.conf.
+Useful for Suse 10 which does not use limits.d.
+
+- *Default*: undef
+
+config_file_source
+------------------
+String with source path to a limits.conf
+
+- *Default*: undef
+
+
 limits_d_dir
 ------------
 Path to limits.d directory

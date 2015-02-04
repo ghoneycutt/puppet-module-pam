@@ -23,6 +23,7 @@ This module has been tested to work on the following systems using Puppet v3 wit
  * Suse 11
  * Suse 12
  * Ubuntu 12.04 LTS
+ * Ubuntu 14.04 LTS
 
 EL no longer requires the `redhat-lsb` package.
 
@@ -180,25 +181,25 @@ Content template of $pam_d_sshd_path. If undef, parameter is set based on the OS
 
 pam_auth_lines
 --------------
-Content for PAM auth. If undef, parameter is set based on the OS version.
+An ordered array of strings that define the content for PAM auth. If undef, parameter is set based on the OS version.
 
 - *Default*: undef, default is set based on OS version
 
 pam_account_lines
 -----------------
-Content for PAM account. If undef, parameter is set based on the OS version.
+An ordered array of strings that define the content for PAM account. If undef, parameter is set based on the OS version.
 
 - *Default*: undef, default is set based on OS version
 
 pam_password_lines
 ------------------
-Content for PAM password. If undef, parameter is set based on the OS version.
+An ordered array of strings that define the content for PAM password. If undef, parameter is set based on the OS version.
 
 - *Default*: undef, default is set based on OS version
 
 pam_session_lines
 -----------------
-Content for PAM session. If undef, parameter is set based on the OS version.
+An ordered array of strings that define the content for PAM session. If undef, parameter is set based on the OS version.
 
 - *Default*: undef, default is set based on OS version
 

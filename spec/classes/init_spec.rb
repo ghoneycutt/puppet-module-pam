@@ -1117,6 +1117,7 @@ session optional      pam_systemd.so
 auth     [success=ok new_authtok_reqd=ok ignore=ignore user_unknown=bad default=die] pam_securetty.so
 auth     requisite  pam_nologin.so
 session  [success=ok ignore=ignore module_unknown=ignore default=bad] pam_selinux.so close
+session  required   pam_env.so readenv=1
 session  required   pam_env.so readenv=1 envfile=/etc/default/locale
 @include common-auth
 auth     optional   pam_group.so
@@ -1143,20 +1144,21 @@ session  [success=ok ignore=ignore module_unknown=ignore default=bad] pam_selinu
       }
 
       it { should contain_file('pam_d_sshd').with_content("@include common-auth
-account    required     pam_nologin.so
+account  required     pam_nologin.so
 @include common-account
-session [success=ok ignore=ignore module_unknown=ignore default=bad]        pam_selinux.so close
-session    required     pam_loginuid.so
-session    optional     pam_keyinit.so force revoke
+session  [success=ok ignore=ignore module_unknown=ignore default=bad]        pam_selinux.so close
+session  required     pam_loginuid.so
+session  optional     pam_keyinit.so force revoke
 @include common-session
-session    optional     pam_motd.so  motd=/run/motd.dynamic noupdate
-session    optional     pam_motd.so # [1]
-session    optional     pam_mail.so standard noenv # [1]
-session    required     pam_limits.so
-session    required     pam_env.so # [1]
-session    required     pam_env.so user_readenv=1 envfile=/etc/default/locale
-session [success=ok ignore=ignore module_unknown=ignore default=bad]        pam_selinux.so open
-@include common-password")
+session  optional     pam_motd.so  motd=/run/motd.dynamic noupdate
+session  optional     pam_motd.so # [1]
+session  optional     pam_mail.so standard noenv # [1]
+session  required     pam_limits.so
+session  required     pam_env.so # [1]
+session  required     pam_env.so user_readenv=1 envfile=/etc/default/locale
+session  [success=ok ignore=ignore module_unknown=ignore default=bad]        pam_selinux.so open
+@include common-password
+")
       }
     end
 

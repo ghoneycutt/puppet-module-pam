@@ -55,7 +55,7 @@ class pam (
           $default_pam_d_sshd_template  = 'pam/sshd.el5.erb'
           $default_package_name         = [
             'pam',
-            'util-linux'
+            'util-linux',
           ]
 
           if $ensure_vas == 'present' {
@@ -837,10 +837,10 @@ class pam (
   validate_re($sshd_pam_access, $valid_pam_access_values,
     "pam::sshd_pam_access is <${sshd_pam_access}> and must be either 'required', 'requisite', 'sufficient', 'optional' or 'absent'.")
 
-  if $package_name {
-    $my_package_name = $package_name
-  } else {
+  if $package_name == undef {
     $my_package_name = $default_package_name
+  } else {
+    $my_package_name = $package_name
   }
 
   if $pam_d_login_template == undef {

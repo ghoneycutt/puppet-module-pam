@@ -423,7 +423,7 @@ Array of lines to add to the fragment file
 ===
 
 # pam::service
-Manage PAM file for specific service
+Manage PAM file for specific service. The `pam::service` resource is reversible, so that any service that Puppet has locked using PAM can be unlocked by setting the resource ensure to absent and waiting for the next puppet run.
 
 ## Usage
 you can specify a hash for to manage the services in Hiera
@@ -433,7 +433,12 @@ pam::services:
     content : "auth     required       pam_unix2.so"
 </pre>
 
-## Paramteters for `pam::service`
+## Parameters for `pam::service`
+
+ensure
+------
+
+Specifies if a PAM service file should (`present`) or should not (`absent`) exist. The default is set to 'present'
 
 pam_config_dir
 --------------
@@ -443,7 +448,11 @@ Path to PAM files
 
 content
 -------
-Content of the PAM file for the service
+Content of the PAM file for the service. The `content` and `lines` parameters are mutually exclusive. Not setting either of these parameters will result in an empty service definition file.
+
+lines
+-----
+Provides content for the PAM service file as an array of lines. The `content` and `lines` parameters are mutually exclusive. Not setting either of these parameters will result in an empty service definition file.
 
 ===
 

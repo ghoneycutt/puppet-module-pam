@@ -424,7 +424,7 @@ pam::services:
 ensure
 ------
 
-Specifies if a PAM service file should (`present`) or should not (`absent`) exist.
+Specifies if a PAM service file should (`present`) or should not (`absent`) exist. The default is set to 'present'
 
 pam_config_dir
 --------------
@@ -434,11 +434,11 @@ Path to PAM files
 
 content
 -------
-Content of the PAM file for the service
+Content of the PAM file for the service. The `content` and `lines` parameters are mutually exclusive. Not setting either of these parameters will result in an empty service definition file.
 
 lines
 -----
-Provides content for the PAM service file as an array of lines.
+Provides content for the PAM service file as an array of lines. The `content` and `lines` parameters are mutually exclusive. Not setting either of these parameters will result in an empty service definition file.
 
 ===
 

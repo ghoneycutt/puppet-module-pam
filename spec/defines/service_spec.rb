@@ -53,22 +53,13 @@ describe 'pam::service', :type => :define do
           }
         end
       it { should contain_file('pam.d-service-test').with_content(
-        %r{^# This file is being maintained by Puppet\.$}
-      ) }
-      it { should contain_file('pam.d-service-test').with_content(
-        %r{^# DO NOT EDIT$}
-      ) }
-      it { should contain_file('pam.d-service-test').with_content(
-        %r{^@include common-auth$}
-      ) }
-      it { should contain_file('pam.d-service-test').with_content(
-        %r{^@include common-account$}
-      ) }
-      it { should contain_file('pam.d-service-test').with_content(
-        %r{^session required pam_permit\.so$}
-      ) }
-      it { should contain_file('pam.d-service-test').with_content(
-        %r{^session required pam_limits\.so$}
+        %{# This file is being maintained by Puppet.
+# DO NOT EDIT
+@include common-auth
+@include common-account
+session required pam_permit.so
+session required pam_limits.so
+}
       ) }
     end
   end

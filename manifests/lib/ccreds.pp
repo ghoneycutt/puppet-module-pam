@@ -3,8 +3,6 @@ class pam::lib::ccreds (
   $package = undef
 ) {
 
-  include pam
-
   if $package {
     $my_package = $package
   } else {

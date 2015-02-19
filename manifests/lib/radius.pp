@@ -3,7 +3,7 @@ class pam::lib::radius (
   $package = undef
 ) {
 
-  include pam
+  require pam
 
   if $package {
     $my_package = $package

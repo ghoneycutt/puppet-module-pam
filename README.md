@@ -95,6 +95,12 @@ Control module to be used for pam_access.so for sshd. Valid values are 'required
 
 - *Default*: 'required'
 
+ensure_vas
+----------
+Configure pam to use VAS. If you want this functionality you will need to include Ericsson/vas >= v0.2.0. Valid values are 'present' and 'absent'.
+
+- *Default*: 'absent'
+
 limits_fragments
 ----------------
 Hash of fragments to pass to pam::limits::fragments

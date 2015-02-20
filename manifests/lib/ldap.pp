@@ -3,8 +3,6 @@ class pam::lib::ldap (
   $package = undef
 ) {
 
-  include pam
-
   if $package {
     $my_package = $package
   } else {

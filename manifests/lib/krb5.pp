@@ -3,8 +3,6 @@ class pam::lib::krb5 (
   $package = undef
 ) {
 
-  include pam
-
   if $package {
     $my_package = $package
   } else {

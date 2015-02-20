@@ -8,7 +8,6 @@ describe 'pam::lib::radius', :type => :class do
       }
     }
     context 'with no parameters' do
-      it { should contain_class('pam') }
       it { should contain_package('pam_radius').with(
         'ensure'  => 'installed'
       ) }
@@ -40,7 +39,6 @@ describe 'pam::lib::radius', :type => :class do
       }
     }
     context 'with no parameters' do
-      it { should contain_class('pam') }
       it { should contain_package('pam_radius').with(
         'ensure'  => 'installed'
       ) }
@@ -73,7 +71,6 @@ describe 'pam::lib::radius', :type => :class do
       }
     }
     context 'with no parameters' do
-      it { should contain_class('pam') }
       it { should contain_package('libpam-radius-auth').with(
         'ensure'  => 'installed'
       ) }

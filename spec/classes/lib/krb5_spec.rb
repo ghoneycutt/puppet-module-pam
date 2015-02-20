@@ -8,7 +8,6 @@ describe 'pam::lib::krb5', :type => :class do
       }
     }
     context 'with no parameters' do
-      it { should contain_class('pam') }
       it { should contain_package('pam_krb5').with(
         'ensure'  => 'installed'
       ) }
@@ -40,7 +39,6 @@ describe 'pam::lib::krb5', :type => :class do
       }
     }
     context 'with no parameters' do
-      it { should contain_class('pam') }
       it { should contain_package('pam_krb5').with(
         'ensure'  => 'installed'
       ) }
@@ -73,7 +71,6 @@ describe 'pam::lib::krb5', :type => :class do
       }
     }
     context 'with no parameters' do
-      it { should contain_class('pam') }
       it { should contain_package('libpam-krb5').with(
         'ensure'  => 'installed'
       ) }

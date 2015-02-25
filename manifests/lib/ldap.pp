@@ -8,19 +8,54 @@ class pam::lib::ldap (
   } else {
     case $::osfamily {
       'RedHat': {
-        $my_package = 'pam_ldap'
+        case $::operatingsystemmajrelease {
+          '5','6','7': {
+            $my_package = 'pam_ldap'
+          }
+          default: {
+            fail("a custom PAM LDAP module package is required for ${::osfamily} release ${::operatingsystemmajrelease}")
+          }
+        }
       }
       'Debian': {
-        $my_package = 'libpam-ldap'
+        case $::lsbdistid{
+          'Ubuntu': {
+            case $::lsbdistrelease {
+              '12.04','14.04': {
+                $my_package = 'libpam-ldap'
+              }
+              default: {
+                fail("a custom PAM LDAP module package is required for ${::osfamily} release ${::operatingsystemmajrelease}")
+              }
+            }
+          }
+          default:{
+            case $::operatingsystemmajrelease {
+              '6': {
+                $my_package = 'libpam-ldap'
+              }
+              default: {
+                fail("a custom PAM LDAP module package is required for ${::osfamily} release ${::operatingsystemmajrelease}")
+              }
+            }
+          }
+        }
       }
       'Suse':{
-        $my_package = 'pam_ldap'
+        case $::lsbmajdistrelease {
+          '9','10','11','12': {
+            $my_package = 'pam_ldap'
+          }
+          default: {
+            fail("a custom PAM LDAP module package is required for ${::osfamily} release ${::operatingsystemmajrelease}")
+          }
+        }
       }
       # 'Solaris':{
       #   # No packages for Solaris
       # }
       default:{
-        fail("a custom PAM ldap module package is required for ${::osfamily}")
+        fail("a custom PAM LDAP module package is required for ${::osfamily}")
       }
     }
   }

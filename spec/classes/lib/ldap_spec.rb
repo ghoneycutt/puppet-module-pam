@@ -102,7 +102,7 @@ describe 'pam::lib::ldap', :type => :class do
       }
     }
     context 'with no parameters' do
-      it { should raise_error(Puppet::Error, /a custom PAM ldap module package is required for Solaris/) }
+      it { should raise_error(Puppet::Error, /a custom PAM LDAP module package is required for Solaris/) }
     end
     context 'when absent' do
       let :params do
@@ -110,7 +110,7 @@ describe 'pam::lib::ldap', :type => :class do
             :ensure  => 'absent',
           }
         end
-      it { should raise_error(Puppet::Error, /a custom PAM ldap module package is required for Solaris/) }
+      it { should raise_error(Puppet::Error, /a custom PAM LDAP module package is required for Solaris/) }
     end
     context 'when absent with custom package' do
       let :params do

@@ -132,4 +132,15 @@ describe 'pam::lib::ccreds', :type => :class do
       it { should contain_package('libpam-magic-pkg') }
     end
   end
+  # OS tests
+  context 'on an unknown OS' do
+    let(:facts) {
+      {
+        :osfamily      => 'Unknown',
+      }
+    }
+    context 'with no parameters' do
+      it { should raise_error(Puppet::Error, /a custom PAM ccreds module package is required for Unknown/) }
+    end
+  end
 end

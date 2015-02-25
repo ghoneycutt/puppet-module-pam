@@ -8,13 +8,48 @@ class pam::lib::radius (
   } else {
     case $::osfamily {
       'RedHat': {
-        $my_package = 'pam_radius'
+        case $::operatingsystemmajrelease {
+          '5','6','7': {
+            $my_package = 'pam_radius'
+          }
+          default: {
+            fail("a custom PAM RADIUS module package is required for ${::osfamily} release ${::operatingsystemmajrelease}")
+          }
+        }
       }
       'Debian': {
-        $my_package = 'libpam-radius-auth'
+        case $::lsbdistid{
+          'Ubuntu': {
+            case $::lsbdistrelease {
+              '12.04','14.04': {
+                $my_package = 'libpam-radius-auth'
+              }
+              default: {
+                fail("a custom PAM RADIUS module package is required for ${::osfamily} release ${::operatingsystemmajrelease}")
+              }
+            }
+          }
+          default:{
+            case $::operatingsystemmajrelease {
+              '6': {
+                $my_package = 'libpam-radius-auth'
+              }
+              default: {
+                fail("a custom PAM RADIUS module package is required for ${::osfamily} release ${::operatingsystemmajrelease}")
+              }
+            }
+          }
+        }
       }
       'Suse':{
-        $my_package = 'pam_radius'
+        case $::lsbmajdistrelease {
+          '9','10','11','12': {
+            $my_package = 'pam_radius'
+          }
+          default: {
+            fail("a custom PAM RADIUS module package is required for ${::osfamily} release ${::operatingsystemmajrelease}")
+          }
+        }
       }
       # 'Solaris':{
       #   # No packages for Solaris

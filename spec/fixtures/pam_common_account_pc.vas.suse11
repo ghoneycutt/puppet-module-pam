@@ -1,0 +1,5 @@
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+account  sufficient  pam_vas3.so
+account  requisite   pam_vas3.so echo_return
+account  required    pam_unix2.so

@@ -1,0 +1,6 @@
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+auth  required    pam_env.so
+auth  sufficient  pam_vas3.so show_lockout_msg get_nonvas_pass store_creds
+auth  requisite   pam_vas3.so echo_return
+auth  required    pam_unix2.so use_first_pass

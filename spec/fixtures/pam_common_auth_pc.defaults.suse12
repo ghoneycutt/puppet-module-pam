@@ -1,0 +1,4 @@
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+auth  required  pam_env.so
+auth  required  pam_unix2.so

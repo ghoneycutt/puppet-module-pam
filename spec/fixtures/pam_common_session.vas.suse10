@@ -1,0 +1,6 @@
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+session  required   pam_limits.so
+session  required   pam_vas3.so
+session  requisite  pam_vas3.so echo_return
+session  required   pam_unix2.so

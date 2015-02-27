@@ -299,9 +299,11 @@ describe 'pam' do
                 end
               end
 
-              if file[:symlinkname]
+              if file[:symlink]
                 symlinkname = "#{file[:prefix]}#{type}"
                 symlinkpath = "#{dirpath}#{file[:prefix]}#{type}"
+                symlinkpath.gsub! '_', '-'
+                symlinkpath.sub! 'pam-', ''
                 it {
                   should contain_file(symlinkname).with({
                     'ensure' => 'symlink',

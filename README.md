@@ -101,6 +101,12 @@ Hash of fragments to pass to pam::limits::fragments
 
 - *Default*: undef
 
+limits_fragments_hiera_merge
+----------------------------
+Boolean to control merges of all found instances of pam::limits_fragments in Hiera. This is useful for specifying fragments at different levels of the hierarchy and having them all included in the catalog.
+
+- *Default*: false
+
 package_name
 ------------
 String or Array of packages providing the pam functionality. If undef, parameter is set based on the OS version.

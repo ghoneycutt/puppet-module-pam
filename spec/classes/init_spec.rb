@@ -587,6 +587,48 @@ describe 'pam' do
           }.to raise_error(Puppet::Error)
         end
       end
+
+      context "with limits_fragments_hiera_merge parameter specified as a non-boolean or non-string on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+        let :facts do
+          { :osfamily => v[:osfamily],
+            :"#{v[:releasetype]}" => v[:release],
+          }
+        end
+        let (:params) { {:limits_fragments_hiera_merge => ['not_a_boolean', 'not_a_string'] } }
+        it 'should fail' do
+          expect {
+            should contain_class('pam')
+          }.to raise_error(Puppet::Error,/is not a boolean/)
+        end
+      end
+
+      context "with limits_fragments_hiera_merge prameter specified as an invalid string on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+        let :facts do
+          { :osfamily => v[:osfamily],
+            :"#{v[:releasetype]}" => v[:release],
+          }
+        end
+        let (:params) { {:limits_fragments_hiera_merge => 'invalid_string' } }
+        it 'should fail' do
+          expect {
+            should contain_class('pam')
+          }.to raise_error(Puppet::Error,/Unknown type of boolean given/)
+        end
+      end
+
+      ['true',true,'false',false].each do |value|
+        context "with limits_fragments_hiera_merge prameter specified as a valid value: #{value} on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+          let :facts do
+            { :osfamily => v[:osfamily],
+              :"#{v[:releasetype]}" => v[:release],
+              :lsbdistid => v[:lsbdistid],
+            }
+          end
+          let(:params) {{ :limits_fragments_hiera_merge => value }}
+
+          it { should contain_class('pam') }
+        end
+      end
     end
   end
 end

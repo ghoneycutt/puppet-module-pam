@@ -5,6 +5,7 @@
 define pam::limits::fragment (
   $source = 'UNSET',
   $list   = undef,
+  $ensure = 'file',
 ) {
 
   include pam
@@ -14,7 +15,7 @@ define pam::limits::fragment (
   }
 
   # must specify source or list
-  if $source == 'UNSET' and $list == undef {
+  if $ensure != 'absent' and $source == 'UNSET' and $list == undef {
     fail('pam::limits::fragment must specify source or list.')
   }
 
@@ -33,8 +34,11 @@ define pam::limits::fragment (
     $content = template('pam/limits_fragment.erb')
   }
 
+  validate_re($ensure, ['^file$', '^present$', '^absent$'],
+      "pam::limits::fragment::ensure <${ensure}> and must be either 'file', 'present' or 'absent'.")
+
   file { "${pam::limits::limits_d_dir}/${name}.conf":
-    ensure  => file,
+    ensure  => $ensure,
     source  => $source_real,
     content => $content,
     owner   => 'root',

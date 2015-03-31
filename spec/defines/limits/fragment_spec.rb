@@ -99,6 +99,77 @@ root soft nproc unlimited
     }
   end
 
+  context 'with ensure set to present' do
+    let(:title) { '80-nproc' }
+    let(:params) {
+      { :ensure => 'present',
+        :list   => ['* soft nproc 1024'],
+      }
+    }
+    let(:facts) {
+      {
+        :osfamily                   => 'RedHat',
+        :operatingsystemmajrelease  => '5',
+      }
+    }
+
+    it { should contain_class('pam') }
+    it { should contain_class('pam::limits') }
+
+    it {
+      should contain_file('/etc/security/limits.d/80-nproc.conf').with({
+        'ensure'  => 'present',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0644',
+        'require' => [ 'Package[pam]', 'Package[util-linux]' ],
+      })
+    }
+  end
+
+  context 'with ensure set to absent' do
+    let(:title) { '80-nproc' }
+    let(:params) {
+      { :ensure => 'absent' }
+    }
+    let(:facts) {
+      {
+        :osfamily                   => 'RedHat',
+        :operatingsystemmajrelease  => '5',
+      }
+    }
+
+    it { should contain_class('pam') }
+    it { should contain_class('pam::limits') }
+
+    it {
+      should contain_file('/etc/security/limits.d/80-nproc.conf').with({
+        'ensure'  => 'absent',
+        'require' => [ 'Package[pam]', 'Package[util-linux]' ],
+      })
+    }
+  end
+
+  context 'with ensure set to invalid value' do
+    let(:title) { '80-nproc' }
+    let(:facts) {
+      {
+        :osfamily                   => 'RedHat',
+        :operatingsystemmajrelease  => '5',
+      }
+    }
+    let(:params) {
+      { :ensure => 'installed',
+        :list   => ['* soft nproc 1024'] }
+    }
+
+    it 'should fail' do
+      expect {
+        should contain_class('pam::limits')
+      }.to raise_error(Puppet::Error,/pam::limits::fragment::ensure <installed> and must be either 'file', 'present' or 'absent'./)
+    end
+  end
+
   context 'if neither source or list is specified' do
     let(:title) { '80-nproc' }
     let(:facts) {

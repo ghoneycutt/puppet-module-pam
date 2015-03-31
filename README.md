@@ -396,6 +396,12 @@ Places a fragment in $limits_d_dir directory
 ## Parameters for `pam::limits::fragment`
 Source or list **must** be set.
 
+ensure
+------
+String with ensure attribute for the fragment file. Valid values are 'file', 'present' and 'absent'.
+
+- *Default*: 'file'
+
 source
 ------
 String - Path to the fragment file, such as 'puppet:///modules/pam/limits.nproc'
@@ -405,6 +411,8 @@ String - Path to the fragment file, such as 'puppet:///modules/pam/limits.nproc'
 list
 ----
 Array of lines to add to the fragment file
+
+- *Default*: undef
 
 ===
 

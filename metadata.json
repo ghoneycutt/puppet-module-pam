@@ -91,12 +91,9 @@
     }
   ],
   "description": "Manages PAM, including specifying users and groups in access.conf, limits.conf, and limits fragments",
-  "types": [
-  
-  ],
   "dependencies": [
-    {"name":"ghoneycutt/common","version_requirement":">= 1.0.2"},
-    {"name":"ghoneycutt/nsswitch","version_requirement":">= 1.1.0"},
-    {"name":"puppetlabs/stdlib","version_requirement":">= 3.2.0"}
+    {"name":"ghoneycutt/common","version_requirement":">= 1.0.2 < 2.0.0"},
+    {"name":"ghoneycutt/nsswitch","version_requirement":">= 1.1.0 < 2.0.0"},
+    {"name":"puppetlabs/stdlib","version_requirement":">= 3.2.0 < 5.0.0"}
   ]
 }

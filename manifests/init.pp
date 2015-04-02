@@ -11,6 +11,7 @@ class pam (
   $pam_conf_file                       = '/etc/pam.conf',
   $services                            = undef,
   $limits_fragments                    = undef,
+  $limits_fragments_hiera_merge        = false,
   $pam_d_login_oracle_options          = 'UNSET',
   $pam_d_login_path                    = '/etc/pam.d/login',
   $pam_d_login_owner                   = 'root',
@@ -837,6 +838,13 @@ class pam (
   validate_re($sshd_pam_access, $valid_pam_access_values,
     "pam::sshd_pam_access is <${sshd_pam_access}> and must be either 'required', 'requisite', 'sufficient', 'optional' or 'absent'.")
 
+  if is_string($limits_fragments_hiera_merge) == true {
+    $limits_fragments_hiera_merge_real = str2bool($limits_fragments_hiera_merge)
+  } else {
+    $limits_fragments_hiera_merge_real = $limits_fragments_hiera_merge
+  }
+  validate_bool($limits_fragments_hiera_merge_real)
+
   if $package_name == undef {
     $my_package_name = $default_package_name
   } else {
@@ -904,7 +912,12 @@ class pam (
   }
 
   if $limits_fragments != undef {
-    create_resources('pam::limits::fragment',$limits_fragments)
+    if $limits_fragments_hiera_merge_real == true {
+      $limits_fragments_real = hiera_hash('pam::limits_fragments')
+    } else {
+      $limits_fragments_real = $limits_fragments
+    }
+    create_resources('pam::limits::fragment',$limits_fragments_real)
   }
 
   case $::osfamily {

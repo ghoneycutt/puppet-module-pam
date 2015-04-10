@@ -82,6 +82,18 @@ describe 'pam' do
             :symlink        => true,
           }, ],
       },
+    'suse13'                =>
+      { :osfamily           => 'Suse',
+        :release            => '13',
+        :releasetype        => 'lsbmajdistrelease',
+        :packages           => ['pam', ],
+        :files              => [
+          { :prefix         => 'pam_common_',
+            :types          => ['auth', 'account', 'password', 'session', ],
+            :suffix         => '_pc',
+            :symlink        => true,
+          }, ],
+      },
     'solaris9'              =>
       { :osfamily           => 'Solaris',
         :release            => '5.9',
@@ -269,6 +281,15 @@ describe 'pam' do
           end
           if check == 'vas'
             let(:params) { {:ensure_vas => 'present'} }
+          end
+
+          if check == 'vas' and v[:osfamily] == 'Suse' and v[:release] == '13'
+            it 'should fail' do
+              expect {
+                should contain_class('pam')
+              }.to raise_error(Puppet::Error,/Pam: vas is not supported on #{v[:osfamily]} #{v[:release]}/)
+            end
+            next
           end
 
           v[:files].each do |file|

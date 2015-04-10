@@ -22,6 +22,7 @@ This module has been tested to work on the following systems using Puppet v3 wit
  * Suse 10
  * Suse 11
  * Suse 12
+ * OpenSuSE 13.1
  * Ubuntu 12.04 LTS
  * Ubuntu 14.04 LTS
 

@@ -9,7 +9,7 @@ Puppet module to manage nsswitch that optionally allows for LDAP and VAS integra
 
 # Compatibility
 
-Puppet v3 with Ruby 1.8.7, 1.9.3, and 2.0.0
+Puppet v3 with Ruby 1.8.7, 1.9.3, 2.0.0 and 2.1.0.
 
   * Debian 6
   * EL 5

@@ -1,0 +1,5 @@
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+auth  required  pam_env.so
+auth  optional  pam_gnome_keyring.so
+auth  required  pam_unix.so try_first_pass

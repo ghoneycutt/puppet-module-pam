@@ -1,67 +1,70 @@
 class pam::lib::krb5 (
-  $ensure  = 'installed',
-  $package = undef
+  $package_ensure = 'installed',
+  $package_name   = 'USE_DEFAULTS'
 ) {
 
-  if $package {
-    $my_package = $package
-  } else {
-    case $::osfamily {
+  case $::osfamily {
     'RedHat': {
-        case $::operatingsystemmajrelease {
-          '5','6','7': {
-            $my_package = 'pam_krb5'
-          }
-          default: {
-            fail("a custom PAM Kerberos5 module package is required for ${::osfamily} release ${::operatingsystemmajrelease}")
-          }
-        }
-      }
-    'Debian': {
-        case $::lsbdistid{
-          'Ubuntu': {
-            case $::lsbdistrelease {
-              '12.04','14.04': {
-                $my_package = 'libpam-krb5'
-              }
-              default: {
-                fail("a custom PAM Kerberos5 module package is required for ${::osfamily} release ${::operatingsystemmajrelease}")
-              }
-            }
-          }
-          default:{
-            case $::operatingsystemmajrelease {
-              '6': {
-                $my_package = 'libpam-krb5'
-              }
-              default: {
-                fail("a custom PAM Kerberos5 module package is required for ${::osfamily} release ${::operatingsystemmajrelease}")
-              }
-            }
-          }
-        }
-      }
-    'Suse':{
-      case $::lsbmajdistrelease {
-        '9','10','11','12': {
-          $my_package = 'pam_krb5'
+      case $::operatingsystemmajrelease {
+        '5','6','7': {
+          $default_package_name = 'pam_krb5'
         }
         default: {
-          fail("a custom PAM Kerberos5 module package is required for ${::osfamily} release ${::operatingsystemmajrelease}")
+          fail("pam::lib::krb5 supports EL 5, 6 and 7. Your operatingsystemmajrelease is identified as <${::operatingsystemmajrelease}>.")
         }
       }
     }
-    # 'Solaris':{
-    #   # No packages for Solaris
-    # }
-    default:{
-      fail("a custom PAM Kerberos5 module package is required for ${::osfamily}")
+    'Debian': {
+      case $::lsbdistid {
+        'Ubuntu': {
+          case $::lsbdistrelease {
+            '12.04','14.04': {
+              $default_package_name = 'libpam-krb5'
+            }
+            default: {
+              fail("pam::lib::krb5 supports Ubuntu 12.04 and 14.04. Your lsbdistrelease is identified as <${::lsbdistrelease}>.")
+            }
+          }
+        }
+        default:{
+          case $::operatingsystemmajrelease {
+            '6': {
+              $default_package_name = 'libpam-krb5'
+            }
+            default: {
+              fail("pam::lib::krb5 supports Debian 6. Your operatingsystemmajrelease is identified as <${::operatingsystemmajrelease}>.")
+            }
+          }
+        }
+      }
+    }
+    'Suse': {
+      case $::lsbmajdistrelease {
+        '9','10','11','12': {
+          $default_package_name = 'pam_krb5'
+        }
+        default: {
+          fail("pam::lib::krb5 supports Suse 10, 11, and 12. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
+        }
+      }
+    }
+    default: {
+      fail('pam::lib::krb5 does not have a default for your system. Please specify a package at pam::lib::krb5::package_name.')
     }
   }
+
+  if $package_name == 'USE_DEFAULTS' {
+    $package_name_real = $default_package_name
+  } else {
+    $package_name_real = $package_name
   }
 
-  package{$my_package:
-    ensure => $ensure,
+  validate_string($package_name_real)
+  validate_string($package_ensure)
+
+  package{'pam_lib_krb5':
+    ensure => $package_ensure,
+    name   => $package_name_real
   }
 
 }

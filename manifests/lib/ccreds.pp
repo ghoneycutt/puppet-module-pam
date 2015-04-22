@@ -51,7 +51,7 @@ class pam::lib::ccreds (
       }
     }
     default: {
-      fail('pam::lib::ccreds does not have a default for your system. Please specify a package at pam::lib::ccreds::package.')
+      fail('pam::lib::ccreds does not have a default for your system. Please specify a package at pam::lib::ccreds::package_name.')
     }
   }
 

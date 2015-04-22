@@ -101,7 +101,7 @@ describe 'pam::lib::ccreds' do
             expect {
               should contain_class('pam::lib::ccreds')
             }.to raise_error(Puppet::Error,
-              /^pam::lib::ccreds does not have a default for your system. Please specify a package at pam::lib::ccreds::package./)
+              /^pam::lib::ccreds does not have a default for your system. Please specify a package at pam::lib::ccreds::package_name./)
           end
         else
           it { should contain_class('pam::lib::ccreds') }

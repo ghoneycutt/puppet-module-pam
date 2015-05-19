@@ -512,7 +512,9 @@ class pam (
               'session  required   pam_vas3.so create_homedir',
               'session  requisite  pam_vas3.so echo_return',
               'session  required   pam_unix2.so',
-              'session  optional   pam_umask.so'
+              'session  optional   pam_umask.so',
+              'session  optional   pam_systemd.so',
+              'session  optional   pam_env.so',
             ]
           } else {
             $default_pam_auth_lines = [
@@ -532,7 +534,9 @@ class pam (
             $default_pam_session_lines = [
               'session  required  pam_limits.so',
               'session  required  pam_unix2.so',
-              'session  optional  pam_umask.so'
+              'session  optional  pam_umask.so',
+              'session  optional  pam_systemd.so',
+              'session  optional  pam_env.so',
             ]
           }
         }

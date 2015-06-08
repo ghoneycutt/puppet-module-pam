@@ -7,6 +7,7 @@ class pam (
   $login_pam_access                    = 'required',
   $sshd_pam_access                     = 'required',
   $ensure_vas                          = 'absent',
+  $ensure_sss                          = 'absent',
   $package_name                        = undef,
   $pam_conf_file                       = '/etc/pam.conf',
   $services                            = undef,
@@ -274,34 +275,68 @@ class pam (
               'session     required      pam_unix.so'
             ]
           } else {
-            $default_pam_auth_lines = [
-              'auth        required      pam_env.so',
-              'auth        sufficient    pam_fprintd.so',
-              'auth        sufficient    pam_unix.so nullok try_first_pass',
-              'auth        requisite     pam_succeed_if.so uid >= 1000 quiet_success',
-              'auth        required      pam_deny.so'
-            ]
+            if $ensure_sss == 'present' {
+              $default_pam_auth_lines = [
+                'auth        required      pam_env.so',
+                'auth        sufficient    pam_unix.so nullok try_first_pass',
+                'auth        requisite     pam_succeed_if.so uid >= 1000 quiet_success',
+                'auth        sufficient    pam_sss.so use_first_pass',
+                'auth        required      pam_deny.so'
+              ]
 
-            $default_pam_account_lines = [
-              'account     required      pam_unix.so',
-              'account     sufficient    pam_localuser.so',
-              'account     sufficient    pam_succeed_if.so uid < 1000 quiet',
-              'account     required      pam_permit.so'
-            ]
+              $default_pam_account_lines = [
+                'account     required      pam_unix.so',
+                'account     sufficient    pam_localuser.so',
+                'account     sufficient    pam_succeed_if.so uid < 1000 quiet',
+                'account     [default=bad success=ok user_unknown=ignore] pam_sss.so',
+                'account     required      pam_permit.so'
+              ]
 
-            $default_pam_password_lines = [
-              'password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=',
-              'password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok',
-              'password    required      pam_deny.so'
-            ]
+              $default_pam_password_lines = [
+                'password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=',
+                'password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok',
+                'password    sufficient    pam_sss.so use_authtok',
+                'password    required      pam_deny.so'
+              ]
 
-            $default_pam_session_lines = [
-              'session     optional      pam_keyinit.so revoke',
-              'session     required      pam_limits.so',
-              '-session    optional      pam_systemd.so',
-              'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
-              'session     required      pam_unix.so'
-            ]
+              $default_pam_session_lines = [
+                'session     optional      pam_keyinit.so revoke',
+                'session     required      pam_limits.so',
+                '-session    optional      pam_systemd.so',
+                'session     optional      pam_oddjob_mkhomedir.so umask=0077',
+                'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
+                'session     required      pam_unix.so',
+                'session     optional      pam_sss.so'
+              ]
+            } else {
+              $default_pam_auth_lines = [
+                'auth        required      pam_env.so',
+                'auth        sufficient    pam_unix.so nullok try_first_pass',
+                'auth        requisite     pam_succeed_if.so uid >= 1000 quiet_success',
+                'auth        required      pam_deny.so'
+              ]
+
+              $default_pam_account_lines = [
+                'account     required      pam_unix.so',
+                'account     sufficient    pam_localuser.so',
+                'account     sufficient    pam_succeed_if.so uid < 1000 quiet',
+                'account     required      pam_permit.so'
+              ]
+
+              $default_pam_password_lines = [
+                'password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=',
+                'password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok',
+                'password    required      pam_deny.so'
+              ]
+
+              $default_pam_session_lines = [
+                'session     optional      pam_keyinit.so revoke',
+                'session     required      pam_limits.so',
+                '-session    optional      pam_systemd.so',
+                'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
+                'session     required      pam_unix.so'
+              ]
+            }
           }
         }
         default: {

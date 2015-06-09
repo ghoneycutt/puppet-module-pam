@@ -20,10 +20,10 @@ entries = scope.lookupvar('pam::allowed_users')
 + : <%= entries %> : ALL
 # default deny
 - : ALL : ALL
+<% end -%>
 <% else -%>
 + : root : ALL
 # default deny
 - : ALL : ALL
-<% end -%>
 <% end -%>
 

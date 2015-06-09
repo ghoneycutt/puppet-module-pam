@@ -1,6 +1,6 @@
 {
   "name": "ghoneycutt-pam",
-  "version": "2.19.0",
+  "version": "2.19.1",
   "author": "ghoneycutt",
   "summary": "Manage PAM",
   "license": "Apache-2.0",

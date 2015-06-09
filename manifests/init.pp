@@ -1314,4 +1314,18 @@ class pam (
       fail("Pam is only supported on RedHat, SuSE, Debian and Solaris osfamilies. Your osfamily is identified as <${::osfamily}>.")
     }
   }
+
+  if $ensure_vas == 'present' and ($::osfamily == 'RedHat' or $::osfamily == 'Debian' or ($::osfamily == 'Suse' and $::lsbmajdistrelease != '9')) {
+    include vas
+    File <| title == 'pam_common_auth'                   |> { require => [ Package[$my_package_name], Exec[vasinst], ], }
+    File <| title == 'pam_common_auth_pc'                |> { require => [ Package[$my_package_name], Exec[vasinst], ], }
+    File <| title == 'pam_common_account'                |> { require => [ Package[$my_package_name], Exec[vasinst], ], }
+    File <| title == 'pam_common_account_pc'             |> { require => [ Package[$my_package_name], Exec[vasinst], ], }
+    File <| title == 'pam_common_password'               |> { require => [ Package[$my_package_name], Exec[vasinst], ], }
+    File <| title == 'pam_common_password_pc'            |> { require => [ Package[$my_package_name], Exec[vasinst], ], }
+    File <| title == 'pam_common_noninteractive_session' |> { require => [ Package[$my_package_name], Exec[vasinst], ], }
+    File <| title == 'pam_common_session'                |> { require => [ Package[$my_package_name], Exec[vasinst], ], }
+    File <| title == 'pam_common_session_pc'             |> { require => [ Package[$my_package_name], Exec[vasinst], ], }
+    File <| title == 'pam_system_auth_ac'                |> { require => [ Package[$my_package_name], Exec[vasinst], ], }
+  }
 }

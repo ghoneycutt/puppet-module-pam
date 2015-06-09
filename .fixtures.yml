@@ -9,5 +9,14 @@ fixtures:
     common:
       repo: 'git://github.com/ghoneycutt/puppet-module-common.git'
       ref: 'v1.0.2'
+    vas:
+      repo: 'git://github.com/Ericsson/puppet-module-vas.git'
+      ref: 'v0.10.0'
+    nisclient:
+      repo: 'git://github.com/Ericsson/puppet-module-nisclient.git'
+      ref: 'v1.0.0'
+    rpcbind:
+      repo: 'git://github.com/ghoneycutt/puppet-module-rpcbind.git'
+      ref: 'v1.4.0'
   symlinks:
     pam: "#{source_dir}"

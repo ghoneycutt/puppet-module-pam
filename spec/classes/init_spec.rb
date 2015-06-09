@@ -6,6 +6,7 @@ describe 'pam' do
       { :osfamily           => 'RedHat',
         :release            => '5',
         :releasetype        => 'operatingsystemmajrelease',
+        :kernel             => 'Linux',
         :packages           => ['pam', 'util-linux', ],
         :files              => [
           { :prefix         => 'pam_system_',
@@ -18,6 +19,7 @@ describe 'pam' do
       { :osfamily           => 'RedHat',
         :release            => '6',
         :releasetype        => 'operatingsystemmajrelease',
+        :kernel             => 'Linux',
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_system_',
@@ -30,6 +32,7 @@ describe 'pam' do
       { :osfamily           => 'RedHat',
         :release            => '7',
         :releasetype        => 'operatingsystemmajrelease',
+        :kernel             => 'Linux',
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_system_',
@@ -42,6 +45,7 @@ describe 'pam' do
       { :osfamily           => 'Suse',
         :release            => '9',
         :releasetype        => 'lsbmajdistrelease',
+        :kernel             => 'Linux',
         :packages           => ['pam', 'pam-modules', ],
         :files              => [
           { :prefix         => 'pam_',
@@ -52,6 +56,7 @@ describe 'pam' do
       { :osfamily           => 'Suse',
         :release            => '10',
         :releasetype        => 'lsbmajdistrelease',
+        :kernel             => 'Linux',
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -62,6 +67,7 @@ describe 'pam' do
       { :osfamily           => 'Suse',
         :release            => '11',
         :releasetype        => 'lsbmajdistrelease',
+        :kernel             => 'Linux',
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -74,6 +80,7 @@ describe 'pam' do
       { :osfamily           => 'Suse',
         :release            => '12',
         :releasetype        => 'lsbmajdistrelease',
+        :kernel             => 'Linux',
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -98,6 +105,7 @@ describe 'pam' do
       { :osfamily           => 'Solaris',
         :release            => '5.9',
         :releasetype        => 'kernelrelease',
+        :kernel             => 'SunOS',
         :packages           => ['pam_package', ],
         :files              => [
           { :prefix         => 'pam_',
@@ -110,6 +118,7 @@ describe 'pam' do
       { :osfamily           => 'Solaris',
         :release            => '5.10',
         :releasetype        => 'kernelrelease',
+        :kernel             => 'SunOS',
         :packages           => ['pam_package', ],
         :files              => [
           { :prefix         => 'pam_',
@@ -122,6 +131,7 @@ describe 'pam' do
       { :osfamily           => 'Solaris',
         :release            => '5.11',
         :releasetype        => 'kernelrelease',
+        :kernel             => 'SunOS',
         :packages           => ['pam_package', ],
         :files              => [
           { :prefix         => 'pam_',
@@ -134,6 +144,7 @@ describe 'pam' do
         :lsbdistid          => 'Ubuntu',
         :release            => '12.04',
         :releasetype        => 'lsbdistrelease',
+        :kernel             => 'Linux',
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -145,6 +156,7 @@ describe 'pam' do
         :lsbdistid          => 'Ubuntu',
         :release            => '14.04',
         :releasetype        => 'lsbdistrelease',
+        :kernel             => 'Linux',
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -247,6 +259,36 @@ describe 'pam' do
     end
   end
 
+  describe 'includes' do
+    platforms.sort.each do |k,v|
+      context "with ensure_vas => present on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+        if v[:osfamily] == 'RedHat' or v[:osfamily] == 'Debian' or (v[:osfamily] == 'Suse' and v[:release] != '9')
+          let :facts do
+            { :osfamily => v[:osfamily],
+              :"#{v[:releasetype]}" => v[:release],
+              :lsbdistid => v[:lsbdistid],
+              :kernel    => v[:kernel],
+            }
+          end
+          let (:params) { {:ensure_vas => 'present'} }
+
+          it { should contain_class('vas') }
+        else
+          let :facts do
+            { :osfamily => v[:osfamily],
+              :"#{v[:releasetype]}" => v[:release],
+              :lsbdistid => v[:lsbdistid],
+              :kernel    => v[:kernel],
+            }
+          end
+          let (:params) { {:ensure_vas => 'present'} }
+
+          it { should_not contain_class('vas') }
+        end
+      end
+    end
+  end
+
   describe 'config files' do
     platforms.sort.each do |k,v|
       context "with specifying services param on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
@@ -277,6 +319,7 @@ describe 'pam' do
             { :osfamily => v[:osfamily],
               :"#{v[:releasetype]}" => v[:release],
               :lsbdistid => v[:lsbdistid],
+              :kernel    => v[:kernel],
             }
           end
           if check == 'vas'
@@ -317,6 +360,12 @@ describe 'pam' do
               v[:packages].sort.each do |pkg|
                 if v[:osfamily] != 'Solaris' and (v[:osfamily] != 'Suse' and v[:release] != 9)
                   it { should contain_file(filename).that_requires("Package[#{pkg}]") }
+                end
+              end
+
+              if check == 'vas'
+                if v[:osfamily] == 'RedHat' or v[:osfamily] == 'Debian' or (v[:osfamily] == 'Suse' and v[:release] != '9')
+                  it { should contain_file(filename).that_requires('Exec[vasinst]') }
                 end
               end
 
@@ -429,6 +478,7 @@ describe 'pam' do
           { :osfamily => v[:osfamily],
             :"#{v[:releasetype]}" => v[:release],
             :lsbdistid => v[:lsbdistid],
+            :kernel => v[:kernel],
           }
         end
         let :params do
@@ -456,6 +506,8 @@ describe 'pam' do
           it { should contain_file('pam_system_auth_ac').with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) }
           it { should contain_file('pam_system_auth_ac').with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) }
           it { should contain_file('pam_system_auth_ac').with_content(/session[\s]+required[\s]+pam_vas3.so/) }
+
+          it { should contain_file('pam_system_auth_ac').that_requires('Exec[vasinst]') }
         end
 
         if v[:osfamily] == 'Debian'
@@ -478,6 +530,8 @@ describe 'pam' do
             v[:packages].sort.each do |pkg|
               it { should contain_file("pam_common_#{type}").that_requires("Package[#{pkg}]") }
             end
+
+            it { should contain_file("pam_common_#{type}").that_requires('Exec[vasinst]') }
           end
 
           it {
@@ -495,6 +549,8 @@ describe 'pam' do
           v[:packages].sort.each do |pkg|
             it { should contain_file("pam_common_noninteractive_session").that_requires("Package[#{pkg}]") }
           end
+
+          it { should contain_file("pam_common_noninteractive_session").that_requires('Exec[vasinst]') }
         end
       end
     end

@@ -44,6 +44,8 @@ class pam (
   $system_auth_ac_password_lines       = undef,
   $system_auth_ac_session_lines        = undef,
   $vas_major_version                   = '4',
+  $manage_accesslogin                  = true,
+  $manage_limits                       = true,
 ) {
 
   include nsswitch
@@ -961,8 +963,11 @@ class pam (
   case $::osfamily {
     'RedHat', 'Suse', 'Debian': {
 
-      include pam::accesslogin
-      include pam::limits
+      validate_bool($manage_accesslogin)
+      validate_bool($manage_limits)
+
+      if $manage_accesslogin { include pam::accesslogin }
+      if $manage_limits      { include pam::limits }
 
       package { $my_package_name:
         ensure => installed,

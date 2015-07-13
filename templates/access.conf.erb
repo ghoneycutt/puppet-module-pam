@@ -2,10 +2,23 @@
 # DO NOT EDIT
 #
 
+# deny any users listed here
+<% entries = scope.lookupvar('pam::denied_users') -%>
+<% if entries.is_a? Hash -%>
+<% entries.keys.sort.each do |key| -%>
+<% value = entries[key] -%>
+- : <%= key %> : <% if value.is_a? Array -%><%= value.join(' ') %><% elsif value.is_a? String -%><%= value %><% else -%>ALL<% end %>
+<% end -%>
+<% elsif entries.is_a? Array -%>
+<% entries.each do |key| -%>
+- : <%= key %> : ALL
+<% end -%>
+<% elsif entries.is_a? String -%>
+- : <%= entries %> : ALL
+<% end -%>
+
 # allow only the groups listed
-<%
-entries = scope.lookupvar('pam::allowed_users')
--%>
+<% entries = scope.lookupvar('pam::allowed_users') -%>
 <% if entries.is_a? Hash -%>
 <% entries.keys.sort.each do |key| -%>
 <% value = entries[key] -%>

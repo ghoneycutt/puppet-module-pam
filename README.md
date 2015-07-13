@@ -40,7 +40,7 @@ EL no longer requires the `redhat-lsb` package.
 
 allowed_users
 -------------
-Array or Hash of strings and/or arrays to configure users and origins in access.conf. The default allows the root user/group from origin 'ALL'.
+Array or Hash of strings and/or arrays to configure allowed users and origins in access.conf. The default allows the root user/group from origin 'ALL'.
 
 - *Default*: 'root'
 
@@ -86,6 +86,12 @@ This would create /etc/security/access.conf with the following content.
 + : username1 : cron tty0
 + : username2 : tty1
 </pre>
+
+denied_users
+-------------
+The same syntax as allowed_users, above. Any users added to this list will be denied access regardless of if they are in allowed_users. The default denies no additional users.  
+
+- *Default*: undef
 
 login_pam_access
 ----------------

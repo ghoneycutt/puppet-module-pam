@@ -4,6 +4,7 @@
 #
 class pam (
   $allowed_users                       = 'root',
+  $denied_users                        = undef,
   $login_pam_access                    = 'required',
   $sshd_pam_access                     = 'required',
   $ensure_vas                          = 'absent',

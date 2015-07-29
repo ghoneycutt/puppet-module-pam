@@ -9,8 +9,6 @@ define pam::service (
   $lines          = undef
 ) {
 
-  include pam
-
   validate_re($ensure, ['^present$', '^absent$'] )
 
   case $ensure {

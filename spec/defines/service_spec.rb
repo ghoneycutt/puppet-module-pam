@@ -11,7 +11,7 @@ describe 'pam::service', :type => :define do
     context 'with no parameters' do
       let(:title) { 'test' }
 
-      it { should contain_class('pam') }
+      it { should_not contain_class('pam') }
 
       it {
         should contain_file('pam.d-service-test').with({

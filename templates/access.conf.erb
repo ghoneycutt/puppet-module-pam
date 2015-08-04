@@ -16,10 +16,14 @@ entries = scope.lookupvar('pam::allowed_users')
 + : <%= key %> : ALL
 <% end -%>
 <% elsif entries.is_a? String -%>
+<% if entries != 'ALL' -%>
 + : <%= entries %> : ALL
-<% else -%>
-+ : root : ALL
-<% end -%>
-
 # default deny
 - : ALL : ALL
+<% end -%>
+<% else -%>
++ : root : ALL
+# default deny
+- : ALL : ALL
+<% end -%>
+

@@ -848,7 +848,7 @@ class pam (
 
           $default_pam_password_lines = [
             'password definitive     pam_user_policy.so.1',
-            'password include ::       pam_authtok_common',
+            'password include        pam_authtok_common',
             'password required       pam_authtok_store.so.1',
           ]
 

@@ -121,6 +121,7 @@ describe 'pam' do
     'solaris11'             =>
       { :osfamily           => 'Solaris',
         :release            => '5.11',
+        :kernelversion      => '11.1',
         :releasetype        => 'kernelrelease',
         :packages           => ['pam_package', ],
         :files              => [
@@ -206,6 +207,7 @@ describe 'pam' do
         let :facts do
           { :osfamily => v[:osfamily],
             :"#{v[:releasetype]}" => v[:release],
+            :kernelversion => v[:kernelversion],
             :lsbdistid => v[:lsbdistid],
           }
         end
@@ -253,6 +255,7 @@ describe 'pam' do
         let :facts do
           { :osfamily => v[:osfamily],
             :"#{v[:releasetype]}" => v[:release],
+            :kernelversion => v[:kernelversion],
             :lsbdistid => v[:lsbdistid],
           }
         end
@@ -276,6 +279,7 @@ describe 'pam' do
           let :facts do
             { :osfamily => v[:osfamily],
               :"#{v[:releasetype]}" => v[:release],
+              :kernelversion => v[:kernelversion],
               :lsbdistid => v[:lsbdistid],
             }
           end

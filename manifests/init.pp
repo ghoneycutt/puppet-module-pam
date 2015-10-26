@@ -12,12 +12,22 @@ class pam (
   $services                            = undef,
   $limits_fragments                    = undef,
   $limits_fragments_hiera_merge        = false,
+  $pam_d_cron_path                     = '/etc/pam.d/cron',
+  $pam_d_cron_owner                    = 'root',
+  $pam_d_cron_group                    = 'sys',
+  $pam_d_cron_mode                     = '0644',
+  $pam_d_cron_template                 = undef,
   $pam_d_login_oracle_options          = 'UNSET',
   $pam_d_login_path                    = '/etc/pam.d/login',
   $pam_d_login_owner                   = 'root',
-  $pam_d_login_group                   = 'root',
+  $pam_d_login_group                   = 'USE_DEFAULTS',
   $pam_d_login_mode                    = '0644',
   $pam_d_login_template                = undef,
+  $pam_d_passwd_path                   = '/etc/pam.d/passwd',
+  $pam_d_passwd_owner                  = 'root',
+  $pam_d_passwd_group                  = 'sys',
+  $pam_d_passwd_mode                   = '0644',
+  $pam_d_passwd_template               = undef,
   $pam_d_sshd_path                     = '/etc/pam.d/sshd',
   $pam_d_sshd_owner                    = 'root',
   $pam_d_sshd_group                    = 'root',
@@ -52,6 +62,7 @@ class pam (
     'RedHat': {
       case $::operatingsystemmajrelease {
         '5': {
+          $default_pam_d_login_group    = 'root'
           $default_pam_d_login_template = 'pam/login.el5.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.el5.erb'
           $default_package_name         = [
@@ -139,6 +150,7 @@ class pam (
           }
         }
         '6': {
+          $default_pam_d_login_group    = 'root'
           $default_pam_d_login_template = 'pam/login.el6.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.el6.erb'
           $default_package_name         = 'pam'
@@ -226,6 +238,7 @@ class pam (
           }
         }
         '7': {
+          $default_pam_d_login_group    = 'root'
           $default_pam_d_login_template = 'pam/login.el7.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.el7.erb'
           $default_package_name         = 'pam'
@@ -312,6 +325,7 @@ class pam (
     'Suse': {
       case $::lsbmajdistrelease {
         '9': {
+          $default_pam_d_login_group    = 'root'
           $default_pam_d_login_template = 'pam/login.suse9.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.suse9.erb'
           $default_package_name         = [ 'pam', 'pam-modules' ]
@@ -338,6 +352,7 @@ class pam (
         }
 
         '10': {
+          $default_pam_d_login_group    = 'root'
           $default_pam_d_login_template = 'pam/login.suse10.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.suse10.erb'
           $default_package_name         = 'pam'
@@ -393,6 +408,7 @@ class pam (
           }
         }
         '11': {
+          $default_pam_d_login_group    = 'root'
           $default_pam_d_login_template = 'pam/login.suse11.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.suse11.erb'
           $default_package_name         = 'pam'
@@ -447,6 +463,7 @@ class pam (
             }
         }
         '12': {
+          $default_pam_d_login_group    = 'root'
           $default_pam_d_login_template = 'pam/login.suse12.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.suse12.erb'
           $default_package_name         = 'pam'
@@ -506,6 +523,7 @@ class pam (
           }
         }
         '13': {
+          $default_pam_d_login_group    = 'root'
           $default_pam_d_login_template = 'pam/login.suse13.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.suse13.erb'
           $default_package_name         = 'pam'
@@ -549,6 +567,7 @@ class pam (
         'Ubuntu': {
           case $::lsbdistrelease {
             '12.04': {
+              $default_pam_d_login_group    = 'root'
               $default_pam_d_login_template = 'pam/login.ubuntu12.erb'
               $default_pam_d_sshd_template  = 'pam/sshd.ubuntu12.erb'
               $default_package_name         = 'libpam0g'
@@ -617,6 +636,7 @@ class pam (
               }
             }
             '14.04': {
+              $default_pam_d_login_group    = 'root'
               $default_pam_d_login_template = 'pam/login.ubuntu14.erb'
               $default_pam_d_sshd_template  = 'pam/sshd.ubuntu14.erb'
               $default_package_name         = 'libpam0g'
@@ -829,33 +849,61 @@ class pam (
             ]
           }
         }
-
         '5.11': {
-          $default_pam_auth_lines = [
-            'auth definitive         pam_user_policy.so.1',
-            'auth requisite          pam_authtok_get.so.1',
-            'auth required           pam_dhkeys.so.1',
-            'auth required           pam_unix_auth.so.1',
-            'auth required           pam_unix_cred.so.1'
-          ]
+          case $::kernelversion {
+            '11.1': {
+              $default_pam_d_login_group     = 'sys'
+              $default_pam_d_cron_template   = 'pam/cron.sol11.erb'
+              $default_pam_d_login_template  = 'pam/login.sol11.erb'
+              $default_pam_d_passwd_template = 'pam/passwd.sol11.erb'
 
-          $default_pam_account_lines = [
-            'account requisite       pam_roles.so.1',
-            'account definitive      pam_user_policy.so.1',
-            'account required        pam_unix_account.so.1',
-            'account required        pam_tsol_account.so.1'
-          ]
+              if $ensure_vas == 'present' {
+                $default_pam_auth_lines     = [ 'auth     required        pam_unix_cred.so.1',
+                                                'auth     sufficient      pam_vas3.so create_homedir get_nonvas_pass try_first_pass',
+                                                'auth     requisite       pam_vas3.so echo_return',
+                                                'auth     requisite       pam_authtok_get.so.1 use_first_pass',
+                                                'auth     required        pam_dhkeys.so.1',
+                                                'auth     required        pam_unix_auth.so.1' ]
 
-          $default_pam_password_lines = [
-            'password definitive     pam_user_policy.so.1',
-            'password include        pam_authtok_common',
-            'password required       pam_authtok_store.so.1'
-          ]
+                $default_pam_account_lines  = [ 'account  requisite       pam_roles.so.1',
+                                                'account  sufficient      pam_vas3.so',
+                                                'account  requisite       pam_vas3.so echo_return',
+                                                'account  required        pam_unix_account.so.1' ]
 
-          $default_pam_session_lines = [
-            'session definitive      pam_user_policy.so.1',
-            'session required        pam_unix_session.so.1'
-          ]
+                $default_pam_password_lines = [ 'password required        pam_dhkeys.so.1',
+                                                'password requisite       pam_authtok_get.so.1',
+                                                'password sufficient      pam_vas3.so',
+                                                'password requisite       pam_vas3.so echo_return',
+                                                'password requisite       pam_authtok_check.so.1',
+                                                'password required        pam_authtok_store.so.1' ]
+
+                $default_pam_session_lines  = [ 'session  required        pam_vas3.so create_homedir',
+                                                'session  requisite       pam_vas3.so echo_return',
+                                                'session  required        pam_unix_session.so.1' ]
+              } else {
+                $default_pam_auth_lines = [ 'auth definitive         pam_user_policy.so.1',
+                                            'auth requisite          pam_authtok_get.so.1',
+                                            'auth required           pam_dhkeys.so.1',
+                                            'auth required           pam_unix_auth.so.1',
+                                            'auth required           pam_unix_cred.so.1']
+
+                $default_pam_account_lines = ['account requisite       pam_roles.so.1',
+                                              'account definitive      pam_user_policy.so.1',
+                                              'account required        pam_unix_account.so.1',
+                                              'account required        pam_tsol_account.so.1']
+
+                $default_pam_password_lines = [ 'password definitive     pam_user_policy.so.1',
+                                                'password include        pam_authtok_common',
+                                                'password required       pam_authtok_store.so.1']
+
+                $default_pam_session_lines = ['session definitive      pam_user_policy.so.1',
+                                              'session required        pam_unix_session.so.1']
+              }
+            }
+            default: {
+              fail("Pam is only supported on Solaris 11.1 Your kernelversion is identified as <${::kernelversion}>.")
+            }
+          }
         }
 
         default: {
@@ -889,6 +937,12 @@ class pam (
     $my_package_name = $package_name
   }
 
+  if $pam_d_login_group == 'USE_DEFAULTS' {
+    $my_pam_d_login_group = $default_pam_d_login_group
+  } else {
+    $my_pam_d_login_group = $pam_d_login_group
+  }
+
   if $pam_d_login_template == undef {
     $my_pam_d_login_template = $default_pam_d_login_template
   } else {
@@ -899,6 +953,22 @@ class pam (
     $my_pam_d_sshd_template = $default_pam_d_sshd_template
   } else {
     $my_pam_d_sshd_template = $pam_d_sshd_template
+  }
+
+  if $::osfamily == 'Solaris' {
+    if $::kernelrelease == '5.11' {
+      if $pam_d_cron_template == undef {
+        $my_pam_d_cron_template = $default_pam_d_cron_template
+      } else {
+        $my_pam_d_cron_template = $pam_d_cron_template
+      }
+
+      if $pam_d_passwd_template == undef {
+        $my_pam_d_passwd_template = $default_pam_d_passwd_template
+      } else {
+        $my_pam_d_passwd_template = $pam_d_passwd_template
+      }
+    }
   }
 
   if $pam_auth_lines == undef {
@@ -973,7 +1043,7 @@ class pam (
         path    => $pam_d_login_path,
         content => template($my_pam_d_login_template),
         owner   => $pam_d_login_owner,
-        group   => $pam_d_login_group,
+        group   => $my_pam_d_login_group,
         mode    => $pam_d_login_mode,
       }
 
@@ -1282,7 +1352,6 @@ class pam (
         }
       }
     }
-
     'Solaris': {
       case $::kernelrelease {
         '5.9','5.10': {
@@ -1296,13 +1365,47 @@ class pam (
           }
         }
         '5.11': {
-          file { 'pam_other':
-            ensure  => file,
-            path    => $pam_d_other_file,
-            owner   => 'root',
-            group   => 'sys',
-            mode    => '0644',
-            content => template('pam/pam.conf.erb'),
+          case $::kernelversion {
+            '11.1': {
+              file { 'pam_cron':
+                ensure  => file,
+                path    => $pam_d_cron_path,
+                content => template($my_pam_d_cron_template),
+                owner   => $pam_d_cron_owner,
+                group   => $pam_d_cron_group,
+                mode    => $pam_d_cron_mode,
+              }
+
+              file { 'pam_login':
+                ensure  => file,
+                path    => $pam_d_login_path,
+                content => template($my_pam_d_login_template),
+                owner   => $pam_d_login_owner,
+                group   => $my_pam_d_login_group,
+                mode    => $pam_d_login_mode,
+              }
+
+              file { 'pam_passwd':
+                ensure  => file,
+                path    => $pam_d_passwd_path,
+                content => template($my_pam_d_passwd_template),
+                owner   => $pam_d_passwd_owner,
+                group   => $pam_d_passwd_group,
+                mode    => $pam_d_passwd_mode,
+              }
+
+              file { 'pam_other':
+                ensure  => file,
+                path    => $pam_d_other_file,
+                owner   => 'root',
+                group   => 'sys',
+                mode    => '0644',
+                content => template('pam/pam.conf.erb'),
+              }
+            }
+            default: {
+              fail("Pam is only supported on Solaris 11.1. Your kernelversion is identified as <${::kernelversion}>.")
+            }
           }
         }
         default: {

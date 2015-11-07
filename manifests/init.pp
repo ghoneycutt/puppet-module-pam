@@ -166,7 +166,7 @@ class pam (
                   'auth    requisite       pam_vas3.so echo_return',
                   'auth    sufficient      pam_unix.so nullok try_first_pass use_first_pass',
                   'auth    requisite       pam_succeed_if.so uid >= 500 quiet',
-                  'auth    required        pam_deny.so'
+                  'auth    required        pam_deny.so',
                 ]
               }
               '4': {
@@ -184,7 +184,7 @@ class pam (
                   'auth    requisite       pam_vas3.so echo_return',
                   'auth    sufficient      pam_unix.so nullok try_first_pass use_first_pass',
                   'auth    requisite       pam_succeed_if.so uid >= 500 quiet',
-                  'auth    required        pam_deny.so'
+                  'auth    required        pam_deny.so',
                 ]
               }
               default: {
@@ -223,7 +223,7 @@ class pam (
               'account required        pam_unix.so',
               'account sufficient      pam_localuser.so',
               'account sufficient      pam_succeed_if.so uid < 500 quiet',
-              'account required        pam_permit.so'
+              'account required        pam_permit.so',
             ]
 
             $default_pam_password_password_lines = [
@@ -231,7 +231,7 @@ class pam (
               'password        requisite       pam_vas3.so echo_return',
               'password        requisite       pam_cracklib.so try_first_pass retry=3 type=',
               'password        sufficient      pam_unix.so md5 shadow nullok try_first_pass use_authtok',
-              'password        required        pam_deny.so'
+              'password        required        pam_deny.so',
             ]
 
             $default_pam_password_session_lines = [
@@ -240,7 +240,7 @@ class pam (
               'session [success=1 default=ignore]      pam_succeed_if.so service in crond quiet use_uid',
               'session required        pam_vas3.so create_homedir',
               'session requisite       pam_vas3.so echo_return',
-              'session required        pam_unix.so'
+              'session required        pam_unix.so',
             ]
 
           } else {
@@ -256,7 +256,7 @@ class pam (
               'auth        required      pam_env.so',
               'auth        sufficient    pam_unix.so nullok try_first_pass',
               'auth        requisite     pam_succeed_if.so uid >= 500 quiet',
-              'auth        required      pam_deny.so'
+              'auth        required      pam_deny.so',
             ]
 
             $default_pam_account_lines = [
@@ -282,20 +282,20 @@ class pam (
               'account     required      pam_unix.so',
               'account     sufficient    pam_localuser.so',
               'account     sufficient    pam_succeed_if.so uid < 500 quiet',
-              'account     required      pam_permit.so'
+              'account     required      pam_permit.so',
             ]
 
             $default_pam_password_password_lines = [
               'password    requisite     pam_cracklib.so try_first_pass retry=3 type=',
-              'password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok',
-              'password    required      pam_deny.so'
+              'password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok',
+              'password    required      pam_deny.so',
             ]
 
             $default_pam_password_session_lines = [
               'session     optional      pam_keyinit.so revoke',
               'session     required      pam_limits.so',
               'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
-              'session     required      pam_unix.so'
+              'session     required      pam_unix.so',
             ]
           }
         }
@@ -321,7 +321,7 @@ class pam (
                   'auth    requisite       pam_vas3.so echo_return',
                   'auth    sufficient      pam_unix.so nullok try_first_pass use_first_pass',
                   'auth    requisite       pam_succeed_if.so uid >= 1000 quiet_success',
-                  'auth    required        pam_deny.so'
+                  'auth    required        pam_deny.so',
                 ]
               }
               default: {
@@ -361,7 +361,7 @@ class pam (
               'account required        pam_unix.so',
               'account sufficient      pam_localuser.so',
               'account sufficient      pam_succeed_if.so uid < 1000 quiet',
-              'account required        pam_permit.so'
+              'account required        pam_permit.so',
             ]
 
             $default_pam_password_password_lines = [
@@ -369,7 +369,7 @@ class pam (
               'password        sufficient      pam_vas3.so',
               'password        requisite       pam_vas3.so echo_return',
               'password        sufficient      pam_unix.so md5 shadow nullok try_first_pass use_authtok',
-              'password        required        pam_deny.so'
+              'password        required        pam_deny.so',
             ]
 
             $default_pam_password_session_lines = [
@@ -379,7 +379,7 @@ class pam (
               'session [success=1 default=ignore]      pam_succeed_if.so service in crond quiet use_uid',
               'session required        pam_vas3.so create_homedir',
               'session requisite       pam_vas3.so echo_return',
-              'session required        pam_unix.so'
+              'session required        pam_unix.so',
             ]
           } else {
             $default_pam_auth_lines = [
@@ -394,7 +394,7 @@ class pam (
               'auth        required      pam_env.so',
               'auth        sufficient    pam_unix.so nullok try_first_pass',
               'auth        requisite     pam_succeed_if.so uid >= 1000 quiet_success',
-              'auth        required      pam_deny.so'
+              'auth        required      pam_deny.so',
             ]
 
             $default_pam_account_lines = [
@@ -421,20 +421,20 @@ class pam (
               'account     required      pam_unix.so',
               'account     sufficient    pam_localuser.so',
               'account     sufficient    pam_succeed_if.so uid < 1000 quiet',
-              'account     required      pam_permit.so'
+              'account     required      pam_permit.so',
             ]
 
             $default_pam_password_password_lines = [
               'password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=',
-              'password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok',
-              'password    required      pam_deny.so'
+              'password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok',
+              'password    required      pam_deny.so',
             ]
             $default_pam_password_session_lines = [
               'session     optional      pam_keyinit.so revoke',
               'session     required      pam_limits.so',
               '-session     optional      pam_systemd.so',
               'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
-              'session     required      pam_unix.so'
+              'session     required      pam_unix.so',
             ]
           }
         }

@@ -12,7 +12,7 @@ class pam::accesslogin (
   $access_conf_template = 'pam/access.conf.erb',
 ) {
 
-  require 'pam'
+  require '::pam'
 
   file { 'access_conf':
     ensure  => file,

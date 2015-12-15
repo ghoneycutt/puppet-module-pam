@@ -1,1 +1,1 @@
-include pam
+include ::pam

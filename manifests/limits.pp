@@ -29,7 +29,8 @@ class pam::limits (
   }
   validate_bool($purge_limits_d_dir_real)
 
-  include pam
+  include ::pam
+
   if $config_file_lines == undef and $config_file_source == undef {
     $content = template('pam/limits.conf.erb')
   } else {

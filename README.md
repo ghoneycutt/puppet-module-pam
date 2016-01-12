@@ -27,6 +27,7 @@ only), 1.9.3, 2.0.0 and 2.1.0.
  * OpenSuSE 13.1
  * Ubuntu 12.04 LTS
  * Ubuntu 14.04 LTS
+ * Debian 8.2
 
 EL no longer requires the `redhat-lsb` package.
 
@@ -485,4 +486,3 @@ This would create /etc/security/limits.d/custom.conf with content
 * soft cpu 720
 * hard cpu 1440
 </pre>
-

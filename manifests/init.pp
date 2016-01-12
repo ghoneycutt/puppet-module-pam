@@ -691,8 +691,52 @@ class pam (
             }
           }
         }
+        'Debian': {
+          case $::lsbdistrelease {
+            '8.2': {
+
+              if $ensure_vas == 'present' {
+                fail("Pam: vas is not supported on ${::osfamily} ${::lsbdistrelease}")
+              }
+              $default_pam_d_login_template = 'pam/login.debian8.erb'
+              $default_pam_d_sshd_template  = 'pam/sshd.debian8.erb'
+              $default_package_name         = 'libpam0g'
+
+
+              $default_pam_auth_lines = [
+                'auth  [success=1 default=ignore]  pam_unix.so nullok_secure',
+                'auth  requisite     pam_deny.so',
+                'auth  required      pam_permit.so',
+              ]
+
+              $default_pam_account_lines = [
+                'account [success=1 new_authtok_reqd=done default=ignore]  pam_unix.so',
+                'account requisite     pam_deny.so',
+                'account required      pam_permit.so',
+              ]
+
+              $default_pam_password_lines = [
+                'password  [success=1 default=ignore]  pam_unix.so obscure sha512',
+                'password  requisite     pam_deny.so',
+                'password  required      pam_permit.so',
+              ]
+
+              $default_pam_session_lines = [
+                'session [default=1]   pam_permit.so',
+                'session requisite     pam_deny.so',
+                'session required      pam_permit.so',
+                'session required      pam_unix.so',
+              ]
+
+
+            }
+            default: {
+              fail("Pam is only supported on Debian 8. Your operatingsystemmajrelease is identified as <${::lsbdistrelease}>.")
+            }
+          }
+        }
         default: {
-          fail("Pam is only supported on lsbdistid Ubuntu of the Debian osfamily. Your lsbdistid is <${::lsbdistid}>.")
+          fail("Pam is only supported on lsbdistid Ubuntu or Debian of the Debian osfamily. Your lsbdistid is <${::lsbdistid}>.")
         }
       }
     }

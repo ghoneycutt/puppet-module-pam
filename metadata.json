@@ -94,7 +94,14 @@
         "12.04",
         "14.04"
       ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "8.2"
+      ]
     }
+
   ],
   "description": "Manages PAM, including specifying users and groups in access.conf, limits.conf, and limits fragments",
   "dependencies": [

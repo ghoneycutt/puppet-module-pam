@@ -150,7 +150,19 @@ describe 'pam' do
           { :prefix         => 'pam_common_',
             :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
           }, ],
-      }
+      },
+    'debian82'              =>
+    { :osfamily             => 'Debian',
+      :lsbdistid            => 'Debian',
+      :release              => '8.2',
+      :releasetype          => 'lsbdistrelease',
+      :packages             => [ 'libpam0g', ],
+      :files                => [
+        { :prefix           => 'pam_common_',
+          :types            => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
+        }, ],
+    }
+
   }
   unsupported_platforms = {
     'el4'                   =>
@@ -284,6 +296,15 @@ describe 'pam' do
           end
 
           if check == 'vas' and v[:osfamily] == 'Suse' and v[:release] == '13'
+            it 'should fail' do
+              expect {
+                should contain_class('pam')
+              }.to raise_error(Puppet::Error,/Pam: vas is not supported on #{v[:osfamily]} #{v[:release]}/)
+            end
+            next
+          end
+
+          if check == 'vas' and v[:osfamily] == 'Debian' and v[:release] == '8.2'
             it 'should fail' do
               expect {
                 should contain_class('pam')
@@ -458,7 +479,7 @@ describe 'pam' do
           it { should contain_file('pam_system_auth_ac').with_content(/session[\s]+required[\s]+pam_vas3.so/) }
         end
 
-        if v[:osfamily] == 'Debian'
+        if v[:osfamily] == 'Debian' and v[:lsbdistid] == 'Ubuntu'
           it { should contain_class('pam::accesslogin') }
           it { should contain_class('pam::limits') }
 
@@ -613,6 +634,7 @@ describe 'pam' do
         let :facts do
           { :osfamily => v[:osfamily],
             :"#{v[:releasetype]}" => v[:release],
+            :lsbdistid => v[:lsbdistid],
           }
         end
         let (:params) { {:limits_fragments_hiera_merge => ['not_a_boolean', 'not_a_string'] } }
@@ -627,6 +649,7 @@ describe 'pam' do
         let :facts do
           { :osfamily => v[:osfamily],
             :"#{v[:releasetype]}" => v[:release],
+            :lsbdistid => v[:lsbdistid],
           }
         end
         let (:params) { {:limits_fragments_hiera_merge => 'invalid_string' } }

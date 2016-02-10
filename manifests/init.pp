@@ -693,7 +693,7 @@ class pam (
         }
         'Debian': {
           case $::lsbdistrelease {
-            '8.2': {
+            /^8/: {
 
               if $ensure_vas == 'present' {
                 fail("Pam: vas is not supported on ${::osfamily} ${::lsbdistrelease}")

@@ -28,6 +28,7 @@ only), 1.9.3, 2.0.0 and 2.1.0.
  * Ubuntu 12.04 LTS
  * Ubuntu 14.04 LTS
  * Debian 8.2
+ * Debian 8.3
 
 EL no longer requires the `redhat-lsb` package.
 

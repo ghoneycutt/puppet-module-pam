@@ -161,6 +161,17 @@ describe 'pam' do
         { :prefix           => 'pam_common_',
           :types            => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
         }, ],
+    },
+    'debian83'              =>
+    { :osfamily             => 'Debian',
+      :lsbdistid            => 'Debian',
+      :release              => '8.3',
+      :releasetype          => 'lsbdistrelease',
+      :packages             => [ 'libpam0g', ],
+      :files                => [
+        { :prefix           => 'pam_common_',
+          :types            => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
+        }, ],
     }
 
   }
@@ -305,6 +316,15 @@ describe 'pam' do
           end
 
           if check == 'vas' and v[:osfamily] == 'Debian' and v[:release] == '8.2'
+            it 'should fail' do
+              expect {
+                should contain_class('pam')
+              }.to raise_error(Puppet::Error,/Pam: vas is not supported on #{v[:osfamily]} #{v[:release]}/)
+            end
+            next
+          end
+
+          if check == 'vas' and v[:osfamily] == 'Debian' and v[:release] == '8.3'
             it 'should fail' do
               expect {
                 should contain_class('pam')

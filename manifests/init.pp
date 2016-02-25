@@ -13,6 +13,7 @@ class nsswitch (
   $vas_nss_module_aliases   = '',
   $vas_nss_module_services  = '',
   $passwd                   = 'USE_DEFAULTS',
+  $sudoers                  = 'USE_DEFAULTS',
   $shadow                   = 'USE_DEFAULTS',
   $group                    = 'USE_DEFAULTS',
   $hosts                    = 'USE_DEFAULTS',
@@ -44,6 +45,7 @@ class nsswitch (
   case $::osfamily {
     'Debian','Suse': {
       $default_passwd             = 'files'
+      $default_sudoers            = 'files'
       $default_shadow             = 'files'
       $default_group              = 'files'
       $default_hosts              = 'files dns'
@@ -61,6 +63,7 @@ class nsswitch (
     'RedHat': {
       if $::operatingsystemmajrelease == '7' {
         $default_passwd     = 'files sss'
+        $default_sudoers    = 'files sss'
         $default_shadow     = 'files sss'
         $default_group      = 'files sss'
         $default_hosts      = 'files dns myhostname'
@@ -72,6 +75,7 @@ class nsswitch (
         $default_netgroup   = 'files sss'
       } else {
         $default_passwd     = 'files'
+        $default_sudoers    = 'files'
         $default_shadow     = 'files'
         $default_group      = 'files'
         $default_hosts      = 'files dns'
@@ -90,6 +94,7 @@ class nsswitch (
     }
     'Solaris': {
       $default_passwd             = 'files'
+      $default_sudoers            = 'files'
       $default_shadow             = 'files'
       $default_group              = 'files'
       $default_hosts              = 'files dns'
@@ -123,6 +128,13 @@ class nsswitch (
     $shadow_real = $shadow
   }
   validate_string($shadow_real)
+  
+  if $sudoers == 'USE_DEFAULTS' {
+    $sudoers_real = $default_sudoers
+  } else {
+    $sudoers_real = $sudoers
+  }
+  validate_string($sudoers_real)
 
   if $group == 'USE_DEFAULTS' {
     $group_real = $default_group

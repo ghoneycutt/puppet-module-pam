@@ -114,3 +114,9 @@ nsswitch_project
 String of list of sources for project database. 'USE_DEFAULTS' allows the module to choose defaults based on the platform.
 
 - *Default*: 'USE_DEFAULTS'
+
+sudoers
+-------
+String of list of sources to use for sudoers. 'USE_DEFAULTS' allows the module to choose defaults based on the platform.
+
+- *Default*: 'USE_DEFAULTS'

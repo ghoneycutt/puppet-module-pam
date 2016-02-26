@@ -1008,9 +1008,9 @@ class pam (
       include ::pam::accesslogin
       include ::pam::limits
 
-      package { $my_package_name:
+      ensure_package ( $my_package_name, {
         ensure => installed,
-      }
+      })
 
       file { 'pam_d_login':
         ensure  => file,

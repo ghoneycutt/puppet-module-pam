@@ -5,7 +5,7 @@ passwd:     <%= @passwd_real %><% if @ensure_ldap == 'present' %> ldap<% end %><
 shadow:     <%= @shadow_real %><% if @ensure_ldap == 'present' %> ldap<% end %>
 group:      <%= @group_real %><% if @ensure_ldap == 'present' %> ldap<% end %><% if @ensure_vas == 'present' %> <%= @vas_nss_module_group %><% end %>
 
-sudoers:    files<% if @ensure_ldap == 'present' %> ldap<% end %>
+sudoers:    <%= @sudoers_real %><% if @ensure_ldap == 'present' %> ldap<% end %>
 
 hosts:      <%= @hosts_real %>
 

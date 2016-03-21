@@ -64,7 +64,7 @@ class pam::lib::krb5 (
 
   package{'pam_lib_krb5':
     ensure => $package_ensure,
-    name   => $package_name_real
+    name   => $package_name_real,
   }
 
 }

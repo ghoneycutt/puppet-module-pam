@@ -64,7 +64,7 @@ class pam::lib::radius (
 
   package{'pam_lib_radius':
     ensure => $package_ensure,
-    name   => $package_name_real
+    name   => $package_name_real,
   }
 
 }

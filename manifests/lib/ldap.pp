@@ -64,7 +64,7 @@ class pam::lib::ldap (
 
   package{'pam_lib_ldap':
     ensure => $package_ensure,
-    name   => $package_name_real
+    name   => $package_name_real,
   }
 
 }

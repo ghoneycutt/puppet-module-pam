@@ -101,7 +101,7 @@ describe 'pam::lib::ldap' do
             expect {
               should contain_class('pam::lib::ldap')
             }.to raise_error(Puppet::Error,
-              /^pam::lib::ldap does not have a default for your system. Please specify a package at pam::lib::ldap::package_name./)
+              /pam::lib::ldap does not have a default for your system. Please specify a package at pam::lib::ldap::package_name./)
           end
         else
           it { should contain_class('pam::lib::ldap') }

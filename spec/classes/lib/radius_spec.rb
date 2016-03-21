@@ -101,7 +101,7 @@ describe 'pam::lib::radius' do
             expect {
               should contain_class('pam::lib::radius')
             }.to raise_error(Puppet::Error,
-              /^pam::lib::radius does not have a default for your system. Please specify a package at pam::lib::radius::package_name./)
+              /pam::lib::radius does not have a default for your system. Please specify a package at pam::lib::radius::package_name./)
           end
         else
           it { should contain_class('pam::lib::radius') }

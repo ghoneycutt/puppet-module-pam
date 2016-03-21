@@ -101,7 +101,7 @@ describe 'pam::lib::krb5' do
             expect {
               should contain_class('pam::lib::krb5')
             }.to raise_error(Puppet::Error,
-              /^pam::lib::krb5 does not have a default for your system. Please specify a package at pam::lib::krb5::package_name./)
+              /pam::lib::krb5 does not have a default for your system. Please specify a package at pam::lib::krb5::package_name./)
           end
         else
           it { should contain_class('pam::lib::krb5') }

@@ -130,7 +130,7 @@ class nsswitch (
     $shadow_real = $shadow
   }
   validate_string($shadow_real)
-  
+
   if $sudoers == 'USE_DEFAULTS' {
     $sudoers_real = $default_sudoers
   } else {

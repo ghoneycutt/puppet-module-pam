@@ -59,6 +59,7 @@ class nsswitch (
       $default_nsswitch_printers  = undef
       $default_nsswitch_auth_attr = undef
       $default_nsswitch_prof_attr = undef
+      $default_nsswitch_project   = undef
     }
     'RedHat': {
       if $::operatingsystemmajrelease == '7' {
@@ -91,6 +92,7 @@ class nsswitch (
       $default_nsswitch_printers  = undef
       $default_nsswitch_auth_attr = undef
       $default_nsswitch_prof_attr = undef
+      $default_nsswitch_project   = undef
     }
     'Solaris': {
       $default_passwd             = 'files'

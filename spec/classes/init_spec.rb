@@ -62,7 +62,16 @@ project:    files
 
     ['RedHat','Suse','Debian'].each do |platform|
       context "on osfamily #{platform}" do
-        let(:facts) { { :osfamily => platform } }
+        if platform = 'RedHat'
+          let(:facts) do
+            {
+              :osfamily                  => platform,
+              :operatingsystemmajrelease => '6',
+            }
+          end
+        else
+          let(:facts) { { :osfamily => platform } }
+        end
 
         it { should contain_class('nsswitch') }
 

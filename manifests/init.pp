@@ -741,6 +741,9 @@ class pam (
       }
     }
     'Solaris': {
+      $default_package_name         = undef
+      $default_pam_d_login_template = undef
+      $default_pam_d_sshd_template  = undef
       case $::kernelrelease {
         '5.9': {
           $default_pam_auth_lines = [

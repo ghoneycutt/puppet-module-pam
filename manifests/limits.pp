@@ -33,6 +33,7 @@ class pam::limits (
 
   if $config_file_lines == undef and $config_file_source == undef {
     $content = template('pam/limits.conf.erb')
+    $config_file_source_real = undef
   } else {
     # config_file_lines takes priority over config_file_source
     if $config_file_lines == undef {

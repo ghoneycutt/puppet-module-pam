@@ -50,9 +50,12 @@ class pam (
   $system_auth_ac_password_lines       = undef,
   $system_auth_ac_session_lines        = undef,
   $vas_major_version                   = '4',
+  $manage_nsswitch                     = true,
 ) {
 
-  include ::nsswitch
+  if $manage_nsswitch == true {
+    include ::nsswitch
+  }
 
   case $::osfamily {
     'RedHat': {

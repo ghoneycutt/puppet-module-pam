@@ -434,6 +434,12 @@ Boolean to purge the limits.d directory.
 
 - *Default*: false
 
+manage_nsswitch
+------------------
+Boolean to manage nsswitch service.
+
+- *Default*: true
+
 ===
 
 # pam::limits::fragment define

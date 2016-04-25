@@ -781,6 +781,39 @@ describe 'pam' do
         end
       end
 
+      context "with manage_nsswitch parameter default value" do
+        let :facts do
+          { :osfamily => v[:osfamily],
+            :"#{v[:releasetype]}" => v[:release],
+            :lsbdistid => v[:lsbdistid],
+          }
+        end
+        let(:params) { {:manage_nsswitch => true} }
+        it { is_expected.to contain_class('nsswitch') }
+      end
+      
+      context "with manage_nsswitch parameter set to true" do
+        let :facts do
+          { :osfamily => v[:osfamily],
+            :"#{v[:releasetype]}" => v[:release],
+            :lsbdistid => v[:lsbdistid],
+          }
+        end
+        let(:params) { {:manage_nsswitch => true} }
+        it { is_expected.to contain_class('nsswitch') }
+      end
+      
+      context "with manage_nsswitch parameter set to false" do 
+        let :facts do
+          { :osfamily => v[:osfamily],
+            :"#{v[:releasetype]}" => v[:release],
+            :lsbdistid => v[:lsbdistid],
+          }
+        end
+        let(:params) { {:manage_nsswitch => false} }
+        it { is_expected.not_to contain_class('nsswitch') }
+      end
+
       ['true',true,'false',false].each do |value|
         context "with limits_fragments_hiera_merge parameter specified as a valid value: #{value} on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
           let :facts do

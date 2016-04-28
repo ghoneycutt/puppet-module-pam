@@ -788,7 +788,6 @@ describe 'pam' do
             :lsbdistid => v[:lsbdistid],
           }
         end
-        let(:params) { {:manage_nsswitch => true} }
         it { is_expected.to contain_class('nsswitch') }
       end
       

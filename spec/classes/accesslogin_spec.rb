@@ -28,9 +28,9 @@ describe 'pam::accesslogin' do
 # DO NOT EDIT
 #
 
-# deny any users listed here
+# deny any users or groups listed
 
-# allow only the groups listed
+# allow only the users or groups listed
 + : root : ALL
 
 # default deny
@@ -69,9 +69,9 @@ describe 'pam::accesslogin' do
 # DO NOT EDIT
 #
 
-# deny any users listed here
+# deny any users or groups listed
 
-# allow only the groups listed
+# allow only the users or groups listed
 + : foo : ALL
 + : bar : ALL
 
@@ -111,11 +111,11 @@ describe 'pam::accesslogin' do
 # DO NOT EDIT
 #
 
-# deny any users listed here
+# deny any users or groups listed
 - : foo : ALL
 - : bar : ALL
 
-# allow only the groups listed
+# allow only the users or groups listed
 + : root : ALL
 
 # default deny
@@ -155,11 +155,11 @@ context 'with multiple allowed and denied users on supported platform expressed 
 # DO NOT EDIT
 #
 
-# deny any users listed here
+# deny any users or groups listed
 - : baz : ALL
 - : qux : ALL
 
-# allow only the groups listed
+# allow only the users or groups listed
 + : foo : ALL
 + : bar : ALL
 

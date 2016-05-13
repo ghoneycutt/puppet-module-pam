@@ -89,7 +89,7 @@ This would create /etc/security/access.conf with the following content.
 
 denied_users
 -------------
-The same syntax as allowed_users, above. Any users added to this list will be denied access regardless of if they are in allowed_users. The default denies no additional users.  
+The same syntax as allowed_users, above. Any users and origins added to this list will be denied access regardless of if they are in allowed_users. The default denies no additional users or origins.
 
 - *Default*: undef
 

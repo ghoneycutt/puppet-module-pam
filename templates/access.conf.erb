@@ -2,7 +2,7 @@
 # DO NOT EDIT
 #
 
-# deny any users listed here
+# deny any users or groups listed
 <% entries = scope.lookupvar('pam::denied_users') -%>
 <% if entries.is_a? Hash -%>
 <% entries.keys.sort.each do |key| -%>
@@ -17,7 +17,7 @@
 - : <%= entries %> : ALL
 <% end -%>
 
-# allow only the groups listed
+# allow only the users or groups listed
 <% entries = scope.lookupvar('pam::allowed_users') -%>
 <% if entries.is_a? Hash -%>
 <% entries.keys.sort.each do |key| -%>

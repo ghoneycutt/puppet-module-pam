@@ -151,6 +151,17 @@ describe 'pam' do
             :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
           }, ],
       },
+    'ubuntu1604'            =>
+      { :osfamily           => 'Debian',
+        :lsbdistid          => 'Ubuntu',
+        :release            => '16.04',
+        :releasetype        => 'lsbdistrelease',
+        :packages           => [ 'libpam0g', ],
+        :files              => [
+          { :prefix         => 'pam_common_',
+            :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
+          }, ],
+      },
     'debian82'              =>
     { :osfamily             => 'Debian',
       :lsbdistid            => 'Debian',

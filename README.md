@@ -188,7 +188,35 @@ pam_d_sshd_template
 -------------------
 Content template of $pam_d_sshd_path. If undef, parameter is set based on the OS version.
 
+For cases where a full customization of the sshd PAM configuration is required, set pam_d_sshd_template to use pam/sshd.custom.erb that is provided with this module.
+pam/sshd.custom.erb must be further configured with the parameters pam_sshd_auth_lines, pam_sshd_account_lines, pam_sshd_password_lines and pam_sshd_session_lines.
+Note that the pam_d_sshd_template parameter is a no-op on Solaris.
+
 - *Default*: undef, default is set based on OS version
+
+pam_sshd_auth_lines
+-------------------
+An ordered array of strings that define the content for PAM sshd auth. This setting is required and only valid if pam_d_sshd_template is configured to use the pam/sshd.custom.erb template.
+
+- *Default*: undef
+
+pam_sshd_account_lines
+----------------------
+An ordered array of strings that define the content for PAM sshd account. This setting is required and only valid if pam_d_sshd_template is configured to use the pam/sshd.custom.erb template.
+
+- *Default*: undef
+
+pam_sshd_password_lines
+-----------------------
+An ordered array of strings that define the content for PAM sshd password. This setting is required and only valid if pam_d_sshd_template is configured to use the pam/sshd.custom.erb template.
+
+- *Default*: undef
+
+pam_sshd_session_lines
+----------------------
+An ordered array of strings that define the content for PAM sshd session. This setting is required and only valid if pam_d_sshd_template is configured to use the pam/sshd.custom.erb template.
+
+- *Default*: undef
 
 pam_auth_lines
 --------------

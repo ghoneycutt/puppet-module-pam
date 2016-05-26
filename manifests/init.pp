@@ -23,6 +23,10 @@ class pam (
   $pam_d_sshd_group                    = 'root',
   $pam_d_sshd_mode                     = '0644',
   $pam_d_sshd_template                 = undef,
+  $pam_sshd_auth_lines                 = undef,
+  $pam_sshd_account_lines              = undef,
+  $pam_sshd_password_lines             = undef,
+  $pam_sshd_session_lines              = undef,
   $pam_auth_lines                      = undef,
   $pam_account_lines                   = undef,
   $pam_password_lines                  = undef,
@@ -1111,6 +1115,26 @@ class pam (
     $my_pam_d_login_template = $default_pam_d_login_template
   } else {
     $my_pam_d_login_template = $pam_d_login_template
+  }
+
+  if $pam_d_sshd_template == 'pam/sshd.custom.erb' {
+    if $pam_sshd_auth_lines == undef or
+      $pam_sshd_account_lines == undef or
+      $pam_sshd_password_lines == undef or
+      $pam_sshd_session_lines == undef {
+        fail('pam_sshd_[auth|account|password|session]_lines required when using the pam/sshd.custom.erb template')
+    }
+    validate_array($pam_sshd_auth_lines)
+    validate_array($pam_sshd_account_lines)
+    validate_array($pam_sshd_password_lines)
+    validate_array($pam_sshd_session_lines)
+  } else {
+    if $pam_sshd_auth_lines != undef or
+      $pam_sshd_account_lines != undef or
+      $pam_sshd_password_lines != undef or
+      $pam_sshd_session_lines != undef {
+        fail('pam_sshd_[auth|account|password|session]_lines are only valid when pam_d_sshd_template is configured with the pam/sshd.custom.erb template')
+    }
   }
 
   if $pam_d_sshd_template == undef {

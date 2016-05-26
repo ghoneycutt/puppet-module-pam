@@ -151,6 +151,17 @@ describe 'pam' do
             :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
           }, ],
       },
+    'ubuntu1604'            =>
+      { :osfamily           => 'Debian',
+        :lsbdistid          => 'Ubuntu',
+        :release            => '16.04',
+        :releasetype        => 'lsbdistrelease',
+        :packages           => [ 'libpam0g', ],
+        :files              => [
+          { :prefix         => 'pam_common_',
+            :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
+          }, ],
+      },
     'debian82'              =>
     { :osfamily             => 'Debian',
       :lsbdistid            => 'Debian',
@@ -309,6 +320,15 @@ describe 'pam' do
               expect {
                 should contain_class('pam')
               }.to raise_error(Puppet::Error,/Pam: vas is not supported on #{v[:osfamily]} #{v[:release]}/)
+            end
+            next
+          end
+
+          if check == 'vas' and v[:osfamily] == 'Debian' and v[:release] == '16.04'
+            it 'should fail' do
+              expect {
+                should contain_class('pam')
+              }.to raise_error(Puppet::Error,/Pam: vas is not supported on #{v[:lsbdistid]} #{v[:release]}/)
             end
             next
           end
@@ -579,7 +599,7 @@ describe 'pam' do
           it { should_not contain_file('pam_password_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) }
         end
 
-        if v[:osfamily] == 'Debian' and v[:lsbdistid] == 'Ubuntu'
+        if v[:osfamily] == 'Debian' and v[:lsbdistid] == 'Ubuntu' and v[:release] != '16.04'
           it { should contain_class('pam::accesslogin') }
           it { should contain_class('pam::limits') }
 

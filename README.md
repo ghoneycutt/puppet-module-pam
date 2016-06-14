@@ -40,7 +40,7 @@ EL no longer requires the `redhat-lsb` package.
 
 allowed_users
 -------------
-Array or Hash of strings and/or arrays to configure users and origins in access.conf. The default allows the root user/group from origin 'ALL'.
+String, Array or Hash of strings and/or arrays to configure users and origins in access.conf. The default allows the root user/group from origin 'ALL'.
 
 - *Default*: 'root'
 

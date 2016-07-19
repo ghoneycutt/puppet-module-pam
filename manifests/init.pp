@@ -863,11 +863,11 @@ class pam (
           }
         }
         'Debian': {
-          case $::lsbdistrelease {
-            '8.2': {
+          case $::lsbmajdistrelease {
+            '8': {
 
               if $ensure_vas == 'present' {
-                fail("Pam: vas is not supported on ${::osfamily} ${::lsbdistrelease}")
+                fail("Pam: vas is not supported on ${::osfamily} ${::lsbmajdistrelease}")
               }
               $default_pam_d_login_template = 'pam/login.debian8.erb'
               $default_pam_d_sshd_template  = 'pam/sshd.debian8.erb'
@@ -902,7 +902,7 @@ class pam (
 
             }
             default: {
-              fail("Pam is only supported on Debian 8. Your operatingsystemmajrelease is identified as <${::lsbdistrelease}>.")
+              fail("Pam is only supported on Debian 8. Your lsbmajdistrelease is <${::lsbmajdistrelease}>.")
             }
           }
         }

@@ -162,11 +162,11 @@ describe 'pam' do
             :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
           }, ],
       },
-    'debian82'              =>
+    'debian8'               =>
     { :osfamily             => 'Debian',
       :lsbdistid            => 'Debian',
-      :release              => '8.2',
-      :releasetype          => 'lsbdistrelease',
+      :release              => '8',
+      :releasetype          => 'lsbmajdistrelease',
       :packages             => [ 'libpam0g', ],
       :files                => [
         { :prefix           => 'pam_common_',
@@ -190,7 +190,7 @@ describe 'pam' do
       { :osfamily           => 'Debian',
         :release            => '7',
         :lsbdistid          => 'Debian',
-        :releasetype        => 'lsbdistid',
+        :releasetype        => 'lsbmajdistrelease',
       },
     'ubuntu1004'            =>
       { :osfamily           => 'Debian',
@@ -210,6 +210,7 @@ describe 'pam' do
       context "with defaults params on #{k}" do
         let :facts do
           { :osfamily => v[:osfamily],
+            :lsbdistid => v[:lsbdistid],
             :"#{v[:releasetype]}" => v[:release],
           }
         end
@@ -315,7 +316,7 @@ describe 'pam' do
             next
           end
 
-          if check == 'vas' and v[:osfamily] == 'Debian' and v[:release] == '8.2'
+          if check == 'vas' and v[:osfamily] == 'Debian' and v[:release] == '8'
             it 'should fail' do
               expect {
                 should contain_class('pam')

@@ -53,7 +53,13 @@ class pam (
   $manage_nsswitch                     = true,
 ) {
 
-  if $manage_nsswitch == true {
+  if is_string($manage_nsswitch) == true {
+    $manage_nsswitch_real = str2bool($manage_nsswitch)
+  } else {
+    $manage_nsswitch_real = $manage_nsswitch
+  }
+
+  if $manage_nsswitch_real == true {
     include ::nsswitch
   }
 

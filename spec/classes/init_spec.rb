@@ -790,27 +790,31 @@ describe 'pam' do
         end
         it { is_expected.to contain_class('nsswitch') }
       end
-      
-      context "with manage_nsswitch parameter set to true" do
-        let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+
+      ['true', true, 'y'].each do |value|
+        context "with manage_nsswitch parameter set to #{value}" do
+          let :facts do
+            { :osfamily => v[:osfamily],
+              :"#{v[:releasetype]}" => v[:release],
+              :lsbdistid => v[:lsbdistid],
+            }
+          end
+          let(:params) { {:manage_nsswitch => value} }
+          it { is_expected.to contain_class('nsswitch') }
         end
-        let(:params) { {:manage_nsswitch => true} }
-        it { is_expected.to contain_class('nsswitch') }
       end
-      
-      context "with manage_nsswitch parameter set to false" do 
-        let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+
+      ['false', false, 'n'].each do |value|
+        context "with manage_nsswitch parameter set to #{value}" do
+          let :facts do
+            { :osfamily => v[:osfamily],
+              :"#{v[:releasetype]}" => v[:release],
+              :lsbdistid => v[:lsbdistid],
+            }
+          end
+          let(:params) { {:manage_nsswitch => value} }
+          it { is_expected.not_to contain_class('nsswitch') }
         end
-        let(:params) { {:manage_nsswitch => false} }
-        it { is_expected.not_to contain_class('nsswitch') }
       end
 
       ['true',true,'false',false].each do |value|

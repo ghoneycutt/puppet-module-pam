@@ -30,6 +30,8 @@ describe 'pam::accesslogin' do
 
 # allow only the groups listed
 + : root : ALL
+# pam::allowed_lines Array<String> fallback values
++ : root : crond :0 tty1 tty2 tty3 tty4 tty5 tty6
 
 # default deny
 - : ALL : ALL
@@ -70,6 +72,8 @@ describe 'pam::accesslogin' do
 # allow only the groups listed
 + : foo : ALL
 + : bar : ALL
+# pam::allowed_lines Array<String> fallback values
++ : root : crond :0 tty1 tty2 tty3 tty4 tty5 tty6
 
 # default deny
 - : ALL : ALL

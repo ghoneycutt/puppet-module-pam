@@ -32,6 +32,13 @@ only), 1.9.3, 2.0.0, 2.1.0 and 2.3.1 (Puppet v4 only).
 
 EL no longer requires the `redhat-lsb` package.
 
+# SSSD
+
+This module has been deployed in production along with
+[sgnl05/sssd](https://github.com/sgnl05/sgnl05-sssd).  Please see <a
+href="examples/hiera/sssd/RedHat-6.yaml">examples/hiera/sssd/RedHat-6.yaml</a>
+file for an example with the additional SSSD entries added via hiera.
+
 ===
 
 # Parameters

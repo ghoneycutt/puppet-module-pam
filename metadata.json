@@ -1,6 +1,6 @@
 {
   "name": "ghoneycutt-pam",
-  "version": "2.27.0",
+  "version": "2.28.0",
   "author": "ghoneycutt",
   "summary": "Manage PAM",
   "description": "Manages PAM, including specifying users and groups in access.conf, limits.conf, and limits fragments",

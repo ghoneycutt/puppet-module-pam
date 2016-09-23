@@ -162,18 +162,28 @@ describe 'pam' do
             :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
           }, ],
       },
+    'debian7'               =>
+      { :osfamily           => 'Debian',
+        :lsbdistid          => 'Debian',
+        :release            => '7',
+        :releasetype        => 'lsbmajdistrelease',
+        :packages           => [ 'libpam0g', ],
+        :files              => [
+          { :prefix         => 'pam_common_',
+            :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
+          }, ],
+      },
     'debian8'               =>
-    { :osfamily             => 'Debian',
-      :lsbdistid            => 'Debian',
-      :release              => '8',
-      :releasetype          => 'lsbmajdistrelease',
-      :packages             => [ 'libpam0g', ],
-      :files                => [
-        { :prefix           => 'pam_common_',
-          :types            => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
-        }, ],
-    }
-
+      { :osfamily           => 'Debian',
+        :lsbdistid          => 'Debian',
+        :release            => '8',
+        :releasetype        => 'lsbmajdistrelease',
+        :packages           => [ 'libpam0g', ],
+        :files              => [
+          { :prefix         => 'pam_common_',
+            :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
+          }, ],
+      }
   }
   unsupported_platforms = {
     'el4'                   =>
@@ -184,12 +194,6 @@ describe 'pam' do
     'suse8'                 =>
       { :osfamily           => 'Suse',
         :release            => '8',
-        :releasetype        => 'lsbmajdistrelease',
-      },
-    'debian7'               =>
-      { :osfamily           => 'Debian',
-        :release            => '7',
-        :lsbdistid          => 'Debian',
         :releasetype        => 'lsbmajdistrelease',
       },
     'ubuntu1004'            =>
@@ -354,7 +358,7 @@ describe 'pam' do
             next
           end
 
-          if check == 'vas' and v[:osfamily] == 'Debian' and v[:release] == '8'
+          if check == 'vas' and v[:osfamily] == 'Debian' and ['7', '8'].include?(v[:release])
             it 'should fail' do
               expect {
                 should contain_class('pam')

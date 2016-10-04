@@ -28,6 +28,7 @@ only), 1.9.3, 2.0.0, 2.1.0 and 2.3.1 (Puppet v4 only).
  * Ubuntu 12.04 LTS
  * Ubuntu 14.04 LTS
  * Ubuntu 16.04 LTS
+ * Debian 7
  * Debian 8
 
 EL no longer requires the `redhat-lsb` package.

@@ -191,6 +191,12 @@ describe 'pam' do
         :release            => '4',
         :releasetype        => 'operatingsystemmajrelease',
       },
+    'debian6'               =>
+      { :osfamily           => 'Debian',
+        :release            => '6',
+        :lsbdistid          => 'Debian',
+        :releasetype        => 'lsbmajdistrelease',
+      },
     'suse8'                 =>
       { :osfamily           => 'Suse',
         :release            => '8',

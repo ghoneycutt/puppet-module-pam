@@ -1228,35 +1228,35 @@ class pam (
     $my_pam_session_lines = $pam_session_lines
   }
 
-if ( $::osfamily == 'RedHat' ) and ( $::operatingsystemmajrelease == '6' or $::operatingsystemmajrelease == '7' ) {
-  if $pam_password_auth_lines == undef {
-    $my_pam_password_auth_lines = $default_pam_password_auth_lines
-  } else {
-    $my_pam_password_auth_lines = $pam_password_auth_lines
-  }
-  validate_array($my_pam_password_auth_lines)
+  if ( $::osfamily == 'RedHat' ) and ( $::operatingsystemmajrelease == '6' or $::operatingsystemmajrelease == '7' ) {
+    if $pam_password_auth_lines == undef {
+      $my_pam_password_auth_lines = $default_pam_password_auth_lines
+    } else {
+      $my_pam_password_auth_lines = $pam_password_auth_lines
+    }
+    validate_array($my_pam_password_auth_lines)
 
-  if $pam_password_account_lines == undef {
-    $my_pam_password_account_lines = $default_pam_password_account_lines
-  } else {
-    $my_pam_password_account_lines = $pam_password_account_lines
-  }
-  validate_array($my_pam_password_account_lines)
+    if $pam_password_account_lines == undef {
+      $my_pam_password_account_lines = $default_pam_password_account_lines
+    } else {
+      $my_pam_password_account_lines = $pam_password_account_lines
+    }
+    validate_array($my_pam_password_account_lines)
 
-  if $pam_password_password_lines == undef {
-    $my_pam_password_password_lines = $default_pam_password_password_lines
-  } else {
-    $my_pam_password_password_lines = $pam_password_password_lines
-  }
-  validate_array($my_pam_password_password_lines)
+    if $pam_password_password_lines == undef {
+      $my_pam_password_password_lines = $default_pam_password_password_lines
+    } else {
+      $my_pam_password_password_lines = $pam_password_password_lines
+    }
+    validate_array($my_pam_password_password_lines)
 
-  if $pam_password_session_lines == undef {
-    $my_pam_password_session_lines = $default_pam_password_session_lines
-  } else {
-    $my_pam_password_session_lines = $pam_password_session_lines
+    if $pam_password_session_lines == undef {
+      $my_pam_password_session_lines = $default_pam_password_session_lines
+    } else {
+      $my_pam_password_session_lines = $pam_password_session_lines
+    }
+    validate_array($my_pam_password_session_lines)
   }
-  validate_array($my_pam_password_session_lines)
-}
 
   if $services != undef {
     create_resources('pam::service',$services)

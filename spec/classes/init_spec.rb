@@ -373,15 +373,6 @@ describe 'pam' do
             next
           end
 
-          if check == 'vas' and v[:osfamily] == 'Debian' and v[:release] == '16.04'
-            it 'should fail' do
-              expect {
-                should contain_class('pam')
-              }.to raise_error(Puppet::Error,/Pam: vas is not supported on #{v[:lsbdistid]} #{v[:release]}/)
-            end
-            next
-          end
-
           v[:files].each do |file|
             group = file[:group] || 'root'
             dirpath = file[:dirpath] || '/etc/pam.d/'
@@ -648,7 +639,7 @@ describe 'pam' do
           it { should_not contain_file('pam_password_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) }
         end
 
-        if v[:osfamily] == 'Debian' and v[:lsbdistid] == 'Ubuntu' and v[:release] != '16.04'
+        if v[:osfamily] == 'Debian' and v[:lsbdistid] == 'Ubuntu'
           it { should contain_class('pam::accesslogin') }
           it { should contain_class('pam::limits') }
 

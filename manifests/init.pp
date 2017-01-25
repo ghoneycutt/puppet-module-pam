@@ -840,19 +840,19 @@ class pam (
 
               if $ensure_vas == 'present' {
                 $default_pam_auth_lines = [
-                  'auth  sufficient  pam_vas3.so create_homedir get_nonvas_pass',
-                  'auth  requisite pam_vas3.so echo_return',
-                  'auth  [success=1 default=ignore]  pam_unix.so nullok_secure use_first_pass',
-                  'auth  requisite pam_deny.so',
-                  'auth  required  pam_permit.so',
+                  'auth sufficient pam_vas3.so create_homedir get_nonvas_pass',
+                  'auth requisite  pam_vas3.so echo_return',
+                  'auth [success=1 default=ignore] pam_unix.so nullok_secure use_first_pass',
+                  'auth requisite  pam_deny.so',
+                  'auth required   pam_permit.so',
                 ]
 
                 $default_pam_account_lines = [
-                  'account sufficient  pam_vas3.so',
-                  'account requisite pam_vas3.so echo_return',
+                  'account sufficient pam_vas3.so',
+                  'account requisite  pam_vas3.so echo_return',
                   'account [success=1 new_authtok_reqd=done default=ignore]  pam_unix.so',
-                  'account requisite pam_deny.so',
-                  'account required  pam_permit.so',
+                  'account requisite  pam_deny.so',
+                  'account required   pam_permit.so',
                 ]
 
                 $default_pam_password_lines = [

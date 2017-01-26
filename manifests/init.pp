@@ -839,6 +839,10 @@ class pam (
               $default_package_name         = 'libpam0g'
 
               if $ensure_vas == 'present' {
+                if $vas_major_version == '3' {
+                  fail("Pam is only supported with vas_major_version 4 on Ubuntu 16.04. Your vas_major_version is <${vas_major_version}>.")
+                }
+
                 $default_pam_auth_lines = [
                   'auth sufficient pam_vas3.so create_homedir get_nonvas_pass',
                   'auth requisite  pam_vas3.so echo_return',

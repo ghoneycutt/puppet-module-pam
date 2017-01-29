@@ -866,7 +866,7 @@ class pam (
             }
           }
         }
-        'Debian': {
+        'Debian', 'Raspbian': {
           case $::lsbmajdistrelease {
             /(7|8)/: {
 
@@ -909,7 +909,7 @@ class pam (
           }
         }
         default: {
-          fail("Pam is only supported on lsbdistid Ubuntu or Debian of the Debian osfamily. Your lsbdistid is <${::lsbdistid}>.")
+          fail("Pam is only supported on lsbdistid Ubuntu, Debian or Raspbian of the Debian osfamily. Your lsbdistid is <${::lsbdistid}>.")
         }
       }
     }

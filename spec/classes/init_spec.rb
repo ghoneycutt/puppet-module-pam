@@ -656,7 +656,7 @@ describe 'pam' do
           end
         end
 
-        if v[:osfamily] == 'Debian' and v[:lsbdistid] == 'Ubuntu' and (v[:release] == '12.04' or v[:release] == '14.04')
+        if v[:osfamily] == 'Debian' and v[:lsbdistid] == 'Ubuntu' and ['12.04', '14.04'].include?(v[:release])
           it { should contain_class('pam::accesslogin') }
           it { should contain_class('pam::limits') }
 

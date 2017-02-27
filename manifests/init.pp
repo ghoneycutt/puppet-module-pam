@@ -839,7 +839,45 @@ class pam (
               $default_package_name         = 'libpam0g'
 
               if $ensure_vas == 'present' {
-                fail("/Pam: vas is not supported on Ubuntu ${::lsbdistrelease}/")
+                if $vas_major_version == '3' {
+                  fail("Pam is only supported with vas_major_version 4 on Ubuntu 16.04. Your vas_major_version is <${vas_major_version}>.")
+                }
+
+                $default_pam_auth_lines = [
+                  'auth sufficient pam_vas3.so create_homedir get_nonvas_pass',
+                  'auth requisite  pam_vas3.so echo_return',
+                  'auth [success=1 default=ignore] pam_unix.so nullok_secure use_first_pass',
+                  'auth requisite  pam_deny.so',
+                  'auth required   pam_permit.so',
+                ]
+
+                $default_pam_account_lines = [
+                  'account sufficient pam_vas3.so',
+                  'account requisite  pam_vas3.so echo_return',
+                  'account [success=1 new_authtok_reqd=done default=ignore]  pam_unix.so',
+                  'account requisite  pam_deny.so',
+                  'account required   pam_permit.so',
+                ]
+
+                $default_pam_password_lines = [
+                  'password sufficient  pam_vas3.so',
+                  'password  requisite pam_vas3.so echo_return',
+                  'password  [success=1 default=ignore]  pam_unix.so obscure sha512',
+                  'password  requisite pam_deny.so',
+                  'password  required  pam_permit.so',
+                ]
+
+                $default_pam_session_lines = [
+                  'session [default=1] pam_permit.so',
+                  'session requisite pam_deny.so',
+                  'session required  pam_permit.so',
+                  'session optional  pam_umask.so',
+                  'session required  pam_vas3.so create_homedir',
+                  'session requisite pam_vas3.so echo_return',
+                  'session required  pam_unix.so',
+                  'session optional  pam_systemd.so',
+                ]
+
               } else {
 
                 $default_pam_auth_lines = [
@@ -1194,35 +1232,35 @@ class pam (
     $my_pam_session_lines = $pam_session_lines
   }
 
-if ( $::osfamily == 'RedHat' ) and ( $::operatingsystemmajrelease == '6' or $::operatingsystemmajrelease == '7' ) {
-  if $pam_password_auth_lines == undef {
-    $my_pam_password_auth_lines = $default_pam_password_auth_lines
-  } else {
-    $my_pam_password_auth_lines = $pam_password_auth_lines
-  }
-  validate_array($my_pam_password_auth_lines)
+  if ( $::osfamily == 'RedHat' ) and ( $::operatingsystemmajrelease == '6' or $::operatingsystemmajrelease == '7' ) {
+    if $pam_password_auth_lines == undef {
+      $my_pam_password_auth_lines = $default_pam_password_auth_lines
+    } else {
+      $my_pam_password_auth_lines = $pam_password_auth_lines
+    }
+    validate_array($my_pam_password_auth_lines)
 
-  if $pam_password_account_lines == undef {
-    $my_pam_password_account_lines = $default_pam_password_account_lines
-  } else {
-    $my_pam_password_account_lines = $pam_password_account_lines
-  }
-  validate_array($my_pam_password_account_lines)
+    if $pam_password_account_lines == undef {
+      $my_pam_password_account_lines = $default_pam_password_account_lines
+    } else {
+      $my_pam_password_account_lines = $pam_password_account_lines
+    }
+    validate_array($my_pam_password_account_lines)
 
-  if $pam_password_password_lines == undef {
-    $my_pam_password_password_lines = $default_pam_password_password_lines
-  } else {
-    $my_pam_password_password_lines = $pam_password_password_lines
-  }
-  validate_array($my_pam_password_password_lines)
+    if $pam_password_password_lines == undef {
+      $my_pam_password_password_lines = $default_pam_password_password_lines
+    } else {
+      $my_pam_password_password_lines = $pam_password_password_lines
+    }
+    validate_array($my_pam_password_password_lines)
 
-  if $pam_password_session_lines == undef {
-    $my_pam_password_session_lines = $default_pam_password_session_lines
-  } else {
-    $my_pam_password_session_lines = $pam_password_session_lines
+    if $pam_password_session_lines == undef {
+      $my_pam_password_session_lines = $default_pam_password_session_lines
+    } else {
+      $my_pam_password_session_lines = $pam_password_session_lines
+    }
+    validate_array($my_pam_password_session_lines)
   }
-  validate_array($my_pam_password_session_lines)
-}
 
   if $services != undef {
     create_resources('pam::service',$services)

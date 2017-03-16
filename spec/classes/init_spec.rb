@@ -94,6 +94,18 @@ describe 'pam' do
             :symlink        => true,
           }, ],
       },
+    'suse42'                =>
+      { :osfamily           => 'Suse',
+        :release            => '42',
+        :releasetype        => 'lsbmajdistrelease',
+        :packages           => ['pam', ],
+        :files              => [
+          { :prefix         => 'pam_common_',
+            :types          => ['auth', 'account', 'password', 'session', ],
+            :suffix         => '_pc',
+            :symlink        => true,
+          }, ],
+      },
     'solaris9'              =>
       { :osfamily           => 'Solaris',
         :release            => '5.9',
@@ -355,7 +367,7 @@ describe 'pam' do
             let(:params) { {:ensure_vas => 'present'} }
           end
 
-          if check == 'vas' and v[:osfamily] == 'Suse' and v[:release] == '13'
+          if check == 'vas' and v[:osfamily] == 'Suse' and ['13', '42'].include?(v[:release])
             it 'should fail' do
               expect {
                 should contain_class('pam')

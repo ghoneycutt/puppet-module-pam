@@ -85,9 +85,10 @@
       ]
     },
     {
-      "operatingsystem": "OpenSuSE",
+      "operatingsystem": "OpenSUSE",
       "operatingsystemrelease": [
-        "13.1"
+        "13.1",
+        "42"
       ]
     },
     {

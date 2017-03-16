@@ -686,8 +686,39 @@ class pam (
             ]
           }
         }
+        '42': {
+          $default_pam_d_login_template = 'pam/login.suse42.erb'
+          $default_pam_d_sshd_template  = 'pam/sshd.suse42.erb'
+          $default_package_name         = 'pam'
+
+          if $ensure_vas == 'present' {
+            fail("Pam: vas is not supported on ${::osfamily} ${::lsbmajdistrelease}")
+          } else {
+            $default_pam_auth_lines = [
+              'auth  required  pam_env.so',
+              'auth  required  pam_unix.so try_first_pass',
+            ]
+
+            $default_pam_account_lines = [
+              'account  required  pam_unix.so try_first_pass',
+            ]
+
+            $default_pam_password_lines = [
+              'password  requisite  pam_cracklib.so',
+              'password  required   pam_unix.so use_authtok nullok shadow try_first_pass',
+            ]
+
+            $default_pam_session_lines = [
+              'session  required pam_limits.so',
+              'session  required pam_unix.so try_first_pass',
+              'session  optional pam_umask.so',
+              'session  optional pam_systemd.so',
+              'session  optional pam_env.so',
+            ]
+          }
+        }
         default: {
-          fail("Pam is only supported on Suse 9, 10, 11, 12 and 13. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
+          fail("Pam is only supported on Suse 9, 10, 11, 12, 13 and 42. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
         }
       }
     }
@@ -1533,7 +1564,7 @@ class pam (
                 require => Package[$my_package_name],
               }
             }
-            '12','13': {
+            '12','13','42': {
 
               file { 'pam_common_auth_pc':
                 ensure  => file,

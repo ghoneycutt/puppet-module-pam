@@ -25,6 +25,7 @@ only), 1.9.3, 2.0.0, 2.1.0 and 2.3.1 (Puppet v4 only).
  * Suse 11
  * Suse 12
  * OpenSuSE 13.1
+ * OpenSUSE 42.2
  * Ubuntu 12.04 LTS
  * Ubuntu 14.04 LTS
  * Ubuntu 16.04 LTS

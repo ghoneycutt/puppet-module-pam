@@ -5,7 +5,7 @@ rvm:
   - 1.8.7
   - 1.9.3
   - 2.0.0
-  - 2.1.0
+  - 2.1.9
   - 2.3.1
 
 env:
@@ -29,6 +29,7 @@ env:
     - PUPPET_GEM_VERSION="~> 4.7.0"
     - PUPPET_GEM_VERSION="~> 4.8.0"
     - PUPPET_GEM_VERSION="~> 4.9.0"
+    - PUPPET_GEM_VERSION="~> 4.10.0"
     - PUPPET_GEM_VERSION="~> 4"
 
 sudo: false
@@ -40,13 +41,13 @@ matrix:
   exclude:
     - rvm: 2.0.0
       env: PUPPET_GEM_VERSION="~> 3.1.0"
-    - rvm: 2.1.0
+    - rvm: 2.1.9
       env: PUPPET_GEM_VERSION="~> 3.1.0"
-    - rvm: 2.1.0
+    - rvm: 2.1.9
       env: PUPPET_GEM_VERSION="~> 3.2.0"
-    - rvm: 2.1.0
+    - rvm: 2.1.9
       env: PUPPET_GEM_VERSION="~> 3.3.0"
-    - rvm: 2.1.0
+    - rvm: 2.1.9
       env: PUPPET_GEM_VERSION="~> 3.4.0"
     - rvm: 1.8.7
       env: PUPPET_GEM_VERSION="~> 4.0.0"
@@ -68,10 +69,16 @@ matrix:
       env: PUPPET_GEM_VERSION="~> 4.8.0"
     - rvm: 1.8.7
       env: PUPPET_GEM_VERSION="~> 4.9.0"
+    - rvm: 1.8.7
+      env: PUPPET_GEM_VERSION="~> 4.10.0"
     - rvm: 1.9.3
       env: PUPPET_GEM_VERSION="~> 4.9.0"
+    - rvm: 1.9.3
+      env: PUPPET_GEM_VERSION="~> 4.10.0"
     - rvm: 2.0.0
       env: PUPPET_GEM_VERSION="~> 4.9.0"
+    - rvm: 2.0.0
+      env: PUPPET_GEM_VERSION="~> 4.10.0"
     - rvm: 1.8.7
       env: PUPPET_GEM_VERSION="~> 4"
     - rvm: 1.9.3

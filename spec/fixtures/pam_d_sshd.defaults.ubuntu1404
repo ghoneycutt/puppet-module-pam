@@ -1,5 +1,6 @@
 @include common-auth
 account  required     pam_nologin.so
+account  required     pam_access.so
 @include common-account
 session  [success=ok ignore=ignore module_unknown=ignore default=bad]        pam_selinux.so close
 session  required     pam_loginuid.so

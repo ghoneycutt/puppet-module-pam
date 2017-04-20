@@ -90,6 +90,48 @@ This would create /etc/security/access.conf with the following content.
 + : username2 : tty1
 </pre>
 
+access_lines
+------------
+Array of String values, each string representing a complete text line in
+`/etc/security/access.conf`.  The purpose of this parameter is to configure a
+baseline set of access rules.  Entries from the `allow_users` parameter will go
+above entries specified in `allow_lines_fallback`, and the default deny-all
+entry will follow the entries specified in `allow_lines_fallback`.  Defaults to
+`['+ : root : crond :0 tty1 tty2 tty3 tty4 tty5 tty6']` which implements, "User
+root should be allowed to get access via cron, X11 terminal :0, tty1, ..., tty5,
+tty6."
+
+- *Default*: ['+ : root : crond :0 tty1 tty2 tty3 tty4 tty5 tty6']
+
+# Hiera example for access_lines
+<pre>
+# Allow devs to log in with a fallback of allowing ops and vagrant to log in
+# in the event pam::allowed_users gets overridden.
+pam::allowed_users:
+  - devs
+pam::access_lines:
+  - '+ : ops : ALL'
+  - '+ : vagrant : ALL'
+  - '+ : root : crond :0 tty1 tty2 tty3 tty4 tty5 tty6'
+</pre>
+
+This would create /etc/security/access.conf with the following content.
+<pre>
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+#
+
+# allow only the groups listed
++ : devs : ALL
+# pam::allowed_lines Array<String> fallback values
++ : ops : ALL
++ : vagrant : ALL
++ : root : crond :0 tty1 tty2 tty3 tty4 tty5 tty6'
+
+# default deby
+- : ALL : ALL
+</pre>
+
 login_pam_access
 ----------------
 Control module to be used for pam_access.so for login. Valid values are 'required', 'requisite', 'sufficient', 'optional' and 'absent'.

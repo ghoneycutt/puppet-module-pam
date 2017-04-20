@@ -20,6 +20,9 @@ entries = scope.lookupvar('pam::allowed_users')
 <% else -%>
 + : root : ALL
 <% end -%>
+# pam::allowed_lines Array<String> fallback values
+<% access_lines = scope.lookupvar('pam::access_lines') -%>
+<%= access_lines.join("\n") %>
 
 # default deny
 - : ALL : ALL

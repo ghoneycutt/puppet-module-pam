@@ -4,6 +4,7 @@
 #
 class pam (
   $allowed_users                       = 'root',
+  $access_lines                        = ['+ : root : crond :0 tty1 tty2 tty3 tty4 tty5 tty6'],
   $login_pam_access                    = 'required',
   $sshd_pam_access                     = 'required',
   $ensure_vas                          = 'absent',

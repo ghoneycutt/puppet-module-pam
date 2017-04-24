@@ -484,8 +484,10 @@ describe 'pam' do
         end
         let(:params) {{ :login_pam_access => 'sufficient' }}
 
-        if (v[:osfamily] == 'RedHat') or (v[:osfamily] == 'Suse' and ['10', '11', '12'].include?(v[:release]))
+        if (v[:osfamily] == 'RedHat') or (v[:osfamily] == 'Suse' and ['10', '11', '12'].include?(v[:release])) or (v[:osfamily] == 'Debian' and ['7', '8'].include?(v[:release])) or (v[:osfamily] == 'Debian' and v[:lsbdistid] == 'Ubuntu' and ['12.04', '14.04', '16.04'].include?(v[:release]))
           it { should contain_file('pam_d_login').with_content(/account[\s]+sufficient[\s]+pam_access.so/) }
+        else
+          it { should contain_file('pam_d_login').without_content(/account[\s]+sufficient[\s]+pam_access.so/) }
         end
       end
 
@@ -511,8 +513,10 @@ describe 'pam' do
         end
         let(:params) {{ :sshd_pam_access => 'sufficient' }}
 
-        if (v[:osfamily] == 'RedHat') or (v[:osfamily] == 'Suse' and ['10', '11', '12'].include?(v[:release]))
+        if (v[:osfamily] == 'RedHat') or (v[:osfamily] == 'Suse' and ['10', '11', '12'].include?(v[:release])) or (v[:osfamily] == 'Debian' and ['7', '8'].include?(v[:release])) or (v[:osfamily] == 'Debian' and v[:lsbdistid] == 'Ubuntu' and ['12.04', '14.04', '16.04'].include?(v[:release]))
           it { should contain_file('pam_d_sshd').with_content(/^account[\s]+sufficient[\s]+pam_access.so$/) }
+        else
+          it { should contain_file('pam_d_sshd').without_content(/^account[\s]+sufficient[\s]+pam_access.so$/) }
         end
       end
 

@@ -484,7 +484,7 @@ describe 'pam' do
         end
         let(:params) {{ :login_pam_access => 'sufficient' }}
 
-        if (v[:osfamily] == 'RedHat') or (v[:osfamily] == 'Suse' and v[:release] == '11')
+        if (v[:osfamily] == 'RedHat') or (v[:osfamily] == 'Suse' and ['10', '11', '12'].include?(v[:release]))
           it { should contain_file('pam_d_login').with_content(/account[\s]+sufficient[\s]+pam_access.so/) }
         end
       end
@@ -511,7 +511,7 @@ describe 'pam' do
         end
         let(:params) {{ :sshd_pam_access => 'sufficient' }}
 
-        if (v[:osfamily] == 'RedHat') or (v[:osfamily] == 'Suse' and v[:release] == '11')
+        if (v[:osfamily] == 'RedHat') or (v[:osfamily] == 'Suse' and ['10', '11', '12'].include?(v[:release]))
           it { should contain_file('pam_d_sshd').with_content(/^account[\s]+sufficient[\s]+pam_access.so$/) }
         end
       end

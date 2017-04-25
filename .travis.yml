@@ -1,11 +1,6 @@
 ---
 language: ruby
 
-addons:
-  apt:
-    packages: 
-      - lsb-release
-
 rvm:
   - 1.8.7
   - 1.9.3

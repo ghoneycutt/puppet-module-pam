@@ -766,7 +766,7 @@ class pam (
             '14.04': {
               $default_pam_d_login_template = 'pam/login.ubuntu14.erb'
               $default_pam_d_sshd_template  = 'pam/sshd.ubuntu14.erb'
-              $default_package_name         = 'libpam0g'
+              $default_package_name         = [ 'libpam0g', 'libpam-systemd' ]
 
               if $ensure_vas == 'present' {
                 $default_pam_auth_lines = [
@@ -836,7 +836,7 @@ class pam (
             '16.04': {
               $default_pam_d_login_template = 'pam/login.ubuntu16.erb'
               $default_pam_d_sshd_template  = 'pam/sshd.ubuntu16.erb'
-              $default_package_name         = 'libpam0g'
+              $default_package_name         = [ 'libpam0g', 'libpam-systemd' ]
 
               if $ensure_vas == 'present' {
                 if $vas_major_version == '3' {
@@ -922,7 +922,7 @@ class pam (
               }
               $default_pam_d_login_template = "pam/login.debian${::lsbmajdistrelease}.erb"
               $default_pam_d_sshd_template  = "pam/sshd.debian${::lsbmajdistrelease}.erb"
-              $default_package_name         = 'libpam0g'
+              $default_package_name         = [ 'libpam0g', 'libpam-systemd' ]
 
 
               $default_pam_auth_lines = [

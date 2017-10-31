@@ -1131,115 +1131,115 @@ class pam (
     }
   }
 
-  if $package_name == undef {
-    $my_package_name = $default_package_name
-  } else {
+  if $package_name {
     $my_package_name = $package_name
+  } else {
+    $my_package_name = $default_package_name
   }
 
-  if $pam_d_login_template == undef {
-    $my_pam_d_login_template = $default_pam_d_login_template
-  } else {
+  if $pam_d_login_template {
     $my_pam_d_login_template = $pam_d_login_template
+  } else {
+    $my_pam_d_login_template = $default_pam_d_login_template
   }
 
   if $pam_d_sshd_template == 'pam/sshd.custom.erb' {
-    if $pam_sshd_auth_lines == undef or
-      $pam_sshd_account_lines == undef or
-      $pam_sshd_password_lines == undef or
-      $pam_sshd_session_lines == undef {
+    unless $pam_sshd_auth_lines and
+      $pam_sshd_account_lines and
+      $pam_sshd_password_lines and
+      $pam_sshd_session_lines {
         fail('pam_sshd_[auth|account|password|session]_lines required when using the pam/sshd.custom.erb template')
     }
   } else {
-    if $pam_sshd_auth_lines != undef or
-      $pam_sshd_account_lines != undef or
-      $pam_sshd_password_lines != undef or
-      $pam_sshd_session_lines != undef {
+    if $pam_sshd_auth_lines or
+      $pam_sshd_account_lines or
+      $pam_sshd_password_lines or
+      $pam_sshd_session_lines {
         fail('pam_sshd_[auth|account|password|session]_lines are only valid when pam_d_sshd_template is configured with the pam/sshd.custom.erb template')
     }
   }
 
-  if $pam_d_sshd_template == undef {
-    $my_pam_d_sshd_template = $default_pam_d_sshd_template
-  } else {
+  if $pam_d_sshd_template {
     $my_pam_d_sshd_template = $pam_d_sshd_template
+  } else {
+    $my_pam_d_sshd_template = $default_pam_d_sshd_template
   }
 
-  if $pam_auth_lines == undef {
-    if $system_auth_ac_auth_lines == undef {
-      $my_pam_auth_lines = $default_pam_auth_lines
-    } else {
+  if $pam_auth_lines {
+    $my_pam_auth_lines = $pam_auth_lines
+  } else {
+    if $system_auth_ac_auth_lines {
       $my_pam_auth_lines = $system_auth_ac_auth_lines
       notify { 'Deprecation notice: `$system_auth_ac_auth_lines` has been deprecated in `pam` class and will be removed in a future version. Use $pam_auth_lines instead.': }
+    } else {
+      $my_pam_auth_lines = $default_pam_auth_lines
     }
-  } else {
-    $my_pam_auth_lines = $pam_auth_lines
   }
 
-  if $pam_account_lines == undef {
-    if $system_auth_ac_account_lines == undef {
-      $my_pam_account_lines = $default_pam_account_lines
-    } else {
+  if $pam_account_lines {
+    $my_pam_account_lines = $pam_account_lines
+  } else {
+    if $system_auth_ac_account_lines {
       $my_pam_account_lines = $system_auth_ac_account_lines
       notify { 'Deprecation notice: `$system_auth_ac_account_lines` has been deprecated in `pam` class and will be removed in a future version. Use $pam_account_lines instead.': }
+    } else {
+      $my_pam_account_lines = $default_pam_account_lines
     }
-  } else {
-    $my_pam_account_lines = $pam_account_lines
   }
 
-  if $pam_password_lines == undef {
-    if $system_auth_ac_password_lines == undef {
-      $my_pam_password_lines = $default_pam_password_lines
-    } else {
+  if $pam_password_lines {
+    $my_pam_password_lines = $pam_password_lines
+  } else {
+    if $system_auth_ac_password_lines {
       $my_pam_password_lines = $system_auth_ac_password_lines
       notify { 'Deprecation notice: `$system_auth_ac_password_lines` has been deprecated in `pam` class and will be removed in a future version. Use $pam_password_lines instead.': }
+    } else {
+      $my_pam_password_lines = $default_pam_password_lines
     }
-  } else {
-    $my_pam_password_lines = $pam_password_lines
   }
 
-  if $pam_session_lines == undef {
-    if $system_auth_ac_session_lines == undef {
-      $my_pam_session_lines = $default_pam_session_lines
-    } else {
+  if $pam_session_lines {
+    $my_pam_session_lines = $pam_session_lines
+  } else {
+    if $system_auth_ac_session_lines {
       $my_pam_session_lines = $system_auth_ac_session_lines
       notify { 'Deprecation notice: `$system_auth_ac_session_lines` has been deprecated in `pam` class and will be removed in a future version. Use $pam_session_lines instead.': }
+    } else {
+      $my_pam_session_lines = $default_pam_session_lines
     }
-  } else {
-    $my_pam_session_lines = $pam_session_lines
   }
 
   if ( $::osfamily == 'RedHat' ) and ( $::operatingsystemmajrelease == '6' or $::operatingsystemmajrelease == '7' ) {
-    if $pam_password_auth_lines == undef {
-      $my_pam_password_auth_lines = $default_pam_password_auth_lines
-    } else {
+    if $pam_password_auth_lines {
       $my_pam_password_auth_lines = $pam_password_auth_lines
+    } else {
+      $my_pam_password_auth_lines = $default_pam_password_auth_lines
     }
 
-    if $pam_password_account_lines == undef {
-      $my_pam_password_account_lines = $default_pam_password_account_lines
-    } else {
+    if $pam_password_account_lines {
       $my_pam_password_account_lines = $pam_password_account_lines
+    } else {
+      $my_pam_password_account_lines = $default_pam_password_account_lines
     }
 
-    if $pam_password_password_lines == undef {
-      $my_pam_password_password_lines = $default_pam_password_password_lines
-    } else {
+    if $pam_password_password_lines {
       $my_pam_password_password_lines = $pam_password_password_lines
+    } else {
+      $my_pam_password_password_lines = $default_pam_password_password_lines
     }
 
-    if $pam_password_session_lines == undef {
-      $my_pam_password_session_lines = $default_pam_password_session_lines
-    } else {
+    if $pam_password_session_lines {
       $my_pam_password_session_lines = $pam_password_session_lines
+    } else {
+      $my_pam_password_session_lines = $default_pam_password_session_lines
     }
   }
 
-  if $services != undef {
+  if $services {
     create_resources('pam::service',$services)
   }
 
-  if $limits_fragments != undef {
+  if $limits_fragments {
     if $limits_fragments_hiera_merge {
       $limits_fragments_real = hiera_hash('pam::limits_fragments')
     } else {

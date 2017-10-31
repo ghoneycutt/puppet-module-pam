@@ -14,18 +14,18 @@ class pam::limits (
 
   include ::pam
 
-  if $config_file_lines == undef and $config_file_source == undef {
-    $content = template('pam/limits.conf.erb')
-    $config_file_source_real = undef
-  } else {
+  if $config_file_lines or $config_file_source {
     # config_file_lines takes priority over config_file_source
-    if $config_file_lines == undef {
-      $content = undef
-      $config_file_source_real = $config_file_source
-    } else {
+    if $config_file_lines {
       $config_file_source_real = undef
       $content = template('pam/limits.conf.erb')
+    } else {
+      $content = undef
+      $config_file_source_real = $config_file_source
     }
+  } else {
+    $content = template('pam/limits.conf.erb')
+    $config_file_source_real = undef
   }
   if $::osfamily == 'Suse' and $::lsbmajdistrelease == '10'  {
   } else {

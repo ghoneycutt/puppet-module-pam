@@ -17,3 +17,10 @@ task :validate do
     sh "erb -P -x -T '-' #{template} | ruby -c"
   end
 end
+
+# Puppet Strings (Documentation generation from inline comments)
+# See: https://github.com/puppetlabs/puppet-strings#rake-tasks
+require 'puppet-strings/tasks'
+
+desc 'Alias for strings:generate'
+task :doc => ['strings:generate']

@@ -3,15 +3,13 @@
 # Manage PAM file for a specifc service
 #
 define pam::service (
-  $ensure         = 'present',
-  $pam_config_dir = '/etc/pam.d',
-  $content        = undef,
-  $lines          = undef
+  Enum['present', 'absent'] $ensure     = 'present',
+  Stdlib::Absolutepath $pam_config_dir  = '/etc/pam.d',
+  Optional[String] $content             = undef,
+  Optional[Array] $lines                = undef
 ) {
 
   include ::pam
-
-  validate_re($ensure, ['^present$', '^absent$'] )
 
   case $ensure {
     'present': {

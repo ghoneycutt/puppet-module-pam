@@ -11,7 +11,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 3.0.0 < 5.0.0"
+      "version_requirement": ">= 4.7.0 < 6.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -98,6 +98,6 @@
   "dependencies": [
     {"name":"ghoneycutt/common","version_requirement":">= 1.4.1 < 2.0.0"},
     {"name":"ghoneycutt/nsswitch","version_requirement":">= 1.3.0 < 2.0.0"},
-    {"name":"puppetlabs/stdlib","version_requirement":">= 4.6.0 < 5.0.0"}
+    {"name":"puppetlabs/stdlib","version_requirement":">= 4.13.1 < 5.0.0"}
   ]
 }

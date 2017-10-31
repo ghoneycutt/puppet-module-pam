@@ -166,7 +166,7 @@ root soft nproc unlimited
     it 'should fail' do
       expect {
         should contain_class('pam::limits')
-      }.to raise_error(Puppet::Error,/pam::limits::fragment::ensure <installed> and must be either 'file', 'present' or 'absent'./)
+      }.to raise_error(Puppet::Error,/match for Enum\[\'absent\', \'file\', \'present\'\]/)
     end
   end
 

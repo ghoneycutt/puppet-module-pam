@@ -567,7 +567,7 @@ describe 'pam' do
           it 'should fail' do
             expect {
               should contain_class('pam')
-            }.to raise_error(Puppet::Error, /"invalid\/path" is not an absolute path/)
+            }.to raise_error(Puppet::Error, /Evaluation Error: Error while evaluating a Resource Statement/)
           end
 
         end
@@ -586,7 +586,7 @@ describe 'pam' do
           it 'should fail' do
             expect {
               should contain_class('pam')
-            }.to raise_error(Puppet::Error, /"invalid\/path" is not an absolute path/)
+            }.to raise_error(Puppet::Error, /Evaluation Error: Error while evaluating a Resource Statement/)
           end
 
         end
@@ -722,20 +722,10 @@ describe 'pam' do
           }
         end
 
-        if v[:osfamily] == 'RedHat'
-          if v[:release] == '5' or v[:release] == '6'
-            it 'should fail' do
-              expect {
-                should contain_class('pam')
-              }.to raise_error(Puppet::Error,/Pam is only supported with vas_major_version 3 or 4/)
-            end
-          else
-            it 'should fail' do
-              expect {
-                should contain_class('pam')
-              }.to raise_error(Puppet::Error,/Pam is only supported with vas_major_version 4 on EL7/)
-            end
-          end
+        it 'should fail' do
+          expect {
+            should contain_class('pam')
+          }.to raise_error(Puppet::Error,/expects a match for Enum\['3', '4'\]/)
         end
       end
     end
@@ -781,7 +771,7 @@ describe 'pam' do
         it 'should fail' do
           expect {
             should contain_class('pam')
-          }.to raise_error(Puppet::Error,/pam::login_pam_access is <invalid> and must be either 'required', 'requisite', 'sufficient', 'optional' or 'absent'./)
+          }.to raise_error(Puppet::Error,/Enum\['absent', 'optional', 'required', 'requisite', 'sufficient'\]/)
         end
       end
 
@@ -797,7 +787,7 @@ describe 'pam' do
         it 'should fail' do
           expect {
             should contain_class('pam')
-          }.to raise_error(Puppet::Error,/pam::sshd_pam_access is <invalid> and must be either 'required', 'requisite', 'sufficient', 'optional' or 'absent'./)
+          }.to raise_error(Puppet::Error,/Enum\['absent', 'optional', 'required', 'requisite', 'sufficient'\]/)
         end
       end
 
@@ -826,7 +816,7 @@ describe 'pam' do
         it 'should fail' do
           expect {
             should contain_class('pam')
-          }.to raise_error(Puppet::Error,/is not a boolean/)
+          }.to raise_error(Puppet::Error,/expects a Boolean value/)
         end
       end
 
@@ -841,7 +831,7 @@ describe 'pam' do
         it 'should fail' do
           expect {
             should contain_class('pam')
-          }.to raise_error(Puppet::Error,/Unknown type of boolean given/)
+          }.to raise_error(Puppet::Error,/expects a Boolean value/)
         end
       end
 
@@ -855,33 +845,18 @@ describe 'pam' do
         it { is_expected.to contain_class('nsswitch') }
       end
 
-      ['true', true, 'y'].each do |value|
-        context "with manage_nsswitch parameter set to #{value}" do
-          let :facts do
-            { :osfamily => v[:osfamily],
-              :"#{v[:releasetype]}" => v[:release],
-              :lsbdistid => v[:lsbdistid],
-            }
-          end
-          let(:params) { {:manage_nsswitch => value} }
-          it { is_expected.to contain_class('nsswitch') }
+      context "with manage_nsswitch parameter set to false" do
+        let :facts do
+          { :osfamily => v[:osfamily],
+            :"#{v[:releasetype]}" => v[:release],
+            :lsbdistid => v[:lsbdistid],
+          }
         end
+        let(:params) { {:manage_nsswitch => false} }
+        it { is_expected.not_to contain_class('nsswitch') }
       end
 
-      ['false', false, 'n'].each do |value|
-        context "with manage_nsswitch parameter set to #{value}" do
-          let :facts do
-            { :osfamily => v[:osfamily],
-              :"#{v[:releasetype]}" => v[:release],
-              :lsbdistid => v[:lsbdistid],
-            }
-          end
-          let(:params) { {:manage_nsswitch => value} }
-          it { is_expected.not_to contain_class('nsswitch') }
-        end
-      end
-
-      ['true',true,'false',false].each do |value|
+      [true,false].each do |value|
         context "with limits_fragments_hiera_merge parameter specified as a valid value: #{value} on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
           let :facts do
             { :osfamily => v[:osfamily],
@@ -962,7 +937,7 @@ describe 'pam' do
         :params  => { :pam_d_sshd_template => 'pam/sshd.custom.erb', :pam_sshd_auth_lines => ['#'], :pam_sshd_account_lines => ['#'], :pam_sshd_password_lines => ['#'], :pam_sshd_session_lines => ['#']},
         :valid   => [%w(array)],
         :invalid => ['string', { 'ha' => 'sh' }, 3, 2.42, true, false],
-        :message => 'is not an Array',
+        :message => 'expects a value of type Undef or Array',
       },
     }
 

@@ -3,9 +3,10 @@
 # Places a fragment in $limits_d_dir directory
 #
 define pam::limits::fragment (
-  $source = 'UNSET',
-  $list   = undef,
-  $ensure = 'file',
+  String $source          = 'UNSET',
+  Optional[Array] $list   = undef,
+  Enum['file', 'present', 'absent']
+    $ensure               = 'file',
 ) {
 
   include ::pam
@@ -31,12 +32,8 @@ define pam::limits::fragment (
   if $list == undef {
     $content = undef
   } else {
-    validate_array($list)
     $content = template('pam/limits_fragment.erb')
   }
-
-  validate_re($ensure, ['^file$', '^present$', '^absent$'],
-      "pam::limits::fragment::ensure <${ensure}> and must be either 'file', 'present' or 'absent'.")
 
   file { "${pam::limits::limits_d_dir}/${name}.conf":
     ensure  => $ensure,

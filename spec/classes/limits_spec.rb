@@ -132,7 +132,7 @@ describe 'pam::limits' do
       it 'should fail' do
         expect {
           should contain_class('pam::limits')
-        }.to raise_error(Puppet::Error,/is not an Array.  It looks to be a String/)
+        }.to raise_error(Puppet::Error,/Array/)
       end
 
     end
@@ -182,7 +182,7 @@ describe 'pam::limits' do
       it 'should fail' do
         expect {
           should contain_class('pam::limits')
-        }.to raise_error(Puppet::Error,/not an absolute path/)
+        }.to raise_error(Puppet::Error,/Evaluation Error: Error while evaluating a Resource Statement/)
       end
     end
 
@@ -198,7 +198,7 @@ describe 'pam::limits' do
       it 'should fail' do
         expect {
           should contain_class('pam::limits')
-        }.to raise_error(Puppet::Error,/pam::limits::config_file_mode is <666> and must be a valid four digit mode in octal notation./)
+        }.to raise_error(Puppet::Error,/expects a match for Pattern\[\/\^\[0-7\]\{4\}\$\/\]/)
       end
     end
   end
@@ -263,7 +263,7 @@ describe 'pam::limits' do
       }
     end
 
-    [true,'true'].each do |value|
+    [true,false].each do |value|
       context "with purge_limits_d_dir set to #{value}" do
         let(:params) { { :purge_limits_d_dir => value } }
         let(:facts) do
@@ -280,33 +280,8 @@ describe 'pam::limits' do
             'owner'   => 'root',
             'group'   => 'root',
             'mode'    => '0750',
-            'purge'   => 'true',
-            'recurse' => 'true',
-            'require' => [ 'Package[pam]', 'Package[util-linux]', 'Common::Mkdir_p[/etc/security/limits.d]' ],
-          })
-        }
-      end
-    end
-
-    [false,'false'].each do |value|
-      context "with purge_limits_d_dir set to #{value}" do
-        let(:params) { { :purge_limits_d_dir => value } }
-        let(:facts) do
-          {
-            :osfamily                  => 'RedHat',
-            :operatingsystemmajrelease => '5',
-          }
-        end
-
-        it {
-          should contain_file('limits_d').with({
-            'ensure'  => 'directory',
-            'path'    => '/etc/security/limits.d',
-            'owner'   => 'root',
-            'group'   => 'root',
-            'mode'    => '0750',
-            'purge'   => 'false',
-            'recurse' => 'false',
+            'purge'   => value,
+            'recurse' => value,
             'require' => [ 'Package[pam]', 'Package[util-linux]', 'Common::Mkdir_p[/etc/security/limits.d]' ],
           })
         }
@@ -325,7 +300,7 @@ describe 'pam::limits' do
       it 'should fail' do
         expect {
           should contain_class('pam::limits')
-        }.to raise_error(Puppet::Error,/not an absolute path/)
+        }.to raise_error(Puppet::Error,/Evaluation Error: Error while evaluating a Resource Statement/)
       end
     end
 
@@ -341,7 +316,7 @@ describe 'pam::limits' do
       it 'should fail' do
         expect {
           should contain_class('pam::limits')
-        }.to raise_error(Puppet::Error,/pam::limits::limits_d_dir_mode is <777> and must be a valid four digit mode in octal notation./)
+        }.to raise_error(Puppet::Error,/expects a match for Pattern\[\/\^\[0-7\]\{4\}\$\/\]/)
       end
     end
 
@@ -357,7 +332,7 @@ describe 'pam::limits' do
       it 'should fail' do
         expect {
           should contain_class('pam::limits')
-        }.to raise_error(Puppet::Error,/str2bool/)
+        }.to raise_error(Puppet::Error,/expects a Boolean value/)
       end
     end
 

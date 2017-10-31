@@ -3,67 +3,63 @@
 # This module manages bits around PAM.
 #
 class pam (
-  $allowed_users                       = 'root',
-  $login_pam_access                    = 'required',
-  $sshd_pam_access                     = 'required',
-  $ensure_vas                          = 'absent',
-  $package_name                        = undef,
-  $pam_conf_file                       = '/etc/pam.conf',
-  $services                            = undef,
-  $limits_fragments                    = undef,
-  $limits_fragments_hiera_merge        = false,
-  $pam_d_login_oracle_options          = 'UNSET',
-  $pam_d_login_path                    = '/etc/pam.d/login',
-  $pam_d_login_owner                   = 'root',
-  $pam_d_login_group                   = 'root',
-  $pam_d_login_mode                    = '0644',
-  $pam_d_login_template                = undef,
-  $pam_d_sshd_path                     = '/etc/pam.d/sshd',
-  $pam_d_sshd_owner                    = 'root',
-  $pam_d_sshd_group                    = 'root',
-  $pam_d_sshd_mode                     = '0644',
-  $pam_d_sshd_template                 = undef,
-  $pam_sshd_auth_lines                 = undef,
-  $pam_sshd_account_lines              = undef,
-  $pam_sshd_password_lines             = undef,
-  $pam_sshd_session_lines              = undef,
-  $pam_auth_lines                      = undef,
-  $pam_account_lines                   = undef,
-  $pam_password_lines                  = undef,
-  $pam_session_lines                   = undef,
-  $pam_d_other_file                    = '/etc/pam.d/other',
-  $common_auth_file                    = '/etc/pam.d/common-auth',
-  $common_auth_pc_file                 = '/etc/pam.d/common-auth-pc',
-  $common_account_file                 = '/etc/pam.d/common-account',
-  $common_account_pc_file              = '/etc/pam.d/common-account-pc',
-  $common_password_file                = '/etc/pam.d/common-password',
-  $common_password_pc_file             = '/etc/pam.d/common-password-pc',
-  $common_session_file                 = '/etc/pam.d/common-session',
-  $common_session_pc_file              = '/etc/pam.d/common-session-pc',
-  $common_session_noninteractive_file  = '/etc/pam.d/common-session-noninteractive',
-  $system_auth_file                    = '/etc/pam.d/system-auth',
-  $system_auth_ac_file                 = '/etc/pam.d/system-auth-ac',
-  $password_auth_file                  = '/etc/pam.d/password-auth',
-  $password_auth_ac_file               = '/etc/pam.d/password-auth-ac',
-  $pam_password_auth_lines             = undef,
-  $pam_password_account_lines          = undef,
-  $pam_password_password_lines         = undef,
-  $pam_password_session_lines          = undef,
-  $system_auth_ac_auth_lines           = undef,
-  $system_auth_ac_account_lines        = undef,
-  $system_auth_ac_password_lines       = undef,
-  $system_auth_ac_session_lines        = undef,
-  $vas_major_version                   = '4',
-  $manage_nsswitch                     = true,
+  Variant[String, Array, Hash] $allowed_users               = 'root',
+  Enum['required', 'requisite', 'sufficient', 'optional', 'absent']
+    $login_pam_access                                       = 'required',
+  Enum['required', 'requisite', 'sufficient', 'optional', 'absent']
+    $sshd_pam_access                                        = 'required',
+  Enum['present', 'absent'] $ensure_vas                     = 'absent',
+  Optional[Variant[String, Array]] $package_name            = undef,
+  Stdlib::Absolutepath $pam_conf_file                       = '/etc/pam.conf',
+  Optional[Hash] $services                                  = undef,
+  Optional[Hash] $limits_fragments                          = undef,
+  Boolean $limits_fragments_hiera_merge                     = false,
+  Variant[Array, Enum['UNSET']] $pam_d_login_oracle_options = 'UNSET',
+  Stdlib::Absolutepath $pam_d_login_path                    = '/etc/pam.d/login',
+  String $pam_d_login_owner                                 = 'root',
+  String $pam_d_login_group                                 = 'root',
+  Pattern[/^[0-7]{4}$/] $pam_d_login_mode                   = '0644',
+  Optional[String] $pam_d_login_template                    = undef,
+  Stdlib::Absolutepath $pam_d_sshd_path                     = '/etc/pam.d/sshd',
+  String $pam_d_sshd_owner                                  = 'root',
+  String $pam_d_sshd_group                                  = 'root',
+  Pattern[/^[0-7]{4}$/] $pam_d_sshd_mode                    = '0644',
+  Optional[String] $pam_d_sshd_template                     = undef,
+  Optional[Array] $pam_sshd_auth_lines                      = undef,
+  Optional[Array] $pam_sshd_account_lines                   = undef,
+  Optional[Array] $pam_sshd_password_lines                  = undef,
+  Optional[Array] $pam_sshd_session_lines                   = undef,
+  Optional[Array] $pam_auth_lines                           = undef,
+  Optional[Array] $pam_account_lines                        = undef,
+  Optional[Array] $pam_password_lines                       = undef,
+  Optional[Array] $pam_session_lines                        = undef,
+  Stdlib::Absolutepath $pam_d_other_file                    = '/etc/pam.d/other',
+  Stdlib::Absolutepath $common_auth_file                    = '/etc/pam.d/common-auth',
+  Stdlib::Absolutepath $common_auth_pc_file                 = '/etc/pam.d/common-auth-pc',
+  Stdlib::Absolutepath $common_account_file                 = '/etc/pam.d/common-account',
+  Stdlib::Absolutepath $common_account_pc_file              = '/etc/pam.d/common-account-pc',
+  Stdlib::Absolutepath $common_password_file                = '/etc/pam.d/common-password',
+  Stdlib::Absolutepath $common_password_pc_file             = '/etc/pam.d/common-password-pc',
+  Stdlib::Absolutepath $common_session_file                 = '/etc/pam.d/common-session',
+  Stdlib::Absolutepath $common_session_pc_file              = '/etc/pam.d/common-session-pc',
+  Stdlib::Absolutepath $common_session_noninteractive_file  = '/etc/pam.d/common-session-noninteractive',
+  Stdlib::Absolutepath $system_auth_file                    = '/etc/pam.d/system-auth',
+  Stdlib::Absolutepath $system_auth_ac_file                 = '/etc/pam.d/system-auth-ac',
+  Stdlib::Absolutepath $password_auth_file                  = '/etc/pam.d/password-auth',
+  Stdlib::Absolutepath $password_auth_ac_file               = '/etc/pam.d/password-auth-ac',
+  Optional[Array] $pam_password_auth_lines                  = undef,
+  Optional[Array] $pam_password_account_lines               = undef,
+  Optional[Array] $pam_password_password_lines              = undef,
+  Optional[Array] $pam_password_session_lines               = undef,
+  Optional[Array] $system_auth_ac_auth_lines                = undef,
+  Optional[Array] $system_auth_ac_account_lines             = undef,
+  Optional[Array] $system_auth_ac_password_lines            = undef,
+  Optional[Array] $system_auth_ac_session_lines             = undef,
+  Enum['3', '4'] $vas_major_version                         = '4',
+  Boolean $manage_nsswitch                                  = true,
 ) {
 
-  if is_string($manage_nsswitch) == true {
-    $manage_nsswitch_real = str2bool($manage_nsswitch)
-  } else {
-    $manage_nsswitch_real = $manage_nsswitch
-  }
-
-  if $manage_nsswitch_real == true {
+  if $manage_nsswitch {
     include ::nsswitch
   }
 
@@ -1135,21 +1131,6 @@ class pam (
     }
   }
 
-  $valid_pam_access_values = ['^required$', '^requisite$', '^sufficient$', '^optional$', '^absent$']
-
-  validate_re($login_pam_access, $valid_pam_access_values,
-    "pam::login_pam_access is <${login_pam_access}> and must be either 'required', 'requisite', 'sufficient', 'optional' or 'absent'.")
-
-  validate_re($sshd_pam_access, $valid_pam_access_values,
-    "pam::sshd_pam_access is <${sshd_pam_access}> and must be either 'required', 'requisite', 'sufficient', 'optional' or 'absent'.")
-
-  if is_string($limits_fragments_hiera_merge) == true {
-    $limits_fragments_hiera_merge_real = str2bool($limits_fragments_hiera_merge)
-  } else {
-    $limits_fragments_hiera_merge_real = $limits_fragments_hiera_merge
-  }
-  validate_bool($limits_fragments_hiera_merge_real)
-
   if $package_name == undef {
     $my_package_name = $default_package_name
   } else {
@@ -1169,10 +1150,6 @@ class pam (
       $pam_sshd_session_lines == undef {
         fail('pam_sshd_[auth|account|password|session]_lines required when using the pam/sshd.custom.erb template')
     }
-    validate_array($pam_sshd_auth_lines)
-    validate_array($pam_sshd_account_lines)
-    validate_array($pam_sshd_password_lines)
-    validate_array($pam_sshd_session_lines)
   } else {
     if $pam_sshd_auth_lines != undef or
       $pam_sshd_account_lines != undef or
@@ -1238,28 +1215,24 @@ class pam (
     } else {
       $my_pam_password_auth_lines = $pam_password_auth_lines
     }
-    validate_array($my_pam_password_auth_lines)
 
     if $pam_password_account_lines == undef {
       $my_pam_password_account_lines = $default_pam_password_account_lines
     } else {
       $my_pam_password_account_lines = $pam_password_account_lines
     }
-    validate_array($my_pam_password_account_lines)
 
     if $pam_password_password_lines == undef {
       $my_pam_password_password_lines = $default_pam_password_password_lines
     } else {
       $my_pam_password_password_lines = $pam_password_password_lines
     }
-    validate_array($my_pam_password_password_lines)
 
     if $pam_password_session_lines == undef {
       $my_pam_password_session_lines = $default_pam_password_session_lines
     } else {
       $my_pam_password_session_lines = $pam_password_session_lines
     }
-    validate_array($my_pam_password_session_lines)
   }
 
   if $services != undef {
@@ -1267,16 +1240,13 @@ class pam (
   }
 
   if $limits_fragments != undef {
-    if $limits_fragments_hiera_merge_real == true {
+    if $limits_fragments_hiera_merge {
       $limits_fragments_real = hiera_hash('pam::limits_fragments')
     } else {
       $limits_fragments_real = $limits_fragments
     }
     create_resources('pam::limits::fragment',$limits_fragments_real)
   }
-
-  validate_absolute_path($password_auth_ac_file)
-  validate_absolute_path($password_auth_file)
 
   case $::osfamily {
     'RedHat', 'Suse', 'Debian': {

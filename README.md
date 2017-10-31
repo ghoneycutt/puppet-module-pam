@@ -323,30 +323,6 @@ Path to system-auth-ac. Used on RedHat.
 
 - *Default*: '/etc/pam.d/system-auth-ac'
 
-system_auth_ac_auth_lines
--------------------------
-Content template of $system_auth_ac_file. If undef, parameter is set based on the OS version.
-
-- *Default*: undef, default is set based on OS version
-
-system_auth_ac_account_lines
-----------------------------
-Content template of $system_auth_ac_file. If undef, parameter is set based on the OS version.
-
-- *Default*: undef, default is set based on OS version
-
-system_auth_ac_password_lines
------------------------------
-Content template of $system_auth_ac_file. If undef, parameter is set based on the OS version.
-
-- *Default*: undef, default is set based on OS version
-
-system_auth_ac_session_lines
-----------------------------
-Content template of $system_auth_ac_file. If undef, parameter is set based on the OS version.
-
-- *Default*: undef, default is set based on OS version
-
 password_auth_file
 ----------------
 Path to password-auth. Used on RedHat.

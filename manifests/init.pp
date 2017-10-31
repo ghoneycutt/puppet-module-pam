@@ -51,10 +51,6 @@ class pam (
   Optional[Array] $pam_password_account_lines               = undef,
   Optional[Array] $pam_password_password_lines              = undef,
   Optional[Array] $pam_password_session_lines               = undef,
-  Optional[Array] $system_auth_ac_auth_lines                = undef,
-  Optional[Array] $system_auth_ac_account_lines             = undef,
-  Optional[Array] $system_auth_ac_password_lines            = undef,
-  Optional[Array] $system_auth_ac_session_lines             = undef,
   Enum['3', '4'] $vas_major_version                         = '4',
   Boolean $manage_nsswitch                                  = true,
 ) {
@@ -1168,45 +1164,25 @@ class pam (
   if $pam_auth_lines {
     $my_pam_auth_lines = $pam_auth_lines
   } else {
-    if $system_auth_ac_auth_lines {
-      $my_pam_auth_lines = $system_auth_ac_auth_lines
-      notify { 'Deprecation notice: `$system_auth_ac_auth_lines` has been deprecated in `pam` class and will be removed in a future version. Use $pam_auth_lines instead.': }
-    } else {
-      $my_pam_auth_lines = $default_pam_auth_lines
-    }
+    $my_pam_auth_lines = $default_pam_auth_lines
   }
 
   if $pam_account_lines {
     $my_pam_account_lines = $pam_account_lines
   } else {
-    if $system_auth_ac_account_lines {
-      $my_pam_account_lines = $system_auth_ac_account_lines
-      notify { 'Deprecation notice: `$system_auth_ac_account_lines` has been deprecated in `pam` class and will be removed in a future version. Use $pam_account_lines instead.': }
-    } else {
-      $my_pam_account_lines = $default_pam_account_lines
-    }
+    $my_pam_account_lines = $default_pam_account_lines
   }
 
   if $pam_password_lines {
     $my_pam_password_lines = $pam_password_lines
   } else {
-    if $system_auth_ac_password_lines {
-      $my_pam_password_lines = $system_auth_ac_password_lines
-      notify { 'Deprecation notice: `$system_auth_ac_password_lines` has been deprecated in `pam` class and will be removed in a future version. Use $pam_password_lines instead.': }
-    } else {
-      $my_pam_password_lines = $default_pam_password_lines
-    }
+    $my_pam_password_lines = $default_pam_password_lines
   }
 
   if $pam_session_lines {
     $my_pam_session_lines = $pam_session_lines
   } else {
-    if $system_auth_ac_session_lines {
-      $my_pam_session_lines = $system_auth_ac_session_lines
-      notify { 'Deprecation notice: `$system_auth_ac_session_lines` has been deprecated in `pam` class and will be removed in a future version. Use $pam_session_lines instead.': }
-    } else {
-      $my_pam_session_lines = $default_pam_session_lines
-    }
+    $my_pam_session_lines = $default_pam_session_lines
   }
 
   if ( $::osfamily == 'RedHat' ) and ( $::operatingsystemmajrelease == '6' or $::operatingsystemmajrelease == '7' ) {

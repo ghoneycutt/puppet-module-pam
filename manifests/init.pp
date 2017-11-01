@@ -53,571 +53,30 @@ class pam (
   Boolean $manage_nsswitch                                  = true,
 ) {
 
+  # Fail on unsupported platforms
+  if $facts['os']['family'] == 'RedHat' and !($facts['os']['release']['major'] in ['5', '6', '7']) {
+    fail("osfamily RedHat's os.release.major is <${::facts['os']['release']['major']}> and must be 5, 6 or 7")
+  }
+  if $facts['os']['family'] == 'Suse' and !($facts['os']['release']['major'] in ['9', '10', '11', '12', '13']) {
+    fail("osfamily Suse's os.release.major is <${::facts['os']['release']['major']}> and must be 9, 10, 11, 12 or 13")
+  }
+  if $facts['os']['family'] == 'Debian' {
+    if $facts['os']['name'] == 'Ubuntu' {
+      if !($facts['os']['release']['major'] in ['12.04', '14.04', '16.04']) {
+        fail("Ubuntu's os.release.major is <${facts['os']['release']['major']}> and must be 12.04, 14.04, or 16.04")
+      }
+    } else {
+      if !($facts['os']['release']['major'] in ['7', '8']) {
+        fail("Debian's os.release.major is <${facts['os']['release']['major']}> and must be 7 or 8")
+      }
+    }
+  }
+  if $facts['os']['family'] == 'Solaris' and !($facts['kernelrelease'] in ['5.9', '5.10', '5.11']) {
+    fail("osfamily Solaris' kernelrelease is <${facts['kernelrelease']}> and must be 5.9, 5.10 or 5.11")
+  }
+
   if $manage_nsswitch {
     include ::nsswitch
-  }
-
-  case $::osfamily {
-    'RedHat': {
-      case $::operatingsystemmajrelease {
-        '5': {
-          $default_pam_d_login_template = 'pam/login.el5.erb'
-          $default_pam_d_sshd_template  = 'pam/sshd.el5.erb'
-          $default_package_name         = [
-            'pam',
-            'util-linux',
-          ]
-
-          $default_pam_auth_lines = [
-            'auth        required      pam_env.so',
-            'auth        sufficient    pam_unix.so nullok try_first_pass',
-            'auth        requisite     pam_succeed_if.so uid >= 500 quiet',
-            'auth        required      pam_deny.so',
-          ]
-
-          $default_pam_account_lines = [
-            'account     required      pam_unix.so',
-            'account     sufficient    pam_succeed_if.so uid < 500 quiet',
-            'account     required      pam_permit.so',
-          ]
-
-          $default_pam_password_lines = [
-            'password    requisite     pam_cracklib.so try_first_pass retry=3',
-            'password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok',
-            'password    required      pam_deny.so',
-          ]
-
-          $default_pam_session_lines = [
-            'session     optional      pam_keyinit.so revoke',
-            'session     required      pam_limits.so',
-            'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
-            'session     required      pam_unix.so',
-          ]
-        }
-        '6': {
-          $default_pam_d_login_template = 'pam/login.el6.erb'
-          $default_pam_d_sshd_template  = 'pam/sshd.el6.erb'
-          $default_package_name         = 'pam'
-
-          $default_pam_auth_lines = [
-            'auth        required      pam_env.so',
-            'auth        sufficient    pam_fprintd.so',
-            'auth        sufficient    pam_unix.so nullok try_first_pass',
-            'auth        requisite     pam_succeed_if.so uid >= 500 quiet',
-            'auth        required      pam_deny.so',
-          ]
-
-          $default_pam_password_auth_lines = [
-            'auth        required      pam_env.so',
-            'auth        sufficient    pam_unix.so nullok try_first_pass',
-            'auth        requisite     pam_succeed_if.so uid >= 500 quiet',
-            'auth        required      pam_deny.so',
-          ]
-
-          $default_pam_account_lines = [
-            'account     required      pam_unix.so',
-            'account     sufficient    pam_localuser.so',
-            'account     sufficient    pam_succeed_if.so uid < 500 quiet',
-            'account     required      pam_permit.so',
-          ]
-
-          $default_pam_password_lines = [
-            'password    requisite     pam_cracklib.so try_first_pass retry=3 type=',
-            'password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok',
-            'password    required      pam_deny.so',
-          ]
-
-          $default_pam_session_lines = [
-            'session     optional      pam_keyinit.so revoke',
-            'session     required      pam_limits.so',
-            'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
-            'session     required      pam_unix.so',
-          ]
-          $default_pam_password_account_lines = [
-            'account     required      pam_unix.so',
-            'account     sufficient    pam_localuser.so',
-            'account     sufficient    pam_succeed_if.so uid < 500 quiet',
-            'account     required      pam_permit.so',
-          ]
-
-          $default_pam_password_password_lines = [
-            'password    requisite     pam_cracklib.so try_first_pass retry=3 type=',
-            'password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok',
-            'password    required      pam_deny.so',
-          ]
-
-          $default_pam_password_session_lines = [
-            'session     optional      pam_keyinit.so revoke',
-            'session     required      pam_limits.so',
-            'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
-            'session     required      pam_unix.so',
-          ]
-        }
-        '7': {
-          $default_pam_d_login_template = 'pam/login.el7.erb'
-          $default_pam_d_sshd_template  = 'pam/sshd.el7.erb'
-          $default_package_name         = 'pam'
-
-          $default_pam_auth_lines = [
-            'auth        required      pam_env.so',
-            'auth        sufficient    pam_fprintd.so',
-            'auth        sufficient    pam_unix.so nullok try_first_pass',
-            'auth        requisite     pam_succeed_if.so uid >= 1000 quiet_success',
-            'auth        required      pam_deny.so',
-          ]
-
-          $default_pam_password_auth_lines = [
-            'auth        required      pam_env.so',
-            'auth        sufficient    pam_unix.so nullok try_first_pass',
-            'auth        requisite     pam_succeed_if.so uid >= 1000 quiet_success',
-            'auth        required      pam_deny.so',
-          ]
-
-          $default_pam_account_lines = [
-            'account     required      pam_unix.so',
-            'account     sufficient    pam_localuser.so',
-            'account     sufficient    pam_succeed_if.so uid < 1000 quiet',
-            'account     required      pam_permit.so',
-          ]
-
-          $default_pam_password_lines = [
-            'password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=',
-            'password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok',
-            'password    required      pam_deny.so',
-          ]
-
-          $default_pam_session_lines = [
-            'session     optional      pam_keyinit.so revoke',
-            'session     required      pam_limits.so',
-            '-session    optional      pam_systemd.so',
-            'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
-            'session     required      pam_unix.so',
-          ]
-          $default_pam_password_account_lines = [
-            'account     required      pam_unix.so',
-            'account     sufficient    pam_localuser.so',
-            'account     sufficient    pam_succeed_if.so uid < 1000 quiet',
-            'account     required      pam_permit.so',
-          ]
-
-          $default_pam_password_password_lines = [
-            'password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=',
-            'password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok',
-            'password    required      pam_deny.so',
-          ]
-          $default_pam_password_session_lines = [
-            'session     optional      pam_keyinit.so revoke',
-            'session     required      pam_limits.so',
-            '-session     optional      pam_systemd.so',
-            'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid',
-            'session     required      pam_unix.so',
-          ]
-        }
-        default: {
-          fail("Pam is only supported on EL 5, 6 and 7. Your operatingsystemmajrelease is identified as <${::operatingsystemmajrelease}>.")
-        }
-      }
-    }
-    'Suse': {
-      case $::lsbmajdistrelease {
-        '9': {
-          $default_pam_d_login_template = 'pam/login.suse9.erb'
-          $default_pam_d_sshd_template  = 'pam/sshd.suse9.erb'
-          $default_package_name         = [ 'pam', 'pam-modules' ]
-
-          $default_pam_auth_lines = [
-            'auth  required  pam_warn.so',
-            'auth  required  pam_unix2.so',
-          ]
-
-          $default_pam_account_lines = [
-            'account  required  pam_warn.so',
-            'account  required  pam_unix2.so',
-          ]
-
-          $default_pam_password_lines = [
-            'password  required  pam_warn.so',
-            'password  required  pam_pwcheck.so use_cracklib',
-          ]
-
-          $default_pam_session_lines = [
-            'session  required  pam_warn.so',
-            'session  required  pam_unix2.so debug',
-          ]
-        }
-
-        '10': {
-          $default_pam_d_login_template = 'pam/login.suse10.erb'
-          $default_pam_d_sshd_template  = 'pam/sshd.suse10.erb'
-          $default_package_name         = 'pam'
-
-          $default_pam_auth_lines = [
-            'auth  required  pam_env.so',
-            'auth  required  pam_unix2.so',
-          ]
-
-          $default_pam_account_lines = [
-            'account  required  pam_unix2.so',
-          ]
-
-          $default_pam_password_lines = [
-            'password  required  pam_pwcheck.so nullok',
-            'password  required  pam_unix2.so nullok use_authtok',
-          ]
-
-          $default_pam_session_lines = [
-            'session  required  pam_limits.so',
-            'session  required  pam_unix2.so',
-          ]
-        }
-        '11': {
-          $default_pam_d_login_template = 'pam/login.suse11.erb'
-          $default_pam_d_sshd_template  = 'pam/sshd.suse11.erb'
-          $default_package_name         = 'pam'
-
-          $default_pam_auth_lines = [
-            'auth  required  pam_env.so',
-            'auth  required  pam_unix2.so',
-          ]
-
-          $default_pam_account_lines = [
-            'account  required  pam_unix2.so',
-          ]
-
-          $default_pam_password_lines = [
-            'password  required  pam_pwcheck.so nullok cracklib',
-            'password  required  pam_unix2.so nullok use_authtok',
-          ]
-
-          $default_pam_session_lines = [  'session  required  pam_limits.so',
-            'session  required  pam_unix2.so',
-            'session  optional  pam_umask.so',
-          ]
-        }
-        '12': {
-          $default_pam_d_login_template = 'pam/login.suse12.erb'
-          $default_pam_d_sshd_template  = 'pam/sshd.suse12.erb'
-          $default_package_name         = 'pam'
-
-          $default_pam_auth_lines = [
-            'auth  required  pam_env.so',
-            'auth  required  pam_unix2.so',
-          ]
-
-          $default_pam_account_lines = [
-            'account  required  pam_unix2.so',
-          ]
-
-          $default_pam_password_lines = [
-            'password  required  pam_pwcheck.so nullok cracklib',
-            'password  required  pam_unix2.so nullok use_authtok',
-          ]
-
-          $default_pam_session_lines = [
-            'session  required  pam_limits.so',
-            'session  required  pam_unix2.so',
-            'session  optional  pam_umask.so',
-            'session  optional  pam_systemd.so',
-            'session  optional  pam_env.so',
-          ]
-        }
-        '13': {
-          $default_pam_d_login_template = 'pam/login.suse13.erb'
-          $default_pam_d_sshd_template  = 'pam/sshd.suse13.erb'
-          $default_package_name         = 'pam'
-
-          $default_pam_auth_lines = [
-            'auth  required  pam_env.so',
-            'auth  optional  pam_gnome_keyring.so',
-            'auth  required  pam_unix.so try_first_pass',
-          ]
-
-          $default_pam_account_lines = [
-            'account  required  pam_unix.so try_first_pass',
-          ]
-
-          $default_pam_password_lines = [
-            'password  requisite  pam_cracklib.so',
-            'password  optional   pam_gnome_keyring.so use_authtok',
-            'password  required   pam_unix.so use_authtok nullok shadow try_first_pass',
-          ]
-
-          $default_pam_session_lines = [
-            'session  required pam_limits.so',
-            'session  required pam_unix.so try_first_pass',
-            'session  optional pam_umask.so',
-            'session  optional pam_systemd.so',
-            'session  optional pam_gnome_keyring.so auto_start only_if=gdm,gdm-password,lxdm,lightdm',
-            'session  optional pam_env.so',
-          ]
-        }
-        default: {
-          fail("Pam is only supported on Suse 9, 10, 11, 12 and 13. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
-        }
-      }
-    }
-    'Debian': {
-      case $::lsbdistid {
-        'Ubuntu': {
-          case $::lsbdistrelease {
-            '12.04': {
-              $default_pam_d_login_template = 'pam/login.ubuntu12.erb'
-              $default_pam_d_sshd_template  = 'pam/sshd.ubuntu12.erb'
-              $default_package_name         = 'libpam0g'
-
-              $default_pam_auth_lines = [
-                'auth  [success=1 default=ignore]  pam_unix.so nullok_secure',
-                'auth  requisite     pam_deny.so',
-                'auth  required      pam_permit.so',
-              ]
-
-              $default_pam_account_lines = [
-                'account [success=1 new_authtok_reqd=done default=ignore]  pam_unix.so',
-                'account requisite     pam_deny.so',
-                'account required      pam_permit.so',
-              ]
-
-              $default_pam_password_lines = [
-                'password  [success=1 default=ignore]  pam_unix.so obscure sha512',
-                'password  requisite     pam_deny.so',
-                'password  required      pam_permit.so',
-              ]
-
-              $default_pam_session_lines = [
-                'session [default=1]   pam_permit.so',
-                'session requisite     pam_deny.so',
-                'session required      pam_permit.so',
-                'session optional      pam_umask.so',
-                'session required      pam_unix.so',
-              ]
-            }
-            '14.04': {
-              $default_pam_d_login_template = 'pam/login.ubuntu14.erb'
-              $default_pam_d_sshd_template  = 'pam/sshd.ubuntu14.erb'
-              $default_package_name         = 'libpam0g'
-
-              $default_pam_auth_lines = [
-                'auth  [success=1 default=ignore]  pam_unix.so nullok_secure',
-                'auth  requisite     pam_deny.so',
-                'auth  required      pam_permit.so',
-                'auth  optional      pam_cap.so',
-              ]
-
-              $default_pam_account_lines = [
-                'account [success=1 new_authtok_reqd=done default=ignore]  pam_unix.so',
-                'account requisite     pam_deny.so',
-                'account required      pam_permit.so',
-              ]
-
-              $default_pam_password_lines = [
-                'password  [success=1 default=ignore]  pam_unix.so obscure sha512',
-                'password  requisite     pam_deny.so',
-                'password  required      pam_permit.so',
-              ]
-
-              $default_pam_session_lines = [
-                'session [default=1]   pam_permit.so',
-                'session requisite     pam_deny.so',
-                'session required      pam_permit.so',
-                'session optional      pam_umask.so',
-                'session required      pam_unix.so',
-                'session optional      pam_systemd.so',
-              ]
-            }
-            '16.04': {
-              $default_pam_d_login_template = 'pam/login.ubuntu16.erb'
-              $default_pam_d_sshd_template  = 'pam/sshd.ubuntu16.erb'
-              $default_package_name         = 'libpam0g'
-
-              $default_pam_auth_lines = [
-                'auth  [success=1 default=ignore]  pam_unix.so nullok_secure',
-                'auth  requisite     pam_deny.so',
-                'auth  required      pam_permit.so',
-              ]
-
-              $default_pam_account_lines = [
-                'account [success=1 new_authtok_reqd=done default=ignore]  pam_unix.so',
-                'account requisite     pam_deny.so',
-                'account required      pam_permit.so',
-              ]
-
-              $default_pam_password_lines = [
-                'password  [success=1 default=ignore]  pam_unix.so obscure sha512',
-                'password  requisite     pam_deny.so',
-                'password  required      pam_permit.so',
-              ]
-
-              $default_pam_session_lines = [
-                'session [default=1]   pam_permit.so',
-                'session requisite     pam_deny.so',
-                'session required      pam_permit.so',
-                'session optional      pam_umask.so',
-                'session required      pam_unix.so',
-                'session optional      pam_systemd.so',
-              ]
-            }
-            default: {
-              fail("Pam is only supported on Ubuntu 12.04, 14.04 and 16.04. Your lsbdistrelease is identified as <${::lsbdistrelease}>.")
-            }
-          }
-        }
-        'Debian': {
-          case $::lsbmajdistrelease {
-            /(7|8)/: {
-              $default_pam_d_login_template = "pam/login.debian${::lsbmajdistrelease}.erb"
-              $default_pam_d_sshd_template  = "pam/sshd.debian${::lsbmajdistrelease}.erb"
-              $default_package_name         = 'libpam0g'
-
-              $default_pam_auth_lines = [
-                'auth  [success=1 default=ignore]  pam_unix.so nullok_secure',
-                'auth  requisite     pam_deny.so',
-                'auth  required      pam_permit.so',
-              ]
-
-              $default_pam_account_lines = [
-                'account [success=1 new_authtok_reqd=done default=ignore]  pam_unix.so',
-                'account requisite     pam_deny.so',
-                'account required      pam_permit.so',
-              ]
-
-              $default_pam_password_lines = [
-                'password  [success=1 default=ignore]  pam_unix.so obscure sha512',
-                'password  requisite     pam_deny.so',
-                'password  required      pam_permit.so',
-              ]
-
-              $default_pam_session_lines = [
-                'session [default=1]   pam_permit.so',
-                'session requisite     pam_deny.so',
-                'session required      pam_permit.so',
-                'session required      pam_unix.so',
-              ]
-            }
-            default: {
-              fail("Pam is only supported on Debian 7 and 8. Your lsbmajdistrelease is <${::lsbmajdistrelease}>.")
-            }
-          }
-        }
-        default: {
-          fail("Pam is only supported on lsbdistid Ubuntu or Debian of the Debian osfamily. Your lsbdistid is <${::lsbdistid}>.")
-        }
-      }
-    }
-    'Solaris': {
-      $default_package_name         = undef
-      $default_pam_d_login_template = undef
-      $default_pam_d_sshd_template  = undef
-      case $::kernelrelease {
-        '5.9': {
-          $default_pam_auth_lines = [
-            'login   auth requisite          pam_authtok_get.so.1',
-            'login   auth required           pam_dhkeys.so.1',
-            'login   auth required           pam_unix_auth.so.1',
-            'login   auth required           pam_dial_auth.so.1',
-            'passwd  auth required           pam_passwd_auth.so.1',
-            'other   auth requisite          pam_authtok_get.so.1',
-            'other   auth required           pam_dhkeys.so.1',
-            'other   auth required           pam_unix_auth.so.1',
-          ]
-
-          $default_pam_account_lines = [
-            'cron    account required        pam_projects.so.1',
-            'cron    account required        pam_unix_account.so.1',
-            'other   account requisite       pam_roles.so.1',
-            'other   account required        pam_projects.so.1',
-            'other   account required        pam_unix_account.so.1',
-          ]
-
-          $default_pam_password_lines = [
-            'other   password required       pam_dhkeys.so.1',
-            'other   password requisite      pam_authtok_get.so.1',
-            'other   password requisite      pam_authtok_check.so.1',
-            'other   password required       pam_authtok_store.so.1',
-          ]
-
-          $default_pam_session_lines = [
-            'other   session required        pam_unix_session.so.1',
-          ]
-        }
-        '5.10': {
-          $default_pam_auth_lines = [
-            'login   auth requisite          pam_authtok_get.so.1',
-            'login   auth required           pam_dhkeys.so.1',
-            'login   auth required           pam_unix_cred.so.1',
-            'login   auth required           pam_unix_auth.so.1',
-            'login   auth required           pam_dial_auth.so.1',
-            'passwd  auth required           pam_passwd_auth.so.1',
-            'other   auth requisite          pam_authtok_get.so.1',
-            'other   auth required           pam_dhkeys.so.1',
-            'other   auth required           pam_unix_cred.so.1',
-            'other   auth required           pam_unix_auth.so.1',
-          ]
-
-          $default_pam_account_lines = [
-            'other   account requisite       pam_roles.so.1',
-            'other   account required        pam_unix_account.so.1',
-          ]
-
-          $default_pam_password_lines = [
-            'other   password required       pam_dhkeys.so.1',
-            'other   password requisite      pam_authtok_get.so.1',
-            'other   password requisite      pam_authtok_check.so.1',
-            'other   password required       pam_authtok_store.so.1',
-          ]
-
-          $default_pam_session_lines = [
-            'other   session required        pam_unix_session.so.1',
-          ]
-        }
-
-        '5.11': {
-          $default_pam_auth_lines = [
-            'auth definitive         pam_user_policy.so.1',
-            'auth requisite          pam_authtok_get.so.1',
-            'auth required           pam_dhkeys.so.1',
-            'auth required           pam_unix_auth.so.1',
-            'auth required           pam_unix_cred.so.1',
-          ]
-
-          $default_pam_account_lines = [
-            'account requisite       pam_roles.so.1',
-            'account definitive      pam_user_policy.so.1',
-            'account required        pam_unix_account.so.1',
-            'account required        pam_tsol_account.so.1',
-          ]
-
-          $default_pam_password_lines = [
-            'password definitive     pam_user_policy.so.1',
-            'password include        pam_authtok_common',
-            'password required       pam_authtok_store.so.1',
-          ]
-
-          $default_pam_session_lines = [
-            'session definitive      pam_user_policy.so.1',
-            'session required        pam_unix_session.so.1',
-          ]
-        }
-
-        default: {
-          fail("Pam is only supported on Solaris 9, 10 and 11. Your kernelrelease is identified as <${::kernelrelease}>.")
-        }
-      }
-    }
-    default: {
-      fail("Pam is only supported on RedHat, Suse, Debian and Solaris osfamilies. Your osfamily is identified as <${::osfamily}>.")
-    }
-  }
-
-  if $package_name {
-    $my_package_name = $package_name
-  } else {
-    $my_package_name = $default_package_name
-  }
-
-  if $pam_d_login_template {
-    $my_pam_d_login_template = $pam_d_login_template
-  } else {
-    $my_pam_d_login_template = $default_pam_d_login_template
   }
 
   if $pam_d_sshd_template == 'pam/sshd.custom.erb' {
@@ -633,62 +92,6 @@ class pam (
       $pam_sshd_password_lines or
       $pam_sshd_session_lines {
         fail('pam_sshd_[auth|account|password|session]_lines are only valid when pam_d_sshd_template is configured with the pam/sshd.custom.erb template')
-    }
-  }
-
-  if $pam_d_sshd_template {
-    $my_pam_d_sshd_template = $pam_d_sshd_template
-  } else {
-    $my_pam_d_sshd_template = $default_pam_d_sshd_template
-  }
-
-  if $pam_auth_lines {
-    $my_pam_auth_lines = $pam_auth_lines
-  } else {
-    $my_pam_auth_lines = $default_pam_auth_lines
-  }
-
-  if $pam_account_lines {
-    $my_pam_account_lines = $pam_account_lines
-  } else {
-    $my_pam_account_lines = $default_pam_account_lines
-  }
-
-  if $pam_password_lines {
-    $my_pam_password_lines = $pam_password_lines
-  } else {
-    $my_pam_password_lines = $default_pam_password_lines
-  }
-
-  if $pam_session_lines {
-    $my_pam_session_lines = $pam_session_lines
-  } else {
-    $my_pam_session_lines = $default_pam_session_lines
-  }
-
-  if ( $::osfamily == 'RedHat' ) and ( $::operatingsystemmajrelease == '6' or $::operatingsystemmajrelease == '7' ) {
-    if $pam_password_auth_lines {
-      $my_pam_password_auth_lines = $pam_password_auth_lines
-    } else {
-      $my_pam_password_auth_lines = $default_pam_password_auth_lines
-    }
-
-    if $pam_password_account_lines {
-      $my_pam_password_account_lines = $pam_password_account_lines
-    } else {
-      $my_pam_password_account_lines = $default_pam_password_account_lines
-    }
-
-    if $pam_password_password_lines {
-      $my_pam_password_password_lines = $pam_password_password_lines
-    } else {
-      $my_pam_password_password_lines = $default_pam_password_password_lines
-    }
-
-    if $pam_password_session_lines {
-      $my_pam_password_session_lines = $pam_password_session_lines
-    } else {
-      $my_pam_password_session_lines = $default_pam_password_session_lines
     }
   }
 
@@ -711,14 +114,14 @@ class pam (
       include ::pam::accesslogin
       include ::pam::limits
 
-      package { $my_package_name:
+      package { $package_name:
         ensure => installed,
       }
 
       file { 'pam_d_login':
         ensure  => file,
         path    => $pam_d_login_path,
-        content => template($my_pam_d_login_template),
+        content => template($pam_d_login_template),
         owner   => $pam_d_login_owner,
         group   => $pam_d_login_group,
         mode    => $pam_d_login_mode,
@@ -727,7 +130,7 @@ class pam (
       file { 'pam_d_sshd':
         ensure  => file,
         path    => $pam_d_sshd_path,
-        content => template($my_pam_d_sshd_template),
+        content => template($pam_d_sshd_template),
         owner   => $pam_d_sshd_owner,
         group   => $pam_d_sshd_group,
         mode    => $pam_d_sshd_mode,
@@ -742,7 +145,7 @@ class pam (
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            require => Package[$my_package_name],
+            require => Package[$package_name],
           }
 
           file { 'pam_system_auth':
@@ -751,7 +154,7 @@ class pam (
             target  => $system_auth_ac_file,
             owner   => 'root',
             group   => 'root',
-            require => Package[$my_package_name],
+            require => Package[$package_name],
           }
 
           if $::operatingsystemmajrelease == '6' or $::operatingsystemmajrelease == '7' {
@@ -762,7 +165,7 @@ class pam (
               owner   => 'root',
               group   => 'root',
               mode    => '0644',
-              require => Package[$my_package_name],
+              require => Package[$package_name],
             }
 
             file { 'pam_password_auth':
@@ -771,7 +174,7 @@ class pam (
               target  => $password_auth_ac_file,
               owner   => 'root',
               group   => 'root',
-              require => Package[$my_package_name],
+              require => Package[$package_name],
             }
           }
         }
@@ -784,7 +187,7 @@ class pam (
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            require => Package[$my_package_name],
+            require => Package[$package_name],
           }
 
           file { 'pam_common_account':
@@ -794,7 +197,7 @@ class pam (
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            require => Package[$my_package_name],
+            require => Package[$package_name],
           }
 
           file { 'pam_common_password':
@@ -804,7 +207,7 @@ class pam (
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            require => Package[$my_package_name],
+            require => Package[$package_name],
           }
 
           file { 'pam_common_noninteractive_session':
@@ -814,7 +217,7 @@ class pam (
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            require => Package[$my_package_name],
+            require => Package[$package_name],
           }
 
           file { 'pam_common_session':
@@ -824,7 +227,7 @@ class pam (
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            require => Package[$my_package_name],
+            require => Package[$package_name],
           }
         }
         'Suse': {
@@ -849,7 +252,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
 
               file { 'pam_common_account':
@@ -859,7 +262,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
 
               file { 'pam_common_password':
@@ -869,7 +272,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
 
               file { 'pam_common_session':
@@ -879,7 +282,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
             }
             '11': {
@@ -891,7 +294,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
 
               file { 'pam_common_account_pc':
@@ -901,7 +304,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
 
               file { 'pam_common_password_pc':
@@ -911,7 +314,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
 
               file { 'pam_common_session_pc':
@@ -921,7 +324,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
 
               file { 'pam_common_session':
@@ -930,7 +333,7 @@ class pam (
                 target  => $common_session_pc_file,
                 owner   => 'root',
                 group   => 'root',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
 
               file { 'pam_common_password':
@@ -939,7 +342,7 @@ class pam (
                 target  => $common_password_pc_file,
                 owner   => 'root',
                 group   => 'root',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
 
               file { 'pam_common_account':
@@ -948,7 +351,7 @@ class pam (
                 target  => $common_account_pc_file,
                 owner   => 'root',
                 group   => 'root',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
 
               file { 'pam_common_auth':
@@ -957,7 +360,7 @@ class pam (
                 target  => $common_auth_pc_file,
                 owner   => 'root',
                 group   => 'root',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
             }
             '12','13': {
@@ -969,7 +372,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
 
               file { 'pam_common_account_pc':
@@ -979,7 +382,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
 
               file { 'pam_common_password_pc':
@@ -989,7 +392,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
 
               file { 'pam_common_session_pc':
@@ -999,7 +402,7 @@ class pam (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
 
               file { 'pam_common_session':
@@ -1008,7 +411,7 @@ class pam (
                 target  => $common_session_pc_file,
                 owner   => 'root',
                 group   => 'root',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
 
               file { 'pam_common_password':
@@ -1017,7 +420,7 @@ class pam (
                 target  => $common_password_pc_file,
                 owner   => 'root',
                 group   => 'root',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
 
               file { 'pam_common_account':
@@ -1026,7 +429,7 @@ class pam (
                 target  => $common_account_pc_file,
                 owner   => 'root',
                 group   => 'root',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
 
               file { 'pam_common_auth':
@@ -1035,7 +438,7 @@ class pam (
                 target  => $common_auth_pc_file,
                 owner   => 'root',
                 group   => 'root',
-                require => Package[$my_package_name],
+                require => Package[$package_name],
               }
             }
             default : {

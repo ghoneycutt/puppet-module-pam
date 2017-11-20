@@ -343,135 +343,103 @@ describe 'pam' do
         it { should contain_file('pam.d-service-testservice').with_content('foo') }
       end
 
-      ['defaults', 'vas'].each do |check|
-        context "with #{check} params on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
-          let :facts do
-            { :osfamily => v[:osfamily],
-              :"#{v[:releasetype]}" => v[:release],
-              :lsbdistid => v[:lsbdistid],
+      context "with default params on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+        let :facts do
+          { :osfamily => v[:osfamily],
+            :"#{v[:releasetype]}" => v[:release],
+            :lsbdistid => v[:lsbdistid],
+          }
+        end
+
+        v[:files].each do |file|
+          group = file[:group] || 'root'
+          dirpath = file[:dirpath] || '/etc/pam.d/'
+
+          file[:types].each do |type|
+            filename = "#{file[:prefix]}#{type}#{file[:suffix]}"
+            path = "#{dirpath}#{file[:prefix]}#{type}#{file[:suffix]}"
+            path.gsub! '_', '-'
+            path.sub! 'pam-', ''
+            path.sub! 'noninteractive-session', 'session-noninteractive'
+            it {
+              should contain_file(filename).with({
+                'ensure'  => 'file',
+                'path'    => path,
+                'owner'   => 'root',
+                'group'   => group,
+                'mode'    => '0644',
+              })
             }
-          end
-          if check == 'vas'
-            let(:params) { {:ensure_vas => 'present'} }
-          end
+            fixture = File.read(fixtures("#{filename}.defaults.#{k}"))
+            it { should contain_file(filename).with_content(fixture) }
 
-          if check == 'vas' and v[:osfamily] == 'Suse' and v[:release] == '13'
-            it 'should fail' do
-              expect {
-                should contain_class('pam')
-              }.to raise_error(Puppet::Error,/Pam: vas is not supported on #{v[:osfamily]} #{v[:release]}/)
+            v[:packages].sort.each do |pkg|
+              if v[:osfamily] != 'Solaris' and (v[:osfamily] != 'Suse' and v[:release] != 9)
+                it { should contain_file(filename).that_requires("Package[#{pkg}]") }
+              end
             end
-            next
-          end
 
-          if check == 'vas' and v[:osfamily] == 'Debian' and ['7', '8'].include?(v[:release])
-            it 'should fail' do
-              expect {
-                should contain_class('pam')
-              }.to raise_error(Puppet::Error,/Pam: vas is not supported on #{v[:osfamily]} #{v[:release]}/)
-            end
-            next
-          end
-
-          if check == 'vas' and v[:osfamily] == 'Debian' and v[:release] == '18.04'
-            it 'should fail' do
-              expect {
-                should contain_class('pam')
-              }.to raise_error(Puppet::Error,/Pam: vas is not supported on #{v[:lsbdistid]} #{v[:release]}/)
-            end
-            next
-          end
-
-          v[:files].each do |file|
-            group = file[:group] || 'root'
-            dirpath = file[:dirpath] || '/etc/pam.d/'
-
-            file[:types].each do |type|
-              filename = "#{file[:prefix]}#{type}#{file[:suffix]}"
-              path = "#{dirpath}#{file[:prefix]}#{type}#{file[:suffix]}"
-              path.gsub! '_', '-'
-              path.sub! 'pam-', ''
-              path.sub! 'noninteractive-session', 'session-noninteractive'
+            if file[:symlink]
+              symlinkname = "#{file[:prefix]}#{type}"
+              symlinkpath = "#{dirpath}#{file[:prefix]}#{type}"
+              symlinkpath.gsub! '_', '-'
+              symlinkpath.sub! 'pam-', ''
               it {
-                should contain_file(filename).with({
-                  'ensure'  => 'file',
-                  'path'    => path,
-                  'owner'   => 'root',
-                  'group'   => group,
-                  'mode'    => '0644',
+                should contain_file(symlinkname).with({
+                  'ensure' => 'symlink',
+                  'path'   => symlinkpath,
+                  'owner'  => 'root',
+                  'group'  => 'root',
                 })
               }
-              fixture = File.read(fixtures("#{filename}.#{check}.#{k}"))
-              it { should contain_file(filename).with_content(fixture) }
-
               v[:packages].sort.each do |pkg|
-                if v[:osfamily] != 'Solaris' and (v[:osfamily] != 'Suse' and v[:release] != 9)
+                if v[:osfamily] != 'Solaris'
                   it { should contain_file(filename).that_requires("Package[#{pkg}]") }
                 end
               end
+            end
+          end
 
-              if file[:symlink]
-                symlinkname = "#{file[:prefix]}#{type}"
-                symlinkpath = "#{dirpath}#{file[:prefix]}#{type}"
-                symlinkpath.gsub! '_', '-'
-                symlinkpath.sub! 'pam-', ''
+          if v[:osfamily] == 'RedHat'
+            if (v[:release] == '6' or v[:release] == '7')
                 it {
-                  should contain_file(symlinkname).with({
-                    'ensure' => 'symlink',
-                    'path'   => symlinkpath,
+                  should contain_file('pam_password_auth_ac').with({
+                    'ensure' => 'file',
+                    'path'   => '/etc/pam.d/password-auth-ac',
                     'owner'  => 'root',
                     'group'  => 'root',
+                    'mode'   => '0644',
                   })
                 }
-                v[:packages].sort.each do |pkg|
-                  if v[:osfamily] != 'Solaris'
-                    it { should contain_file(filename).that_requires("Package[#{pkg}]") }
-                  end
-                end
-              end
+                pam_password_auth_ac_fixture = File.read(fixtures("pam_password_auth_ac.defaults.#{k}"))
+                it { should contain_file('pam_password_auth_ac').with_content(pam_password_auth_ac_fixture) }
             end
+          end
 
-            if v[:osfamily] == 'RedHat'
-              if (v[:release] == '6' or v[:release] == '7')
-                  it {
-                    should contain_file('pam_password_auth_ac').with({
-                      'ensure' => 'file',
-                      'path'   => '/etc/pam.d/password-auth-ac',
-                      'owner'  => 'root',
-                      'group'  => 'root',
-                      'mode'   => '0644',
-                    })
-                  }
-                  pam_password_auth_ac_fixture = File.read(fixtures("pam_password_auth_ac.#{check}.#{k}"))
-                  it { should contain_file('pam_password_auth_ac').with_content(pam_password_auth_ac_fixture) }
-              end
-            end
+          if v[:osfamily] != 'Solaris'
+            it {
+              should contain_file('pam_d_login').with({
+                'ensure' => 'file',
+                'path'   => '/etc/pam.d/login',
+                'owner'  => 'root',
+                'group'  => 'root',
+                'mode'   => '0644',
+              })
+            }
+            pam_d_login_fixture = File.read(fixtures("pam_d_login.defaults.#{k}"))
+            it { should contain_file('pam_d_login').with_content(pam_d_login_fixture) }
 
-            if v[:osfamily] != 'Solaris'
-              it {
-                should contain_file('pam_d_login').with({
-                  'ensure' => 'file',
-                  'path'   => '/etc/pam.d/login',
-                  'owner'  => 'root',
-                  'group'  => 'root',
-                  'mode'   => '0644',
-                })
-              }
-              pam_d_login_fixture = File.read(fixtures("pam_d_login.defaults.#{k}"))
-              it { should contain_file('pam_d_login').with_content(pam_d_login_fixture) }
-
-              it {
-                should contain_file('pam_d_sshd').with({
-                  'ensure' => 'file',
-                  'path'   => '/etc/pam.d/sshd',
-                  'owner'  => 'root',
-                  'group'  => 'root',
-                  'mode'   => '0644',
-                })
-              }
-              pam_d_sshd_fixture = File.read(fixtures("pam_d_sshd.defaults.#{k}"))
-              it { should contain_file('pam_d_sshd').with_content(pam_d_sshd_fixture) }
-            end
+            it {
+              should contain_file('pam_d_sshd').with({
+                'ensure' => 'file',
+                'path'   => '/etc/pam.d/sshd',
+                'owner'  => 'root',
+                'group'  => 'root',
+                'mode'   => '0644',
+              })
+            }
+            pam_d_sshd_fixture = File.read(fixtures("pam_d_sshd.defaults.#{k}"))
+            it { should contain_file('pam_d_sshd').with_content(pam_d_sshd_fixture) }
           end
         end
       end
@@ -589,143 +557,6 @@ describe 'pam' do
             }.to raise_error(Puppet::Error, /Evaluation Error: Error while evaluating a Resource Statement/)
           end
 
-        end
-      end
-
-      context "with ensure_vas => present and vas_major_version => 3 on osfamily #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
-        let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
-        end
-        let :params do
-          { :ensure_vas => 'present',
-            :vas_major_version => '3',
-          }
-        end
-
-        if v[:osfamily] == 'RedHat' and (v[:release] == '5' or v[:release] == '6')
-          it {
-            should contain_file('pam_system_auth_ac').with({
-              'ensure'  => 'file',
-              'path'    => '/etc/pam.d/system-auth-ac',
-              'owner'   => 'root',
-              'group'   => 'root',
-              'mode'    => '0644',
-            })
-          }
-
-          v[:packages].sort.each do |pkg|
-            it { should contain_file('pam_system_auth_ac').that_requires("Package[#{pkg}]") }
-          end
-
-          it { should contain_file('pam_system_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) }
-          it { should contain_file('pam_system_auth_ac').with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) }
-          it { should contain_file('pam_system_auth_ac').with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) }
-          it { should contain_file('pam_system_auth_ac').with_content(/session[\s]+required[\s]+pam_vas3.so/) }
-        end
-
-        if v[:osfamily] == 'RedHat' and  v[:release] == '6'
-          it {
-            should contain_file('pam_password_auth_ac').with({
-              'ensure'  => 'file',
-              'path'    => '/etc/pam.d/password-auth-ac',
-              'owner'   => 'root',
-              'group'   => 'root',
-              'mode'    => '0644',
-            })
-          }
-
-          v[:packages].sort.each do |pkg|
-            it { should contain_file('pam_password_auth_ac').that_requires("Package[#{pkg}]") }
-          end
-
-          it { should contain_file('pam_password_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so create_homedir get_nonvas_pass/) }
-          it { should contain_file('pam_password_auth_ac').with_content(/account[\s]+sufficient[\s]+pam_vas3.so/) }
-          it { should contain_file('pam_password_auth_ac').with_content(/password[\s]+sufficient[\s]+pam_vas3.so/) }
-          it { should contain_file('pam_password_auth_ac').with_content(/session[\s]+required[\s]+pam_limits.so/) }
-          it { should_not contain_file('pam_password_auth_ac').with_content(/auth[\s]+sufficient[\s]+pam_vas3.so.*store_creds/) }
-        end
-
-        if v[:osfamily] == 'RedHat' and v[:release] != '5' and v[:release] != '6'
-          it 'should fail' do
-            expect {
-              should contain_class('pam')
-            }.to raise_error(Puppet::Error,/Pam is only supported with vas_major_version 4 on/)
-          end
-        end
-
-        if v[:osfamily] == 'Debian' and v[:lsbdistid] == 'Ubuntu' and ['12.04', '14.04'].include?(v[:release])
-          it { should contain_class('pam::accesslogin') }
-          it { should contain_class('pam::limits') }
-
-          ['auth', 'account', 'password', 'session'].each do |type|
-            it {
-              should contain_file("pam_common_#{type}").with({
-                'ensure'  => 'file',
-                'path'    => "/etc/pam.d/common-#{type}",
-                'owner'   => 'root',
-                'group'   => 'root',
-                'mode'    => '0644',
-              })
-            }
-            pam_common_fixture = File.read(fixtures("pam_common_#{type}.vas.#{k}"))
-            it { should contain_file("pam_common_#{type}").with_content(pam_common_fixture) }
-
-            v[:packages].sort.each do |pkg|
-              it { should contain_file("pam_common_#{type}").that_requires("Package[#{pkg}]") }
-            end
-          end
-
-          it {
-            should contain_file('pam_common_noninteractive_session').with({
-              'ensure'  => 'file',
-              'path'    => '/etc/pam.d/common-session-noninteractive',
-              'owner'   => 'root',
-              'group'   => 'root',
-              'mode'    => '0644',
-            })
-          }
-          pam_common_noninteractive_session_fixture = File.read(fixtures("pam_common_noninteractive_session.vas.#{k}"))
-          it { should contain_file('pam_common_noninteractive_session').with_content(pam_common_noninteractive_session_fixture) }
-
-          v[:packages].sort.each do |pkg|
-            it { should contain_file("pam_common_noninteractive_session").that_requires("Package[#{pkg}]") }
-          end
-        end
-
-        if v[:osfamily] == 'Debian' and v[:lsbdistid] == 'Ubuntu' and v[:release] == '16.04'
-          it 'should fail' do
-            expect {
-              should contain_class('pam')
-            }.to raise_error(Puppet::Error,/Pam is only supported with vas_major_version 4/)
-          end
-        end
-      end
-    end
-  end
-
-  describe 'validating versions' do
-    platforms.sort.each do |k,v|
-      context "with ensure_vas => present and unsupported vas_major_version on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
-        let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
-        end
-        let :params do
-          {
-            :ensure_vas        => 'present',
-            :vas_major_version => '5',
-          }
-        end
-
-        it 'should fail' do
-          expect {
-            should contain_class('pam')
-          }.to raise_error(Puppet::Error,/expects a match for Enum\['3', '4'\]/)
         end
       end
     end

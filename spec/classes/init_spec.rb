@@ -2,10 +2,21 @@ require 'spec_helper'
 describe 'pam' do
 
   platforms = {
-    'el5'                   =>
-      { :osfamily           => 'RedHat',
-        :release            => '5',
-        :releasetype        => 'operatingsystemmajrelease',
+    'el5' =>
+      {
+        :facts_hash => {
+          :osfamily => 'RedHat',
+          :operatingsystemmajrelease => '5',
+          :os => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "5",
+              "minor" => "10",
+              "full" => "5.10"
+            },
+          },
+        },
         :packages           => ['pam', 'util-linux', ],
         :files              => [
           { :prefix         => 'pam_system_',
@@ -14,10 +25,21 @@ describe 'pam' do
             :symlink        => true,
           }, ],
       },
-    'el6'                   =>
-      { :osfamily           => 'RedHat',
-        :release            => '6',
-        :releasetype        => 'operatingsystemmajrelease',
+    'el6' =>
+      {
+        :facts_hash => {
+          :osfamily => 'RedHat',
+          :operatingsystemmajrelease => '6',
+          :os => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "full" => "6.5",
+              "minor" => "5",
+              "major" => "6"
+            }
+          },
+        },
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_',
@@ -26,10 +48,21 @@ describe 'pam' do
             :symlink        => true,
           }, ],
       },
-    'el7'                   =>
-      { :osfamily           => 'RedHat',
-        :release            => '7',
-        :releasetype        => 'operatingsystemmajrelease',
+    'el7' =>
+      {
+        :facts_hash => {
+          :osfamily => 'RedHat',
+          :operatingsystemmajrelease => '7',
+          :os => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "7",
+              "minor" => "0",
+              "full" => "7.0.1406"
+            }
+          },
+        },
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_',
@@ -38,30 +71,63 @@ describe 'pam' do
             :symlink        => true,
           }, ],
       },
-    'suse9'                 =>
-      { :osfamily           => 'Suse',
-        :release            => '9',
-        :releasetype        => 'lsbmajdistrelease',
+    'suse9' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Suse',
+          :lsbmajdistrelease => '9',
+          :os => {
+            "name" => "openSUSE",
+            "family" => "Suse",
+            "release" => {
+              "major" => "9",
+              "full" => "9.1",
+              "minor" => "1"
+            }
+          },
+        },
         :packages           => ['pam', 'pam-modules', ],
         :files              => [
           { :prefix         => 'pam_',
             :types          => ['other', ],
           }, ],
       },
-    'suse10'                =>
-      { :osfamily           => 'Suse',
-        :release            => '10',
-        :releasetype        => 'lsbmajdistrelease',
+    'suse10' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Suse',
+          :lsbmajdistrelease => '10',
+          :os => {
+            "name" => "openSUSE",
+            "family" => "Suse",
+            "release" => {
+              "major" => "10",
+              "full" => "10.1",
+              "minor" => "1"
+            }
+          },
+        },
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_common_',
             :types          => ['auth', 'account', 'password', 'session', ],
           }, ],
       },
-    'suse11'                =>
-      { :osfamily           => 'Suse',
-        :release            => '11',
-        :releasetype        => 'lsbmajdistrelease',
+    'suse11' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Suse',
+          :lsbmajdistrelease => '11',
+          :os => {
+            "name" => "openSUSE",
+            "family" => "Suse",
+            "release" => {
+              "major" => "11",
+              "full" => "11.1",
+              "minor" => "1"
+            }
+          },
+        },
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -70,10 +136,21 @@ describe 'pam' do
             :symlink        => true,
           }, ],
       },
-    'suse12'                =>
-      { :osfamily           => 'Suse',
-        :release            => '12',
-        :releasetype        => 'lsbmajdistrelease',
+    'suse12' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Suse',
+          :lsbmajdistrelease => '12',
+          :os => {
+            "name" => "openSUSE",
+            "family" => "Suse",
+            "release" => {
+              "major" => "12",
+              "full" => "12.1",
+              "minor" => "1"
+            }
+          },
+        },
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -82,10 +159,21 @@ describe 'pam' do
             :symlink        => true,
           }, ],
       },
-    'suse13'                =>
-      { :osfamily           => 'Suse',
-        :release            => '13',
-        :releasetype        => 'lsbmajdistrelease',
+    'suse13' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Suse',
+          :lsbmajdistrelease => '13',
+          :os => {
+            "name" => "openSUSE",
+            "family" => "Suse",
+            "release" => {
+              "major" => "13",
+              "full" => "13.1",
+              "minor" => "1"
+            }
+          },
+        },
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -94,10 +182,21 @@ describe 'pam' do
             :symlink        => true,
           }, ],
       },
-    'solaris9'              =>
-      { :osfamily           => 'Solaris',
-        :release            => '5.9',
-        :releasetype        => 'kernelrelease',
+    'solaris9' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Solaris',
+          :kernelrelease => '5.9',
+          :os => {
+            "name" => "Solaris",
+            "family" => "Solaris",
+            "release" => {
+              "major" => "5",
+              "minor" => "9",
+              "full" => "5.9"
+            }
+          },
+        },
         :packages           => ['pam_package', ],
         :files              => [
           { :prefix         => 'pam_',
@@ -106,10 +205,21 @@ describe 'pam' do
             :dirpath        => '/etc/pam.',
           }, ],
       },
-    'solaris10'             =>
-      { :osfamily           => 'Solaris',
-        :release            => '5.10',
-        :releasetype        => 'kernelrelease',
+    'solaris10' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Solaris',
+          :kernelrelease => '5.10',
+          :os => {
+            "name" => "Solaris",
+            "family" => "Solaris",
+            "release" => {
+              "major" => "5",
+              "minor" => "10",
+              "full" => "5.10"
+            }
+          },
+        },
         :packages           => ['pam_package', ],
         :files              => [
           { :prefix         => 'pam_',
@@ -118,10 +228,21 @@ describe 'pam' do
             :dirpath        => '/etc/pam.',
           }, ],
       },
-    'solaris11'             =>
-      { :osfamily           => 'Solaris',
-        :release            => '5.11',
-        :releasetype        => 'kernelrelease',
+    'solaris11' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Solaris',
+          :kernelrelease => '5.11',
+          :os => {
+            "name" => "Solaris",
+            "family" => "Solaris",
+            "release" => {
+              "major" => "5",
+              "minor" => "11",
+              "full" => "5.11"
+            },
+          },
+        },
         :packages           => ['pam_package', ],
         :files              => [
           { :prefix         => 'pam_',
@@ -129,55 +250,107 @@ describe 'pam' do
             :group          => 'sys',
           }, ],
       },
-    'ubuntu1204'            =>
-      { :osfamily           => 'Debian',
-        :lsbdistid          => 'Ubuntu',
-        :release            => '12.04',
-        :releasetype        => 'lsbdistrelease',
+    'ubuntu1204' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Debian',
+          :lsbdistid => 'Ubuntu',
+          :lsbdistrelease => '12.04',
+          :os => {
+            "release" => {
+              "major" => "12.04",
+              "full" => "12.04"
+            },
+            "name" => "Ubuntu",
+            "family" => "Debian"
+          },
+        },
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
             :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
           }, ],
       },
-    'ubuntu1404'            =>
-      { :osfamily           => 'Debian',
-        :lsbdistid          => 'Ubuntu',
-        :release            => '14.04',
-        :releasetype        => 'lsbdistrelease',
+    'ubuntu1404' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Debian',
+          :lsbdistid => 'Ubuntu',
+          :lsbdistrelease => '14.04',
+          :os => {
+            "release" => {
+              "major" => "14.04",
+              "full" => "14.04"
+            },
+            "name" => "Ubuntu",
+            "family" => "Debian"
+          },
+        },
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
             :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
           }, ],
       },
-    'ubuntu1604'            =>
-      { :osfamily           => 'Debian',
-        :lsbdistid          => 'Ubuntu',
-        :release            => '16.04',
-        :releasetype        => 'lsbdistrelease',
+    'ubuntu1604' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Debian',
+          :lsbdistid => 'Ubuntu',
+          :lsbdistrelease => '16.04',
+          :os => {
+            "release" => {
+              "major" => "16.04",
+              "full" => "16.04"
+            },
+            "name" => "Ubuntu",
+            "family" => "Debian"
+          },
+        },
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
             :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
           }, ],
       },
-    'debian7'               =>
-      { :osfamily           => 'Debian',
-        :lsbdistid          => 'Debian',
-        :release            => '7',
-        :releasetype        => 'lsbmajdistrelease',
+    'debian7' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Debian',
+          :lsbdistid => 'Debian',
+          :lsbmajdistrelease => '7',
+          :os => {
+            "name" => "Debian",
+            "family" => "Debian",
+            "release" => {
+              "major" => "7",
+              "minor" => "8",
+              "full" => "7.8"
+            },
+          },
+        },
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
             :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
           }, ],
       },
-    'debian8'               =>
-      { :osfamily           => 'Debian',
-        :lsbdistid          => 'Debian',
-        :release            => '8',
-        :releasetype        => 'lsbmajdistrelease',
+    'debian8' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Debian',
+          :lsbdistid => 'Debian',
+          :lsbmajdistrelease => '8',
+          :os => {
+            "name" => "Debian",
+            "family" => "Debian",
+            "release" => {
+              "major" => "8",
+              "minor" => "0",
+              "full" => "8.0"
+            },
+          },
+        },
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -186,32 +359,76 @@ describe 'pam' do
       }
   }
   unsupported_platforms = {
-    'el4'                   =>
-      { :osfamily           => 'RedHat',
-        :release            => '4',
-        :releasetype        => 'operatingsystemmajrelease',
+    'el4' =>
+      {
+        :facts_hash => {
+          :osfamily => 'RedHat',
+          :operatingsystemmajrelease => '4',
+          :os => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "4",
+              "minor" => "10",
+              "full" => "4.10"
+            },
+          },
+        }
       },
-    'debian6'               =>
-      { :osfamily           => 'Debian',
-        :release            => '6',
-        :lsbdistid          => 'Debian',
-        :releasetype        => 'lsbmajdistrelease',
+    'debian6' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Debian',
+          :lsbmajdistrelease => '6',
+          :os => {
+            "name" => "Debian",
+            "family" => "Debian",
+            "release" => {
+              "major" => "6",
+              "minor" => "8",
+              "full" => "6.8"
+            },
+          },
+        }
       },
-    'suse8'                 =>
-      { :osfamily           => 'Suse',
-        :release            => '8',
-        :releasetype        => 'lsbmajdistrelease',
+    'suse8' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Suse',
+          :lsbmajdistrelease => '8',
+          :os => {
+            "name" => "openSUSE",
+            "family" => "Suse",
+            "release" => {
+              "major" => "8",
+              "full" => "8.1",
+              "minor" => "1"
+            }
+          },
+        }
       },
-    'ubuntu1004'            =>
-      { :osfamily           => 'Debian',
-        :release            => '10.04',
-        :lsbdistid          => 'Ubuntu',
-        :releasetype        => 'lsbdistid',
+    'ubuntu1004' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Debian',
+          :lsbdistrelease => '10.04',
+          :lsbdistid => 'Ubuntu',
+          :os => {
+            "release" => {
+              "major" => "10.04",
+              "full" => "10.04"
+            },
+            "name" => "Ubuntu",
+            "family" => "Debian"
+          },
+        }
       },
-    'solaris8'              =>
-      { :osfamily           => 'Solaris',
-        :release            => '5.8',
-        :releasetype        => 'kernelrelease',
+    'solaris8' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Solaris',
+          :kernelrelease => '5.8',
+        }
       },
   }
 
@@ -219,16 +436,13 @@ describe 'pam' do
     unsupported_platforms.sort.each do |k,v|
       context "with defaults params on #{k}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :lsbdistid => v[:lsbdistid],
-            :"#{v[:releasetype]}" => v[:release],
-          }
+          v[:facts_hash]
         end
 
         it 'should fail' do
           expect {
             should contain_class('pam')
-          }.to raise_error(Puppet::Error,/Pam is only supported on .* #{v[:releasetype]} .* <#{v[:release]}>/)
+          }.to raise_error(Puppet::Error)
         end
       end
     end
@@ -236,15 +450,12 @@ describe 'pam' do
 
   describe 'packages' do
     platforms.sort.each do |k,v|
-      context "with defaults params on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+      context "with defaults params on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+          v[:facts_hash]
         end
 
-        if v[:osfamily] == 'Solaris'
+        if v[:facts_hash][:osfamily] == 'Solaris'
           v[:packages].each do |pkg|
             it {
               should_not contain_package(pkg)
@@ -261,16 +472,13 @@ describe 'pam' do
         end
       end
 
-      context "with specifying package_name on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+      context "with specifying package_name on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+          v[:facts_hash]
         end
         let(:params) { {:package_name => 'foo'} }
 
-        if v[:osfamily] != 'Solaris'
+        if v[:facts_hash][:osfamily] != 'Solaris'
           it {
             should contain_package('foo').with({
               'ensure' => 'installed',
@@ -283,12 +491,9 @@ describe 'pam' do
 
   describe 'config files' do
     platforms.sort.each do |k,v|
-      context "when configuring pam_d_sshd_template on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+      context "when configuring pam_d_sshd_template on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+          v[:facts_hash]
         end
 
         let (:params) do
@@ -314,19 +519,16 @@ describe 'pam' do
           |session_line2
         END
 
-        if v[:osfamily] == 'Solaris'
+        if v[:facts_hash][:osfamily] == 'Solaris'
           it { should_not contain_file('pam_d_sshd') }
         else
           it { should contain_file('pam_d_sshd').with('content' => sshd_custom_content) }
         end
       end
 
-      context "with specifying services param on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+      context "with specifying services param on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+          v[:facts_hash]
         end
         let (:params) { {:services => { 'testservice' => { 'content' => 'foo' } } } }
 
@@ -343,12 +545,9 @@ describe 'pam' do
         it { should contain_file('pam.d-service-testservice').with_content('foo') }
       end
 
-      context "with default params on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+      context "with default params on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+          v[:facts_hash]
         end
 
         v[:files].each do |file|
@@ -374,7 +573,7 @@ describe 'pam' do
             it { should contain_file(filename).with_content(fixture) }
 
             v[:packages].sort.each do |pkg|
-              if v[:osfamily] != 'Solaris' and (v[:osfamily] != 'Suse' and v[:release] != 9)
+              if v[:facts_hash][:osfamily] != 'Solaris' and (v[:facts_hash][:osfamily] != 'Suse' and v[:facts_hash][:os] != 9)
                 it { should contain_file(filename).that_requires("Package[#{pkg}]") }
               end
             end
@@ -393,15 +592,15 @@ describe 'pam' do
                 })
               }
               v[:packages].sort.each do |pkg|
-                if v[:osfamily] != 'Solaris'
+                if v[:facts_hash][:osfamily] != 'Solaris'
                   it { should contain_file(filename).that_requires("Package[#{pkg}]") }
                 end
               end
             end
           end
 
-          if v[:osfamily] == 'RedHat'
-            if (v[:release] == '6' or v[:release] == '7')
+          if v[:facts_hash][:osfamily] == 'RedHat'
+            if (v[:facts_hash][:os] == '6' or v[:facts_hash][:os] == '7')
                 it {
                   should contain_file('pam_password_auth_ac').with({
                     'ensure' => 'file',
@@ -416,7 +615,7 @@ describe 'pam' do
             end
           end
 
-          if v[:osfamily] != 'Solaris'
+          if v[:facts_hash][:osfamily] != 'Solaris'
             it {
               should contain_file('pam_d_login').with({
                 'ensure' => 'file',
@@ -444,94 +643,75 @@ describe 'pam' do
         end
       end
 
-      context "with login_pam_access => sufficient on osfamily #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+      context "with login_pam_access => sufficient on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-          }
+          v[:facts_hash]
         end
         let(:params) {{ :login_pam_access => 'sufficient' }}
 
-        if (v[:osfamily] == 'RedHat') or (v[:osfamily] == 'Suse' and v[:release] == '11')
+        if (v[:facts_hash][:osfamily] == 'RedHat') or (v[:facts_hash][:osfamily] == 'Suse' and v[:facts_hash][:os] == '11')
           it { should contain_file('pam_d_login').with_content(/account[\s]+sufficient[\s]+pam_access.so/) }
         end
       end
 
-      context "with login_pam_access => absent on osfamily #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+      context "with login_pam_access => absent on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+          v[:facts_hash]
         end
         let(:params) {{ :login_pam_access => 'absent' }}
 
-        if v[:osfamily] != 'Solaris'
+        if v[:facts_hash][:osfamily] != 'Solaris'
           it { should contain_file('pam_d_login').without_content(/^account.*pam_access.so$/) }
         end
       end
 
-      context "with sshd_pam_access => sufficient on osfamily #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+      context "with sshd_pam_access => sufficient on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-          }
+          v[:facts_hash]
         end
         let(:params) {{ :sshd_pam_access => 'sufficient' }}
 
-        if (v[:osfamily] == 'RedHat') or (v[:osfamily] == 'Suse' and v[:release] == '11')
+        if (v[:facts_hash][:osfamily] == 'RedHat') or (v[:facts_hash][:osfamily] == 'Suse' and v[:facts_hash][:os] == '11')
           it { should contain_file('pam_d_sshd').with_content(/^account[\s]+sufficient[\s]+pam_access.so$/) }
         end
       end
 
-      context "with sshd_pam_access => absent on osfamily #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+      context "with sshd_pam_access => absent on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+          v[:facts_hash]
         end
         let(:params) {{ :sshd_pam_access => 'absent' }}
 
-        if v[:osfamily] != 'Solaris'
+        if v[:facts_hash][:osfamily] != 'Solaris'
           it { should contain_file('pam_d_sshd').without_content(/^account.*pam_access.so$/) }
         end
       end
 
-      context "with password_auth_ac => path on osfamily #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+      context "with password_auth_ac => path on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+          v[:facts_hash]
         end
-        if v[:osfamily] == 'RedHat' and v[:release] == '5'
+        if v[:facts_hash][:osfamily] == 'RedHat' and v[:facts_hash][:os] == '5'
           it { should_not contain_file('password_auth_ac') }
         end
       end
 
-      context "with password_auth_ac_file => path on osfamily #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+      context "with password_auth_ac_file => path on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+          v[:facts_hash]
         end
-        if v[:osfamily] == 'RedHat' and v[:release] == '5'
+        if v[:facts_hash][:osfamily] == 'RedHat' and v[:facts_hash][:os] == '5'
           it { should_not contain_file('password_auth_ac_file') }
         end
       end
 
-      context "with password_auth_ac_file => invalid/path on osfamily #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+      context "with password_auth_ac_file => invalid/path on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+          v[:facts_hash]
         end
         let(:params) {{ :password_auth_ac_file => 'invalid/path' }}
 
-        if v[:osfamily] == 'RedHat' and (v[:release] == '6' or v[:release] == '7')
+        if v[:facts_hash][:osfamily] == 'RedHat' and (v[:facts_hash][:os] == '6' or v[:facts_hash][:os] == '7')
           it 'should fail' do
             expect {
               should contain_class('pam')
@@ -541,16 +721,13 @@ describe 'pam' do
         end
       end
 
-      context "with password_auth_file => invalid/path on osfamily #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+      context "with password_auth_file => invalid/path on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+          v[:facts_hash]
         end
         let(:params) {{ :password_auth_file => 'invalid/path' }}
 
-        if v[:osfamily] == 'RedHat' and (v[:release] == '6' or v[:release] == '7')
+        if v[:facts_hash][:osfamily] == 'RedHat' and (v[:facts_hash][:os] == '6' or v[:facts_hash][:os] == '7')
           it 'should fail' do
             expect {
               should contain_class('pam')
@@ -565,24 +742,18 @@ describe 'pam' do
   describe 'validating params' do
     platforms.sort.slice(0,1).each do |k,v|
       ['required','requisite','sufficient','optional','absent'].each do |value|
-        context "with login_pam_access set to valid value: #{value} on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+        context "with login_pam_access set to valid value: #{value} on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
           let :facts do
-            { :osfamily => v[:osfamily],
-              :"#{v[:releasetype]}" => v[:release],
-              :lsbdistid => v[:lsbdistid],
-            }
+            v[:facts_hash]
           end
           let(:params) {{ :login_pam_access => value }}
 
           it { should contain_class('pam') }
         end
 
-        context "with sshd_pam_access set to valid value: #{value} on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+        context "with sshd_pam_access set to valid value: #{value} on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
           let :facts do
-            { :osfamily => v[:osfamily],
-              :"#{v[:releasetype]}" => v[:release],
-              :lsbdistid => v[:lsbdistid],
-            }
+            v[:facts_hash]
           end
           let(:params) {{ :sshd_pam_access => value }}
 
@@ -590,12 +761,9 @@ describe 'pam' do
         end
       end
 
-      context "with login_pam_access set to invalid value on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+      context "with login_pam_access set to invalid value on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+          v[:facts_hash]
         end
         let(:params) {{ :login_pam_access => 'invalid' }}
 
@@ -606,12 +774,9 @@ describe 'pam' do
         end
       end
 
-      context "with sshd_pam_access set to invalid value on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+      context "with sshd_pam_access set to invalid value on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+          v[:facts_hash]
         end
         let(:params) {{ :sshd_pam_access => 'invalid' }}
 
@@ -622,11 +787,9 @@ describe 'pam' do
         end
       end
 
-      context "with specifying services param as invalid type (non-hash) on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+      context "with specifying services param as invalid type (non-hash) on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-          }
+          v[:facts_hash]
         end
         let (:params) { {:services => ['not', 'a', 'hash'] } }
         it 'should fail' do
@@ -636,12 +799,9 @@ describe 'pam' do
         end
       end
 
-      context "with limits_fragments_hiera_merge parameter specified as a non-boolean or non-string on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+      context "with limits_fragments_hiera_merge parameter specified as a non-boolean or non-string on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+          v[:facts_hash]
         end
         let (:params) { {:limits_fragments_hiera_merge => ['not_a_boolean', 'not_a_string'] } }
         it 'should fail' do
@@ -651,12 +811,9 @@ describe 'pam' do
         end
       end
 
-      context "with limits_fragments_hiera_merge parameter specified as an invalid string on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+      context "with limits_fragments_hiera_merge parameter specified as an invalid string on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+          v[:facts_hash]
         end
         let (:params) { {:limits_fragments_hiera_merge => 'invalid_string' } }
         it 'should fail' do
@@ -668,32 +825,23 @@ describe 'pam' do
 
       context "with manage_nsswitch parameter default value" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+          v[:facts_hash]
         end
         it { is_expected.to contain_class('nsswitch') }
       end
 
       context "with manage_nsswitch parameter set to false" do
         let :facts do
-          { :osfamily => v[:osfamily],
-            :"#{v[:releasetype]}" => v[:release],
-            :lsbdistid => v[:lsbdistid],
-          }
+          v[:facts_hash]
         end
         let(:params) { {:manage_nsswitch => false} }
         it { is_expected.not_to contain_class('nsswitch') }
       end
 
       [true,false].each do |value|
-        context "with limits_fragments_hiera_merge parameter specified as a valid value: #{value} on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+        context "with limits_fragments_hiera_merge parameter specified as a valid value: #{value} on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
           let :facts do
-            { :osfamily => v[:osfamily],
-              :"#{v[:releasetype]}" => v[:release],
-              :lsbdistid => v[:lsbdistid],
-            }
+            v[:facts_hash]
           end
           let(:params) {{ :limits_fragments_hiera_merge => value }}
 
@@ -713,11 +861,7 @@ describe 'pam' do
             }
           end
           let :facts do
-            {
-              :osfamily             => v[:osfamily],
-              :"#{v[:releasetype]}" => v[:release],
-              :lsbdistid            => v[:lsbdistid],
-            }
+            v[:facts_hash]
           end
           let(:params) {
             # remove param from full_params hash before applying
@@ -732,12 +876,9 @@ describe 'pam' do
       end
 
       [ :pam_sshd_auth_lines, :pam_sshd_account_lines, :pam_sshd_password_lines, :pam_sshd_session_lines ].each do |param|
-        context "with #{param} specified and pam_d_sshd_template not specified on #{v[:osfamily]} with #{v[:releasetype]} #{v[:release]}" do
+        context "with #{param} specified and pam_d_sshd_template not specified on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
           let :facts do
-            { :osfamily => v[:osfamily],
-              :"#{v[:releasetype]}" => v[:release],
-              :lsbdistid => v[:lsbdistid],
-            }
+            v[:facts_hash]
           end
 
           let(:params) { { param => [ '#' ] } }
@@ -755,10 +896,7 @@ describe 'pam' do
   describe 'variable type and content validations' do
     # set needed custom facts and variables
     let(:facts) do
-      {
-        :operatingsystemmajrelease => '7',
-        :osfamily                  => 'RedHat',
-      }
+      platforms['el7'][:facts_hash]
     end
     let(:mandatory_params) { {} }
 

@@ -38,7 +38,7 @@ class pam::limits (
       mode    => $limits_d_dir_mode,
       purge   => $purge_limits_d_dir,
       recurse => $purge_limits_d_dir,
-      require => [ Package[$::pam::my_package_name],
+      require => [ Package[$::pam::package_name],
                   Common::Mkdir_p[$limits_d_dir],
                   ],
     }
@@ -51,6 +51,6 @@ class pam::limits (
     owner   => 'root',
     group   => 'root',
     mode    => $config_file_mode,
-    require => Package[$::pam::my_package_name],
+    require => Package[$::pam::package_name],
   }
 }

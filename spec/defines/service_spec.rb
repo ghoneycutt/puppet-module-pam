@@ -5,6 +5,15 @@ describe 'pam::service', :type => :define do
       {
         :osfamily                   => 'RedHat',
         :operatingsystemmajrelease  => '5',
+        :os                         => {
+          "name" => "RedHat",
+          "family" => "RedHat",
+          "release" => {
+            "major" => "5",
+            "minor" => "10",
+            "full" => "5.10"
+          },
+        },
       }
     }
 

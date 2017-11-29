@@ -6,6 +6,15 @@ describe 'pam::limits' do
         {
           :osfamily                   => 'RedHat',
           :operatingsystemmajrelease  => '5',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "5",
+              "minor" => "10",
+              "full" => "5.10"
+            },
+          },
         }
       end
 
@@ -34,6 +43,15 @@ describe 'pam::limits' do
         {
           :osfamily                   => 'RedHat',
           :operatingsystemmajrelease  => '5',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "5",
+              "minor" => "10",
+              "full" => "5.10"
+            },
+          },
         }
       end
 
@@ -57,6 +75,15 @@ describe 'pam::limits' do
           :osfamily                  => 'RedHat',
           :lsbmajdistrelease         => '6',
           :operatingsystemmajrelease => '6',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "6",
+              "minor" => "9",
+              "full" => "6.9"
+            },
+          },
         }
       end
 
@@ -87,6 +114,15 @@ describe 'pam::limits' do
           :osfamily                  => 'RedHat',
           :lsbmajdistrelease         => '6',
           :operatingsystemmajrelease => '6',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "6",
+              "minor" => "9",
+              "full" => "6.9"
+            },
+          },
         }
       end
 
@@ -119,6 +155,15 @@ describe 'pam::limits' do
           :osfamily                  => 'RedHat',
           :lsbmajdistrelease         => '6',
           :operatingsystemmajrelease => '6',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "6",
+              "minor" => "9",
+              "full" => "6.9"
+            },
+          },
         }
       end
 
@@ -143,6 +188,15 @@ describe 'pam::limits' do
           :osfamily                  => 'RedHat',
           :lsbmajdistrelease         => '6',
           :operatingsystemmajrelease => '6',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "6",
+              "minor" => "9",
+              "full" => "6.9"
+            },
+          },
         }
       end
 
@@ -176,6 +230,15 @@ describe 'pam::limits' do
         {
           :osfamily                   => 'RedHat',
           :operatingsystemmajrelease  => '5',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "5",
+              "minor" => "10",
+              "full" => "5.10"
+            },
+          },
         }
       end
 
@@ -192,6 +255,15 @@ describe 'pam::limits' do
         {
           :osfamily                   => 'RedHat',
           :operatingsystemmajrelease  => '5',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "5",
+              "minor" => "10",
+              "full" => "5.10"
+            },
+          },
         }
       end
 
@@ -209,6 +281,15 @@ describe 'pam::limits' do
         {
           :osfamily                   => 'RedHat',
           :operatingsystemmajrelease  => '5',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "5",
+              "minor" => "10",
+              "full" => "5.10"
+            },
+          },
         }
       end
 
@@ -235,6 +316,15 @@ describe 'pam::limits' do
         {
           :osfamily                   => 'RedHat',
           :operatingsystemmajrelease  => '5',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "5",
+              "minor" => "10",
+              "full" => "5.10"
+            },
+          },
         }
       end
 
@@ -270,6 +360,15 @@ describe 'pam::limits' do
           {
             :osfamily                  => 'RedHat',
             :operatingsystemmajrelease => '5',
+            :os                         => {
+              "name" => "RedHat",
+              "family" => "RedHat",
+              "release" => {
+                "major" => "5",
+                "minor" => "10",
+                "full" => "5.10"
+              },
+            },
           }
         end
 
@@ -294,6 +393,15 @@ describe 'pam::limits' do
         {
           :osfamily                   => 'RedHat',
           :operatingsystemmajrelease  => '5',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "5",
+              "minor" => "10",
+              "full" => "5.10"
+            },
+          },
         }
       end
 
@@ -310,6 +418,15 @@ describe 'pam::limits' do
         {
           :osfamily                   => 'RedHat',
           :operatingsystemmajrelease  => '5',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "5",
+              "minor" => "10",
+              "full" => "5.10"
+            },
+          },
         }
       end
 
@@ -326,6 +443,15 @@ describe 'pam::limits' do
         {
           :osfamily                  => 'RedHat',
           :operatingsystemmajrelease => '5',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "5",
+              "minor" => "10",
+              "full" => "5.10"
+            },
+          },
         }
       end
 
@@ -341,6 +467,15 @@ describe 'pam::limits' do
         {
           :osfamily          => 'Suse',
           :lsbmajdistrelease => '10',
+          :os                 => {
+            "name" => "openSUSE",
+            "family" => "Suse",
+            "release" => {
+              "major" => "10",
+              "full" => "10.1",
+              "minor" => "1"
+            }
+          },
         }
       end
 

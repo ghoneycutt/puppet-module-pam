@@ -6,6 +6,15 @@ describe 'pam::accesslogin' do
         {
           :osfamily                   => 'RedHat',
           :operatingsystemmajrelease  => '5',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "5",
+              "minor" => "10",
+              "full" => "5.10"
+            },
+          },
         }
       end
 
@@ -42,6 +51,15 @@ describe 'pam::accesslogin' do
         {
           :osfamily                   => 'RedHat',
           :operatingsystemmajrelease  => '5',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "5",
+              "minor" => "10",
+              "full" => "5.10"
+            },
+          },
         }
       end
       let(:pre_condition) do
@@ -82,6 +100,15 @@ describe 'pam::accesslogin' do
         {
           :osfamily                   => 'RedHat',
           :operatingsystemmajrelease  => '5',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "5",
+              "minor" => "10",
+              "full" => "5.10"
+            },
+          },
         }
       end
       let(:pre_condition) do
@@ -96,6 +123,15 @@ describe 'pam::accesslogin' do
         {
           :osfamily                   => 'RedHat',
           :operatingsystemmajrelease  => '5',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "5",
+              "minor" => "10",
+              "full" => "5.10"
+            },
+          },
         }
       end
       let(:pre_condition) do
@@ -109,6 +145,15 @@ describe 'pam::accesslogin' do
         {
           :osfamily                   => 'RedHat',
           :operatingsystemmajrelease  => '5',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "5",
+              "minor" => "10",
+              "full" => "5.10"
+            },
+          },
         }
       end
       let(:pre_condition) do
@@ -122,6 +167,15 @@ describe 'pam::accesslogin' do
         {
           :osfamily                   => 'RedHat',
           :operatingsystemmajrelease  => '5',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "5",
+              "minor" => "10",
+              "full" => "5.10"
+            },
+          },
         }
       end
       let(:pre_condition) do
@@ -139,6 +193,15 @@ describe 'pam::accesslogin' do
         {
           :osfamily                   => 'RedHat',
           :operatingsystemmajrelease  => '5',
+          :os                         => {
+            "name" => "RedHat",
+            "family" => "RedHat",
+            "release" => {
+              "major" => "5",
+              "minor" => "10",
+              "full" => "5.10"
+            },
+          },
         }
       end
 

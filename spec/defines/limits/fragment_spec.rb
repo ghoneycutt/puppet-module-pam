@@ -10,6 +10,15 @@ describe 'pam::limits::fragment' do
       {
         :osfamily                   => 'RedHat',
         :operatingsystemmajrelease  => '5',
+        :os                         => {
+          "name" => "RedHat",
+          "family" => "RedHat",
+          "release" => {
+            "major" => "5",
+            "minor" => "10",
+            "full" => "5.10"
+          },
+        },
       }
     }
 
@@ -38,6 +47,15 @@ describe 'pam::limits::fragment' do
       {
         :osfamily                   => 'RedHat',
         :operatingsystemmajrelease  => '5',
+        :os                         => {
+          "name" => "RedHat",
+          "family" => "RedHat",
+          "release" => {
+            "major" => "5",
+            "minor" => "10",
+            "full" => "5.10"
+          },
+        },
       }
     }
 
@@ -75,6 +93,15 @@ root soft nproc unlimited
       {
         :osfamily                   => 'RedHat',
         :operatingsystemmajrelease  => '5',
+        :os                         => {
+          "name" => "RedHat",
+          "family" => "RedHat",
+          "release" => {
+            "major" => "5",
+            "minor" => "10",
+            "full" => "5.10"
+          },
+        },
       }
     }
 
@@ -110,6 +137,15 @@ root soft nproc unlimited
       {
         :osfamily                   => 'RedHat',
         :operatingsystemmajrelease  => '5',
+        :os                         => {
+          "name" => "RedHat",
+          "family" => "RedHat",
+          "release" => {
+            "major" => "5",
+            "minor" => "10",
+            "full" => "5.10"
+          },
+        },
       }
     }
 
@@ -136,6 +172,15 @@ root soft nproc unlimited
       {
         :osfamily                   => 'RedHat',
         :operatingsystemmajrelease  => '5',
+        :os                         => {
+          "name" => "RedHat",
+          "family" => "RedHat",
+          "release" => {
+            "major" => "5",
+            "minor" => "10",
+            "full" => "5.10"
+          },
+        },
       }
     }
 
@@ -156,6 +201,15 @@ root soft nproc unlimited
       {
         :osfamily                   => 'RedHat',
         :operatingsystemmajrelease  => '5',
+        :os                         => {
+          "name" => "RedHat",
+          "family" => "RedHat",
+          "release" => {
+            "major" => "5",
+            "minor" => "10",
+            "full" => "5.10"
+          },
+        },
       }
     }
     let(:params) {
@@ -176,6 +230,15 @@ root soft nproc unlimited
       {
         :osfamily                   => 'RedHat',
         :operatingsystemmajrelease  => '5',
+        :os                         => {
+          "name" => "RedHat",
+          "family" => "RedHat",
+          "release" => {
+            "major" => "5",
+            "minor" => "10",
+            "full" => "5.10"
+          },
+        },
       }
     }
 
@@ -192,6 +255,15 @@ root soft nproc unlimited
       {
         :osfamily               => 'Suse',
         :lsbmajdistrelease      => '10',
+        :os                     => {
+          "name" => "openSUSE",
+          "family" => "Suse",
+          "release" => {
+            "major" => "10",
+            "full" => "10.1",
+            "minor" => "1"
+          }
+        },
       }
     }
     it 'should fail' do

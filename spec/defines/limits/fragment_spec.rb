@@ -254,7 +254,7 @@ root soft nproc unlimited
     let(:facts) {
       {
         :osfamily               => 'Suse',
-        :lsbmajdistrelease      => '10',
+        :operatingsystemmajrelease => '10',
         :os                     => {
           "name" => "openSUSE",
           "family" => "Suse",

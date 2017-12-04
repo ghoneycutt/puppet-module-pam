@@ -75,7 +75,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Suse',
-          :lsbmajdistrelease => '9',
+          :operatingsystemmajrelease => '9',
           :os => {
             "name" => "openSUSE",
             "family" => "Suse",
@@ -96,7 +96,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Suse',
-          :lsbmajdistrelease => '10',
+          :operatingsystemmajrelease => '10',
           :os => {
             "name" => "openSUSE",
             "family" => "Suse",
@@ -117,7 +117,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Suse',
-          :lsbmajdistrelease => '11',
+          :operatingsystemmajrelease => '11',
           :os => {
             "name" => "openSUSE",
             "family" => "Suse",
@@ -140,7 +140,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Suse',
-          :lsbmajdistrelease => '12',
+          :operatingsystemmajrelease => '12',
           :os => {
             "name" => "openSUSE",
             "family" => "Suse",
@@ -163,7 +163,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Suse',
-          :lsbmajdistrelease => '13',
+          :operatingsystemmajrelease => '13',
           :os => {
             "name" => "openSUSE",
             "family" => "Suse",
@@ -395,7 +395,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Suse',
-          :lsbmajdistrelease => '8',
+          :operatingsystemmajrelease => '8',
           :os => {
             "name" => "openSUSE",
             "family" => "Suse",

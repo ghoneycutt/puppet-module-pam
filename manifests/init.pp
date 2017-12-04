@@ -231,7 +231,7 @@ class pam (
           }
         }
         'Suse': {
-          case $::lsbmajdistrelease {
+          case $::operatingsystemmajrelease {
             '9': {
 
               file { 'pam_other':
@@ -442,7 +442,7 @@ class pam (
               }
             }
             default : {
-              fail("Pam is only supported on Suse 9, 10, 11, 12 and 13. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
+              fail("Pam is only supported on Suse 9, 10, 11, 12 and 13. Your operatingsystemmajrelease is identified as <${::operatingsystemmajrelease}}>.")
             }
           }
         }

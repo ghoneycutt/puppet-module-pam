@@ -12,7 +12,7 @@ define pam::limits::fragment (
   include ::pam
   include ::pam::limits
 
-  if $::osfamily == 'Suse' and $::lsbmajdistrelease == '10' {
+  if $::osfamily == 'Suse' and $::operatingsystemmajrelease == '10' {
     fail('You can not use pam::limits::fragment together with Suse 10.x releases')
   }
 

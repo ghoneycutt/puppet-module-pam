@@ -141,7 +141,7 @@ class pam (
           file { 'pam_system_auth_ac':
             ensure  => file,
             path    => $system_auth_ac_file,
-            content => template('pam/system-auth-ac.erb'),
+            content => template('pam/system_auth_ac.erb'),
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
@@ -161,7 +161,7 @@ class pam (
             file { 'pam_password_auth_ac':
               ensure  => file,
               path    => $password_auth_ac_file,
-              content => template('pam/password-auth-ac.erb'),
+              content => template('pam/password_auth_ac.erb'),
               owner   => 'root',
               group   => 'root',
               mode    => '0644',
@@ -183,7 +183,7 @@ class pam (
           file { 'pam_common_auth':
             ensure  => file,
             path    => $common_auth_file,
-            content => template('pam/common-auth-pc.erb'),
+            content => template('pam/common_auth_pc.erb'),
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
@@ -193,7 +193,7 @@ class pam (
           file { 'pam_common_account':
             ensure  => file,
             path    => $common_account_file,
-            content => template('pam/common-account-pc.erb'),
+            content => template('pam/common_account_pc.erb'),
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
@@ -203,7 +203,7 @@ class pam (
           file { 'pam_common_password':
             ensure  => file,
             path    => $common_password_file,
-            content => template('pam/common-password-pc.erb'),
+            content => template('pam/common_password_pc.erb'),
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
@@ -213,7 +213,7 @@ class pam (
           file { 'pam_common_noninteractive_session':
             ensure  => file,
             path    => $common_session_noninteractive_file,
-            content => template('pam/common-session-pc.erb'),
+            content => template('pam/common_session_pc.erb'),
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
@@ -223,7 +223,7 @@ class pam (
           file { 'pam_common_session':
             ensure  => file,
             path    => $common_session_file,
-            content => template('pam/common-session-pc.erb'),
+            content => template('pam/common_session_pc.erb'),
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
@@ -248,7 +248,7 @@ class pam (
               file { 'pam_common_auth':
                 ensure  => file,
                 path    => $common_auth_file,
-                content => template('pam/common-auth-pc.erb'),
+                content => template('pam/common_auth_pc.erb'),
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
@@ -258,7 +258,7 @@ class pam (
               file { 'pam_common_account':
                 ensure  => file,
                 path    => $common_account_file,
-                content => template('pam/common-account-pc.erb'),
+                content => template('pam/common_account_pc.erb'),
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
@@ -268,7 +268,7 @@ class pam (
               file { 'pam_common_password':
                 ensure  => file,
                 path    => $common_password_file,
-                content => template('pam/common-password-pc.erb'),
+                content => template('pam/common_password_pc.erb'),
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
@@ -278,7 +278,7 @@ class pam (
               file { 'pam_common_session':
                 ensure  => file,
                 path    => $common_session_file,
-                content => template('pam/common-session-pc.erb'),
+                content => template('pam/common_session_pc.erb'),
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
@@ -290,7 +290,7 @@ class pam (
               file { 'pam_common_auth_pc':
                 ensure  => file,
                 path    => $common_auth_pc_file,
-                content => template('pam/common-auth-pc.erb'),
+                content => template('pam/common_auth_pc.erb'),
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
@@ -300,7 +300,7 @@ class pam (
               file { 'pam_common_account_pc':
                 ensure  => file,
                 path    => $common_account_pc_file,
-                content => template('pam/common-account-pc.erb'),
+                content => template('pam/common_account_pc.erb'),
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
@@ -310,7 +310,7 @@ class pam (
               file { 'pam_common_password_pc':
                 ensure  => file,
                 path    =>  $common_password_pc_file,
-                content => template('pam/common-password-pc.erb'),
+                content => template('pam/common_password_pc.erb'),
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
@@ -320,7 +320,7 @@ class pam (
               file { 'pam_common_session_pc':
                 ensure  => file,
                 path    => $common_session_pc_file,
-                content => template('pam/common-session-pc.erb'),
+                content => template('pam/common_session_pc.erb'),
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',

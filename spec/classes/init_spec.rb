@@ -254,8 +254,6 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Debian',
-          :lsbdistid => 'Ubuntu',
-          :lsbdistrelease => '12.04',
           :os => {
             "release" => {
               "major" => "12.04",
@@ -275,8 +273,6 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Debian',
-          :lsbdistid => 'Ubuntu',
-          :lsbdistrelease => '14.04',
           :os => {
             "release" => {
               "major" => "14.04",
@@ -296,8 +292,6 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Debian',
-          :lsbdistid => 'Ubuntu',
-          :lsbdistrelease => '16.04',
           :os => {
             "release" => {
               "major" => "16.04",
@@ -317,8 +311,6 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Debian',
-          :lsbdistid => 'Debian',
-          :lsbmajdistrelease => '7',
           :os => {
             "name" => "Debian",
             "family" => "Debian",
@@ -339,8 +331,6 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Debian',
-          :lsbdistid => 'Debian',
-          :lsbmajdistrelease => '8',
           :os => {
             "name" => "Debian",
             "family" => "Debian",
@@ -379,7 +369,6 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Debian',
-          :lsbmajdistrelease => '6',
           :os => {
             "name" => "Debian",
             "family" => "Debian",
@@ -411,8 +400,6 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Debian',
-          :lsbdistrelease => '10.04',
-          :lsbdistid => 'Ubuntu',
           :os => {
             "release" => {
               "major" => "10.04",

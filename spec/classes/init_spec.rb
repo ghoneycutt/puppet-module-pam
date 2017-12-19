@@ -266,7 +266,7 @@ describe 'pam' do
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
-            :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
+            :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
           }, ],
       },
     'ubuntu1404' =>
@@ -285,7 +285,7 @@ describe 'pam' do
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
-            :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
+            :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
           }, ],
       },
     'ubuntu1604' =>
@@ -304,7 +304,7 @@ describe 'pam' do
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
-            :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
+            :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
           }, ],
       },
     'debian7' =>
@@ -324,7 +324,7 @@ describe 'pam' do
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
-            :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
+            :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
           }, ],
       },
     'debian8' =>
@@ -344,7 +344,7 @@ describe 'pam' do
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
-            :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
+            :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
           }, ],
       }
   }
@@ -546,7 +546,6 @@ describe 'pam' do
             path = "#{dirpath}#{file[:prefix]}#{type}#{file[:suffix]}"
             path.gsub! '_', '-'
             path.sub! 'pam-', ''
-            path.sub! 'noninteractive-session', 'session-noninteractive'
             it {
               should contain_file(filename).with({
                 'ensure'  => 'file',

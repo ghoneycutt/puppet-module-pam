@@ -53,28 +53,6 @@ class pam (
   Boolean $manage_nsswitch                                  = true,
 ) {
 
-  # Fail on unsupported platforms
-  if $facts['os']['family'] == 'RedHat' and !($facts['os']['release']['major'] in ['5', '6', '7']) {
-    fail("osfamily RedHat's os.release.major is <${::facts['os']['release']['major']}> and must be 5, 6 or 7")
-  }
-  if $facts['os']['family'] == 'Suse' and !($facts['os']['release']['major'] in ['9', '10', '11', '12', '13']) {
-    fail("osfamily Suse's os.release.major is <${::facts['os']['release']['major']}> and must be 9, 10, 11, 12 or 13")
-  }
-  if $facts['os']['family'] == 'Debian' {
-    if $facts['os']['name'] == 'Ubuntu' {
-      if !($facts['os']['release']['major'] in ['12.04', '14.04', '16.04']) {
-        fail("Ubuntu's os.release.major is <${facts['os']['release']['major']}> and must be 12.04, 14.04, or 16.04")
-      }
-    } else {
-      if !($facts['os']['release']['major'] in ['7', '8']) {
-        fail("Debian's os.release.major is <${facts['os']['release']['major']}> and must be 7 or 8")
-      }
-    }
-  }
-  if $facts['os']['family'] == 'Solaris' and !($facts['kernelrelease'] in ['5.9', '5.10', '5.11']) {
-    fail("osfamily Solaris' kernelrelease is <${facts['kernelrelease']}> and must be 5.9, 5.10 or 5.11")
-  }
-
   if $manage_nsswitch {
     include ::nsswitch
   }
@@ -108,7 +86,7 @@ class pam (
     create_resources('pam::limits::fragment',$limits_fragments_real)
   }
 
-  case $::osfamily {
+  case $facts['os']['family'] {
     'RedHat', 'Suse', 'Debian': {
 
       include ::pam::accesslogin
@@ -136,235 +114,64 @@ class pam (
         mode    => $pam_d_sshd_mode,
       }
 
-      case $::osfamily {
+      case $facts['os']['family'] {
         'RedHat': {
-          file { 'pam_system_auth_ac':
-            ensure  => file,
-            path    => $system_auth_ac_file,
-            content => template('pam/system_auth_ac.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            require => Package[$package_name],
-          }
-
-          file { 'pam_system_auth':
-            ensure  => symlink,
-            path    => $system_auth_file,
-            target  => $system_auth_ac_file,
-            owner   => 'root',
-            group   => 'root',
-            require => Package[$package_name],
-          }
-
-          if $::operatingsystemmajrelease == '6' or $::operatingsystemmajrelease == '7' {
-            file { 'pam_password_auth_ac':
-              ensure  => file,
-              path    => $password_auth_ac_file,
-              content => template('pam/password_auth_ac.erb'),
-              owner   => 'root',
-              group   => 'root',
-              mode    => '0644',
-              require => Package[$package_name],
+          case $facts['os']['release']['major'] {
+            '5':  {
+              $_common_files        = [ 'system_auth' ]
+              $_common_files_suffix = '_ac'
+              $_add_links           = true
             }
-
-            file { 'pam_password_auth':
-              ensure  => symlink,
-              path    => $password_auth_file,
-              target  => $password_auth_ac_file,
-              owner   => 'root',
-              group   => 'root',
-              require => Package[$package_name],
+            '6','7': {
+              $_common_files        = [ 'password_auth', 'system_auth' ]
+              $_common_files_suffix = '_ac'
+              $_add_links           = true
+            }
+            default : {
+              fail("osfamily RedHat's os.release.major is <${::facts['os']['release']['major']}> and must be 5, 6 or 7")
             }
           }
         }
-        'Debian' : {
+        'Debian': {
+          $_common_files            = [ 'common_account', 'common_auth', 'common_password', 'common_session', 'common_session_noninteractive' ]
+          $_common_files_suffix     = undef
+          $_add_links               = false
 
-          file { 'pam_common_auth':
-            ensure  => file,
-            path    => $common_auth_file,
-            content => template('pam/common_auth_pc.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            require => Package[$package_name],
-          }
-
-          file { 'pam_common_account':
-            ensure  => file,
-            path    => $common_account_file,
-            content => template('pam/common_account_pc.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            require => Package[$package_name],
-          }
-
-          file { 'pam_common_password':
-            ensure  => file,
-            path    => $common_password_file,
-            content => template('pam/common_password_pc.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            require => Package[$package_name],
-          }
-
-          file { 'pam_common_noninteractive_session':
-            ensure  => file,
-            path    => $common_session_noninteractive_file,
-            content => template('pam/common_session_pc.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            require => Package[$package_name],
-          }
-
-          file { 'pam_common_session':
-            ensure  => file,
-            path    => $common_session_file,
-            content => template('pam/common_session_pc.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            require => Package[$package_name],
+          if $facts['os']['name'] == 'Ubuntu' {
+            if !($facts['os']['release']['major'] in ['12.04', '14.04', '16.04']) {
+              fail("Ubuntu's os.release.major is <${facts['os']['release']['major']}> and must be 12.04, 14.04, or 16.04")
+            }
+          } else {
+            if !($facts['os']['release']['major'] in ['7', '8']) {
+              fail("Debian's os.release.major is <${facts['os']['release']['major']}> and must be 7 or 8")
+            }
           }
         }
         'Suse': {
-          case $::operatingsystemmajrelease {
-            '9': {
-
+          case $facts['os']['release']['major'] {
+            '9':  {
+              $_common_files            = [ ] # not handled by iteration
               file { 'pam_other':
                 ensure  => file,
                 path    => $pam_d_other_file,
+                content => template('pam/pam.conf.erb'),
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                content => template('pam/pam.conf.erb'),
               }
             }
             '10': {
-
-              file { 'pam_common_auth':
-                ensure  => file,
-                path    => $common_auth_file,
-                content => template('pam/common_auth_pc.erb'),
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0644',
-                require => Package[$package_name],
-              }
-
-              file { 'pam_common_account':
-                ensure  => file,
-                path    => $common_account_file,
-                content => template('pam/common_account_pc.erb'),
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0644',
-                require => Package[$package_name],
-              }
-
-              file { 'pam_common_password':
-                ensure  => file,
-                path    => $common_password_file,
-                content => template('pam/common_password_pc.erb'),
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0644',
-                require => Package[$package_name],
-              }
-
-              file { 'pam_common_session':
-                ensure  => file,
-                path    => $common_session_file,
-                content => template('pam/common_session_pc.erb'),
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0644',
-                require => Package[$package_name],
-              }
+              $_common_files            = [ 'common_account', 'common_auth', 'common_password', 'common_session' ]
+              $_common_files_suffix = undef
+              $_add_links           = false
             }
             '11','12','13': {
-
-              file { 'pam_common_auth_pc':
-                ensure  => file,
-                path    => $common_auth_pc_file,
-                content => template('pam/common_auth_pc.erb'),
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0644',
-                require => Package[$package_name],
-              }
-
-              file { 'pam_common_account_pc':
-                ensure  => file,
-                path    => $common_account_pc_file,
-                content => template('pam/common_account_pc.erb'),
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0644',
-                require => Package[$package_name],
-              }
-
-              file { 'pam_common_password_pc':
-                ensure  => file,
-                path    =>  $common_password_pc_file,
-                content => template('pam/common_password_pc.erb'),
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0644',
-                require => Package[$package_name],
-              }
-
-              file { 'pam_common_session_pc':
-                ensure  => file,
-                path    => $common_session_pc_file,
-                content => template('pam/common_session_pc.erb'),
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0644',
-                require => Package[$package_name],
-              }
-
-              file { 'pam_common_session':
-                ensure  => symlink,
-                path    => $common_session_file,
-                target  => $common_session_pc_file,
-                owner   => 'root',
-                group   => 'root',
-                require => Package[$package_name],
-              }
-
-              file { 'pam_common_password':
-                ensure  => symlink,
-                path    => $common_password_file,
-                target  => $common_password_pc_file,
-                owner   => 'root',
-                group   => 'root',
-                require => Package[$package_name],
-              }
-
-              file { 'pam_common_account':
-                ensure  => symlink,
-                path    => $common_account_file,
-                target  => $common_account_pc_file,
-                owner   => 'root',
-                group   => 'root',
-                require => Package[$package_name],
-              }
-
-              file { 'pam_common_auth':
-                ensure  => symlink,
-                path    => $common_auth_file,
-                target  => $common_auth_pc_file,
-                owner   => 'root',
-                group   => 'root',
-                require => Package[$package_name],
-              }
+              $_common_files            = [ 'common_account', 'common_auth', 'common_password', 'common_session' ]
+              $_common_files_suffix = '_pc'
+              $_add_links           = true
             }
             default : {
-              fail("Pam is only supported on Suse 9, 10, 11, 12 and 13. Your operatingsystemmajrelease is identified as <${::operatingsystemmajrelease}}>.")
+              fail("osfamily Suse's os.release.major is <${::facts['os']['release']['major']}> and must be 9, 10, 11, 12 or 13")
             }
           }
         }
@@ -372,10 +179,33 @@ class pam (
           fail('Pam is not supported on your osfamily')
         }
       }
+
+      $_common_files.each |$_common_file| {
+        file { "pam_${_common_file}${_common_files_suffix}":
+          ensure  => file,
+          path    => getvar("${_common_file}${_common_files_suffix}_file"),
+          content => template("pam/${_common_file}.erb"),
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0644',
+          require => Package[$package_name],
+        }
+
+        if $_add_links == true {
+          file { "pam_${_common_file}":
+            ensure  => symlink,
+            path    => getvar("${_common_file}_file"),
+            target  => getvar("${_common_file}${_common_files_suffix}_file"),
+            owner   => 'root',
+            group   => 'root',
+            require => Package[$package_name],
+          }
+        }
+      }
     }
 
     'Solaris': {
-      case $::kernelrelease {
+      case $facts['kernelrelease'] {
         '5.9','5.10': {
           file { 'pam_conf':
             ensure  => file,
@@ -397,7 +227,7 @@ class pam (
           }
         }
         default: {
-          fail("Pam is only supported on Solaris 9, 10 and 11. Your kernelrelease is identified as <${::kernelrelease}>.")
+          fail("osfamily Solaris' kernelrelease is <${facts['kernelrelease']}> and must be 5.9, 5.10 or 5.11")
         }
       }
     }

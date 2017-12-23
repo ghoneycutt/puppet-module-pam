@@ -887,12 +887,30 @@ describe 'pam' do
     let(:mandatory_params) { {} }
 
     validations = {
+      'array specific for common_files' => {
+        :name    => %w(common_files),
+        :valid   => [%w(system_auth)],
+        :invalid => ['string', { 'ha' => 'sh' }, 3, 2.42, false, nil],
+        :message => 'expects an Array', # Puppet 4 & 5
+      },
       'array for pam_sshd_(auth|account|password|session)_lines' => {
         :name    => %w(pam_sshd_auth_lines pam_sshd_account_lines pam_sshd_password_lines pam_sshd_session_lines),
         :params  => { :pam_d_sshd_template => 'pam/sshd.custom.erb', :pam_sshd_auth_lines => ['#'], :pam_sshd_account_lines => ['#'], :pam_sshd_password_lines => ['#'], :pam_sshd_session_lines => ['#']},
         :valid   => [%w(array)],
         :invalid => ['string', { 'ha' => 'sh' }, 3, 2.42, true, false],
         :message => 'expects a value of type Undef or Array',
+      },
+      'boolean' => {
+        :name    => %w(common_files_create_links),
+        :valid   => [true, false],
+        :invalid => ['string', %w(array), { 'ha' => 'sh' }, 3, 2.42, 'false', nil],
+        :message => 'expects a Boolean value', # Puppet 4 & 5
+      },
+      'string (optional) specific for common_files_suffix' => {
+        :name    => %w(common_files_suffix),
+        :valid   => ['_ac'],
+        :invalid => [%w(array), { 'ha' => 'sh' }, 3, 2.42, true],
+        :message => 'expects a value of type Undef or String',  # Puppet 4 & 5
       },
     }
 

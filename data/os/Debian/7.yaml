@@ -1,4 +1,13 @@
 ---
+pam::common_files_create_links: false
+pam::common_files_suffix:       ~
+pam::common_files:
+  - common_account
+  - common_auth
+  - common_password
+  - common_session
+  - common_session_noninteractive
+
 pam::pam_d_login_template: pam/login.debian7.erb
 pam::pam_d_sshd_template: pam/sshd.debian7.erb
 pam::package_name: libpam0g

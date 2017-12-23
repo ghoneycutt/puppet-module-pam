@@ -51,6 +51,9 @@ class pam (
   Optional[Array] $pam_password_password_lines              = undef,
   Optional[Array] $pam_password_session_lines               = undef,
   Boolean $manage_nsswitch                                  = true,
+  Array $common_files                                       = [],
+  Boolean $common_files_create_links                        = false,
+  Optional[String] $common_files_suffix                     = undef,
 ) {
 
   if $pam_d_sshd_template == 'pam/sshd.custom.erb' {
@@ -71,26 +74,14 @@ class pam (
 
   case $facts['os']['family'] {
     'RedHat': {
-      $_common_files_suffix = '_ac'
-      $_add_links           = true
-
       case $facts['os']['release']['major'] {
-        '5':  {
-          $_common_files = [ 'system_auth' ]
-        }
-        '6','7': {
-          $_common_files = [ 'password_auth', 'system_auth' ]
-        }
+        '5','6','7':  { }
         default : {
           fail("osfamily RedHat's os.release.major is <${::facts['os']['release']['major']}> and must be 5, 6 or 7")
         }
       }
     }
     'Debian': {
-      $_common_files            = [ 'common_account', 'common_auth', 'common_password', 'common_session', 'common_session_noninteractive' ]
-      $_common_files_suffix     = undef
-      $_add_links               = false
-
       if $facts['os']['name'] == 'Ubuntu' {
         if !($facts['os']['release']['major'] in ['12.04', '14.04', '16.04']) {
           fail("Ubuntu's os.release.major is <${facts['os']['release']['major']}> and must be 12.04, 14.04, or 16.04")
@@ -103,21 +94,7 @@ class pam (
     }
     'Suse': {
       case $facts['os']['release']['major'] {
-        '9': {
-          $_common_files        = [ 'other' ]
-          $_common_files_suffix = undef
-          $_add_links           = false
-        }
-        '10': {
-          $_common_files        = [ 'common_account', 'common_auth', 'common_password', 'common_session' ]
-          $_common_files_suffix = undef
-          $_add_links           = false
-        }
-        '11','12','13': {
-          $_common_files        = [ 'common_account', 'common_auth', 'common_password', 'common_session' ]
-          $_common_files_suffix = '_pc'
-          $_add_links           = true
-        }
+        '9','10','11','12','13': { }
         default : {
           fail("osfamily Suse's os.release.major is <${::facts['os']['release']['major']}> and must be 9, 10, 11, 12 or 13")
         }
@@ -125,11 +102,7 @@ class pam (
     }
     'Solaris': {
       case $facts['kernelrelease'] {
-        '5.9','5.10','5.11': {
-          $_common_files        = [ 'other' ]
-          $_common_files_suffix = undef
-          $_add_links           = false
-        }
+        '5.9','5.10','5.11': { }
         default: {
           fail("osfamily Solaris' kernelrelease is <${facts['kernelrelease']}> and must be 5.9, 5.10 or 5.11")
         }
@@ -188,7 +161,7 @@ class pam (
     create_resources('pam::limits::fragment',$limits_fragments_real)
   }
 
-  $_common_files.each |$_common_file| {
+  $common_files.each |$_common_file| {
     # Solaris specific group
     $_real_group = $facts['os']['family'] ? {
       'Solaris' => 'sys',
@@ -201,8 +174,8 @@ class pam (
         $_real_path     = $pam_conf_file
       }
       default: {
-        $_resource_name = "pam_${_common_file}${_common_files_suffix}"
-        $_real_path     = getvar("${_common_file}${_common_files_suffix}_file")
+        $_resource_name = "pam_${_common_file}${common_files_suffix}"
+        $_real_path     = getvar("${_common_file}${common_files_suffix}_file")
       }
     }
 
@@ -216,11 +189,11 @@ class pam (
       require => Package[$package_name],
     }
 
-    if $_add_links == true {
+    if $common_files_create_links == true {
       file { "pam_${_common_file}":
         ensure  => symlink,
         path    => getvar("${_common_file}_file"),
-        target  => getvar("${_common_file}${_common_files_suffix}_file"),
+        target  => getvar("${_common_file}${common_files_suffix}_file"),
         owner   => 'root',
         group   => $_real_group,
         require => Package[$package_name],

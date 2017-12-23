@@ -56,6 +56,19 @@ class pam (
   Optional[String] $common_files_suffix                     = undef,
 ) {
 
+  # Fail on unsupported platforms
+  if $facts['os']['family'] == 'RedHat' and !($facts['os']['release']['major'] in ['5','6','7']) {
+    fail("osfamily RedHat's os.release.major is <${::facts['os']['release']['major']}> and must be 5, 6 or 7")
+  } elsif $facts['os']['family'] == 'Solaris' and !($facts['kernelrelease'] in ['5.9','5.10','5.11']) {
+    fail("osfamily Solaris' kernelrelease is <${facts['kernelrelease']}> and must be 5.9, 5.10 or 5.11")
+  } elsif $facts['os']['family'] == 'Suse' and !($facts['os']['release']['major'] in ['9','10','11','12','13']) {
+    fail("osfamily Suse's os.release.major is <${::facts['os']['release']['major']}> and must be 9, 10, 11, 12 or 13")
+  } elsif $facts['os']['name'] == 'Debian' and !($facts['os']['release']['major'] in ['7','8']) {
+    fail("Debian's os.release.major is <${facts['os']['release']['major']}> and must be 7 or 8")
+  } elsif $facts['os']['name'] == 'Ubuntu' and !($facts['os']['release']['major'] in ['12.04', '14.04', '16.04']) {
+    fail("Ubuntu's os.release.major is <${facts['os']['release']['major']}> and must be 12.04, 14.04, or 16.04")
+  }
+
   if $pam_d_sshd_template == 'pam/sshd.custom.erb' {
     unless $pam_sshd_auth_lines and
       $pam_sshd_account_lines and
@@ -72,76 +85,31 @@ class pam (
     }
   }
 
-  case $facts['os']['family'] {
-    'RedHat': {
-      case $facts['os']['release']['major'] {
-        '5','6','7':  { }
-        default : {
-          fail("osfamily RedHat's os.release.major is <${::facts['os']['release']['major']}> and must be 5, 6 or 7")
-        }
-      }
-    }
-    'Debian': {
-      if $facts['os']['name'] == 'Ubuntu' {
-        if !($facts['os']['release']['major'] in ['12.04', '14.04', '16.04']) {
-          fail("Ubuntu's os.release.major is <${facts['os']['release']['major']}> and must be 12.04, 14.04, or 16.04")
-        }
-      } else {
-        if !($facts['os']['release']['major'] in ['7', '8']) {
-          fail("Debian's os.release.major is <${facts['os']['release']['major']}> and must be 7 or 8")
-        }
-      }
-    }
-    'Suse': {
-      case $facts['os']['release']['major'] {
-        '9','10','11','12','13': { }
-        default : {
-          fail("osfamily Suse's os.release.major is <${::facts['os']['release']['major']}> and must be 9, 10, 11, 12 or 13")
-        }
-      }
-    }
-    'Solaris': {
-      case $facts['kernelrelease'] {
-        '5.9','5.10','5.11': { }
-        default: {
-          fail("osfamily Solaris' kernelrelease is <${facts['kernelrelease']}> and must be 5.9, 5.10 or 5.11")
-        }
-      }
-    }
-    default: {
-      fail('Pam is not supported on your osfamily')
-    }
-  }
+  if ($facts['os']['family'] in ['RedHat','Suse','Debian']) {
+    include ::pam::accesslogin
+    include ::pam::limits
 
-  case $facts['os']['family'] {
-    'RedHat', 'Suse', 'Debian': {
-
-      include ::pam::accesslogin
-      include ::pam::limits
-
-      package { $package_name:
-        ensure => installed,
-      }
-
-      file { 'pam_d_login':
-        ensure  => file,
-        path    => $pam_d_login_path,
-        content => template($pam_d_login_template),
-        owner   => $pam_d_login_owner,
-        group   => $pam_d_login_group,
-        mode    => $pam_d_login_mode,
-      }
-
-      file { 'pam_d_sshd':
-        ensure  => file,
-        path    => $pam_d_sshd_path,
-        content => template($pam_d_sshd_template),
-        owner   => $pam_d_sshd_owner,
-        group   => $pam_d_sshd_group,
-        mode    => $pam_d_sshd_mode,
-      }
+    package { $package_name:
+      ensure => installed,
     }
-    default: {} # satisfy puppet-lint
+
+    file { 'pam_d_login':
+      ensure  => file,
+      path    => $pam_d_login_path,
+      content => template($pam_d_login_template),
+      owner   => $pam_d_login_owner,
+      group   => $pam_d_login_group,
+      mode    => $pam_d_login_mode,
+    }
+
+    file { 'pam_d_sshd':
+      ensure  => file,
+      path    => $pam_d_sshd_path,
+      content => template($pam_d_sshd_template),
+      owner   => $pam_d_sshd_owner,
+      group   => $pam_d_sshd_group,
+      mode    => $pam_d_sshd_mode,
+    }
   }
 
   if $manage_nsswitch {

@@ -53,10 +53,6 @@ class pam (
   Boolean $manage_nsswitch                                  = true,
 ) {
 
-  if $manage_nsswitch {
-    include ::nsswitch
-  }
-
   if $pam_d_sshd_template == 'pam/sshd.custom.erb' {
     unless $pam_sshd_auth_lines and
       $pam_sshd_account_lines and
@@ -73,17 +69,75 @@ class pam (
     }
   }
 
-  if $services {
-    create_resources('pam::service',$services)
-  }
+  case $facts['os']['family'] {
+    'RedHat': {
+      $_common_files_suffix = '_ac'
+      $_add_links           = true
 
-  if $limits_fragments {
-    if $limits_fragments_hiera_merge {
-      $limits_fragments_real = hiera_hash('pam::limits_fragments')
-    } else {
-      $limits_fragments_real = $limits_fragments
+      case $facts['os']['release']['major'] {
+        '5':  {
+          $_common_files = [ 'system_auth' ]
+        }
+        '6','7': {
+          $_common_files = [ 'password_auth', 'system_auth' ]
+        }
+        default : {
+          fail("osfamily RedHat's os.release.major is <${::facts['os']['release']['major']}> and must be 5, 6 or 7")
+        }
+      }
     }
-    create_resources('pam::limits::fragment',$limits_fragments_real)
+    'Debian': {
+      $_common_files            = [ 'common_account', 'common_auth', 'common_password', 'common_session', 'common_session_noninteractive' ]
+      $_common_files_suffix     = undef
+      $_add_links               = false
+
+      if $facts['os']['name'] == 'Ubuntu' {
+        if !($facts['os']['release']['major'] in ['12.04', '14.04', '16.04']) {
+          fail("Ubuntu's os.release.major is <${facts['os']['release']['major']}> and must be 12.04, 14.04, or 16.04")
+        }
+      } else {
+        if !($facts['os']['release']['major'] in ['7', '8']) {
+          fail("Debian's os.release.major is <${facts['os']['release']['major']}> and must be 7 or 8")
+        }
+      }
+    }
+    'Suse': {
+      case $facts['os']['release']['major'] {
+        '9': {
+          $_common_files        = [ 'other' ]
+          $_common_files_suffix = undef
+          $_add_links           = false
+        }
+        '10': {
+          $_common_files        = [ 'common_account', 'common_auth', 'common_password', 'common_session' ]
+          $_common_files_suffix = undef
+          $_add_links           = false
+        }
+        '11','12','13': {
+          $_common_files        = [ 'common_account', 'common_auth', 'common_password', 'common_session' ]
+          $_common_files_suffix = '_pc'
+          $_add_links           = true
+        }
+        default : {
+          fail("osfamily Suse's os.release.major is <${::facts['os']['release']['major']}> and must be 9, 10, 11, 12 or 13")
+        }
+      }
+    }
+    'Solaris': {
+      case $facts['kernelrelease'] {
+        '5.9','5.10','5.11': {
+          $_common_files        = [ 'other' ]
+          $_common_files_suffix = undef
+          $_add_links           = false
+        }
+        default: {
+          fail("osfamily Solaris' kernelrelease is <${facts['kernelrelease']}> and must be 5.9, 5.10 or 5.11")
+        }
+      }
+    }
+    default: {
+      fail('Pam is not supported on your osfamily')
+    }
   }
 
   case $facts['os']['family'] {
@@ -113,120 +167,64 @@ class pam (
         group   => $pam_d_sshd_group,
         mode    => $pam_d_sshd_mode,
       }
+    }
+    default: {} # satisfy puppet-lint
+  }
 
-      case $facts['os']['family'] {
-        'RedHat': {
-          case $facts['os']['release']['major'] {
-            '5':  {
-              $_common_files        = [ 'system_auth' ]
-              $_common_files_suffix = '_ac'
-              $_add_links           = true
-            }
-            '6','7': {
-              $_common_files        = [ 'password_auth', 'system_auth' ]
-              $_common_files_suffix = '_ac'
-              $_add_links           = true
-            }
-            default : {
-              fail("osfamily RedHat's os.release.major is <${::facts['os']['release']['major']}> and must be 5, 6 or 7")
-            }
-          }
-        }
-        'Debian': {
-          $_common_files            = [ 'common_account', 'common_auth', 'common_password', 'common_session', 'common_session_noninteractive' ]
-          $_common_files_suffix     = undef
-          $_add_links               = false
+  if $manage_nsswitch {
+    include ::nsswitch
+  }
 
-          if $facts['os']['name'] == 'Ubuntu' {
-            if !($facts['os']['release']['major'] in ['12.04', '14.04', '16.04']) {
-              fail("Ubuntu's os.release.major is <${facts['os']['release']['major']}> and must be 12.04, 14.04, or 16.04")
-            }
-          } else {
-            if !($facts['os']['release']['major'] in ['7', '8']) {
-              fail("Debian's os.release.major is <${facts['os']['release']['major']}> and must be 7 or 8")
-            }
-          }
-        }
-        'Suse': {
-          case $facts['os']['release']['major'] {
-            '9': {
-              $_common_files        = [ 'other' ]
-              $_common_files_suffix = undef
-              $_add_links           = false
-            }
-            '10': {
-              $_common_files            = [ 'common_account', 'common_auth', 'common_password', 'common_session' ]
-              $_common_files_suffix = undef
-              $_add_links           = false
-            }
-            '11','12','13': {
-              $_common_files            = [ 'common_account', 'common_auth', 'common_password', 'common_session' ]
-              $_common_files_suffix = '_pc'
-              $_add_links           = true
-            }
-            default : {
-              fail("osfamily Suse's os.release.major is <${::facts['os']['release']['major']}> and must be 9, 10, 11, 12 or 13")
-            }
-          }
-        }
-        default: {
-          fail('Pam is not supported on your osfamily')
-        }
+  if $services {
+    create_resources('pam::service',$services)
+  }
+
+  if $limits_fragments {
+    if $limits_fragments_hiera_merge {
+      $limits_fragments_real = hiera_hash('pam::limits_fragments')
+    } else {
+      $limits_fragments_real = $limits_fragments
+    }
+    create_resources('pam::limits::fragment',$limits_fragments_real)
+  }
+
+  $_common_files.each |$_common_file| {
+    # Solaris specific group
+    $_real_group = $facts['os']['family'] ? {
+      'Solaris' => 'sys',
+      default   => 'root',
+    }
+    # Solaris 9 & 10 specific configuration file path and name
+    case $facts['kernelrelease'] {
+      '5.9','5.10': {
+        $_resource_name = 'pam_conf'
+        $_real_path     = $pam_conf_file
       }
-
-      $_common_files.each |$_common_file| {
-        file { "pam_${_common_file}${_common_files_suffix}":
-          ensure  => file,
-          path    => getvar("${_common_file}${_common_files_suffix}_file"),
-          content => template("pam/${_common_file}.erb"),
-          owner   => 'root',
-          group   => 'root',
-          mode    => '0644',
-          require => Package[$package_name],
-        }
-
-        if $_add_links == true {
-          file { "pam_${_common_file}":
-            ensure  => symlink,
-            path    => getvar("${_common_file}_file"),
-            target  => getvar("${_common_file}${_common_files_suffix}_file"),
-            owner   => 'root',
-            group   => 'root',
-            require => Package[$package_name],
-          }
-        }
+      default: {
+        $_resource_name = "pam_${_common_file}${_common_files_suffix}"
+        $_real_path     = getvar("${_common_file}${_common_files_suffix}_file")
       }
     }
 
-    'Solaris': {
-      case $facts['kernelrelease'] {
-        '5.9','5.10': {
-          file { 'pam_conf':
-            ensure  => file,
-            path    => $pam_conf_file,
-            owner   => 'root',
-            group   => 'sys',
-            mode    => '0644',
-            content => template('pam/other.erb'),
-          }
-        }
-        '5.11': {
-          file { 'pam_other':
-            ensure  => file,
-            path    => $other_file,
-            owner   => 'root',
-            group   => 'sys',
-            mode    => '0644',
-            content => template('pam/other.erb'),
-          }
-        }
-        default: {
-          fail("osfamily Solaris' kernelrelease is <${facts['kernelrelease']}> and must be 5.9, 5.10 or 5.11")
-        }
-      }
+    file { $_resource_name:
+      ensure  => file,
+      path    => $_real_path,
+      content => template("pam/${_common_file}.erb"),
+      owner   => 'root',
+      group   => $_real_group,
+      mode    => '0644',
+      require => Package[$package_name],
     }
-    default: {
-      fail("Pam is only supported on RedHat, SuSE, Debian and Solaris osfamilies. Your osfamily is identified as <${::osfamily}>.")
+
+    if $_add_links == true {
+      file { "pam_${_common_file}":
+        ensure  => symlink,
+        path    => getvar("${_common_file}_file"),
+        target  => getvar("${_common_file}${_common_files_suffix}_file"),
+        owner   => 'root',
+        group   => $_real_group,
+        require => Package[$package_name],
+      }
     }
   }
 }

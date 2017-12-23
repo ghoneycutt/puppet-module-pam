@@ -32,7 +32,7 @@ class pam (
   Optional[Array] $pam_account_lines                        = undef,
   Optional[Array] $pam_password_lines                       = undef,
   Optional[Array] $pam_session_lines                        = undef,
-  Stdlib::Absolutepath $pam_d_other_file                    = '/etc/pam.d/other',
+  Stdlib::Absolutepath $other_file                          = '/etc/pam.d/other',
   Stdlib::Absolutepath $common_auth_file                    = '/etc/pam.d/common-auth',
   Stdlib::Absolutepath $common_auth_pc_file                 = '/etc/pam.d/common-auth-pc',
   Stdlib::Absolutepath $common_account_file                 = '/etc/pam.d/common-account',
@@ -149,16 +149,10 @@ class pam (
         }
         'Suse': {
           case $facts['os']['release']['major'] {
-            '9':  {
-              $_common_files            = [ ] # not handled by iteration
-              file { 'pam_other':
-                ensure  => file,
-                path    => $pam_d_other_file,
-                content => template('pam/pam.conf.erb'),
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0644',
-              }
+            '9': {
+              $_common_files        = [ 'other' ]
+              $_common_files_suffix = undef
+              $_add_links           = false
             }
             '10': {
               $_common_files            = [ 'common_account', 'common_auth', 'common_password', 'common_session' ]
@@ -213,17 +207,17 @@ class pam (
             owner   => 'root',
             group   => 'sys',
             mode    => '0644',
-            content => template('pam/pam.conf.erb'),
+            content => template('pam/other.erb'),
           }
         }
         '5.11': {
           file { 'pam_other':
             ensure  => file,
-            path    => $pam_d_other_file,
+            path    => $other_file,
             owner   => 'root',
             group   => 'sys',
             mode    => '0644',
-            content => template('pam/pam.conf.erb'),
+            content => template('pam/other.erb'),
           }
         }
         default: {

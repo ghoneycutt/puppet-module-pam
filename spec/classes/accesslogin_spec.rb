@@ -5,6 +5,7 @@ describe 'pam::accesslogin' do
       let(:facts) do
         {
           :osfamily                   => 'RedHat',
+          :operatingsystem            => 'RedHat',
           :operatingsystemmajrelease  => '5',
           :os                         => {
             "name" => "RedHat",
@@ -50,6 +51,7 @@ describe 'pam::accesslogin' do
       let(:facts) do
         {
           :osfamily                   => 'RedHat',
+          :operatingsystem            => 'RedHat',
           :operatingsystemmajrelease  => '5',
           :os                         => {
             "name" => "RedHat",
@@ -99,6 +101,7 @@ describe 'pam::accesslogin' do
       let(:facts) do
         {
           :osfamily                   => 'RedHat',
+          :operatingsystem            => 'RedHat',
           :operatingsystemmajrelease  => '5',
           :os                         => {
             "name" => "RedHat",
@@ -122,6 +125,7 @@ describe 'pam::accesslogin' do
       let(:facts) do
         {
           :osfamily                   => 'RedHat',
+          :operatingsystem            => 'RedHat',
           :operatingsystemmajrelease  => '5',
           :os                         => {
             "name" => "RedHat",
@@ -144,6 +148,7 @@ describe 'pam::accesslogin' do
       let(:facts) do
         {
           :osfamily                   => 'RedHat',
+          :operatingsystem            => 'RedHat',
           :operatingsystemmajrelease  => '5',
           :os                         => {
             "name" => "RedHat",
@@ -166,6 +171,7 @@ describe 'pam::accesslogin' do
       let(:facts) do
         {
           :osfamily                   => 'RedHat',
+          :operatingsystem            => 'RedHat',
           :operatingsystemmajrelease  => '5',
           :os                         => {
             "name" => "RedHat",
@@ -192,6 +198,7 @@ describe 'pam::accesslogin' do
       let(:facts) do
         {
           :osfamily                   => 'RedHat',
+          :operatingsystem            => 'RedHat',
           :operatingsystemmajrelease  => '5',
           :os                         => {
             "name" => "RedHat",

@@ -1,4 +1,9 @@
 ---
+pam::common_files_create_links: false
+pam::common_files_suffix:       ~
+pam::common_files:
+  - other
+
 pam::pam_auth_lines:
   - 'auth definitive         pam_user_policy.so.1'
   - 'auth requisite          pam_authtok_get.so.1'

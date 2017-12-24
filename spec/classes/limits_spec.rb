@@ -73,7 +73,6 @@ describe 'pam::limits' do
       let(:facts) do
         {
           :osfamily                  => 'RedHat',
-          :lsbmajdistrelease         => '6',
           :operatingsystemmajrelease => '6',
           :os                         => {
             "name" => "RedHat",
@@ -112,7 +111,6 @@ describe 'pam::limits' do
       let(:facts) do
         {
           :osfamily                  => 'RedHat',
-          :lsbmajdistrelease         => '6',
           :operatingsystemmajrelease => '6',
           :os                         => {
             "name" => "RedHat",
@@ -153,7 +151,6 @@ describe 'pam::limits' do
       let(:facts) do
         {
           :osfamily                  => 'RedHat',
-          :lsbmajdistrelease         => '6',
           :operatingsystemmajrelease => '6',
           :os                         => {
             "name" => "RedHat",
@@ -186,7 +183,6 @@ describe 'pam::limits' do
       let(:facts) do
         {
           :osfamily                  => 'RedHat',
-          :lsbmajdistrelease         => '6',
           :operatingsystemmajrelease => '6',
           :os                         => {
             "name" => "RedHat",

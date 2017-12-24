@@ -1,4 +1,10 @@
 ---
+pam::common_files_create_links: true
+pam::common_files_suffix:       '_ac'
+pam::common_files:
+  - password_auth
+  - system_auth
+
 pam::pam_d_login_template: pam/login.el7.erb
 pam::pam_d_sshd_template: pam/sshd.el7.erb
 pam::package_name: pam

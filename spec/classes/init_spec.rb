@@ -6,6 +6,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'RedHat',
+          :operatingsystem => 'RedHat',
           :operatingsystemmajrelease => '5',
           :os => {
             "name" => "RedHat",
@@ -29,6 +30,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'RedHat',
+          :operatingsystem => 'RedHat',
           :operatingsystemmajrelease => '6',
           :os => {
             "name" => "RedHat",
@@ -52,6 +54,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'RedHat',
+          :operatingsystem => 'RedHat',
           :operatingsystemmajrelease => '7',
           :os => {
             "name" => "RedHat",
@@ -75,6 +78,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Suse',
+          :operatingsystem => 'SLES',
           :operatingsystemmajrelease => '9',
           :os => {
             "name" => "openSUSE",
@@ -96,6 +100,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Suse',
+          :operatingsystem => 'SLES',
           :operatingsystemmajrelease => '10',
           :os => {
             "name" => "openSUSE",
@@ -117,6 +122,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Suse',
+          :operatingsystem => 'SLES',
           :operatingsystemmajrelease => '11',
           :os => {
             "name" => "openSUSE",
@@ -140,6 +146,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Suse',
+          :operatingsystem => 'SLES',
           :operatingsystemmajrelease => '12',
           :os => {
             "name" => "openSUSE",
@@ -163,6 +170,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Suse',
+          :operatingsystem => 'SLES',
           :operatingsystemmajrelease => '13',
           :os => {
             "name" => "openSUSE",
@@ -186,6 +194,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Solaris',
+          :operatingsystem => 'Solaris',
           :kernelrelease => '5.9',
           :os => {
             "name" => "Solaris",
@@ -209,6 +218,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Solaris',
+          :operatingsystem => 'Solaris',
           :kernelrelease => '5.10',
           :os => {
             "name" => "Solaris",
@@ -232,6 +242,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Solaris',
+          :operatingsystem => 'Solaris',
           :kernelrelease => '5.11',
           :os => {
             "name" => "Solaris",
@@ -254,6 +265,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Debian',
+          :operatingsystem => 'Ubuntu',
           :os => {
             "release" => {
               "major" => "12.04",
@@ -273,6 +285,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Debian',
+          :operatingsystem => 'Ubuntu',
           :os => {
             "release" => {
               "major" => "14.04",
@@ -292,6 +305,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Debian',
+          :operatingsystem => 'Ubuntu',
           :os => {
             "release" => {
               "major" => "16.04",
@@ -311,6 +325,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Debian',
+          :operatingsystem => 'Debian',
           :os => {
             "name" => "Debian",
             "family" => "Debian",
@@ -331,6 +346,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Debian',
+          :operatingsystem => 'Debian',
           :os => {
             "name" => "Debian",
             "family" => "Debian",
@@ -353,6 +369,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'RedHat',
+          :operatingsystem => 'RedHat',
           :operatingsystemmajrelease => '4',
           :os => {
             "name" => "RedHat",
@@ -369,6 +386,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Debian',
+          :operatingsystem => 'Debian',
           :os => {
             "name" => "Debian",
             "family" => "Debian",
@@ -384,6 +402,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Suse',
+          :operatingsystem => 'SLES',
           :operatingsystemmajrelease => '8',
           :os => {
             "name" => "openSUSE",
@@ -400,6 +419,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Debian',
+          :operatingsystem => 'Ubuntu',
           :os => {
             "release" => {
               "major" => "10.04",
@@ -414,6 +434,7 @@ describe 'pam' do
       {
         :facts_hash => {
           :osfamily => 'Solaris',
+          :operatingsystem => 'Solaris',
           :kernelrelease => '5.8',
         }
       },

@@ -4,6 +4,7 @@ describe 'pam::service', :type => :define do
     let(:facts) {
       {
         :osfamily                   => 'RedHat',
+        :operatingsystem            => 'RedHat',
         :operatingsystemmajrelease  => '5',
         :os                         => {
           "name" => "RedHat",

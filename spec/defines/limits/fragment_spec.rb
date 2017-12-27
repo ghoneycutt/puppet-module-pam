@@ -9,6 +9,7 @@ describe 'pam::limits::fragment' do
     let(:facts) {
       {
         :osfamily                   => 'RedHat',
+        :operatingsystem            => 'RedHat',
         :operatingsystemmajrelease  => '5',
         :os                         => {
           "name" => "RedHat",
@@ -46,6 +47,7 @@ describe 'pam::limits::fragment' do
     let(:facts) {
       {
         :osfamily                   => 'RedHat',
+        :operatingsystem            => 'RedHat',
         :operatingsystemmajrelease  => '5',
         :os                         => {
           "name" => "RedHat",
@@ -92,6 +94,7 @@ root soft nproc unlimited
     let(:facts) {
       {
         :osfamily                   => 'RedHat',
+        :operatingsystem            => 'RedHat',
         :operatingsystemmajrelease  => '5',
         :os                         => {
           "name" => "RedHat",
@@ -136,6 +139,7 @@ root soft nproc unlimited
     let(:facts) {
       {
         :osfamily                   => 'RedHat',
+        :operatingsystem            => 'RedHat',
         :operatingsystemmajrelease  => '5',
         :os                         => {
           "name" => "RedHat",
@@ -171,6 +175,7 @@ root soft nproc unlimited
     let(:facts) {
       {
         :osfamily                   => 'RedHat',
+        :operatingsystem            => 'RedHat',
         :operatingsystemmajrelease  => '5',
         :os                         => {
           "name" => "RedHat",
@@ -200,6 +205,7 @@ root soft nproc unlimited
     let(:facts) {
       {
         :osfamily                   => 'RedHat',
+        :operatingsystem            => 'RedHat',
         :operatingsystemmajrelease  => '5',
         :os                         => {
           "name" => "RedHat",
@@ -229,6 +235,7 @@ root soft nproc unlimited
     let(:facts) {
       {
         :osfamily                   => 'RedHat',
+        :operatingsystem            => 'RedHat',
         :operatingsystemmajrelease  => '5',
         :os                         => {
           "name" => "RedHat",
@@ -254,6 +261,7 @@ root soft nproc unlimited
     let(:facts) {
       {
         :osfamily               => 'Suse',
+        :operatingsystem            => 'RedHat',
         :operatingsystemmajrelease => '10',
         :os                     => {
           "name" => "openSUSE",

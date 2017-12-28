@@ -204,7 +204,7 @@ Group of $pam_d_login_path.
 - *Default*: 'root'
 
 ---
-#### pam_d_login_mode (type: String)
+#### pam_d_login_mode (type: Stdlib::Filemode)
 Mode of $pam_d_login_path.
 
 - *Default*: '0644'
@@ -235,7 +235,7 @@ Group of $pam_d_sshd_path.
 - *Default*: 'root'
 
 ---
-#### pam_d_sshd_mode (type: String)
+#### pam_d_sshd_mode (type: Stdlib::Filemode)
 Mode of $pam_d_sshd_path.
 
 - *Default*: '0644'
@@ -462,7 +462,7 @@ Group of access.conf.
 - *Default*: 'root'
 
 ---
-#### access_conf_mode (type: String)
+#### access_conf_mode (type: Stdlib::Filemode)
 Mode of access.conf.
 
 - *Default*: '0644'
@@ -489,7 +489,7 @@ Path to limits.conf.
 - *Default*: '/etc/security/limits.conf'
 
 ---
-#### config_file_mode (type: String)
+#### config_file_mode (type: Stdlib::Filemode)
 Mode for config_file.
 
 - *Default*: '0640'
@@ -514,7 +514,7 @@ Path to limits.d directory.
 - *Default*: '/etc/security/limits.d'
 
 ---
-#### limits_d_dir_mode (type: String)
+#### limits_d_dir_mode (type: Stdlib::Filemode)
 Mode for limits_d_dir.
 
 - *Default*: '0750'

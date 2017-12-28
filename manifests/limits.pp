@@ -3,13 +3,13 @@
 # Manage PAM limits.conf
 #
 class pam::limits (
-  Stdlib::Absolutepath $config_file             = '/etc/security/limits.conf',
-  Optional[Array] $config_file_lines            = undef,
-  Optional[String] $config_file_source          = undef,
-  Pattern[/^[0-7]{4}$/] $config_file_mode       = '0640',
-  Stdlib::Absolutepath $limits_d_dir            = '/etc/security/limits.d',
-  Pattern[/^[0-7]{4}$/] $limits_d_dir_mode      = '0750',
-  Boolean $purge_limits_d_dir                   = false,
+  Stdlib::Absolutepath $config_file    = '/etc/security/limits.conf',
+  Optional[Array] $config_file_lines   = undef,
+  Optional[String] $config_file_source = undef,
+  Stdlib::Filemode $config_file_mode   = '0640',
+  Stdlib::Absolutepath $limits_d_dir   = '/etc/security/limits.d',
+  Stdlib::Filemode $limits_d_dir_mode  = '0750',
+  Boolean $purge_limits_d_dir          = false,
 ) {
 
   include ::pam

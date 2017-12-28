@@ -1,5 +1,22 @@
 require 'spec_helper'
 describe 'pam::accesslogin' do
+  let(:facts) do
+    {
+      :osfamily                   => 'RedHat',
+      :operatingsystem            => 'RedHat',
+      :operatingsystemmajrelease  => '5',
+      :os                         => {
+        "name" => "RedHat",
+        "family" => "RedHat",
+        "release" => {
+          "major" => "5",
+          "minor" => "10",
+          "full" => "5.10"
+        },
+      },
+    }
+  end
+
   describe 'access.conf' do
     context 'with default values on supported platform' do
       let(:facts) do
@@ -235,4 +252,40 @@ describe 'pam::accesslogin' do
       }
     end
   end
+
+  describe 'variable type and content validations' do
+    # set needed custom facts and variables
+    let(:mandatory_params) { {} }
+
+    validations = {
+      'Stdlib::Filemode' => {
+        :name    => %w(access_conf_mode),
+        :valid   => %w(0644 0755 0640 0740),
+        :invalid => [ 2770, '0844', '755', '00644', 'string', %w(array), { 'ha' => 'sh' }, 3, 2.42, false, nil],
+        :message => 'expects a match for Stdlib::Filemode',  # Puppet 4 & 5
+      },
+    }
+
+    validations.sort.each do |type, var|
+      var[:name].each do |var_name|
+        var[:params] = {} if var[:params].nil?
+        var[:valid].each do |valid|
+          context "when #{var_name} (#{type}) is set to valid #{valid} (as #{valid.class})" do
+            let(:facts) { [mandatory_facts, var[:facts]].reduce(:merge) } if ! var[:facts].nil?
+            let(:params) { [mandatory_params, var[:params], { :"#{var_name}" => valid, }].reduce(:merge) }
+            it { should compile }
+          end
+        end
+
+        var[:invalid].each do |invalid|
+          context "when #{var_name} (#{type}) is set to invalid #{invalid} (as #{invalid.class})" do
+            let(:params) { [mandatory_params, var[:params], { :"#{var_name}" => invalid, }].reduce(:merge) }
+            it 'should fail' do
+              expect { should contain_class(subject) }.to raise_error(Puppet::Error, /#{var[:message]}/)
+            end
+          end
+        end
+      end # var[:name].each
+    end # validations.sort.each
+  end # describe 'variable type and content validations'
 end

@@ -908,6 +908,12 @@ describe 'pam' do
     let(:mandatory_params) { {} }
 
     validations = {
+      'Stdlib::Filemode' => {
+        :name    => %w(pam_d_login_mode pam_d_sshd_mode),
+        :valid   => %w(0644 0755 0640 0740),
+        :invalid => [ 2770, '0844', '755', '00644', 'string', %w(array), { 'ha' => 'sh' }, 3, 2.42, false, nil],
+        :message => 'expects a match for Stdlib::Filemode',  # Puppet 4 & 5
+      },
       'array specific for common_files' => {
         :name    => %w(common_files),
         :valid   => [%w(system_auth)],
@@ -940,6 +946,7 @@ describe 'pam' do
         var[:params] = {} if var[:params].nil?
         var[:valid].each do |valid|
           context "when #{var_name} (#{type}) is set to valid #{valid} (as #{valid.class})" do
+            let(:facts) { [mandatory_facts, var[:facts]].reduce(:merge) } if ! var[:facts].nil?
             let(:params) { [mandatory_params, var[:params], { :"#{var_name}" => valid, }].reduce(:merge) }
             it { should compile }
           end

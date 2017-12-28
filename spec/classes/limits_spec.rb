@@ -1,5 +1,22 @@
 require 'spec_helper'
 describe 'pam::limits' do
+  let(:facts) do
+    {
+      :osfamily                   => 'RedHat',
+      :operatingsystem            => 'RedHat',
+      :operatingsystemmajrelease  => '5',
+      :os                         => {
+        "name" => "RedHat",
+        "family" => "RedHat",
+        "release" => {
+          "major" => "5",
+          "minor" => "10",
+          "full" => "5.10"
+        },
+      },
+    }
+  end
+
   describe 'limits.conf' do
     context 'ensure file exists with default values for params on a supported platform' do
       let(:facts) do
@@ -251,32 +268,6 @@ describe 'pam::limits' do
         }.to raise_error(Puppet::Error,/Evaluation Error: Error while evaluating a Resource Statement/)
       end
     end
-
-    context 'with config_file_mode specified as an invalid mode' do
-      let(:params) { { :config_file_mode => '666' } }
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "5",
-              "minor" => "10",
-              "full" => "5.10"
-            },
-          },
-        }
-      end
-
-      it 'should fail' do
-        expect {
-          should contain_class('pam::limits')
-        }.to raise_error(Puppet::Error,/expects a match for Pattern\[\/\^\[0-7\]\{4\}\$\/\]/)
-      end
-    end
   end
 
   describe 'limits.d' do
@@ -420,32 +411,6 @@ describe 'pam::limits' do
       end
     end
 
-    context 'with limits_d_dir_mode specified as an invalid mode' do
-      let(:params) { { :limits_d_dir_mode => '777' } }
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "5",
-              "minor" => "10",
-              "full" => "5.10"
-            },
-          },
-        }
-      end
-
-      it 'should fail' do
-        expect {
-          should contain_class('pam::limits')
-        }.to raise_error(Puppet::Error,/expects a match for Pattern\[\/\^\[0-7\]\{4\}\$\/\]/)
-      end
-    end
-
     context 'with purge_limits_d_dir set to an invalid value' do
       let(:params) { { :purge_limits_d_dir => 'invalid' } }
       let(:facts) do
@@ -494,6 +459,41 @@ describe 'pam::limits' do
       it { should_not contain_common__mkdir_p('/etc/security/limits.d') }
       it { should_not contain_file('limits_d') }
     end
-
   end
+
+  describe 'variable type and content validations' do
+    # set needed custom facts and variables
+    let(:mandatory_params) { {} }
+
+    validations = {
+      'Stdlib::Filemode' => {
+        :name    => %w(config_file_mode limits_d_dir_mode),
+        :valid   => %w(0644 0755 0640 0740),
+        :invalid => [ 2770, '0844', '755', '00644', 'string', %w(array), { 'ha' => 'sh' }, 3, 2.42, false, nil],
+        :message => 'expects a match for Stdlib::Filemode',  # Puppet 4 & 5
+      },
+    }
+
+    validations.sort.each do |type, var|
+      var[:name].each do |var_name|
+        var[:params] = {} if var[:params].nil?
+        var[:valid].each do |valid|
+          context "when #{var_name} (#{type}) is set to valid #{valid} (as #{valid.class})" do
+            let(:facts) { [mandatory_facts, var[:facts]].reduce(:merge) } if ! var[:facts].nil?
+            let(:params) { [mandatory_params, var[:params], { :"#{var_name}" => valid, }].reduce(:merge) }
+            it { should compile }
+          end
+        end
+
+        var[:invalid].each do |invalid|
+          context "when #{var_name} (#{type}) is set to invalid #{invalid} (as #{invalid.class})" do
+            let(:params) { [mandatory_params, var[:params], { :"#{var_name}" => invalid, }].reduce(:merge) }
+            it 'should fail' do
+              expect { should contain_class(subject) }.to raise_error(Puppet::Error, /#{var[:message]}/)
+            end
+          end
+        end
+      end # var[:name].each
+    end # validations.sort.each
+  end # describe 'variable type and content validations'
 end

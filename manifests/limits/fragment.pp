@@ -3,10 +3,10 @@
 # Places a fragment in $limits_d_dir directory
 #
 define pam::limits::fragment (
-  String $source          = 'UNSET',
-  Optional[Array] $list   = undef,
+  Optional[String] $source = undef,
+  Optional[Array] $list    = undef,
   Enum['file', 'present', 'absent']
-    $ensure               = 'file',
+    $ensure                = 'file',
 ) {
 
   include ::pam
@@ -17,7 +17,7 @@ define pam::limits::fragment (
   }
 
   # must specify source or list
-  if $ensure != 'absent' and $source == 'UNSET' and ! $list {
+  if $ensure != 'absent' and ! $source and ! $list {
     fail('pam::limits::fragment must specify source or list.')
   }
 

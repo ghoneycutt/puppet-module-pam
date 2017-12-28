@@ -3,26 +3,26 @@
 # This module manages bits around PAM.
 #
 class pam (
-  Variant[String, Array, Hash] $allowed_users               = 'root',
-  Enum['required', 'requisite', 'sufficient', 'optional', 'absent']
+  Variant[Array, Hash, String] $allowed_users               = 'root',
+  Enum['absent', 'optional', 'required', 'requisite', 'sufficient']
     $login_pam_access                                       = 'required',
-  Enum['required', 'requisite', 'sufficient', 'optional', 'absent']
+  Enum['absent', 'optional', 'required', 'requisite', 'sufficient']
     $sshd_pam_access                                        = 'required',
-  Optional[Variant[String, Array]] $package_name            = undef,
+  Optional[Variant[Array, String]] $package_name            = undef,
   Stdlib::Absolutepath $pam_conf_file                       = '/etc/pam.conf',
   Optional[Hash] $services                                  = undef,
   Optional[Hash] $limits_fragments                          = undef,
   Boolean $limits_fragments_hiera_merge                     = false,
-  Variant[Array, Enum['UNSET']] $pam_d_login_oracle_options = 'UNSET',
+  Array $pam_d_login_oracle_options                         = [],
   Stdlib::Absolutepath $pam_d_login_path                    = '/etc/pam.d/login',
   String $pam_d_login_owner                                 = 'root',
   String $pam_d_login_group                                 = 'root',
-  Pattern[/^[0-7]{4}$/] $pam_d_login_mode                   = '0644',
+  Stdlib::Filemode $pam_d_login_mode                        = '0644',
   Optional[String] $pam_d_login_template                    = undef,
   Stdlib::Absolutepath $pam_d_sshd_path                     = '/etc/pam.d/sshd',
   String $pam_d_sshd_owner                                  = 'root',
   String $pam_d_sshd_group                                  = 'root',
-  Pattern[/^[0-7]{4}$/] $pam_d_sshd_mode                    = '0644',
+  Stdlib::Filemode $pam_d_sshd_mode                         = '0644',
   Optional[String] $pam_d_sshd_template                     = undef,
   Optional[Array] $pam_sshd_auth_lines                      = undef,
   Optional[Array] $pam_sshd_account_lines                   = undef,

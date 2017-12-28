@@ -712,35 +712,18 @@ describe 'pam' do
         end
       end
 
-      context "with password_auth_ac_file => invalid/path on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
+      context "with pam_d_login_oracle_options set to valid array on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let :facts do
           v[:facts_hash]
         end
-        let(:params) {{ :password_auth_ac_file => 'invalid/path' }}
+        let(:params) { { :pam_d_login_oracle_options => [ 'session required pam_spectest.so', 'session optional pam_spectest.so' ] } }
 
-        if v[:facts_hash][:osfamily] == 'RedHat' and (v[:facts_hash][:os] == '6' or v[:facts_hash][:os] == '7')
-          it 'should fail' do
-            expect {
-              should contain_class('pam')
-            }.to raise_error(Puppet::Error, /Evaluation Error: Error while evaluating a Resource Statement/)
-          end
-
-        end
-      end
-
-      context "with password_auth_file => invalid/path on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-        let :facts do
-          v[:facts_hash]
-        end
-        let(:params) {{ :password_auth_file => 'invalid/path' }}
-
-        if v[:facts_hash][:osfamily] == 'RedHat' and (v[:facts_hash][:os] == '6' or v[:facts_hash][:os] == '7')
-          it 'should fail' do
-            expect {
-              should contain_class('pam')
-            }.to raise_error(Puppet::Error, /Evaluation Error: Error while evaluating a Resource Statement/)
-          end
-
+        if k == 'el5'
+          it { should contain_file('pam_d_login').with_content(/^# oracle options\nsession required pam_spectest.so\nsession optional pam_spectest.so$/) }
+        elsif k =~ /solaris.*/
+          it { should_not contain_file('pam_d_login') }
+        else
+          it { should contain_file('pam_d_login').without_content(/^# oracle options\nsession required pam_spectest.so\nsession optional pam_spectest.so$/) }
         end
       end
     end
@@ -765,68 +748,6 @@ describe 'pam' do
           let(:params) {{ :sshd_pam_access => value }}
 
           it { should contain_class('pam') }
-        end
-      end
-
-      context "with login_pam_access set to invalid value on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-        let :facts do
-          v[:facts_hash]
-        end
-        let(:params) {{ :login_pam_access => 'invalid' }}
-
-        it 'should fail' do
-          expect {
-            should contain_class('pam')
-          }.to raise_error(Puppet::Error,/Enum\['absent', 'optional', 'required', 'requisite', 'sufficient'\]/)
-        end
-      end
-
-      context "with sshd_pam_access set to invalid value on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-        let :facts do
-          v[:facts_hash]
-        end
-        let(:params) {{ :sshd_pam_access => 'invalid' }}
-
-        it 'should fail' do
-          expect {
-            should contain_class('pam')
-          }.to raise_error(Puppet::Error,/Enum\['absent', 'optional', 'required', 'requisite', 'sufficient'\]/)
-        end
-      end
-
-      context "with specifying services param as invalid type (non-hash) on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-        let :facts do
-          v[:facts_hash]
-        end
-        let (:params) { {:services => ['not', 'a', 'hash'] } }
-        it 'should fail' do
-          expect {
-            should contain_class('pam')
-          }.to raise_error(Puppet::Error)
-        end
-      end
-
-      context "with limits_fragments_hiera_merge parameter specified as a non-boolean or non-string on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-        let :facts do
-          v[:facts_hash]
-        end
-        let (:params) { {:limits_fragments_hiera_merge => ['not_a_boolean', 'not_a_string'] } }
-        it 'should fail' do
-          expect {
-            should contain_class('pam')
-          }.to raise_error(Puppet::Error,/expects a Boolean value/)
-        end
-      end
-
-      context "with limits_fragments_hiera_merge parameter specified as an invalid string on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-        let :facts do
-          v[:facts_hash]
-        end
-        let (:params) { {:limits_fragments_hiera_merge => 'invalid_string' } }
-        it 'should fail' do
-          expect {
-            should contain_class('pam')
-          }.to raise_error(Puppet::Error,/expects a Boolean value/)
         end
       end
 
@@ -897,6 +818,7 @@ describe 'pam' do
           end
         end
       end
+
     end
   end
 
@@ -908,30 +830,90 @@ describe 'pam' do
     let(:mandatory_params) { {} }
 
     validations = {
+      'Stdlib::Absolutepath' => {
+        :name    => %w(common_account_file common_account_pc_file common_auth_file common_auth_pc_file common_password_file common_password_pc_file common_session_file common_session_noninteractive_file common_session_pc_file other_file pam_conf_file pam_d_login_path pam_d_sshd_path password_auth_ac_file password_auth_file system_auth_ac_file system_auth_file),
+        :valid   => ['/absolute/filepath', '/absolute/directory/'],
+        :invalid => ['../invalid', %w(array), { 'ha' => 'sh' }, 3, 2.42, false, nil],
+        :message => 'expects a (match for|match for Stdlib::Absolutepath =|Stdlib::Absolutepath =) Variant\[Stdlib::Windowspath.*Stdlib::Unixpath', # Puppet (4.x|5.0 & 5.1|5.x)
+      },
+      'Stdlib::Filemode' => {
+        :name    => %w(pam_d_login_mode pam_d_sshd_mode),
+        :valid   => %w(0644 0755 0640 0740),
+        :invalid => [ 2770, '0844', '755', '00644', 'string', %w(array), { 'ha' => 'sh' }, 3, 2.42, false, nil],
+        :message => 'expects a match for Stdlib::Filemode',  # Puppet 4 & 5
+      },
+      'array/hash/string' => {
+        :name    => %w(allowed_users),
+        :valid   => ['string', %w(array)], # valid hashes are to complex to block test them here. Subclasses have their own specific spec tests anyway.
+        :invalid => [3, 2.42, false],
+        :message => 'expects a value of type Array, Hash, or String', # Puppet 4 & 5
+      },
+      'array' => {
+        :name    => %w(pam_d_login_oracle_options),
+        :valid   => [%w(array)],
+        :invalid => ['string', { 'ha' => 'sh' }, 3, 2.42, false, nil],
+        :message => 'expects an Array', # Puppet 4 & 5
+      },
+      'array (optional) specific for pam_sshd_*_lines' => {
+        :name    => %w(pam_sshd_auth_lines pam_sshd_account_lines pam_sshd_password_lines pam_sshd_session_lines),
+        :params  => { :pam_d_sshd_template => 'pam/sshd.custom.erb', :pam_sshd_auth_lines => ['#'], :pam_sshd_account_lines => ['#'], :pam_sshd_password_lines => ['#'], :pam_sshd_session_lines => ['#']},
+        :valid   => [%w(array)],
+        :invalid => ['string', { 'ha' => 'sh' }, 3, 2.42, false],
+        :message => 'expects a value of type Undef or Array', # Puppet 4 & 5
+      },
       'array specific for common_files' => {
         :name    => %w(common_files),
         :valid   => [%w(system_auth)],
         :invalid => ['string', { 'ha' => 'sh' }, 3, 2.42, false, nil],
         :message => 'expects an Array', # Puppet 4 & 5
       },
-      'array for pam_sshd_(auth|account|password|session)_lines' => {
-        :name    => %w(pam_sshd_auth_lines pam_sshd_account_lines pam_sshd_password_lines pam_sshd_session_lines),
-        :params  => { :pam_d_sshd_template => 'pam/sshd.custom.erb', :pam_sshd_auth_lines => ['#'], :pam_sshd_account_lines => ['#'], :pam_sshd_password_lines => ['#'], :pam_sshd_session_lines => ['#']},
-        :valid   => [%w(array)],
-        :invalid => ['string', { 'ha' => 'sh' }, 3, 2.42, true, false],
-        :message => 'expects a value of type Undef or Array',
-      },
       'boolean' => {
-        :name    => %w(common_files_create_links),
+        :name    => %w(common_files_create_links limits_fragments_hiera_merge manage_nsswitch),
         :valid   => [true, false],
         :invalid => ['string', %w(array), { 'ha' => 'sh' }, 3, 2.42, 'false', nil],
         :message => 'expects a Boolean value', # Puppet 4 & 5
       },
+      'hash (optional)' => {
+        :name    => %w(services limits_fragments),
+        :valid   => [], # valid hashes are to complex to block test them here. Subclasses have their own specific spec tests anyway.
+        :invalid => ['string', 3, 2.42, %w(array), false, nil],
+        :message => 'expects a value of type Undef or Hash', # Puppet 4 & 5
+      },
       'string (optional) specific for common_files_suffix' => {
         :name    => %w(common_files_suffix),
         :valid   => ['_ac'],
-        :invalid => [%w(array), { 'ha' => 'sh' }, 3, 2.42, true],
-        :message => 'expects a value of type Undef or String',  # Puppet 4 & 5
+        :invalid => [%w(array), { 'ha' => 'sh' }, 3, 2.42, false],
+        :message => 'expects a value of type Undef or String', # Puppet 4 & 5
+      },
+      'string specific for *_pam_access' => {
+        :name    => %w(login_pam_access sshd_pam_access),
+        :valid   => %w(absent optional required requisite sufficient),
+        :invalid => [%w(array), { 'ha' => 'sh' }, 3, 2.42, false],
+        :message => 'expects a match for Enum\[\'absent\', \'optional\', \'required\', \'requisite\', \'sufficient\'\]', # Puppet  4 & 5
+      },
+      'array (optional)' => {
+        :name    => %w(pam_auth_lines pam_account_lines pam_password_lines pam_session_lines pam_password_auth_lines pam_password_account_lines pam_password_password_lines pam_password_session_lines),
+        :valid   => [%w(array)],
+        :invalid => ['string', { 'ha' => 'sh' }, 3, 2.42, false, nil],
+        :message => 'expects a value of type Undef or Array', # Puppet 4 & 5
+      },
+      'array/string (optional)' => {
+        :name    => %w(package_name),
+        :valid   => ['string', %w(array)],
+        :invalid => [{ 'ha' => 'sh' }, 3, 2.42, false],
+        :message => 'expects a value of type Undef, Array, or String', # Puppet 4 & 5
+      },
+      'string' => {
+        :name    => %w(pam_d_login_owner pam_d_login_group pam_d_sshd_owner pam_d_sshd_group),
+        :valid   => %w(string),
+        :invalid => [%w(array), { 'ha' => 'sh' }, 3, 2.42, false],
+        :message => 'expects a String value', # Puppet 4 & 5
+      },
+      'string (optional) specific for pam_d_*_template' => {
+        :name    => %w(pam_d_login_template pam_d_sshd_template),
+        :valid   => %w(pam/other.erb),
+        :invalid => [%w(array), { 'ha' => 'sh' }, 3, 2.42, false],
+        :message => 'expects a value of type Undef or String', # Puppet 4 & 5
       },
     }
 
@@ -940,6 +922,7 @@ describe 'pam' do
         var[:params] = {} if var[:params].nil?
         var[:valid].each do |valid|
           context "when #{var_name} (#{type}) is set to valid #{valid} (as #{valid.class})" do
+            let(:facts) { [mandatory_facts, var[:facts]].reduce(:merge) } if ! var[:facts].nil?
             let(:params) { [mandatory_params, var[:params], { :"#{var_name}" => valid, }].reduce(:merge) }
             it { should compile }
           end

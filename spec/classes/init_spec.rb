@@ -740,7 +740,21 @@ describe 'pam' do
               should contain_class('pam')
             }.to raise_error(Puppet::Error, /Evaluation Error: Error while evaluating a Resource Statement/)
           end
+        end
+      end
 
+      context "with pam_d_login_oracle_options set to valid array on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
+        let :facts do
+          v[:facts_hash]
+        end
+        let(:params) { { :pam_d_login_oracle_options => [ 'session required pam_spectest.so', 'session optional pam_spectest.so' ] } }
+
+        if k == 'el5'
+          it { should contain_file('pam_d_login').with_content(/^# oracle options\nsession required pam_spectest.so\nsession optional pam_spectest.so$/) }
+        elsif k =~ /solaris.*/
+          it { should_not contain_file('pam_d_login') }
+        else
+          it { should contain_file('pam_d_login').without_content(/^# oracle options\nsession required pam_spectest.so\nsession optional pam_spectest.so$/) }
         end
       end
     end
@@ -897,6 +911,7 @@ describe 'pam' do
           end
         end
       end
+
     end
   end
 
@@ -913,6 +928,12 @@ describe 'pam' do
         :valid   => %w(0644 0755 0640 0740),
         :invalid => [ 2770, '0844', '755', '00644', 'string', %w(array), { 'ha' => 'sh' }, 3, 2.42, false, nil],
         :message => 'expects a match for Stdlib::Filemode',  # Puppet 4 & 5
+      },
+      'array' => {
+        :name    => %w(pam_d_login_oracle_options),
+        :valid   => [%w(array)],
+        :invalid => ['string', { 'ha' => 'sh' }, 3, 2.42, false, nil],
+        :message => 'expects an Array', # Puppet 4 & 5
       },
       'array specific for common_files' => {
         :name    => %w(common_files),

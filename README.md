@@ -183,7 +183,7 @@ Absolute path to pam.conf.
 #### pam_d_login_oracle_options (type: Array)
 Allow array of extra lines at the bottom of pam.d/login for oracle systems on EL5.
 
-- *Default*: 'UNSET'
+- *Default*: []
 
 ---
 #### pam_d_login_path (type: Stdlib::Absolutepath)
@@ -548,7 +548,7 @@ Valid values are 'file', 'present' and 'absent'.
 String - Path to the fragment file, such as
 'puppet:///modules/pam/limits.nproc'
 
-- *Default*: 'UNSET'
+- *Default*: undef
 
 ---
 #### list (type: Array)

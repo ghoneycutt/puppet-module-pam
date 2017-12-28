@@ -1,6 +1,24 @@
 require 'spec_helper'
 
 describe 'pam::limits::fragment' do
+  let(:title) { '80-nproc' }
+  let(:facts) {
+    {
+      :osfamily                   => 'RedHat',
+      :operatingsystem            => 'RedHat',
+      :operatingsystemmajrelease  => '5',
+      :os                         => {
+        "name" => "RedHat",
+        "family" => "RedHat",
+        "release" => {
+          "major" => "5",
+          "minor" => "10",
+          "full" => "5.10"
+        },
+      },
+    }
+  }
+
   context 'create file from source when source is specified' do
     let(:title) { '80-nproc' }
     let(:params) {
@@ -280,4 +298,40 @@ root soft nproc unlimited
       }.to raise_error(Puppet::Error,/You can not use pam::limits::fragment together with Suse 10.x releases/)
     end
   end
+
+  describe 'variable type and content validations' do
+    # set needed custom facts and variables
+    let(:mandatory_params) { {} }
+
+    validations = {
+      'string (optional) specific for source' => {
+        :name    => %w(source),
+        :valid   => %w(puppet:///modules/pam/example.conf),
+        :invalid => [%w(array), { 'ha' => 'sh' }, 3, 2.42, true],
+        :message => 'expects a value of type Undef or String',  # Puppet 4 & 5
+      },
+    }
+
+    validations.sort.each do |type, var|
+      var[:name].each do |var_name|
+        var[:params] = {} if var[:params].nil?
+        var[:valid].each do |valid|
+          context "when #{var_name} (#{type}) is set to valid #{valid} (as #{valid.class})" do
+            let(:facts) { [mandatory_facts, var[:facts]].reduce(:merge) } if ! var[:facts].nil?
+            let(:params) { [mandatory_params, var[:params], { :"#{var_name}" => valid, }].reduce(:merge) }
+            it { should compile }
+          end
+        end
+
+        var[:invalid].each do |invalid|
+          context "when #{var_name} (#{type}) is set to invalid #{invalid} (as #{invalid.class})" do
+            let(:params) { [mandatory_params, var[:params], { :"#{var_name}" => invalid, }].reduce(:merge) }
+            it 'should fail' do
+              expect { should contain_class(subject) }.to raise_error(Puppet::Error, /#{var[:message]}/)
+            end
+          end
+        end
+      end # var[:name].each
+    end # validations.sort.each
+  end # describe 'variable type and content validations'
 end

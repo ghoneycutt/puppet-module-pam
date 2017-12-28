@@ -13,7 +13,7 @@ class pam (
   Optional[Hash] $services                                  = undef,
   Optional[Hash] $limits_fragments                          = undef,
   Boolean $limits_fragments_hiera_merge                     = false,
-  Variant[Array, Enum['UNSET']] $pam_d_login_oracle_options = 'UNSET',
+  Array $pam_d_login_oracle_options                         = [],
   Stdlib::Absolutepath $pam_d_login_path                    = '/etc/pam.d/login',
   String $pam_d_login_owner                                 = 'root',
   String $pam_d_login_group                                 = 'root',

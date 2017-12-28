@@ -3,12 +3,12 @@
 # This module manages bits around PAM.
 #
 class pam (
-  Variant[String, Array, Hash] $allowed_users               = 'root',
-  Enum['required', 'requisite', 'sufficient', 'optional', 'absent']
+  Variant[Array, Hash, String] $allowed_users               = 'root',
+  Enum['absent', 'optional', 'required', 'requisite', 'sufficient']
     $login_pam_access                                       = 'required',
-  Enum['required', 'requisite', 'sufficient', 'optional', 'absent']
+  Enum['absent', 'optional', 'required', 'requisite', 'sufficient']
     $sshd_pam_access                                        = 'required',
-  Optional[Variant[String, Array]] $package_name            = undef,
+  Optional[Variant[Array, String]] $package_name            = undef,
   Stdlib::Absolutepath $pam_conf_file                       = '/etc/pam.conf',
   Optional[Hash] $services                                  = undef,
   Optional[Hash] $limits_fragments                          = undef,

@@ -443,9 +443,7 @@ describe 'pam' do
   describe 'on unsupported platforms' do
     unsupported_platforms.sort.each do |k,v|
       context "with defaults params on #{k}" do
-        let :facts do
-          v[:facts_hash]
-        end
+        let(:facts) { v[:facts_hash] }
 
         it 'should fail' do
           expect {
@@ -456,274 +454,232 @@ describe 'pam' do
     end
   end
 
-  describe 'packages' do
-    platforms.sort.each do |k,v|
-      context "with defaults params on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-        let :facts do
-          v[:facts_hash]
-        end
+  platforms.sort.each do |k,v|
+    describe "on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
+      let(:facts) { v[:facts_hash] }
 
-        if v[:facts_hash][:osfamily] == 'Solaris'
-          v[:packages].each do |pkg|
-            it {
-              should_not contain_package(pkg)
-            }
-          end
-        else
-          v[:packages].each do |pkg|
-            it {
-              should contain_package(pkg).with({
-                'ensure' => 'installed',
-              })
-            }
-          end
-        end
-      end
 
-      context "with specifying package_name on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-        let :facts do
-          v[:facts_hash]
-        end
-        let(:params) { {:package_name => 'foo'} }
-
-        if v[:facts_hash][:osfamily] != 'Solaris'
-          it {
-            should contain_package('foo').with({
-              'ensure' => 'installed',
-            })
-          }
-        end
-      end
-    end
-  end
-
-  describe 'config files' do
-    platforms.sort.each do |k,v|
-      context "when configuring pam_d_sshd_template on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-        let :facts do
-          v[:facts_hash]
-        end
-
-        let (:params) do
-          { :pam_d_sshd_template     => 'pam/sshd.custom.erb',
-            :pam_sshd_auth_lines     => [ 'auth_line1', 'auth_line2' ],
-            :pam_sshd_account_lines  => [ 'account_line1', 'account_line2' ],
-            :pam_sshd_session_lines  => [ 'session_line1', 'session_line2' ],
-            :pam_sshd_password_lines => [ 'password_line1', 'password_line2' ],
-          }
-        end
-
-        sshd_custom_content = <<-END.gsub(/^\s+\|/, '')
-          |# This file is being maintained by Puppet.
-          |# DO NOT EDIT
-          |#
-          |auth_line1
-          |auth_line2
-          |account_line1
-          |account_line2
-          |password_line1
-          |password_line2
-          |session_line1
-          |session_line2
-        END
-
-        if v[:facts_hash][:osfamily] == 'Solaris'
-          it { should_not contain_file('pam_d_sshd') }
-        else
-          it { should contain_file('pam_d_sshd').with('content' => sshd_custom_content) }
-        end
-      end
-
-      context "with specifying services param on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-        let :facts do
-          v[:facts_hash]
-        end
-        let (:params) { {:services => { 'testservice' => { 'content' => 'foo' } } } }
-
-        it {
-          should contain_file('pam.d-service-testservice').with({
-            'ensure'  => 'file',
-            'path'    => '/etc/pam.d/testservice',
-            'owner'   => 'root',
-            'group'   => 'root',
-            'mode'    => '0644',
-          })
-        }
-
-        it { should contain_file('pam.d-service-testservice').with_content('foo') }
-      end
-
-      context "with default params on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-        let :facts do
-          v[:facts_hash]
-        end
-
-        v[:files].each do |file|
-          group = file[:group] || 'root'
-          dirpath = file[:dirpath] || '/etc/pam.d/'
-
-          file[:types].each do |type|
-            filename = "#{file[:prefix]}#{type}#{file[:suffix]}"
-            path = "#{dirpath}#{file[:prefix]}#{type}#{file[:suffix]}"
-            path.gsub! '_', '-'
-            path.sub! 'pam-', ''
-            it {
-              should contain_file(filename).with({
-                'ensure'  => 'file',
-                'path'    => path,
-                'owner'   => 'root',
-                'group'   => group,
-                'mode'    => '0644',
-              })
-            }
-            fixture = File.read(fixtures("#{filename}.defaults.#{k}"))
-            it { should contain_file(filename).with_content(fixture) }
-
-            v[:packages].sort.each do |pkg|
-              if v[:facts_hash][:osfamily] != 'Solaris' and (v[:facts_hash][:osfamily] != 'Suse' and v[:facts_hash][:os] != 9)
-                it { should contain_file(filename).that_requires("Package[#{pkg}]") }
-              end
+      describe 'packages' do
+        context 'with default params' do
+          if v[:facts_hash][:osfamily] == 'Solaris'
+            v[:packages].each do |pkg|
+              it { should_not contain_package(pkg) }
             end
+          else
+            v[:packages].each do |pkg|
+              it { should contain_package(pkg).with_ensure('installed') }
+            end
+          end
+        end
 
-            if file[:symlink]
-              symlinkname = "#{file[:prefix]}#{type}"
-              symlinkpath = "#{dirpath}#{file[:prefix]}#{type}"
-              symlinkpath.gsub! '_', '-'
-              symlinkpath.sub! 'pam-', ''
-              it {
-                should contain_file(symlinkname).with({
-                  'ensure' => 'symlink',
-                  'path'   => symlinkpath,
-                  'owner'  => 'root',
-                  'group'  => 'root',
+        context 'with specifying package_name' do
+          let(:params) { {:package_name => 'foo'} }
+
+          if v[:facts_hash][:osfamily] != 'Solaris'
+            it { should contain_package('foo').with_ensure('installed') }
+          end
+        end
+      end
+
+      describe 'config files' do
+        context 'with default params' do
+          v[:files].each do |file|
+            group = file[:group] || 'root'
+            dirpath = file[:dirpath] || '/etc/pam.d/'
+
+            file[:types].each do |type|
+              filename = "#{file[:prefix]}#{type}#{file[:suffix]}"
+              path = "#{dirpath}#{file[:prefix]}#{type}#{file[:suffix]}"
+              path.gsub! '_', '-'
+              path.sub! 'pam-', ''
+              it do
+                should contain_file(filename).with({
+                  'ensure'  => 'file',
+                  'path'    => path,
+                  'owner'   => 'root',
+                  'group'   => group,
+                  'mode'    => '0644',
                 })
-              }
+              end
+              fixture = File.read(fixtures("#{filename}.defaults.#{k}"))
+              it { should contain_file(filename).with_content(fixture) }
+
               v[:packages].sort.each do |pkg|
-                if v[:facts_hash][:osfamily] != 'Solaris'
+                if v[:facts_hash][:osfamily] != 'Solaris' and (v[:facts_hash][:osfamily] != 'Suse' and v[:facts_hash][:os] != 9)
                   it { should contain_file(filename).that_requires("Package[#{pkg}]") }
                 end
               end
-            end
-          end
 
-          if v[:facts_hash][:osfamily] == 'RedHat'
-            if (v[:facts_hash][:os] == '6' or v[:facts_hash][:os] == '7')
-                it {
-                  should contain_file('pam_password_auth_ac').with({
-                    'ensure' => 'file',
-                    'path'   => '/etc/pam.d/password-auth-ac',
+              if file[:symlink]
+                symlinkname = "#{file[:prefix]}#{type}"
+                symlinkpath = "#{dirpath}#{file[:prefix]}#{type}"
+                symlinkpath.gsub! '_', '-'
+                symlinkpath.sub! 'pam-', ''
+                it do
+                  should contain_file(symlinkname).with({
+                    'ensure' => 'symlink',
+                    'path'   => symlinkpath,
                     'owner'  => 'root',
                     'group'  => 'root',
-                    'mode'   => '0644',
                   })
-                }
-                pam_password_auth_ac_fixture = File.read(fixtures("pam_password_auth_ac.defaults.#{k}"))
-                it { should contain_file('pam_password_auth_ac').with_content(pam_password_auth_ac_fixture) }
+                end
+                v[:packages].sort.each do |pkg|
+                  if v[:facts_hash][:osfamily] != 'Solaris'
+                    it { should contain_file(filename).that_requires("Package[#{pkg}]") }
+                  end
+                end
+              end
+            end
+
+            if v[:facts_hash][:osfamily] == 'RedHat'
+              if (v[:facts_hash][:os] == '6' or v[:facts_hash][:os] == '7')
+                  it do
+                    should contain_file('pam_password_auth_ac').with({
+                      'ensure' => 'file',
+                      'path'   => '/etc/pam.d/password-auth-ac',
+                      'owner'  => 'root',
+                      'group'  => 'root',
+                      'mode'   => '0644',
+                    })
+                  end
+                  pam_password_auth_ac_fixture = File.read(fixtures("pam_password_auth_ac.defaults.#{k}"))
+                  it { should contain_file('pam_password_auth_ac').with_content(pam_password_auth_ac_fixture) }
+              end
+            end
+
+            if v[:facts_hash][:osfamily] != 'Solaris'
+              it do
+                should contain_file('pam_d_login').with({
+                  'ensure' => 'file',
+                  'path'   => '/etc/pam.d/login',
+                  'owner'  => 'root',
+                  'group'  => 'root',
+                  'mode'   => '0644',
+                })
+              end
+              pam_d_login_fixture = File.read(fixtures("pam_d_login.defaults.#{k}"))
+              it { should contain_file('pam_d_login').with_content(pam_d_login_fixture) }
+
+              it do
+                should contain_file('pam_d_sshd').with({
+                  'ensure' => 'file',
+                  'path'   => '/etc/pam.d/sshd',
+                  'owner'  => 'root',
+                  'group'  => 'root',
+                  'mode'   => '0644',
+                })
+              end
+              pam_d_sshd_fixture = File.read(fixtures("pam_d_sshd.defaults.#{k}"))
+              it { should contain_file('pam_d_sshd').with_content(pam_d_sshd_fixture) }
             end
           end
+        end
 
-          if v[:facts_hash][:osfamily] != 'Solaris'
-            it {
-              should contain_file('pam_d_login').with({
-                'ensure' => 'file',
-                'path'   => '/etc/pam.d/login',
-                'owner'  => 'root',
-                'group'  => 'root',
-                'mode'   => '0644',
-              })
+        context 'when configuring pam_d_sshd_template' do
+          let (:params) do
+            {
+              :pam_d_sshd_template     => 'pam/sshd.custom.erb',
+              :pam_sshd_auth_lines     => [ 'auth_line1', 'auth_line2' ],
+              :pam_sshd_account_lines  => [ 'account_line1', 'account_line2' ],
+              :pam_sshd_session_lines  => [ 'session_line1', 'session_line2' ],
+              :pam_sshd_password_lines => [ 'password_line1', 'password_line2' ],
             }
-            pam_d_login_fixture = File.read(fixtures("pam_d_login.defaults.#{k}"))
-            it { should contain_file('pam_d_login').with_content(pam_d_login_fixture) }
+          end
 
-            it {
-              should contain_file('pam_d_sshd').with({
-                'ensure' => 'file',
-                'path'   => '/etc/pam.d/sshd',
-                'owner'  => 'root',
-                'group'  => 'root',
-                'mode'   => '0644',
-              })
-            }
-            pam_d_sshd_fixture = File.read(fixtures("pam_d_sshd.defaults.#{k}"))
-            it { should contain_file('pam_d_sshd').with_content(pam_d_sshd_fixture) }
+          sshd_custom_content = <<-END.gsub(/^\s+\|/, '')
+            |# This file is being maintained by Puppet.
+            |# DO NOT EDIT
+            |#
+            |auth_line1
+            |auth_line2
+            |account_line1
+            |account_line2
+            |password_line1
+            |password_line2
+            |session_line1
+            |session_line2
+          END
+
+          if v[:facts_hash][:osfamily] == 'Solaris'
+            it { should_not contain_file('pam_d_sshd') }
+          else
+            it { should contain_file('pam_d_sshd').with_content(sshd_custom_content) }
           end
         end
-      end
 
-      context "with login_pam_access => sufficient on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-        let :facts do
-          v[:facts_hash]
-        end
-        let(:params) {{ :login_pam_access => 'sufficient' }}
+        context 'with specifying services param' do
+          let(:params) { {:services => { 'testservice' => { 'content' => 'foo' } } } }
 
-        if (v[:facts_hash][:osfamily] == 'RedHat') or (v[:facts_hash][:osfamily] == 'Suse' and v[:facts_hash][:os] == '11')
-          it { should contain_file('pam_d_login').with_content(/account[\s]+sufficient[\s]+pam_access.so/) }
-        end
-      end
+          it do
+            should contain_file('pam.d-service-testservice').with({
+              'ensure'  => 'file',
+              'path'    => '/etc/pam.d/testservice',
+              'owner'   => 'root',
+              'group'   => 'root',
+              'mode'    => '0644',
+            })
+          end
 
-      context "with login_pam_access => absent on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-        let :facts do
-          v[:facts_hash]
+          it { should contain_file('pam.d-service-testservice').with_content('foo') }
         end
-        let(:params) {{ :login_pam_access => 'absent' }}
 
-        if v[:facts_hash][:osfamily] != 'Solaris'
-          it { should contain_file('pam_d_login').without_content(/^account.*pam_access.so$/) }
-        end
-      end
+        context 'with login_pam_access => sufficient' do
+          let(:params) {{ :login_pam_access => 'sufficient' }}
 
-      context "with sshd_pam_access => sufficient on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-        let :facts do
-          v[:facts_hash]
+          if (v[:facts_hash][:osfamily] == 'RedHat') or (v[:facts_hash][:osfamily] == 'Suse' and v[:facts_hash][:os] == '11')
+            it { should contain_file('pam_d_login').with_content(/account[\s]+sufficient[\s]+pam_access.so/) }
+          end
         end
-        let(:params) {{ :sshd_pam_access => 'sufficient' }}
 
-        if (v[:facts_hash][:osfamily] == 'RedHat') or (v[:facts_hash][:osfamily] == 'Suse' and v[:facts_hash][:os] == '11')
-          it { should contain_file('pam_d_sshd').with_content(/^account[\s]+sufficient[\s]+pam_access.so$/) }
-        end
-      end
+        context 'with login_pam_access => absent' do
+          let(:params) {{ :login_pam_access => 'absent' }}
 
-      context "with sshd_pam_access => absent on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-        let :facts do
-          v[:facts_hash]
+          if v[:facts_hash][:osfamily] != 'Solaris'
+            it { should contain_file('pam_d_login').without_content(/^account.*pam_access.so$/) }
+          end
         end
-        let(:params) {{ :sshd_pam_access => 'absent' }}
 
-        if v[:facts_hash][:osfamily] != 'Solaris'
-          it { should contain_file('pam_d_sshd').without_content(/^account.*pam_access.so$/) }
-        end
-      end
+        context 'with sshd_pam_access => sufficient' do
+          let(:params) {{ :sshd_pam_access => 'sufficient' }}
 
-      context "with password_auth_ac => path on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-        let :facts do
-          v[:facts_hash]
+          if (v[:facts_hash][:osfamily] == 'RedHat') or (v[:facts_hash][:osfamily] == 'Suse' and v[:facts_hash][:os] == '11')
+            it { should contain_file('pam_d_sshd').with_content(/^account[\s]+sufficient[\s]+pam_access.so$/) }
+          end
         end
-        if v[:facts_hash][:osfamily] == 'RedHat' and v[:facts_hash][:os] == '5'
-          it { should_not contain_file('password_auth_ac') }
-        end
-      end
 
-      context "with password_auth_ac_file => path on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-        let :facts do
-          v[:facts_hash]
-        end
-        if v[:facts_hash][:osfamily] == 'RedHat' and v[:facts_hash][:os] == '5'
-          it { should_not contain_file('password_auth_ac_file') }
-        end
-      end
+        context 'with sshd_pam_access => absent' do
+          let(:params) {{ :sshd_pam_access => 'absent' }}
 
-      context "with pam_d_login_oracle_options set to valid array on osfamily #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-        let :facts do
-          v[:facts_hash]
+          if v[:facts_hash][:osfamily] != 'Solaris'
+            it { should contain_file('pam_d_sshd').without_content(/^account.*pam_access.so$/) }
+          end
         end
-        let(:params) { { :pam_d_login_oracle_options => [ 'session required pam_spectest.so', 'session optional pam_spectest.so' ] } }
 
-        if k == 'el5'
-          it { should contain_file('pam_d_login').with_content(/^# oracle options\nsession required pam_spectest.so\nsession optional pam_spectest.so$/) }
-        elsif k =~ /solaris.*/
-          it { should_not contain_file('pam_d_login') }
-        else
-          it { should contain_file('pam_d_login').without_content(/^# oracle options\nsession required pam_spectest.so\nsession optional pam_spectest.so$/) }
+        context 'with password_auth_ac => path' do
+          let :facts do
+            v[:facts_hash]
+          end
+          if v[:facts_hash][:osfamily] == 'RedHat' and v[:facts_hash][:os] == '5'
+            it { should_not contain_file('password_auth_ac') }
+          end
+        end
+
+        context 'with password_auth_ac_file => path' do
+          if v[:facts_hash][:osfamily] == 'RedHat' and v[:facts_hash][:os] == '5'
+            it { should_not contain_file('password_auth_ac_file') }
+          end
+        end
+
+        context 'with pam_d_login_oracle_options set to valid array' do
+          let(:params) { { :pam_d_login_oracle_options => [ 'session required pam_spectest.so', 'session optional pam_spectest.so' ] } }
+
+          if k == 'el5'
+            it { should contain_file('pam_d_login').with_content(/^# oracle options\nsession required pam_spectest.so\nsession optional pam_spectest.so$/) }
+          elsif k =~ /solaris.*/
+            it { should_not contain_file('pam_d_login') }
+          else
+            it { should contain_file('pam_d_login').without_content(/^# oracle options\nsession required pam_spectest.so\nsession optional pam_spectest.so$/) }
+          end
         end
       end
     end
@@ -731,94 +687,78 @@ describe 'pam' do
 
   describe 'validating params' do
     platforms.sort.slice(0,1).each do |k,v|
-      ['required','requisite','sufficient','optional','absent'].each do |value|
-        context "with login_pam_access set to valid value: #{value} on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-          let :facts do
-            v[:facts_hash]
+      context "on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
+        let(:facts) { v[:facts_hash] }
+
+        ['required','requisite','sufficient','optional','absent'].each do |value|
+          context "with login_pam_access set to valid value: #{value}" do
+            let(:params) {{ :login_pam_access => value }}
+
+            # /!\ need more specific test case
+            it { should contain_class('pam') }
           end
-          let(:params) {{ :login_pam_access => value }}
 
-          it { should contain_class('pam') }
-        end
+          context "with sshd_pam_access set to valid value: #{value}" do
+            let(:params) {{ :sshd_pam_access => value }}
 
-        context "with sshd_pam_access set to valid value: #{value} on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-          let :facts do
-            v[:facts_hash]
+            # /!\ need more specific test case
+            it { should contain_class('pam') }
           end
-          let(:params) {{ :sshd_pam_access => value }}
-
-          it { should contain_class('pam') }
         end
-      end
 
-      context "with manage_nsswitch parameter default value" do
-        let :facts do
-          v[:facts_hash]
+        context "with manage_nsswitch parameter default value" do
+          it { should contain_class('nsswitch') }
         end
-        it { is_expected.to contain_class('nsswitch') }
-      end
 
-      context "with manage_nsswitch parameter set to false" do
-        let :facts do
-          v[:facts_hash]
+        context "with manage_nsswitch parameter set to false" do
+          let(:params) { {:manage_nsswitch => false} }
+          it { should_not contain_class('nsswitch') }
         end
-        let(:params) { {:manage_nsswitch => false} }
-        it { is_expected.not_to contain_class('nsswitch') }
-      end
 
-      [true,false].each do |value|
-        context "with limits_fragments_hiera_merge parameter specified as a valid value: #{value} on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-          let :facts do
-            v[:facts_hash]
+        [true,false].each do |value|
+          context "with limits_fragments_hiera_merge parameter specified as a valid value: #{value} on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
+            let(:params) {{ :limits_fragments_hiera_merge => value }}
+
+            # /!\ need more specific test case
+            it { should contain_class('pam') }
           end
-          let(:params) {{ :limits_fragments_hiera_merge => value }}
-
-          it { should contain_class('pam') }
         end
-      end
 
-      [:pam_sshd_auth_lines, :pam_sshd_account_lines, :pam_sshd_password_lines, :pam_sshd_session_lines].each do |param|
-        context "with pam_d_sshd_template set to pam/sshd.custom.erb when only #{param} is missing" do
-          let :full_params do
-            {
-              :pam_sshd_auth_lines     => %w(auth_line1 auth_line2),
-              :pam_sshd_account_lines  => %w(account_line1 account_line2),
-              :pam_sshd_session_lines  => %w(session_line1 session_line2),
-              :pam_sshd_password_lines => %w(password_line1 password_line2),
-              :pam_d_sshd_template     => 'pam/sshd.custom.erb',
+        [:pam_sshd_auth_lines, :pam_sshd_account_lines, :pam_sshd_password_lines, :pam_sshd_session_lines].each do |param|
+          context "with pam_d_sshd_template set to pam/sshd.custom.erb when only #{param} is missing" do
+            let :full_params do
+              {
+                :pam_sshd_auth_lines     => %w(auth_line1 auth_line2),
+                :pam_sshd_account_lines  => %w(account_line1 account_line2),
+                :pam_sshd_session_lines  => %w(session_line1 session_line2),
+                :pam_sshd_password_lines => %w(password_line1 password_line2),
+                :pam_d_sshd_template     => 'pam/sshd.custom.erb',
+              }
+            end
+            let(:params) {
+              # remove param from full_params hash before applying
+              full_params.delete(param)
+              full_params
             }
-          end
-          let :facts do
-            v[:facts_hash]
-          end
-          let(:params) {
-            # remove param from full_params hash before applying
-            full_params.delete(param)
-            full_params
-          }
 
-          it 'should fail' do
-            expect { should contain_class(subject) }.to raise_error(Puppet::Error, %r{pam_sshd_\[auth\|account\|password\|session\]_lines required when using the pam/sshd.custom.erb template})
+            it 'should fail' do
+              expect { should contain_class(subject) }.to raise_error(Puppet::Error, %r{pam_sshd_\[auth\|account\|password\|session\]_lines required when using the pam/sshd.custom.erb template})
+            end
+          end
+        end
+
+        [ :pam_sshd_auth_lines, :pam_sshd_account_lines, :pam_sshd_password_lines, :pam_sshd_session_lines ].each do |param|
+          context "with #{param} specified and pam_d_sshd_template not specified on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
+            let(:params) { { param => [ '#' ] } }
+
+            it "should fail" do
+              expect {
+                should contain_class('pam')
+              }.to raise_error(Puppet::Error, %r{pam_sshd_\[auth\|account\|password\|session\]_lines are only valid when pam_d_sshd_template is configured with the pam/sshd.custom.erb template})
+            end
           end
         end
       end
-
-      [ :pam_sshd_auth_lines, :pam_sshd_account_lines, :pam_sshd_password_lines, :pam_sshd_session_lines ].each do |param|
-        context "with #{param} specified and pam_d_sshd_template not specified on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
-          let :facts do
-            v[:facts_hash]
-          end
-
-          let(:params) { { param => [ '#' ] } }
-
-          it "should fail" do
-            expect {
-              should contain_class('pam')
-            }.to raise_error(Puppet::Error, %r{pam_sshd_\[auth\|account\|password\|session\]_lines are only valid when pam_d_sshd_template is configured with the pam/sshd.custom.erb template})
-          end
-        end
-      end
-
     end
   end
 

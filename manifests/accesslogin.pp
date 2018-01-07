@@ -14,6 +14,29 @@ class pam::accesslogin (
 
   require '::pam'
 
+  $allowed_users = $::pam::allowed_users
+
+  case $allowed_users {
+    String: {
+      $allowed_users_hash = { $allowed_users => 'ALL' }
+    }
+    Array: {
+      $allowed_users_hash = $allowed_users.reduce( {} ) |$memo, $x| {
+        $memo + { $x => 'ALL' }
+      }
+    }
+    default: {
+      $allowed_users_hash = $allowed_users.reduce( {} ) |$memo, $x| {
+        $origin = $x[1] ? {
+          String  => $x[1],
+          Array   => join($x[1], ' '),
+          default => 'ALL',
+        }
+        $memo + { $x[0] => $origin }
+      }
+    }
+  }
+
   file { 'access_conf':
     ensure  => file,
     path    => $access_conf_path,

@@ -81,8 +81,8 @@ describe 'pam::accesslogin' do
       |#
       |
       |# allow only the groups listed
-      |+ : foo : ALL
       |+ : bar : ALL
+      |+ : foo : ALL
       |
       |# default deny
       |- : ALL : ALL

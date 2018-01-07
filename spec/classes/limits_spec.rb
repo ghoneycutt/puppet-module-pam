@@ -1,41 +1,9 @@
 require 'spec_helper'
 describe 'pam::limits' do
-  let(:facts) do
-    {
-      :osfamily                   => 'RedHat',
-      :operatingsystem            => 'RedHat',
-      :operatingsystemmajrelease  => '5',
-      :os                         => {
-        "name" => "RedHat",
-        "family" => "RedHat",
-        "release" => {
-          "major" => "5",
-          "minor" => "10",
-          "full" => "5.10"
-        },
-      },
-    }
-  end
+  let(:facts) { platforms['el5'][:facts_hash] }
 
   describe 'limits.conf' do
     context 'ensure file exists with default values for params on a supported platform' do
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "5",
-              "minor" => "10",
-              "full" => "5.10"
-            },
-          },
-        }
-      end
-
       it { should contain_class('pam') }
 
       it {
@@ -57,22 +25,6 @@ describe 'pam::limits' do
           :config_file_mode => '0600',
         }
       end
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "5",
-              "minor" => "10",
-              "full" => "5.10"
-            },
-          },
-        }
-      end
 
       it { should contain_class('pam') }
 
@@ -89,28 +41,7 @@ describe 'pam::limits' do
     end
 
     context 'with config_file_source specified as an valid string' do
-      let(:facts) do
-        {
-          :osfamily                  => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease => '6',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "6",
-              "minor" => "9",
-              "full" => "6.9"
-            },
-          },
-        }
-      end
-
-      let(:params) do
-        {
-          :config_file_source => 'puppet:///modules/pam/own.limits.conf',
-        }
-      end
+      let(:params) { { :config_file_source => 'puppet:///modules/pam/own.limits.conf' } }
 
       it {
         should contain_file('limits_conf').with({
@@ -121,35 +52,14 @@ describe 'pam::limits' do
           'owner'   => 'root',
           'group'   => 'root',
           'mode'    => '0640',
-          'require' => 'Package[pam]',
+          'require' => ['Package[pam]','Package[util-linux]'],
         })
       }
 
     end
 
     context 'with config_file_lines specified as an valid array' do
-      let(:facts) do
-        {
-          :osfamily                  => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease => '6',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "6",
-              "minor" => "9",
-              "full" => "6.9"
-            },
-          },
-        }
-      end
-
-      let(:params) do
-        {
-          :config_file_lines => [ '* soft nofile 2048', '* hard nofile 8192', ]
-        }
-      end
+      let(:params) { { :config_file_lines => [ '* soft nofile 2048', '* hard nofile 8192' ] } }
 
       it {
         should contain_file('limits_conf').with({
@@ -159,7 +69,7 @@ describe 'pam::limits' do
           'owner'   => 'root',
           'group'   => 'root',
           'mode'    => '0640',
-          'require' => 'Package[pam]',
+          'require' => ['Package[pam]','Package[util-linux]'],
         })
       }
 
@@ -169,29 +79,7 @@ describe 'pam::limits' do
     end
 
     context 'with config_file_lines specified as an invalid string' do
-      let(:facts) do
-        {
-          :osfamily                  => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease => '6',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "6",
-              "minor" => "9",
-              "full" => "6.9"
-            },
-          },
-        }
-      end
-
-      let(:params) do
-        {
-          :config_file_lines => '* soft nofile 2048',
-
-        }
-      end
+      let(:params) { { :config_file_lines => '* soft nofile 2048' } }
 
       it 'should fail' do
         expect {
@@ -202,27 +90,10 @@ describe 'pam::limits' do
     end
 
     context 'with config_file_source specified as an valid string and config_file_lines specified as an valid array' do
-      let(:facts) do
-        {
-          :osfamily                  => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease => '6',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "6",
-              "minor" => "9",
-              "full" => "6.9"
-            },
-          },
-        }
-      end
-
       let(:params) do
         {
           :config_file_source => 'puppet:///modules/pam/own.limits.conf',
-          :config_file_lines => [ '* soft nofile 2048', '* hard nofile 8192', ]
+          :config_file_lines  => [ '* soft nofile 2048', '* hard nofile 8192', ]
         }
       end
 
@@ -234,7 +105,7 @@ describe 'pam::limits' do
           'owner'   => 'root',
           'group'   => 'root',
           'mode'    => '0640',
-          'require' => 'Package[pam]',
+          'require' => ['Package[pam]','Package[util-linux]'],
         })
       }
 
@@ -245,22 +116,6 @@ describe 'pam::limits' do
 
     context 'with config_file specified as an invalid path' do
       let(:params) { { :config_file => 'custom/security/limits.conf' } }
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "5",
-              "minor" => "10",
-              "full" => "5.10"
-            },
-          },
-        }
-      end
 
       it 'should fail' do
         expect {
@@ -272,23 +127,6 @@ describe 'pam::limits' do
 
   describe 'limits.d' do
     context 'ensure directory exists with default values for params on a supported platform' do
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "5",
-              "minor" => "10",
-              "full" => "5.10"
-            },
-          },
-        }
-      end
-
       it { should contain_class('pam') }
 
       it { should contain_common__mkdir_p('/etc/security/limits.d') }
@@ -308,23 +146,6 @@ describe 'pam::limits' do
     end
 
     context 'ensure directory exists with custom values for params on a supported platform' do
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "5",
-              "minor" => "10",
-              "full" => "5.10"
-            },
-          },
-        }
-      end
-
       let(:params) do
         {
           :limits_d_dir     => '/custom/security/limits.d',
@@ -353,22 +174,6 @@ describe 'pam::limits' do
     [true,false].each do |value|
       context "with purge_limits_d_dir set to #{value}" do
         let(:params) { { :purge_limits_d_dir => value } }
-        let(:facts) do
-          {
-            :osfamily                  => 'RedHat',
-            :operatingsystem            => 'RedHat',
-            :operatingsystemmajrelease => '5',
-            :os                         => {
-              "name" => "RedHat",
-              "family" => "RedHat",
-              "release" => {
-                "major" => "5",
-                "minor" => "10",
-                "full" => "5.10"
-              },
-            },
-          }
-        end
 
         it {
           should contain_file('limits_d').with({
@@ -387,23 +192,6 @@ describe 'pam::limits' do
 
     context 'with limits_d_dir specified as an invalid path' do
       let(:params) { { :limits_d_dir => 'custom/security/limits.d' } }
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "5",
-              "minor" => "10",
-              "full" => "5.10"
-            },
-          },
-        }
-      end
-
       it 'should fail' do
         expect {
           should contain_class('pam::limits')
@@ -413,22 +201,6 @@ describe 'pam::limits' do
 
     context 'with purge_limits_d_dir set to an invalid value' do
       let(:params) { { :purge_limits_d_dir => 'invalid' } }
-      let(:facts) do
-        {
-          :osfamily                  => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease => '5',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "5",
-              "minor" => "10",
-              "full" => "5.10"
-            },
-          },
-        }
-      end
 
       it 'should fail' do
         expect {
@@ -438,22 +210,7 @@ describe 'pam::limits' do
     end
 
     context 'without fragments support on Suse 10' do
-      let(:facts) do
-        {
-          :osfamily          => 'Suse',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease => '10',
-          :os                 => {
-            "name" => "openSUSE",
-            "family" => "Suse",
-            "release" => {
-              "major" => "10",
-              "full" => "10.1",
-              "minor" => "1"
-            }
-          },
-        }
-      end
+      let(:facts) { platforms['suse10'][:facts_hash] }
 
       it { should contain_class('pam') }
       it { should_not contain_common__mkdir_p('/etc/security/limits.d') }
@@ -461,10 +218,7 @@ describe 'pam::limits' do
     end
   end
 
-  describe 'variable type and content validations' do
-    # set needed custom facts and variables
-    let(:mandatory_params) { {} }
-
+  describe 'variable data type and content validations' do
     validations = {
       'Stdlib::Filemode' => {
         :name    => %w(config_file_mode limits_d_dir_mode),
@@ -475,6 +229,7 @@ describe 'pam::limits' do
     }
 
     validations.sort.each do |type, var|
+      mandatory_params = {} if mandatory_params.nil?
       var[:name].each do |var_name|
         var[:params] = {} if var[:params].nil?
         var[:valid].each do |valid|

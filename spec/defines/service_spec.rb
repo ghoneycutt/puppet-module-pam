@@ -1,26 +1,10 @@
 require 'spec_helper'
 describe 'pam::service', :type => :define do
   context 'on a RedHat OS' do
-    let(:facts) {
-      {
-        :osfamily                   => 'RedHat',
-        :operatingsystem            => 'RedHat',
-        :operatingsystemmajrelease  => '5',
-        :os                         => {
-          "name" => "RedHat",
-          "family" => "RedHat",
-          "release" => {
-            "major" => "5",
-            "minor" => "10",
-            "full" => "5.10"
-          },
-        },
-      }
-    }
+    let(:facts) { platforms['el5'][:facts_hash] }
+    let(:title) { 'test' }
 
     context 'with no parameters' do
-      let(:title) { 'test' }
-
       it { should contain_class('pam') }
 
       it {
@@ -35,7 +19,6 @@ describe 'pam::service', :type => :define do
     end
 
     context 'when absent' do
-      let(:title) { 'test' }
       let(:params) { { :ensure => 'absent' } }
 
       it {
@@ -46,7 +29,6 @@ describe 'pam::service', :type => :define do
     end
 
     context 'when given content' do
-      let(:title) { 'test' }
       let(:params) { { :content => 'session required pam_permit.so' } }
 
       it { should contain_file('pam.d-service-test').with_content(
@@ -55,7 +37,6 @@ describe 'pam::service', :type => :define do
     end
 
     context 'when given an array of lines' do
-      let(:title) { 'test' }
       let(:params) do
         {
           :lines  => [

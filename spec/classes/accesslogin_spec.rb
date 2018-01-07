@@ -1,41 +1,9 @@
 require 'spec_helper'
 describe 'pam::accesslogin' do
-  let(:facts) do
-    {
-      :osfamily                   => 'RedHat',
-      :operatingsystem            => 'RedHat',
-      :operatingsystemmajrelease  => '5',
-      :os                         => {
-        "name" => "RedHat",
-        "family" => "RedHat",
-        "release" => {
-          "major" => "5",
-          "minor" => "10",
-          "full" => "5.10"
-        },
-      },
-    }
-  end
+  let(:facts) { platforms['el5'][:facts_hash] }
 
   describe 'access.conf' do
     context 'with default values on supported platform' do
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "5",
-              "minor" => "10",
-              "full" => "5.10"
-            },
-          },
-        }
-      end
-
       it { should contain_class('pam') }
 
       it {
@@ -65,22 +33,6 @@ describe 'pam::accesslogin' do
     end
 
     context 'with multiple users on supported platform expressed as an array' do
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "5",
-              "minor" => "10",
-              "full" => "5.10"
-            },
-          },
-        }
-      end
       let(:pre_condition) do
           'class {"pam": allowed_users => ["foo","bar"] }'
       end
@@ -115,22 +67,6 @@ describe 'pam::accesslogin' do
     end
 
     context 'with hash entry containing string values' do
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "5",
-              "minor" => "10",
-              "full" => "5.10"
-            },
-          },
-        }
-      end
       let(:pre_condition) do
           'class {"pam": allowed_users => {"username1" => "cron", "username2" => "tty0"} }'
       end
@@ -139,22 +75,6 @@ describe 'pam::accesslogin' do
     end
 
     context 'with hash entry containing array of values' do
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "5",
-              "minor" => "10",
-              "full" => "5.10"
-            },
-          },
-        }
-      end
       let(:pre_condition) do
           'class {"pam": allowed_users => {"username" => ["cron", "tty0"]} }'
       end
@@ -162,22 +82,6 @@ describe 'pam::accesslogin' do
     end
 
     context 'with hash entry containing no value should default to "ALL"' do
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "5",
-              "minor" => "10",
-              "full" => "5.10"
-            },
-          },
-        }
-      end
       let(:pre_condition) do
           'class {"pam": allowed_users => {"username" => {} }}'
       end
@@ -185,22 +89,6 @@ describe 'pam::accesslogin' do
     end
 
     context 'with hash entries containing string, array and empty hash' do
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "5",
-              "minor" => "10",
-              "full" => "5.10"
-            },
-          },
-        }
-      end
       let(:pre_condition) do
           'class {"pam": allowed_users => {"username" => "tty5", "username1" => ["cron", "tty0"], "username2" => "cron", "username3" => "tty0", "username4" => {}}}'
       end
@@ -212,23 +100,6 @@ describe 'pam::accesslogin' do
     end
 
     context 'with custom values on supported platform' do
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystem            => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-          :os                         => {
-            "name" => "RedHat",
-            "family" => "RedHat",
-            "release" => {
-              "major" => "5",
-              "minor" => "10",
-              "full" => "5.10"
-            },
-          },
-        }
-      end
-
       let(:params) do
         {
           :access_conf_path     => '/custom/security/access.conf',
@@ -253,10 +124,7 @@ describe 'pam::accesslogin' do
     end
   end
 
-  describe 'variable type and content validations' do
-    # set needed custom facts and variables
-    let(:mandatory_params) { {} }
-
+  describe 'variable data type and content validations' do
     validations = {
       'Stdlib::Filemode' => {
         :name    => %w(access_conf_mode),
@@ -267,6 +135,7 @@ describe 'pam::accesslogin' do
     }
 
     validations.sort.each do |type, var|
+      mandatory_params = {} if mandatory_params.nil?
       var[:name].each do |var_name|
         var[:params] = {} if var[:params].nil?
         var[:valid].each do |valid|

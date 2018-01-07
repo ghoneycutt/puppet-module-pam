@@ -159,7 +159,7 @@ class pam (
 
     if $common_files_create_links == true {
       file { "pam_${_common_file}":
-        ensure  => symlink,
+        ensure  => link,
         path    => getvar("${_common_file}_file"),
         target  => getvar("${_common_file}${common_files_suffix}_file"),
         owner   => 'root',

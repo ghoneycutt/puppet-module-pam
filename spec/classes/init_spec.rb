@@ -517,7 +517,7 @@ describe 'pam' do
                 symlinkpath.sub! 'pam-', ''
                 it do
                   should contain_file(symlinkname).with({
-                    'ensure' => 'symlink',
+                    'ensure' => 'link',
                     'path'   => symlinkpath,
                     'owner'  => 'root',
                     'group'  => 'root',

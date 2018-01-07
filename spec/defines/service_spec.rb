@@ -48,15 +48,16 @@ describe 'pam::service', :type => :define do
         }
       end
 
-      it { should contain_file('pam.d-service-test').with_content(
-        %{# This file is being maintained by Puppet.
-# DO NOT EDIT
-@include common-auth
-@include common-account
-session required pam_permit.so
-session required pam_limits.so
-}
-      ) }
+      content = <<-END.gsub(/^\s+\|/, '')
+        |# This file is being maintained by Puppet.
+        |# DO NOT EDIT
+        |@include common-auth
+        |@include common-account
+        |session required pam_permit.so
+        |session required pam_limits.so
+      END
+
+      it { should contain_file('pam.d-service-test').with_content(content) }
     end
   end
 end

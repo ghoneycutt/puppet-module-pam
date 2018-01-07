@@ -39,14 +39,16 @@ describe 'pam::limits::fragment' do
         'require' => [ 'Package[pam]', 'Package[util-linux]' ],
       })
     }
-    it { should contain_file('/etc/security/limits.d/80-nproc.conf').with_content(
-%{# This file is being maintained by Puppet.
-# DO NOT EDIT
-* soft nproc 1024
-root soft nproc unlimited
-* soft cpu 720
-})
-    }
+
+    content = <<-END.gsub(/^\s+\|/, '')
+      |# This file is being maintained by Puppet.
+      |# DO NOT EDIT
+      |* soft nproc 1024
+      |root soft nproc unlimited
+      |* soft cpu 720
+    END
+
+    it { should contain_file('/etc/security/limits.d/80-nproc.conf').with_content(content) }
   end
 
   context 'create file from template when list and source is specified' do
@@ -69,14 +71,16 @@ root soft nproc unlimited
         'require' => [ 'Package[pam]', 'Package[util-linux]' ],
       })
     }
-    it { should contain_file('/etc/security/limits.d/80-nproc.conf').with_content(
-%{# This file is being maintained by Puppet.
-# DO NOT EDIT
-* soft nproc 1024
-root soft nproc unlimited
-* soft cpu 720
-})
-    }
+
+    content = <<-END.gsub(/^\s+\|/, '')
+      |# This file is being maintained by Puppet.
+      |# DO NOT EDIT
+      |* soft nproc 1024
+      |root soft nproc unlimited
+      |* soft cpu 720
+    END
+
+    it { should contain_file('/etc/security/limits.d/80-nproc.conf').with_content(content) }
   end
 
   context 'with ensure set to present' do

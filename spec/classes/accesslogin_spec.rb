@@ -17,19 +17,19 @@ describe 'pam::accesslogin' do
         })
       }
 
-      it {
-        should contain_file('access_conf').with_content(
-%{# This file is being maintained by Puppet.
-# DO NOT EDIT
-#
+      content = <<-END.gsub(/^\s+\|/, '')
+        |# This file is being maintained by Puppet.
+        |# DO NOT EDIT
+        |#
+        |
+        |# allow only the groups listed
+        |+ : root : ALL
+        |
+        |# default deny
+        |- : ALL : ALL
+      END
 
-# allow only the groups listed
-+ : root : ALL
-
-# default deny
-- : ALL : ALL
-})
-      }
+      it { should contain_file('access_conf').with_content(content) }
     end
 
     context 'with multiple users on supported platform expressed as an array' do
@@ -50,20 +50,20 @@ describe 'pam::accesslogin' do
         })
       }
 
-      it {
-        should contain_file('access_conf').with_content(
-%{# This file is being maintained by Puppet.
-# DO NOT EDIT
-#
+      content = <<-END.gsub(/^\s+\|/, '')
+        |# This file is being maintained by Puppet.
+        |# DO NOT EDIT
+        |#
+        |
+        |# allow only the groups listed
+        |+ : foo : ALL
+        |+ : bar : ALL
+        |
+        |# default deny
+        |- : ALL : ALL
+      END
 
-# allow only the groups listed
-+ : foo : ALL
-+ : bar : ALL
-
-# default deny
-- : ALL : ALL
-})
-      }
+      it { should contain_file('access_conf').with_content(content) }
     end
 
     context 'with hash entry containing string values' do

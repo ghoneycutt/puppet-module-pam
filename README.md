@@ -66,50 +66,8 @@ origin 'ALL'.
 
 - *Default*: 'root'
 
-##### Examples:
-as an array where the origin for each is 'ALL'
+For Examples check [pam::accesslogin::allowed_users](#allowed_users-type-string-array-hash-1)
 
-```yaml
-pam::allowed_users:
-  - root
-  - ops
-  - devs
-```
-
-This would create /etc/security/access.conf with the following content.
-```
-# This file is being maintained by Puppet.
-# DO NOT EDIT
-#
-
-#allow only the groups listed
-+ : root : ALL
-+ : ops : ALL
-+ : devs : ALL
-```
-
-as a hash where the user/group can optionally specify the origin
-
-```yaml
-pam::allowed_users:
-  'username':
-  'username1':
-    - 'cron'
-    - 'tty0'
-  'username2': 'tty1'
-```
-
-This would create /etc/security/access.conf with the following content.
-```
-# This file is being maintained by Puppet.
-# DO NOT EDIT
-#
-
-#allow only the groups listed
-+ : username : ALL
-+ : username1 : cron tty0
-+ : username2 : tty1
-```
 ---
 #### login_pam_access (type: String)
 Control module to be used for pam_access.so for login. Valid values are
@@ -473,6 +431,58 @@ Content template of access.conf.
 
 - *Default*: 'pam/access.conf.erb'
 
+---
+#### allowed_users (type: String, Array, Hash)
+String, Array or Hash of strings and/or arrays to configure users and
+origins in access.conf. The default allows the root user/group from
+origin 'ALL'.
+
+- *Default*: $pam::allowed_users (resolves to 'root')
+
+##### Examples:
+as an array where the origin for each is 'ALL'
+
+```yaml
+pam::allowed_users:
+  - root
+  - ops
+  - devs
+```
+
+This would create /etc/security/access.conf with the following content.
+```
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+#
+
+#allow only the groups listed
++ : root : ALL
++ : ops : ALL
++ : devs : ALL
+```
+
+as a hash where the user/group can optionally specify the origin
+
+```yaml
+pam::allowed_users:
+  'username':
+  'username1':
+    - 'cron'
+    - 'tty0'
+  'username2': 'tty1'
+```
+
+This would create /etc/security/access.conf with the following content.
+```
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+#
+
+#allow only the groups listed
++ : username : ALL
++ : username1 : cron tty0
++ : username2 : tty1
+```
 ---
 
 ## Class `pam::limits`

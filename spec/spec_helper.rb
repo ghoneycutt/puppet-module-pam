@@ -221,7 +221,7 @@ def platforms
             }
           },
         },
-        :packages           => ['pam_package', ],
+        :packages           => [],
         :files              => [
           { :prefix         => 'pam_',
             :types          => ['conf', ],
@@ -245,7 +245,7 @@ def platforms
             }
           },
         },
-        :packages           => ['pam_package', ],
+        :packages           => [],
         :files              => [
           { :prefix         => 'pam_',
             :types          => ['conf', ],
@@ -269,7 +269,7 @@ def platforms
             },
           },
         },
-        :packages           => ['pam_package', ],
+        :packages           => [],
         :files              => [
           { :prefix         => 'pam_',
             :types          => ['other', ],

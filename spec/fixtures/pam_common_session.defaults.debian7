@@ -1,5 +1,6 @@
 # This file is being maintained by Puppet.
 # DO NOT EDIT
+# Session
 session [default=1]   pam_permit.so
 session requisite     pam_deny.so
 session required      pam_permit.so

@@ -59,16 +59,6 @@ file for an example with the additional SSSD entries added via hiera.
 ### Parameters
 
 ---
-#### allowed_users (type: String, Array, Hash)
-String, Array or Hash of strings and/or arrays to configure users and
-origins in access.conf. The default allows the root user/group from
-origin 'ALL'.
-
-- *Default*: 'root'
-
-For Examples check [pam::accesslogin::allowed_users](#allowed_users-type-string-array-hash-1)
-
----
 #### login_pam_access (type: String)
 Control module to be used for pam_access.so for login. Valid values are
 'required', 'requisite', 'sufficient', 'optional' and 'absent'.
@@ -437,7 +427,7 @@ String, Array or Hash of strings and/or arrays to configure users and
 origins in access.conf. The default allows the root user/group from
 origin 'ALL'.
 
-- *Default*: $pam::allowed_users (resolves to 'root')
+- *Default*: 'root'
 
 ##### Examples:
 as an array where the origin for each is 'ALL'

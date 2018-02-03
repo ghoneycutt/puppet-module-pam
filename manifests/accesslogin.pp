@@ -30,8 +30,8 @@ class pam::accesslogin (
   String $access_conf_group                   = 'root',
   Stdlib::Filemode $access_conf_mode          = '0644',
   String $access_conf_template                = 'pam/access.conf.erb',
-  Variant[Array, Hash, String] $allowed_users = $pam::allowed_users,
-) inherits ::pam {
+  Variant[Array, Hash, String] $allowed_users = 'root',
+) {
 
   # transform $allowed_users into a valid hash
   # origin defaults to 'ALL' if unset
@@ -64,6 +64,6 @@ class pam::accesslogin (
     owner   => $access_conf_owner,
     group   => $access_conf_group,
     mode    => $access_conf_mode,
-    require => Package[$pam::package_name],
+    require => Package[lookup('pam::package_name')],
   }
 }

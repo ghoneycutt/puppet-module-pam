@@ -1,11 +1,15 @@
 require 'spec_helper'
 describe 'pam::accesslogin' do
   let(:facts) { platforms['el5'][:facts_hash] }
+  let(:pre_condition) do
+    <<-'ENDofPUPPETcode'
+    package { 'pam': }
+    package { 'util-linux': }
+    ENDofPUPPETcode
+  end
 
   context 'with default values on supported platform' do
     it { should compile.with_all_deps }
-
-    it { should contain_class('pam') }
 
     content = <<-END.gsub(/^\s+\|/, '')
       |# This file is being maintained by Puppet.

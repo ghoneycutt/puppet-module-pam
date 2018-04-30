@@ -96,7 +96,6 @@
     }
   ],
   "dependencies": [
-    {"name":"ghoneycutt/common","version_requirement":">= 1.4.1 < 2.0.0"},
     {"name":"trlinkin/nsswitch","version_requirement":">= 2.0.0 < 3.0.0"},
     {"name":"puppetlabs/stdlib","version_requirement":">= 4.22.0 < 5.0.0"}
   ]

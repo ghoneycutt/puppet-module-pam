@@ -28,8 +28,15 @@ class pam::limits (
     $config_file_source_real = undef
   }
   if $::osfamily == 'Suse' and $::operatingsystemmajrelease == '10'  {
+    # do nothing
   } else {
-    common::mkdir_p { $limits_d_dir: }
+
+    exec { "mkdir_p-${limits_d_dir}":
+      command => "mkdir -p ${limits_d_dir}",
+      unless  => "test -d ${limits_d_dir}",
+      path    => '/bin:/usr/bin',
+    }
+
     file { 'limits_d':
       ensure  => directory,
       path    => $limits_d_dir,
@@ -38,11 +45,13 @@ class pam::limits (
       mode    => $limits_d_dir_mode,
       purge   => $purge_limits_d_dir,
       recurse => $purge_limits_d_dir,
-      require => [ Package[$::pam::package_name],
-                  Common::Mkdir_p[$limits_d_dir],
-                  ],
+      require => [
+        Package[$::pam::package_name],
+        Exec["mkdir_p-${limits_d_dir}"],
+      ],
     }
   }
+
   file { 'limits_conf':
     ensure  => file,
     path    => $config_file,

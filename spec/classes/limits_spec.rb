@@ -71,11 +71,11 @@ describe 'pam::limits' do
         'mode'    => '0750',
         'purge'   => false,
         'recurse' => false,
-        'require' => [ 'Package[pam]', 'Common::Mkdir_p[/etc/security/limits.d]' ],
+        'require' => [ 'Package[pam]', 'Exec[mkdir_p-/etc/security/limits.d]' ],
       })
     end
 
-    it { should contain_common__mkdir_p('/etc/security/limits.d') }
+    it { should contain_exec('mkdir_p-/etc/security/limits.d') }
     it do
       should contain_file('limits_conf').with({
         'ensure'  => 'file',
@@ -124,9 +124,9 @@ describe 'pam::limits' do
 
   context 'with limits_d_dir set to a valid string' do
     let(:params) { {:limits_d_dir => '/testing.d' } }
-    it { should contain_common__mkdir_p('/testing.d') }
+    it { should contain_exec('mkdir_p-/testing.d') }
     it { should contain_file('limits_d').with_path('/testing.d') }
-    it { should contain_file('limits_d').with_require([ 'Package[pam]', 'Common::Mkdir_p[/testing.d]' ]) }
+    it { should contain_file('limits_d').with_require([ 'Package[pam]', 'Exec[mkdir_p-/testing.d]' ]) }
   end
 
   context 'with limits_d_dir_mode set to a valid string' do
@@ -143,7 +143,7 @@ describe 'pam::limits' do
   context 'with default values on supported platform Suse 10 without fragments support' do
     let(:facts) { platforms['suse10'][:facts_hash] }
     it { should contain_class('pam') }
-    it { should_not contain_common__mkdir_p('/etc/security/limits.d') }
+    it { should_not contain_exec('mkdir_p-/etc/security/limits.d') }
     it { should_not contain_file('limits_d') }
   end
 

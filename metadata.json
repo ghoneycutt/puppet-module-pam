@@ -1,6 +1,6 @@
 {
   "name": "ghoneycutt-pam",
-  "version": "2.33.0",
+  "version": "3.0.0",
   "author": "ghoneycutt",
   "summary": "Manage PAM",
   "description": "Manages PAM, including specifying users and groups in access.conf, limits.conf, and limits fragments",
@@ -11,7 +11,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.9.0 < 6.0.0"
+      "version_requirement": ">= 4.10.0 < 6.0.0"
     }
   ],
   "operatingsystem_support": [

@@ -1268,7 +1268,11 @@ class pam (
 
   if $limits_fragments != undef {
     if $limits_fragments_hiera_merge_real == true {
-      $limits_fragments_real = hiera_hash('pam::limits_fragments')
+      if versioncmp($::puppetversion, '4.0.0') < 0 {
+        $limits_fragments_real = hiera_hash('pam::limits_fragments')
+      } else {
+        $limits_fragments_real = lookup('pam::limits_fragments', Hash, {'strategy' => 'deep', 'merge_hash_arrays' => true}, {})
+      }
     } else {
       $limits_fragments_real = $limits_fragments
     }

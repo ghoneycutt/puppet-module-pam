@@ -29,6 +29,7 @@ versions.
  * Ubuntu 12.04 LTS
  * Ubuntu 14.04 LTS
  * Ubuntu 16.04 LTS
+ * Ubuntu 18.04 LTS
  * Debian 7
  * Debian 8
 

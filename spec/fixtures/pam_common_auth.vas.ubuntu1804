@@ -1,0 +1,7 @@
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+auth sufficient pam_vas3.so create_homedir get_nonvas_pass
+auth requisite  pam_vas3.so echo_return
+auth [success=1 default=ignore] pam_unix.so nullok_secure use_first_pass
+auth requisite  pam_deny.so
+auth required   pam_permit.so

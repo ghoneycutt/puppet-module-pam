@@ -162,6 +162,17 @@ describe 'pam' do
             :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
           }, ],
       },
+    'ubuntu1804'            =>
+      { :osfamily           => 'Debian',
+        :lsbdistid          => 'Ubuntu',
+        :release            => '18.04',
+        :releasetype        => 'lsbdistrelease',
+        :packages           => [ 'libpam0g', ],
+        :files              => [
+          { :prefix         => 'pam_common_',
+            :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
+          }, ],
+      },
     'debian7'               =>
       { :osfamily           => 'Debian',
         :lsbdistid          => 'Debian',
@@ -696,6 +707,14 @@ describe 'pam' do
         end
 
         if v[:osfamily] == 'Debian' and v[:lsbdistid] == 'Ubuntu' and v[:release] == '16.04'
+          it 'should fail' do
+            expect {
+              should contain_class('pam')
+            }.to raise_error(Puppet::Error,/Pam is only supported with vas_major_version 4/)
+          end
+        end
+
+        if v[:osfamily] == 'Debian' and v[:lsbdistid] == 'Ubuntu' and v[:release] == '18.04'
           it 'should fail' do
             expect {
               should contain_class('pam')

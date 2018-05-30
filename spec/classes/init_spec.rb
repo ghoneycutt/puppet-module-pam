@@ -384,7 +384,7 @@ describe 'pam' do
             next
           end
 
-          if check == 'vas' and v[:osfamily] == 'Debian' and v[:release] == '18.04'
+          if check == 'vas' and v[:osfamily] == 'Debian' and v[:release] == '20.04'
             it 'should fail' do
               expect {
                 should contain_class('pam')

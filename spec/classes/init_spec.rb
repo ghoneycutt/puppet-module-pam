@@ -706,15 +706,7 @@ describe 'pam' do
           end
         end
 
-        if v[:osfamily] == 'Debian' and v[:lsbdistid] == 'Ubuntu' and v[:release] == '16.04'
-          it 'should fail' do
-            expect {
-              should contain_class('pam')
-            }.to raise_error(Puppet::Error,/Pam is only supported with vas_major_version 4/)
-          end
-        end
-
-        if v[:osfamily] == 'Debian' and v[:lsbdistid] == 'Ubuntu' and v[:release] == '18.04'
+        if v[:osfamily] == 'Debian' and v[:lsbdistid] == 'Ubuntu' and v[:release] == '20.04'
           it 'should fail' do
             expect {
               should contain_class('pam')

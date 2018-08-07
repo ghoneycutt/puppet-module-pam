@@ -980,6 +980,7 @@ class pam (
           default: {
               fail("Pam is only supported on Debian 7 and 8. Your lsbmajdistrelease is <${::lsbmajdistrelease}>.")
             }
+	   }
           }
         }
     'Solaris': {

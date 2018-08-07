@@ -944,31 +944,31 @@ class pam (
                 'session required      pam_unix.so',
               ]
             }
-			    /9/: {
+            /9/: {
 			    
-			        if $ensure_vas == 'present' {
+	      if $ensure_vas == 'present' {
                 fail("Pam: vas is not supported on ${::osfamily} ${::lsbmajdistrelease}")
               }
               $default_pam_d_login_template = "pam/login.debian${::lsbmajdistrelease}.erb"
               $default_pam_d_sshd_template  = "pam/sshd.debian${::lsbmajdistrelease}.erb"
               $default_package_name         = 'libpam0g'
-			        $default_pam_auth_lines = [
+              $default_pam_auth_lines = [
                 'auth  [success=1 default=ignore]  pam_unix.so nullok_secure',
                 'auth  requisite     pam_deny.so',
                 'auth  required      pam_permit.so',
 				        'auth  optional      pam_cap.so',
               ]
-			        $default_pam_account_lines = [
+	      $default_pam_account_lines = [
                 'account [success=1 new_authtok_reqd=done default=ignore]  pam_unix.so',
                 'account requisite     pam_deny.so',
                 'account required      pam_permit.so',
               ]
-			        $default_pam_password_lines = [
+              $default_pam_password_lines = [
                 'password  [success=1 default=ignore]  pam_unix.so obscure sha512',
                 'password  requisite     pam_deny.so',
                 'password  required      pam_permit.so',
               ]
-			        $default_pam_session_lines = [
+              $default_pam_session_lines = [
                 'session [default=1]   pam_permit.so',
                 'session requisite     pam_deny.so',
                 'session required      pam_permit.so',
@@ -976,7 +976,7 @@ class pam (
 				        'session required      pam_unix.so',
                 'session optional      pam_systemd.so',
              ]
-			    }
+             }
           default: {
               fail("Pam is only supported on Debian 7 and 8. Your lsbmajdistrelease is <${::lsbmajdistrelease}>.")
             }

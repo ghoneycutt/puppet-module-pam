@@ -1,0 +1,38 @@
+# PAM config
+pam::pam_auth_lines:
+  - '# Managed by Hiera key pam::pam_auth_lines'
+  - 'auth  [success=2 default=ignore]  pam_unix.so nullok_secure'
+  - 'auth  [success=1 default=ignore]  pam_sss.so use_first_pass'
+  - 'auth  requisite                   pam_deny.so'
+  - 'auth  required                    pam_permit.so'
+  - 'auth  optional                    pam_cap.so'
+pam::pam_account_lines:
+  - '# Managed by Hiera key pam::pam_account_lines'
+  - 'account [success=1 new_authtok_reqd=done default=ignore]  pam_unix.so'
+  - 'account requisite                                         pam_deny.so'
+  - 'account required                                          pam_permit.so'
+  - 'account sufficient                                        pam_localuser.so'
+  - 'account [default=bad success=ok user_unknown=ignore]  pam_sss.so'
+pam::pam_password_lines:
+  - '# Managed by Hiera key pam::pam_password_lines'
+  - 'password  requisite                   pam_pwquality.so retry=3'
+  - 'password  [success=2 default=ignore]  pam_unix.so obscure use_authtok try_first_pass sha512'
+  - 'password  sufficient                  pam_sss.so use_authtok'
+  - 'password  requisite                   pam_deny.so'
+  - 'password  required                    pam_permit.so'
+pam::pam_session_lines:
+  - '# Managed by Hiera key pam::pam_session_lines'
+  - 'session [default=1]     pam_permit.so'
+  - 'session requisite       pam_deny.so'
+  - 'session required        pam_permit.so'
+  - 'session required        pam_mkhomedir.so umask=0022 skel=/etc/skel'
+  - 'session required        pam_unix.so'
+  - 'session optional        pam_sss.so'
+  - 'session optional        pam_systemd.so'
+
+# nsswitch
+nsswitch::passwd: 'files sss'
+nsswitch::shadow: 'files sss'
+nsswitch::group: 'files sss'
+nsswitch::services: 'files sss'
+nsswitch::netgroup: 'files sss'

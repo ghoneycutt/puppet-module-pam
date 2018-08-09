@@ -31,6 +31,7 @@ versions.
  * Ubuntu 16.04 LTS
  * Debian 7
  * Debian 8
+ * Debian 9
 
 EL no longer requires the `redhat-lsb` package.
 

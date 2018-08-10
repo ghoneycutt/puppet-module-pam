@@ -976,13 +976,16 @@ class pam (
                 'session optional      pam_systemd.so',
               ]
             }
-        }
-    }
-          default: {
-              fail("Pam is only supported on Debian 7 and 8. Your lsbmajdistrelease is <${::lsbmajdistrelease}>.")
+            default: {
+              fail("Pam is only supported on Debian 7, 8 and 9. Your lsbmajdistrelease is <${::lsbmajdistrelease}>.")
             }
-      }
+          }
         }
+        default: {
+          fail("Pam is only supported on lsbdistid Ubuntu or Debian of the Debian osfamily. Your lsbdistid is <${::lsbdistid}>.")
+        } 
+      }
+    }
     'Solaris': {
       $default_package_name         = undef
       $default_pam_d_login_template = undef

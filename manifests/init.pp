@@ -945,8 +945,8 @@ class pam (
               ]
             }
             /9/: {
-			    
-	      if $ensure_vas == 'present' {
+
+              if $ensure_vas == 'present' {
                 fail("Pam: vas is not supported on ${::osfamily} ${::lsbmajdistrelease}")
               }
               $default_pam_d_login_template = "pam/login.debian${::lsbmajdistrelease}.erb"
@@ -956,9 +956,9 @@ class pam (
                 'auth  [success=1 default=ignore]  pam_unix.so nullok_secure',
                 'auth  requisite     pam_deny.so',
                 'auth  required      pam_permit.so',
-				        'auth  optional      pam_cap.so',
+                'auth  optional      pam_cap.so',
               ]
-	      $default_pam_account_lines = [
+              $default_pam_account_lines = [
                 'account [success=1 new_authtok_reqd=done default=ignore]  pam_unix.so',
                 'account requisite     pam_deny.so',
                 'account required      pam_permit.so',
@@ -973,16 +973,16 @@ class pam (
                 'session requisite     pam_deny.so',
                 'session required      pam_permit.so',
                 'session required      pam_unix.so',
-				        'session required      pam_unix.so',
+                'session required      pam_unix.so',
                 'session optional      pam_systemd.so',
              ]
              }
-	    }
-	   }
+        }
+    }
           default: {
               fail("Pam is only supported on Debian 7 and 8. Your lsbmajdistrelease is <${::lsbmajdistrelease}>.")
             }
-	  }
+      }
         }
     'Solaris': {
       $default_package_name         = undef

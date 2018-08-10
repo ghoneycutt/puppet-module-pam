@@ -983,7 +983,7 @@ class pam (
         }
         default: {
           fail("Pam is only supported on lsbdistid Ubuntu or Debian of the Debian osfamily. Your lsbdistid is <${::lsbdistid}>.")
-        } 
+        }
       }
     }
     'Solaris': {

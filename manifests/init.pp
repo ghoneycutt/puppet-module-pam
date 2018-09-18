@@ -908,8 +908,83 @@ class pam (
                 ]
               }
             }
+            '18.04': {
+              $default_pam_d_login_template = 'pam/login.ubuntu18.erb'
+              $default_pam_d_sshd_template  = 'pam/sshd.ubuntu18.erb'
+              $default_package_name         = 'libpam0g'
+
+              if $ensure_vas == 'present' {
+                if $vas_major_version == '3' {
+                  fail("Pam is only supported with vas_major_version 4 on Ubuntu 18.04. Your vas_major_version is <${vas_major_version}>.")
+                }
+
+                $default_pam_auth_lines = [
+                  'auth sufficient pam_vas3.so create_homedir get_nonvas_pass',
+                  'auth requisite  pam_vas3.so echo_return',
+                  'auth [success=1 default=ignore] pam_unix.so nullok_secure use_first_pass',
+                  'auth requisite  pam_deny.so',
+                  'auth required   pam_permit.so',
+                ]
+
+                $default_pam_account_lines = [
+                  'account sufficient pam_vas3.so',
+                  'account requisite  pam_vas3.so echo_return',
+                  'account [success=1 new_authtok_reqd=done default=ignore]  pam_unix.so',
+                  'account requisite  pam_deny.so',
+                  'account required   pam_permit.so',
+                ]
+
+                $default_pam_password_lines = [
+                  'password sufficient  pam_vas3.so',
+                  'password  requisite pam_vas3.so echo_return',
+                  'password  [success=1 default=ignore]  pam_unix.so obscure sha512',
+                  'password  requisite pam_deny.so',
+                  'password  required  pam_permit.so',
+                ]
+
+                $default_pam_session_lines = [
+                  'session [default=1] pam_permit.so',
+                  'session requisite pam_deny.so',
+                  'session required  pam_permit.so',
+                  'session optional  pam_umask.so',
+                  'session required  pam_vas3.so create_homedir',
+                  'session requisite pam_vas3.so echo_return',
+                  'session required  pam_unix.so',
+                  'session optional  pam_systemd.so',
+                ]
+
+              } else {
+
+                $default_pam_auth_lines = [
+                  'auth  [success=1 default=ignore]  pam_unix.so nullok_secure',
+                  'auth  requisite     pam_deny.so',
+                  'auth  required      pam_permit.so',
+                ]
+
+                $default_pam_account_lines = [
+                  'account [success=1 new_authtok_reqd=done default=ignore]  pam_unix.so',
+                  'account requisite     pam_deny.so',
+                  'account required      pam_permit.so',
+                ]
+
+                $default_pam_password_lines = [
+                  'password  [success=1 default=ignore]  pam_unix.so obscure sha512',
+                  'password  requisite     pam_deny.so',
+                  'password  required      pam_permit.so',
+                ]
+
+                $default_pam_session_lines = [
+                  'session [default=1]   pam_permit.so',
+                  'session requisite     pam_deny.so',
+                  'session required      pam_permit.so',
+                  'session optional      pam_umask.so',
+                  'session required      pam_unix.so',
+                  'session optional      pam_systemd.so',
+                ]
+              }
+            }
             default: {
-              fail("Pam is only supported on Ubuntu 12.04, 14.04 and 16.04. Your lsbdistrelease is identified as <${::lsbdistrelease}>.")
+              fail("Pam is only supported on Ubuntu 12.04, 14.04, 16.04 and 18.04. Your lsbdistrelease is identified as <${::lsbdistrelease}>.")
             }
           }
         }

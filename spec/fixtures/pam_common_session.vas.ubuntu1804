@@ -1,0 +1,10 @@
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+session [default=1] pam_permit.so
+session requisite pam_deny.so
+session required  pam_permit.so
+session optional  pam_umask.so
+session required  pam_vas3.so create_homedir
+session requisite pam_vas3.so echo_return
+session required  pam_unix.so
+session optional  pam_systemd.so

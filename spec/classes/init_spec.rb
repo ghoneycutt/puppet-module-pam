@@ -162,6 +162,17 @@ describe 'pam' do
             :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
           }, ],
       },
+    'ubuntu1804'            =>
+      { :osfamily           => 'Debian',
+        :lsbdistid          => 'Ubuntu',
+        :release            => '18.04',
+        :releasetype        => 'lsbdistrelease',
+        :packages           => [ 'libpam0g', ],
+        :files              => [
+          { :prefix         => 'pam_common_',
+            :types          => ['auth', 'account', 'password', 'session', 'noninteractive_session' ],
+          }, ],
+      },
     'debian7'               =>
       { :osfamily           => 'Debian',
         :lsbdistid          => 'Debian',
@@ -373,7 +384,7 @@ describe 'pam' do
             next
           end
 
-          if check == 'vas' and v[:osfamily] == 'Debian' and v[:release] == '18.04'
+          if check == 'vas' and v[:osfamily] == 'Debian' and v[:release] == '20.04'
             it 'should fail' do
               expect {
                 should contain_class('pam')
@@ -695,7 +706,7 @@ describe 'pam' do
           end
         end
 
-        if v[:osfamily] == 'Debian' and v[:lsbdistid] == 'Ubuntu' and v[:release] == '16.04'
+        if v[:osfamily] == 'Debian' and v[:lsbdistid] == 'Ubuntu' and v[:release] == '20.04'
           it 'should fail' do
             expect {
               should contain_class('pam')

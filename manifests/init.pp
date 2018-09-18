@@ -959,6 +959,7 @@ class pam (
                   'auth  [success=1 default=ignore]  pam_unix.so nullok_secure',
                   'auth  requisite     pam_deny.so',
                   'auth  required      pam_permit.so',
+                  'auth  required      pam_cap.so',
                 ]
 
                 $default_pam_account_lines = [

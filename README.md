@@ -21,8 +21,8 @@ functionality to create limits fragments for use in other modules.
 # Compatibility
 
 This module has been tested to work on the following systems with Puppet
-v5 with the Ruby version associated with that release.  Please see
-`.travis.yml` for a full matrix of supported versions.
+versions 5 and 6 with the Ruby version associated with those releases.
+Please see `.travis.yml` for a full matrix of supported versions.
 
  * EL 5
  * EL 6

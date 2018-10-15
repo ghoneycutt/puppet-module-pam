@@ -1,8 +1,8 @@
 # @summary Manage login access
 #   See PAM_ACCESS(8)
 #
-# @example Declaring the class
-#   include ::pam::accesslogin
+# @example
+#   This class is included by the pam class for platforms which use it.
 #
 # @param access_conf_path
 #   Path to access.conf.

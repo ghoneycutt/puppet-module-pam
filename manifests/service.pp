@@ -1,6 +1,29 @@
-# == Class: pam::service
+# @summary Manage PAM file for specific service. The `pam::service` resource is
+# reversible, so that any service that Puppet has locked using PAM can be
+# unlocked by setting the resource ensure to absent and waiting for the next
+# puppet run.
 #
-# Manage PAM file for a specifc service
+# @example
+#   pam::service { 'sudo':
+#     content => 'auth     required       pam_unix2.so',
+#   }
+#
+# @param ensure
+#   Specifies if a PAM service file should (`present`) or should not (`absent`)
+#   exist. The default is set to 'present'
+#
+# @param pam_config_dir
+#   Path to PAM files.
+#
+# @param content
+#   Content of the PAM file for the service. The `content` and `lines`
+#   parameters are mutually exclusive. Not setting either of these parameters
+#   will result in an empty service definition file.
+#
+# @param lines
+#   Provides content for the PAM service file as an array of lines. The
+#   `content` and `lines` parameters are mutually exclusive. Not setting either
+#   of these parameters will result in an empty service definition file.
 #
 define pam::service (
   Enum['present', 'absent'] $ensure     = 'present',

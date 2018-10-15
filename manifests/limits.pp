@@ -1,6 +1,29 @@
-# == Class: pam::limits
+# @summary Manage PAM limits.conf
 #
-# Manage PAM limits.conf
+# @example
+#   This class is included by the pam class for platforms which use it.
+#
+# @param config_file
+#   Path to limits.conf.
+#
+# @param config_file_mode
+#   Mode for config_file.
+#
+# @param config_file_lines
+#   Ordered array of limits that should be placed into limits.conf. Useful for
+#   Suse 10 which does not use limits.d.
+#
+# @param config_file_source
+#   String with source path to a limits.conf
+#
+# @param limits_d_dir
+#   Path to limits.d directory.
+#
+# @param limits_d_dir_mode
+#   Mode for limits_d_dir.
+#
+# @param purge_limits_d_dir
+#   Boolean to purge the limits.d directory.
 #
 class pam::limits (
   Stdlib::Absolutepath $config_file    = '/etc/security/limits.conf',

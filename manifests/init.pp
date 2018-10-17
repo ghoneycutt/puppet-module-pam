@@ -301,7 +301,11 @@ class pam (
   }
 
   if $services {
-    create_resources('pam::service',$services)
+    $services.each |$key,$value| {
+      ::pam::service { $key:
+        * => $value,
+      }
+    }
   }
 
   if $limits_fragments {
@@ -310,7 +314,11 @@ class pam (
     } else {
       $limits_fragments_real = $limits_fragments
     }
-    create_resources('pam::limits::fragment',$limits_fragments_real)
+    $limits_fragments_real.each |$key,$value| {
+      ::pam::limits::fragment { $key:
+        * => $value,
+      }
+    }
   }
 
   $common_files.each |$_common_file| {

@@ -1,6 +1,20 @@
-# == Class: pam::limits::fragment
+# @summary
+#   Places a fragment in $limits_d_dir directory One of the parameters `source`
+#   or `list` **must** be set.
 #
-# Places a fragment in $limits_d_dir directory
+# @example
+#   pam::limits::fragment { 'nproc':
+#     source => 'puppet:///modules/pam/limits.nproc',
+#   }
+#
+# @param ensure
+#   Ensure attribute for the fragment file.
+#
+# @param source
+#   Path to the fragment file, such as 'puppet:///modules/pam/limits.nproc'
+#
+# @param list
+#   Array of lines to add to the fragment file.
 #
 define pam::limits::fragment (
   Optional[String] $source = undef,

@@ -1,6 +1,190 @@
-# == Class: pam
+# @summary This module manages PAM.
 #
-# This module manages bits around PAM.
+# @example Declaring the class
+#   include ::pam
+#
+# @param allowed_users
+#   String, Array or Hash of strings and/or arrays to configure users and
+#   origins in access.conf. The default allows the root user/group from origin
+#   'ALL'.
+#
+# @param login_pam_access
+#   Control module to be used for pam_access.so for login. Valid values are
+#   'required', 'requisite', 'sufficient', 'optional' and 'absent'.
+#
+# @param sshd_pam_access
+#   Control module to be used for pam_access.so for sshd. Valid values are
+#   'required', 'requisite', 'sufficient', 'optional' and 'absent'.
+#
+# @param limits_fragments
+#   Hash of fragments to pass to pam::limits::fragments
+#
+# @param limits_fragments_hiera_merge
+#   Boolean to control merges of all found instances of pam::limits_fragments
+#   in Hiera. This is useful for specifying fragments at different levels of
+#   the hierarchy and having them all included in the catalog.
+#
+# @param package_name
+#   String or Array of packages providing the pam functionality. If undef,
+#   parameter is set based on the OS version.
+#
+# @param pam_conf_file
+#   Absolute path to pam.conf.
+#
+# @param services
+#   Hash of pam::service entries to be created.
+#
+# @param pam_d_login_oracle_options
+#   Allow array of extra lines at the bottom of pam.d/login for oracle systems
+#   on EL5.
+#
+# @param pam_d_login_path
+#   Absolute path to PAM login file.
+#
+# @param pam_d_login_owner
+#   Owner of $pam_d_login_path.
+#
+# @param pam_d_login_group
+#   Group of $pam_d_login_path.
+#
+# @param pam_d_login_mode
+#   Mode of $pam_d_login_path.
+#
+# @param pam_d_login_template
+#   Content template of $pam_d_login_path. If undef, parameter is set based on
+#   the OS version.
+#
+# @param pam_d_sshd_path
+#   PAM sshd path.
+#
+# @param pam_d_sshd_owner
+#   Owner of $pam_d_sshd_path.
+#
+# @param pam_d_sshd_group
+#   Group of $pam_d_sshd_path.
+#
+# @param pam_d_sshd_mode
+#   Mode of $pam_d_sshd_path.
+#
+# @param pam_d_sshd_template
+#   Content template of $pam_d_sshd_path. If undef, parameter is set based on
+#   the OS version. For cases where a full customization of the sshd PAM
+#   configuration is required, set pam_d_sshd_template to use
+#   pam/sshd.custom.erb that is provided with this module. pam/sshd.custom.erb
+#   must be further configured with the parameters pam_sshd_auth_lines,
+#   pam_sshd_account_lines, pam_sshd_password_lines and pam_sshd_session_lines.
+#   Note that the pam_d_sshd_template parameter is a no-op on Solaris.
+#
+# @param pam_sshd_auth_lines
+#   An ordered array of strings that define the content for PAM sshd auth.
+#   This setting is required and only valid if pam_d_sshd_template is
+#   configured to use the pam/sshd.custom.erb template.
+#
+# @param pam_sshd_account_lines
+#   An ordered array of strings that define the content for PAM sshd account.
+#   This setting is required and only valid if pam_d_sshd_template is
+#   configured to use the pam/sshd.custom.erb template.
+#
+# @param pam_sshd_password_lines
+#   An ordered array of strings that define the content for PAM sshd password.
+#   This setting is required and only valid if pam_d_sshd_template is
+#   configured to use the pam/sshd.custom.erb template.
+#
+# @param pam_sshd_session_lines
+#   An ordered array of strings that define the content for PAM sshd session.
+#   This setting is required and only valid if pam_d_sshd_template is
+#   configured to use the pam/sshd.custom.erb template.
+#
+# @param pam_auth_lines
+#   An ordered array of strings that define the content for PAM auth. If
+#   undef, parameter is set based on the OS version.
+#
+# @param pam_account_lines
+#   An ordered array of strings that define the content for PAM account. If
+#   undef, parameter is set based on the OS version.
+#
+# @param pam_password_lines
+#   An ordered array of strings that define the content for PAM password. If
+#   undef, parameter is set based on the OS version.
+#
+# @param pam_session_lines
+#   An ordered array of strings that define the content for PAM session. If
+#   undef, parameter is set based on the OS version.
+#
+# @param other_file
+#   Path to PAM other file. Used on Suse 9 and Solaris.
+#
+# @param common_auth_file
+#   Path to PAM common-auth file. Used on Debian/Ubuntu and Suse.
+#
+# @param common_auth_pc_file
+#   Path to PAM common-auth-pc file. Used on Suse.
+#
+# @param common_account_file
+#   Path to PAM common-account file. Used on Suse.
+#
+# @param common_account_pc_file
+#   Path to PAM common-account-pc file. Used on Suse.
+#
+# @param common_password_file
+#   Path to PAM common-password file. Used on Suse.
+#
+# @param common_password_pc_file
+#   Path to PAM common-password-pc file. Used on Suse.
+#
+# @param common_session_file
+#   Path to PAM common-session file. Used on Suse.
+#
+# @param common_session_pc_file
+#   Path to PAM common-session-pc file. Used on Suse.
+#
+# @param common_session_noninteractive_file
+#   Path to PAM common-session-noninteractive file, which is the same as
+#   common-session-pc used on Suse. Used on Ubuntu 12.04 LTS.
+#
+# @param system_auth_file
+#   Path to PAM system-auth file. Used on RedHat.
+#
+# @param system_auth_ac_file
+#   Path to PAM system-auth-ac file. Used on RedHat.
+#
+# @param password_auth_file
+#   Path to PAM password-auth file. Used on RedHat.
+#
+# @param password_auth_ac_file
+#   Path to PAM password-auth-ac file. Used on RedHat.
+#
+# @param pam_password_auth_lines
+#   Array of lines used in content template of $password_auth_ac_file. If
+#   undef, parameter is set based on defaults for the detected platform.
+#
+# @param pam_password_account_lines
+#   Array of lines used in content template of $password_auth_ac_file. If
+#   undef, parameter is set based on defaults for the detected platform.
+#
+# @param pam_password_password_lines
+#   Array of lines used in content template of $password_auth_ac_file. If
+#   undef, parameter is set based on defaults for the detected platform.
+#
+# @param pam_password_session_lines
+#   Array of lines used in content template of $password_auth_ac_file. If
+#   undef, parameter is set based on defaults for the detected platform.
+#
+# @param manage_nsswitch
+#   Boolean to manage the inclusion of the nsswitch class.
+#
+# @param common_files
+#   Private, do not specify. Manage pam files where the entries match existing
+#   template names. These common_files* parameters are used internally to
+#   specify which files and names are needed. The data is coming out of Hiera
+#   in `data/os/`.
+#
+# @param common_files_create_links
+#   Private, do not specify. If true, then symlinks are created from the
+#   suffixed files to the originals without the suffix.
+#
+# @param common_files_suffix
+#   Suffix added to the common_files entries for the filename.
 #
 class pam (
   Variant[Array, Hash, String] $allowed_users               = 'root',

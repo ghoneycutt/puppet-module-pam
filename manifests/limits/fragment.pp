@@ -1,42 +1,49 @@
-# == Class: pam::limits::fragment
+# @summary
+#   Places a fragment in $limits_d_dir directory One of the parameters `source`
+#   or `list` **must** be set.
 #
-# Places a fragment in $limits_d_dir directory
+# @example
+#   pam::limits::fragment { 'nproc':
+#     source => 'puppet:///modules/pam/limits.nproc',
+#   }
+#
+# @param ensure
+#   Ensure attribute for the fragment file.
+#
+# @param source
+#   Path to the fragment file, such as 'puppet:///modules/pam/limits.nproc'
+#
+# @param list
+#   Array of lines to add to the fragment file.
 #
 define pam::limits::fragment (
-  $source = 'UNSET',
-  $list   = undef,
-  $ensure = 'file',
+  Optional[String] $source = undef,
+  Optional[Array] $list    = undef,
+  Enum['file', 'present', 'absent']
+    $ensure                = 'file',
 ) {
 
   include ::pam
   include ::pam::limits
 
-  if $::osfamily == 'Suse' and $::lsbmajdistrelease == '10' {
+  if $::osfamily == 'Suse' and $::operatingsystemmajrelease == '10' {
     fail('You can not use pam::limits::fragment together with Suse 10.x releases')
   }
 
   # must specify source or list
-  if $ensure != 'absent' and $source == 'UNSET' and $list == undef {
+  if $ensure != 'absent' and ! $source and ! $list {
     fail('pam::limits::fragment must specify source or list.')
   }
 
   # list takes priority if you specify both
-  if $list == undef {
-    $source_real = $source
-  } else {
-    $source_real = undef
-  }
-
   # use the template if a list is provided
-  if $list == undef {
-    $content = undef
-  } else {
-    validate_array($list)
+  if $list {
+    $source_real = undef
     $content = template('pam/limits_fragment.erb')
+  } else {
+    $source_real = $source
+    $content = undef
   }
-
-  validate_re($ensure, ['^file$', '^present$', '^absent$'],
-      "pam::limits::fragment::ensure <${ensure}> and must be either 'file', 'present' or 'absent'.")
 
   file { "${pam::limits::limits_d_dir}/${name}.conf":
     ensure  => $ensure,
@@ -45,6 +52,6 @@ define pam::limits::fragment (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => Package[$pam::my_package_name],
+    require => Package[$pam::package_name],
   }
 }

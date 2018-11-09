@@ -3,17 +3,23 @@ require 'puppet-lint/tasks/puppet-lint'
 PuppetLint.configuration.send('disable_80chars')
 PuppetLint.configuration.send('disable_140chars')
 PuppetLint.configuration.relative = true
-PuppetLint.configuration.ignore_paths = ["spec/**/*.pp", "pkg/**/*.pp"]
+PuppetLint.configuration.ignore_paths = ['spec/**/*.pp', 'pkg/**/*.pp', 'vendor/**/*.pp']
 
-desc 'Validate manifests, templates, and ruby files'
+desc 'Validate ruby files'
 task :validate do
-  Dir['manifests/**/*.pp'].each do |manifest|
-    sh "puppet parser validate --noop #{manifest}"
-  end
   Dir['spec/**/*.rb','lib/**/*.rb'].each do |ruby_file|
     sh "ruby -c #{ruby_file}" unless ruby_file =~ /spec\/fixtures/
   end
-  Dir['templates/**/*.erb'].each do |template|
-    sh "erb -P -x -T '-' #{template} | ruby -c"
-  end
+end
+
+# Puppet Strings (Documentation generation from inline comments)
+# See: https://github.com/puppetlabs/puppet-strings#rake-tasks
+require 'puppet-strings/tasks'
+
+desc 'Alias for strings:generate'
+task :doc => ['strings:generate']
+
+desc 'Generate REFERENCE.md'
+task :reference do
+  sh 'puppet strings generate --format markdown'
 end

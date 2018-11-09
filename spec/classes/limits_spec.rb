@@ -1,378 +1,207 @@
 require 'spec_helper'
 describe 'pam::limits' do
-  describe 'limits.conf' do
-    context 'ensure file exists with default values for params on a supported platform' do
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-        }
-      end
+  let(:facts) { platforms['el7'][:facts_hash] }
 
-      it { should contain_class('pam') }
+  context 'with default values on supported platform EL7' do
+    it { should compile.with_all_deps }
+    it { should contain_class('pam') }
 
-      it {
-        should contain_file('limits_conf').with({
-          'ensure'  => 'file',
-          'path'    => '/etc/security/limits.conf',
-          'owner'   => 'root',
-          'group'   => 'root',
-          'mode'    => '0640',
-          'require' => [ 'Package[pam]', 'Package[util-linux]' ],
-        })
-      }
+    content = <<-END.gsub(/^\s+\|/, '')
+      |# This file is being maintained by Puppet.
+      |# DO NOT EDIT
+      |
+      |# /etc/security/limits.conf
+      |#
+      |#Each line describes a limit for a user in the form:
+      |#
+      |#<domain>        <type>  <item>  <value>
+      |#
+      |#Where:
+      |#<domain> can be:
+      |#        - a user name
+      |#        - a group name, with @group syntax
+      |#        - the wildcard *, for default entry
+      |#        - the wildcard %, can be also used with %group syntax,
+      |#                 for maxlogin limit
+      |#
+      |#<type> can have the two values:
+      |#        - "soft" for enforcing the soft limits
+      |#        - "hard" for enforcing hard limits
+      |#
+      |#<item> can be one of the following:
+      |#        - core - limits the core file size (KB)
+      |#        - data - max data size (KB)
+      |#        - fsize - maximum filesize (KB)
+      |#        - memlock - max locked-in-memory address space (KB)
+      |#        - nofile - max number of open file descriptors
+      |#        - rss - max resident set size (KB)
+      |#        - stack - max stack size (KB)
+      |#        - cpu - max CPU time (MIN)
+      |#        - nproc - max number of processes
+      |#        - as - address space limit (KB)
+      |#        - maxlogins - max number of logins for this user
+      |#        - maxsyslogins - max number of logins on the system
+      |#        - priority - the priority to run user process with
+      |#        - locks - max number of file locks the user can hold
+      |#        - sigpending - max number of pending signals
+      |#        - msgqueue - max memory used by POSIX message queues (bytes)
+      |#        - nice - max nice priority allowed to raise to values: [-20, 19]
+      |#        - rtprio - max realtime priority
+      |#
+      |#<domain>      <type>  <item>         <value>
+      |#
+      |
+      |#*               soft    core            0
+      |#*               hard    rss             10000
+      |#\@student        hard    nproc           20
+      |#\@faculty        soft    nproc           20
+      |#\@faculty        hard    nproc           50
+      |#ftp             hard    nproc           0
+      |#\@student        -       maxlogins       4
+      |
+      |# End of file
+    END
+
+    it do
+      should contain_file('limits_d').with({
+        'ensure'  => 'directory',
+        'path'    => '/etc/security/limits.d',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0750',
+        'purge'   => false,
+        'recurse' => false,
+        'require' => [ 'Package[pam]', 'Exec[mkdir_p-/etc/security/limits.d]' ],
+      })
     end
 
-    context 'ensure file exists with custom values for params on a supported platform' do
-      let(:params) do
-        {
-          :config_file      => '/custom/security/limits.conf',
-          :config_file_mode => '0600',
-        }
-      end
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-        }
-      end
-
-      it { should contain_class('pam') }
-
-      it {
-        should contain_file('limits_conf').with({
-          'ensure'  => 'file',
-          'path'    => '/custom/security/limits.conf',
-          'owner'   => 'root',
-          'group'   => 'root',
-          'mode'    => '0600',
-          'require' => [ 'Package[pam]', 'Package[util-linux]' ],
-        })
-      }
-    end
-
-    context 'with config_file_source specified as an valid string' do
-      let(:facts) do
-        {
-          :osfamily                  => 'RedHat',
-          :lsbmajdistrelease         => '6',
-          :operatingsystemmajrelease => '6',
-        }
-      end
-
-      let(:params) do
-        {
-          :config_file_source => 'puppet:///modules/pam/own.limits.conf',
-        }
-      end
-
-      it {
-        should contain_file('limits_conf').with({
-          'ensure'  => 'file',
-          'path'    => '/etc/security/limits.conf',
-          'source'  => 'puppet:///modules/pam/own.limits.conf',
-          'content' => nil,
-          'owner'   => 'root',
-          'group'   => 'root',
-          'mode'    => '0640',
-          'require' => 'Package[pam]',
-        })
-      }
-
-    end
-
-    context 'with config_file_lines specified as an valid array' do
-      let(:facts) do
-        {
-          :osfamily                  => 'RedHat',
-          :lsbmajdistrelease         => '6',
-          :operatingsystemmajrelease => '6',
-        }
-      end
-
-      let(:params) do
-        {
-          :config_file_lines => [ '* soft nofile 2048', '* hard nofile 8192', ]
-        }
-      end
-
-      it {
-        should contain_file('limits_conf').with({
-          'ensure'  => 'file',
-          'path'    => '/etc/security/limits.conf',
-          'source'  => nil,
-          'owner'   => 'root',
-          'group'   => 'root',
-          'mode'    => '0640',
-          'require' => 'Package[pam]',
-        })
-      }
-
-      it { should contain_file('limits_conf').with_content(/^\* soft nofile 2048$/) }
-      it { should contain_file('limits_conf').with_content(/^\* hard nofile 8192$/) }
-
-    end
-
-    context 'with config_file_lines specified as an invalid string' do
-      let(:facts) do
-        {
-          :osfamily                  => 'RedHat',
-          :lsbmajdistrelease         => '6',
-          :operatingsystemmajrelease => '6',
-        }
-      end
-
-      let(:params) do
-        {
-          :config_file_lines => '* soft nofile 2048',
-
-        }
-      end
-
-      it 'should fail' do
-        expect {
-          should contain_class('pam::limits')
-        }.to raise_error(Puppet::Error,/is not an Array.  It looks to be a String/)
-      end
-
-    end
-
-    context 'with config_file_source specified as an valid string and config_file_lines specified as an valid array' do
-      let(:facts) do
-        {
-          :osfamily                  => 'RedHat',
-          :lsbmajdistrelease         => '6',
-          :operatingsystemmajrelease => '6',
-        }
-      end
-
-      let(:params) do
-        {
-          :config_file_source => 'puppet:///modules/pam/own.limits.conf',
-          :config_file_lines => [ '* soft nofile 2048', '* hard nofile 8192', ]
-        }
-      end
-
-      it {
-        should contain_file('limits_conf').with({
-          'ensure'  => 'file',
-          'path'    => '/etc/security/limits.conf',
-          'source'  => nil,
-          'owner'   => 'root',
-          'group'   => 'root',
-          'mode'    => '0640',
-          'require' => 'Package[pam]',
-        })
-      }
-
-      it { should contain_file('limits_conf').with_content(/^\* soft nofile 2048$/) }
-      it { should contain_file('limits_conf').with_content(/^\* hard nofile 8192$/) }
-
-    end
-
-    context 'with config_file specified as an invalid path' do
-      let(:params) { { :config_file => 'custom/security/limits.conf' } }
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-        }
-      end
-
-      it 'should fail' do
-        expect {
-          should contain_class('pam::limits')
-        }.to raise_error(Puppet::Error,/not an absolute path/)
-      end
-    end
-
-    context 'with config_file_mode specified as an invalid mode' do
-      let(:params) { { :config_file_mode => '666' } }
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-        }
-      end
-
-      it 'should fail' do
-        expect {
-          should contain_class('pam::limits')
-        }.to raise_error(Puppet::Error,/pam::limits::config_file_mode is <666> and must be a valid four digit mode in octal notation./)
-      end
+    it { should contain_exec('mkdir_p-/etc/security/limits.d') }
+    it do
+      should contain_file('limits_conf').with({
+        'ensure'  => 'file',
+        'path'    => '/etc/security/limits.conf',
+        'source'  => nil,
+        'content' => content,
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0640',
+        'require' => [ 'Package[pam]' ],
+      })
     end
   end
 
-  describe 'limits.d' do
-    context 'ensure directory exists with default values for params on a supported platform' do
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-        }
-      end
-
-      it { should contain_class('pam') }
-
-      it { should contain_common__mkdir_p('/etc/security/limits.d') }
-
-      it {
-        should contain_file('limits_d').with({
-          'ensure'  => 'directory',
-          'path'    => '/etc/security/limits.d',
-          'owner'   => 'root',
-          'group'   => 'root',
-          'mode'    => '0750',
-          'purge'   => 'false',
-          'recurse' => 'false',
-          'require' => [ 'Package[pam]', 'Package[util-linux]', 'Common::Mkdir_p[/etc/security/limits.d]' ],
-        })
-      }
-    end
-
-    context 'ensure directory exists with custom values for params on a supported platform' do
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-        }
-      end
-
-      let(:params) do
-        {
-          :limits_d_dir     => '/custom/security/limits.d',
-          :limits_d_dir_mode => '0700',
-        }
-      end
-
-      it { should contain_class('pam') }
-
-      it { should contain_common__mkdir_p('/custom/security/limits.d') }
-
-      it {
-        should contain_file('limits_d').with({
-          'ensure'  => 'directory',
-          'path'    => '/custom/security/limits.d',
-          'owner'   => 'root',
-          'group'   => 'root',
-          'mode'    => '0700',
-          'purge'   => 'false',
-          'recurse' => 'false',
-          'require' => [ 'Package[pam]', 'Package[util-linux]', 'Common::Mkdir_p[/custom/security/limits.d]' ],
-        })
-      }
-    end
-
-    [true,'true'].each do |value|
-      context "with purge_limits_d_dir set to #{value}" do
-        let(:params) { { :purge_limits_d_dir => value } }
-        let(:facts) do
-          {
-            :osfamily                  => 'RedHat',
-            :operatingsystemmajrelease => '5',
-          }
-        end
-
-        it {
-          should contain_file('limits_d').with({
-            'ensure'  => 'directory',
-            'path'    => '/etc/security/limits.d',
-            'owner'   => 'root',
-            'group'   => 'root',
-            'mode'    => '0750',
-            'purge'   => 'true',
-            'recurse' => 'true',
-            'require' => [ 'Package[pam]', 'Package[util-linux]', 'Common::Mkdir_p[/etc/security/limits.d]' ],
-          })
-        }
-      end
-    end
-
-    [false,'false'].each do |value|
-      context "with purge_limits_d_dir set to #{value}" do
-        let(:params) { { :purge_limits_d_dir => value } }
-        let(:facts) do
-          {
-            :osfamily                  => 'RedHat',
-            :operatingsystemmajrelease => '5',
-          }
-        end
-
-        it {
-          should contain_file('limits_d').with({
-            'ensure'  => 'directory',
-            'path'    => '/etc/security/limits.d',
-            'owner'   => 'root',
-            'group'   => 'root',
-            'mode'    => '0750',
-            'purge'   => 'false',
-            'recurse' => 'false',
-            'require' => [ 'Package[pam]', 'Package[util-linux]', 'Common::Mkdir_p[/etc/security/limits.d]' ],
-          })
-        }
-      end
-    end
-
-    context 'with limits_d_dir specified as an invalid path' do
-      let(:params) { { :limits_d_dir => 'custom/security/limits.d' } }
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-        }
-      end
-
-      it 'should fail' do
-        expect {
-          should contain_class('pam::limits')
-        }.to raise_error(Puppet::Error,/not an absolute path/)
-      end
-    end
-
-    context 'with limits_d_dir_mode specified as an invalid mode' do
-      let(:params) { { :limits_d_dir_mode => '777' } }
-      let(:facts) do
-        {
-          :osfamily                   => 'RedHat',
-          :operatingsystemmajrelease  => '5',
-        }
-      end
-
-      it 'should fail' do
-        expect {
-          should contain_class('pam::limits')
-        }.to raise_error(Puppet::Error,/pam::limits::limits_d_dir_mode is <777> and must be a valid four digit mode in octal notation./)
-      end
-    end
-
-    context 'with purge_limits_d_dir set to an invalid value' do
-      let(:params) { { :purge_limits_d_dir => 'invalid' } }
-      let(:facts) do
-        {
-          :osfamily                  => 'RedHat',
-          :operatingsystemmajrelease => '5',
-        }
-      end
-
-      it 'should fail' do
-        expect {
-          should contain_class('pam::limits')
-        }.to raise_error(Puppet::Error,/str2bool/)
-      end
-    end
-
-    context 'without fragments support on Suse 10' do
-      let(:facts) do
-        {
-          :osfamily          => 'Suse',
-          :lsbmajdistrelease => '10',
-        }
-      end
-
-      it { should contain_class('pam') }
-      it { should_not contain_common__mkdir_p('/etc/security/limits.d') }
-      it { should_not contain_file('limits_d') }
-    end
-
+  context 'with config_file set to a valid path' do
+    let(:params) { {:config_file => '/testing'} }
+    it { should contain_file('limits_conf').with_path('/testing') }
   end
+
+  context 'with config_file_lines set to a valid array' do
+    let(:params) { {:config_file_lines => [ '* soft nofile 2048', '* hard nofile 8192' ]} }
+    it { should contain_file('limits_conf').with_content(%r{\* soft nofile 2048\n\* hard nofile 8192\n}) }
+  end
+
+  context 'with config_file_source set to a valid string' do
+    let(:params) { {:config_file_source => 'puppet:///pam/unit_tests.erb' } }
+    it { should contain_file('limits_conf').with_source('puppet:///pam/unit_tests.erb') }
+    it { should contain_file('limits_conf').with_content(nil) }
+  end
+
+  context 'with config_file_lines and config_file_source both set to valid strings (config_file_lines takes priority)' do
+    let(:params) do
+      {
+        :config_file_lines  => [ '* soft nofile 2048', '* hard nofile 8192' ],
+        :config_file_source => 'pam/unit_tests.erb',
+      }
+    end
+    it { should contain_file('limits_conf').with_source(nil) }
+    it { should contain_file('limits_conf').with_content( %r{\* soft nofile 2048\n\* hard nofile 8192\n}) }
+  end
+
+  context 'with config_file_mode set to a valid string' do
+    let(:params) { {:config_file_mode => '0242' } }
+    it { should contain_file('limits_conf').with_mode('0242') }
+  end
+
+  context 'with limits_d_dir set to a valid string' do
+    let(:params) { {:limits_d_dir => '/testing.d' } }
+    it { should contain_exec('mkdir_p-/testing.d') }
+    it { should contain_file('limits_d').with_path('/testing.d') }
+    it { should contain_file('limits_d').with_require([ 'Package[pam]', 'Exec[mkdir_p-/testing.d]' ]) }
+  end
+
+  context 'with limits_d_dir_mode set to a valid string' do
+    let(:params) { {:limits_d_dir_mode => '0242' } }
+    it { should contain_file('limits_d').with_mode('0242') }
+  end
+
+  context 'with purge_limits_d_dir set to a valid boolean true' do
+    let(:params) { {:purge_limits_d_dir => true } }
+    it { should contain_file('limits_d').with_purge(true) }
+    it { should contain_file('limits_d').with_recurse(true) }
+  end
+
+  context 'with default values on supported platform Suse 10 without fragments support' do
+    let(:facts) { platforms['suse10'][:facts_hash] }
+    it { should contain_class('pam') }
+    it { should_not contain_exec('mkdir_p-/etc/security/limits.d') }
+    it { should_not contain_file('limits_d') }
+  end
+
+  describe 'variable data type and content validations' do
+    validations = {
+      'Boolean' => {
+        :name    => %w(purge_limits_d_dir),
+        :valid   => [true, false],
+        :invalid => ['string', %w(array), { 'ha' => 'sh' }, 3, 2.42, 'false', nil],
+        :message => 'expects a Boolean', # Puppet 4 & 5
+      },
+      'Optional[Array]' => {
+        :name    => %w(config_file_lines),
+        :valid   => [%w(array)],
+        :invalid => ['string', { 'ha' => 'sh' }, 3, 2.42, false, nil],
+        :message => 'expects a value of type Undef or Array', # Puppet 4 & 5
+      },
+      'Optional[String] specific for config_file_source' => {
+        :name    => %w(config_file_source),
+        :valid   => %w(puppet:///pam/unit_tests.erb),
+        :invalid => [%w(array), { 'ha' => 'sh' }, 3, 2.42, false],
+        :message => 'expects a value of type Undef or String', # Puppet 4 & 5
+      },
+      'Stdlib::Absolutepath' => {
+        :name    => %w(config_file limits_d_dir),
+        :valid   => ['/absolute/filepath', '/absolute/directory/'],
+        :invalid => ['../invalid', %w(array), { 'ha' => 'sh' }, 3, 2.42, false, nil],
+        :message => 'expects a (match for|match for Stdlib::Absolutepath =|Stdlib::Absolutepath =) Variant\[Stdlib::Windowspath.*Stdlib::Unixpath', # Puppet (4.x|5.0 & 5.1|5.x)
+      },
+      'Stdlib::Filemode' => {
+        :name    => %w(config_file_mode limits_d_dir_mode),
+        :valid   => %w(0644 0755 0640 0740),
+        :invalid => [ 2770, '0844', '755', '00644', 'string', %w(array), { 'ha' => 'sh' }, 3, 2.42, false, nil],
+        :message => 'expects a match for Stdlib::Filemode',  # Puppet 4 & 5
+      },
+    }
+
+    validations.sort.each do |type, var|
+      mandatory_params = {} if mandatory_params.nil?
+      var[:name].each do |var_name|
+        var[:params] = {} if var[:params].nil?
+        var[:valid].each do |valid|
+          context "when #{var_name} (#{type}) is set to valid #{valid} (as #{valid.class})" do
+            let(:facts) { [mandatory_facts, var[:facts]].reduce(:merge) } if ! var[:facts].nil?
+            let(:params) { [mandatory_params, var[:params], { :"#{var_name}" => valid, }].reduce(:merge) }
+            it { should compile }
+          end
+        end
+
+        var[:invalid].each do |invalid|
+          context "when #{var_name} (#{type}) is set to invalid #{invalid} (as #{invalid.class})" do
+            let(:params) { [mandatory_params, var[:params], { :"#{var_name}" => invalid, }].reduce(:merge) }
+            it 'should fail' do
+              expect { should contain_class(subject) }.to raise_error(Puppet::Error, /#{var[:message]}/)
+            end
+          end
+        end
+      end # var[:name].each
+    end # validations.sort.each
+  end # describe 'variable type and content validations'
 end

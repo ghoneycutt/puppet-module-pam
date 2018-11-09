@@ -1,66 +1,80 @@
-# == Class: pam::limits
+# @summary Manage PAM limits.conf
 #
-# Manage PAM limits.conf
+# @example
+#   This class is included by the pam class for platforms which use it.
+#
+# @param config_file
+#   Path to limits.conf.
+#
+# @param config_file_mode
+#   Mode for config_file.
+#
+# @param config_file_lines
+#   Ordered array of limits that should be placed into limits.conf. Useful for
+#   Suse 10 which does not use limits.d.
+#
+# @param config_file_source
+#   String with source path to a limits.conf
+#
+# @param limits_d_dir
+#   Path to limits.d directory.
+#
+# @param limits_d_dir_mode
+#   Mode for limits_d_dir.
+#
+# @param purge_limits_d_dir
+#   Boolean to purge the limits.d directory.
 #
 class pam::limits (
-  $config_file          = '/etc/security/limits.conf',
-  $config_file_lines    = undef,
-  $config_file_source   = undef,
-  $config_file_mode     = '0640',
-  $limits_d_dir         = '/etc/security/limits.d',
-  $limits_d_dir_mode    = '0750',
-  $purge_limits_d_dir   = false,
+  Stdlib::Absolutepath $config_file    = '/etc/security/limits.conf',
+  Optional[Array] $config_file_lines   = undef,
+  Optional[String] $config_file_source = undef,
+  Stdlib::Filemode $config_file_mode   = '0640',
+  Stdlib::Absolutepath $limits_d_dir   = '/etc/security/limits.d',
+  Stdlib::Filemode $limits_d_dir_mode  = '0750',
+  Boolean $purge_limits_d_dir          = false,
 ) {
-
-  # validate params
-  validate_absolute_path($config_file)
-  validate_absolute_path($limits_d_dir)
-
-  validate_re($config_file_mode, '^[0-7]{4}$',
-    "pam::limits::config_file_mode is <${config_file_mode}> and must be a valid four digit mode in octal notation.")
-
-  validate_re($limits_d_dir_mode, '^[0-7]{4}$',
-    "pam::limits::limits_d_dir_mode is <${limits_d_dir_mode}> and must be a valid four digit mode in octal notation.")
-
-  if is_string($purge_limits_d_dir) == true {
-    $purge_limits_d_dir_real = str2bool($purge_limits_d_dir)
-  } else {
-    $purge_limits_d_dir_real = $purge_limits_d_dir
-  }
-  validate_bool($purge_limits_d_dir_real)
 
   include ::pam
 
-  if $config_file_lines == undef and $config_file_source == undef {
-    $content = template('pam/limits.conf.erb')
-    $config_file_source_real = undef
-  } else {
+  if $config_file_lines or $config_file_source {
     # config_file_lines takes priority over config_file_source
-    if $config_file_lines == undef {
+    if $config_file_lines {
+      $config_file_source_real = undef
+      $content = template('pam/limits.conf.erb')
+    } else {
       $content = undef
       $config_file_source_real = $config_file_source
-    } else {
-      $config_file_source_real = undef
-      validate_array($config_file_lines)
-      $content = template('pam/limits.conf.erb')
     }
-  }
-  if $::osfamily == 'Suse' and $::lsbmajdistrelease == '10'  {
   } else {
-    common::mkdir_p { $limits_d_dir: }
+    $content = template('pam/limits.conf.erb')
+    $config_file_source_real = undef
+  }
+  if $::osfamily == 'Suse' and $::operatingsystemmajrelease == '10'  {
+    # do nothing
+  } else {
+
+    exec { "mkdir_p-${limits_d_dir}":
+      command => "mkdir -p ${limits_d_dir}",
+      unless  => "test -d ${limits_d_dir}",
+      path    => '/bin:/usr/bin',
+    }
+
     file { 'limits_d':
       ensure  => directory,
       path    => $limits_d_dir,
       owner   => 'root',
       group   => 'root',
       mode    => $limits_d_dir_mode,
-      purge   => $purge_limits_d_dir_real,
-      recurse => $purge_limits_d_dir_real,
-      require => [ Package[$::pam::my_package_name],
-                  Common::Mkdir_p[$limits_d_dir],
-                  ],
+      purge   => $purge_limits_d_dir,
+      recurse => $purge_limits_d_dir,
+      require => [
+        Package[$::pam::package_name],
+        Exec["mkdir_p-${limits_d_dir}"],
+      ],
     }
   }
+
   file { 'limits_conf':
     ensure  => file,
     path    => $config_file,
@@ -69,6 +83,6 @@ class pam::limits (
     owner   => 'root',
     group   => 'root',
     mode    => $config_file_mode,
-    require => Package[$::pam::my_package_name],
+    require => Package[$::pam::package_name],
   }
 }

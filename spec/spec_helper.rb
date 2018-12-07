@@ -383,6 +383,27 @@ def platforms
             :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
           }, ],
       }
+    'debian9' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Debian',
+          :operatingsystem => 'Debian',
+          :os => {
+            'name' => 'Debian',
+            'family' => 'Debian',
+            'release' => {
+              'full'  => '9.0',
+              'major' => '9',
+              'minor' => '0'
+            },
+          },
+        },
+        :packages           => [ 'libpam0g', ],
+        :files              => [
+          { :prefix         => 'pam_common_',
+            :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
+          }, ],
+      }
   }
 end
 

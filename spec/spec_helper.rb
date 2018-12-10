@@ -382,7 +382,7 @@ def platforms
           { :prefix         => 'pam_common_',
             :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
           }, ],
-      }
+      },
     'debian9' =>
       {
         :facts_hash => {

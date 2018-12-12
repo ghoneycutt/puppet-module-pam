@@ -185,6 +185,7 @@ module aims to support the current and previous major Puppet versions.
  * Ubuntu 16.04 LTS
  * Debian 7
  * Debian 8
+ * Debian 9
 
 ## Development
 

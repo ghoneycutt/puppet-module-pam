@@ -1,1 +1,3 @@
-include ::pam
+class { '::pam':
+  allowed_users => ['root', 'vagrant'],
+}

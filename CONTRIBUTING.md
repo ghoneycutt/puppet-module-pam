@@ -5,7 +5,13 @@
   - Pull requests that add any additional functionality should have
     tests which cover the new feature to ensure it does what is
 expected.
+
   - Pull requests with failing tests will not be merged.
+
+  - Make use of [Vagrant](https://www.vagrantup.com/) for testing
+    locally. Run `time ./tests/vagrant_test_all.sh ; echo $?` before
+merging. This tests that the systems listed in the `Vagrantfile` can be
+provisioned and SSH to them works.
 
 ## Features
 

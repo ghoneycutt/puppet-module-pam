@@ -36,3 +36,4 @@ log/
 
 # Vagrant
 .vagrant/*
+tests/*.log

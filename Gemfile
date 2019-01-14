@@ -8,7 +8,7 @@ end
 
 gem 'rake', '~> 12.3'
 gem 'json', "~> 1.8.3",                                 :require => false
-gem 'json_pure', "~> 1.8.3",                            :require => false
+gem 'json_pure', "~> 2.1.0",                            :require => false
 gem 'metadata-json-lint',                               :require => false
 gem 'puppetlabs_spec_helper', '>= 2.7.0',               :require => false
 gem 'rspec-puppet', '~> 2.0',                           :require => false

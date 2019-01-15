@@ -341,6 +341,26 @@ def platforms
             :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
           }, ],
       },
+    'ubuntu1804' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Debian',
+          :operatingsystem => 'Ubuntu',
+          :os => {
+            'release' => {
+              'full'  => '18.04',
+              'major' => '18.04'
+            },
+            'name'   => 'Ubuntu',
+            'family' => 'Debian'
+          },
+        },
+        :packages           => [ 'libpam0g', ],
+        :files              => [
+          { :prefix         => 'pam_common_',
+            :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
+          }, ],
+      },
     'debian7' =>
       {
         :facts_hash => {

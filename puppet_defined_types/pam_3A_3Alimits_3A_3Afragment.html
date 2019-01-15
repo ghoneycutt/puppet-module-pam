@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Defined Type: pam::limits::fragment
+  
+    &mdash; Documentation by YARD 0.9.16
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "puppet_defined_types::pam::limits::fragment";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../puppet_defined_type_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (p)</a> &raquo;
+    <span class='title'><span class='object_link'>Defined Types</span></span>
+     &raquo; 
+    <span class="title">pam::limits::fragment</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="../puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Defined Type: pam::limits::fragment</h1>
+<div class="box_info">
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>
+      manifests/limits/fragment.pp
+    </dd>
+  </dl>
+</div>
+
+  <h2>Summary</h2>
+  Places a fragment in $limits_d_dir directory One of the parameters `source`
+or `list` **must** be set.
+
+<h2>Overview</h2>
+<div class="docstring">
+  <div class="discussion">
+    
+  </div>
+</div>
+
+
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>pam::limits::fragment { &#39;nproc&#39;:
+  source =&gt; &#39;puppet:///modules/pam/limits.nproc&#39;,
+}</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>ensure</span>
+      
+      
+        <span class='type'>(<tt>Enum['file', 'present', 'absent']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;file&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Ensure attribute for the fragment file.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>source</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Path to the fragment file, such as &#39;puppet:///modules/pam/limits.nproc&#39;</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>list</span>
+      
+      
+        <span class='type'>(<tt>Optional[Array]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Array of lines to add to the fragment file.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><div class="method_details_list">
+  <table class="source_code">
+    <tr>
+      <td>
+        <pre class="lines">
+
+
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57</pre>
+      </td>
+      <td>
+        <pre class="code"><span class="info file"># File 'manifests/limits/fragment.pp', line 19</span>
+
+define pam::limits::fragment (
+  Optional[String] $source = undef,
+  Optional[Array] $list    = undef,
+  Enum[&#39;file&#39;, &#39;present&#39;, &#39;absent&#39;]
+    $ensure                = &#39;file&#39;,
+) {
+
+  include ::pam
+  include ::pam::limits
+
+  if $::osfamily == &#39;Suse&#39; and $::operatingsystemmajrelease == &#39;10&#39; {
+    fail(&#39;You can not use pam::limits::fragment together with Suse 10.x releases&#39;)
+  }
+
+  # must specify source or list
+  if $ensure != &#39;absent&#39; and ! $source and ! $list {
+    fail(&#39;pam::limits::fragment must specify source or list.&#39;)
+  }
+
+  # list takes priority if you specify both
+  # use the template if a list is provided
+  if $list {
+    $source_real = undef
+    $content = template(&#39;pam/limits_fragment.erb&#39;)
+  } else {
+    $source_real = $source
+    $content = undef
+  }
+
+  file { &quot;${pam::limits::limits_d_dir}/${name}.conf&quot;:
+    ensure  =&gt; $ensure,
+    source  =&gt; $source_real,
+    content =&gt; $content,
+    owner   =&gt; &#39;root&#39;,
+    group   =&gt; &#39;root&#39;,
+    mode    =&gt; &#39;0644&#39;,
+    require =&gt; Package[$pam::package_name],
+  }
+}</pre>
+      </td>
+    </tr>
+  </table>
+</div>
+</div>
+
+      <div id="footer">
+     Generated by <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>.
+</div>
+
+    </div>
+  </body>
+</html>

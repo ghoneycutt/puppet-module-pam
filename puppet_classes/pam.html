@@ -1216,8 +1216,8 @@ class pam (
     fail(&quot;osfamily Solaris&#39; kernelrelease is &lt;${facts[&#39;kernelrelease&#39;]}&gt; and must be 5.9, 5.10 or 5.11&quot;)
   } elsif $facts[&#39;os&#39;][&#39;family&#39;] == &#39;Suse&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;9&#39;,&#39;10&#39;,&#39;11&#39;,&#39;12&#39;,&#39;13&#39;]) {
     fail(&quot;osfamily Suse&#39;s os.release.major is &lt;${::facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 9, 10, 11, 12 or 13&quot;)
-  } elsif $facts[&#39;os&#39;][&#39;name&#39;] == &#39;Debian&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;7&#39;,&#39;8&#39;]) {
-    fail(&quot;Debian&#39;s os.release.major is &lt;${facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 7 or 8&quot;)
+  } elsif $facts[&#39;os&#39;][&#39;name&#39;] == &#39;Debian&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;7&#39;,&#39;8&#39;,&#39;9&#39;]) {
+    fail(&quot;Debian&#39;s os.release.major is &lt;${facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 7, 8 or 9&quot;)
   } elsif $facts[&#39;os&#39;][&#39;name&#39;] == &#39;Ubuntu&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;12.04&#39;, &#39;14.04&#39;, &#39;16.04&#39;, &#39;18.04&#39;]) {
     fail(&quot;Ubuntu&#39;s os.release.major is &lt;${facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 12.04, 14.04, 16.04, or 18.04&quot;)
   }

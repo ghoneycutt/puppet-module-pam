@@ -1,7 +1,25 @@
 # Change Log
 
-## [v3.1.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.1.0)
+## [v3.2.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.2.0)
 
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.1.0...v3.2.0)
+
+**Implemented enhancements:**
+
+- Debian9 [\#206](https://github.com/ghoneycutt/puppet-module-pam/pull/206) ([ghoneycutt](https://github.com/ghoneycutt))
+
+**Closed issues:**
+
+- Add support for Ubuntu 18.04 [\#195](https://github.com/ghoneycutt/puppet-module-pam/issues/195)
+- allowed\_users ordering [\#184](https://github.com/ghoneycutt/puppet-module-pam/issues/184)
+- New Use-Case: Preserving file changes from authconfig [\#183](https://github.com/ghoneycutt/puppet-module-pam/issues/183)
+- CentOS 7: password-auth-ac changed incorrectly [\#166](https://github.com/ghoneycutt/puppet-module-pam/issues/166)
+
+**Merged pull requests:**
+
+- Use SHA512 instead of md5 for for passwords on EL6 and EL7 [\#196](https://github.com/ghoneycutt/puppet-module-pam/pull/196) ([synaptis](https://github.com/synaptis))
+
+## [v3.1.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.1.0) (2019-01-15)
 [Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.0.0...v3.1.0)
 
 **Closed issues:**

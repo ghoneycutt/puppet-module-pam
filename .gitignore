@@ -36,4 +36,4 @@ log/
 
 # Vagrant
 .vagrant/*
-tests/*.log
+ubuntu*.log

@@ -6,13 +6,13 @@ else
   gem 'puppet', :require => false
 end
 
-gem 'rake', '~> 12.3'
-gem 'json', "~> 2.2.0",                                 :require => false
-gem 'json_pure', "~> 2.2.0",                            :require => false
+gem 'rake'
+gem 'json',                                             :require => false
+gem 'json_pure',                                        :require => false
 gem 'metadata-json-lint',                               :require => false
-gem 'puppetlabs_spec_helper', '>= 2.7.0',               :require => false
-gem 'rspec-puppet', '~> 2.0',                           :require => false
-gem 'puppet-lint', '~> 2.0',                            :require => false
+gem 'puppetlabs_spec_helper',                           :require => false
+gem 'rspec-puppet',                                     :require => false
+gem 'puppet-lint',                                      :require => false
 gem 'puppet-lint-absolute_classname-check',             :require => false
 gem 'puppet-lint-alias-check',                          :require => false
 gem 'puppet-lint-empty_string-check',                   :require => false
@@ -26,17 +26,17 @@ gem 'puppet-lint-unquoted_string-check',                :require => false
 gem 'puppet-lint-variable_contains_upcase',             :require => false
 
 group :documentation do
-  gem 'yard',           require: false
-  gem 'redcarpet',      require: false
   gem 'puppet-strings', require: false
+  gem 'redcarpet',      require: false
+  gem 'yard',           require: false
 end
 
 group :system_tests do
-  gem 'beaker', '~> 4.x',             :require => false
-  gem 'beaker-rspec',                 :require => false
-  gem 'beaker-puppet',                :require => false
+  gem 'beaker',                       :require => false
   gem 'beaker-docker',                :require => false
-  gem 'serverspec',                   :require => false
-  gem 'beaker-puppet_install_helper', :require => false
   gem 'beaker-module_install_helper', :require => false
+  gem 'beaker-puppet',                :require => false
+  gem 'beaker-puppet_install_helper', :require => false
+  gem 'beaker-rspec',                 :require => false
+  gem 'serverspec',                   :require => false
 end

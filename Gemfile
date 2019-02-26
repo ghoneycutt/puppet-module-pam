@@ -6,13 +6,13 @@ else
   gem 'puppet', :require => false
 end
 
-gem 'rake', '~> 12.3'
-gem 'json', "~> 2.2.0",                                 :require => false
-gem 'json_pure', "~> 2.2.0",                            :require => false
+gem 'rake'
+gem 'json',                                             :require => false
+gem 'json_pure',                                        :require => false
 gem 'metadata-json-lint',                               :require => false
-gem 'puppetlabs_spec_helper', '>= 2.7.0',               :require => false
-gem 'rspec-puppet', '~> 2.0',                           :require => false
-gem 'puppet-lint', '~> 2.0',                            :require => false
+gem 'puppetlabs_spec_helper',                           :require => false
+gem 'rspec-puppet',                                     :require => false
+gem 'puppet-lint',                                      :require => false
 gem 'puppet-lint-absolute_classname-check',             :require => false
 gem 'puppet-lint-alias-check',                          :require => false
 gem 'puppet-lint-empty_string-check',                   :require => false
@@ -32,7 +32,7 @@ group :documentation do
 end
 
 group :system_tests do
-  gem 'beaker', '~> 4.x',             :require => false
+  gem 'beaker',                       :require => false
   gem 'beaker-rspec',                 :require => false
   gem 'beaker-puppet',                :require => false
   gem 'beaker-docker',                :require => false

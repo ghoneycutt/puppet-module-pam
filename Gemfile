@@ -7,7 +7,7 @@ else
 end
 
 gem 'rake', '~> 12.3'
-gem 'json', "~> 2.1.0",                                 :require => false
+gem 'json', "~> 2.2.0",                                 :require => false
 gem 'json_pure', "~> 2.2.0",                            :require => false
 gem 'metadata-json-lint',                               :require => false
 gem 'puppetlabs_spec_helper', '>= 2.7.0',               :require => false

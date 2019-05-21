@@ -179,6 +179,7 @@ module aims to support the current and previous major Puppet versions.
  * Suse 10
  * Suse 11
  * Suse 12
+ * Suse 15
  * OpenSuSE 13.1
  * Ubuntu 12.04 LTS
  * Ubuntu 14.04 LTS

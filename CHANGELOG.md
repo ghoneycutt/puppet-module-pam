@@ -1,7 +1,20 @@
 # Change Log
 
-## [v3.2.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.2.0)
+## [v3.3.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.3.0) (2019-05-23)
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.2.0...v3.3.0)
 
+**Closed issues:**
+
+- Add support for SLES 15 [\#210](https://github.com/ghoneycutt/puppet-module-pam/issues/210)
+
+**Merged pull requests:**
+
+- GH-210 Add support for SLES 15 [\#212](https://github.com/ghoneycutt/puppet-module-pam/pull/212) ([ph84172](https://github.com/ph84172))
+- Simplify gemfile [\#209](https://github.com/ghoneycutt/puppet-module-pam/pull/209) ([ghoneycutt](https://github.com/ghoneycutt))
+- Update json requirement from ~\> 2.1.0 to ~\> 2.2.0 [\#208](https://github.com/ghoneycutt/puppet-module-pam/pull/208) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Update json\_pure requirement from ~\> 2.1.0 to ~\> 2.2.0 [\#207](https://github.com/ghoneycutt/puppet-module-pam/pull/207) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+
+## [v3.2.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.2.0) (2019-01-15)
 [Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.1.0...v3.2.0)
 
 **Implemented enhancements:**
@@ -41,9 +54,9 @@
 - Validate shell scripts [\#204](https://github.com/ghoneycutt/puppet-module-pam/pull/204) ([ghoneycutt](https://github.com/ghoneycutt))
 - Add Vagrant support [\#203](https://github.com/ghoneycutt/puppet-module-pam/pull/203) ([ghoneycutt](https://github.com/ghoneycutt))
 - Test with latest \(2.1.0\) release of trlinkin/nsswitch [\#202](https://github.com/ghoneycutt/puppet-module-pam/pull/202) ([ghoneycutt](https://github.com/ghoneycutt))
-- Update json requirement from ~\> 1.8.3 to ~\> 2.1.0 [\#201](https://github.com/ghoneycutt/puppet-module-pam/pull/201) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Update rake requirement from ~\> 10.0 to ~\> 12.3 [\#200](https://github.com/ghoneycutt/puppet-module-pam/pull/200) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Update json\_pure requirement from ~\> 1.8.3 to ~\> 2.1.0 [\#199](https://github.com/ghoneycutt/puppet-module-pam/pull/199) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Update json requirement from ~\> 1.8.3 to ~\> 2.1.0 [\#201](https://github.com/ghoneycutt/puppet-module-pam/pull/201) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Update rake requirement from ~\> 10.0 to ~\> 12.3 [\#200](https://github.com/ghoneycutt/puppet-module-pam/pull/200) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Update json\_pure requirement from ~\> 1.8.3 to ~\> 2.1.0 [\#199](https://github.com/ghoneycutt/puppet-module-pam/pull/199) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
 ## [v3.0.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.0.0) (2018-11-09)
 [Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.33.0...v3.0.0)

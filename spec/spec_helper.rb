@@ -210,6 +210,30 @@ def platforms
             :symlink        => true,
           }, ],
       },
+    'suse15' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Suse',
+          :operatingsystem => 'SLES',
+          :operatingsystemmajrelease => '15',
+          :os => {
+            'name' => 'openSUSE',
+            'family' => 'Suse',
+            'release' => {
+              'full'  => '15.0',
+              'major' => '15',
+              'minor' => '0'
+            }
+          },
+        },
+        :packages           => ['pam', ],
+        :files              => [
+          { :prefix         => 'pam_common_',
+            :types          => ['auth', 'account', 'password', 'session', ],
+            :suffix         => '_pc',
+            :symlink        => true,
+          }, ],
+      },
     'solaris9' =>
       {
         :facts_hash => {

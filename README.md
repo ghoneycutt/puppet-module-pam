@@ -169,9 +169,20 @@ versions 5 and 6 with the Ruby version associated with those releases.
 Please see `.travis.yml` for a full matrix of supported versions. This
 module aims to support the current and previous major Puppet versions.
 
- * EL 5
  * EL 6
  * EL 7
+ * Debian 8
+ * Debian 9
+ * Ubuntu 14.04 LTS
+ * Ubuntu 16.04 LTS
+ * Ubuntu 18.04 LTS
+
+### May work
+
+These platforms have spec tests and have been verified in the past,
+though are not functionally tested and formally supported.
+
+ * EL 5
  * Solaris 9
  * Solaris 10
  * Solaris 11
@@ -181,13 +192,8 @@ module aims to support the current and previous major Puppet versions.
  * Suse 12
  * Suse 15
  * OpenSuSE 13.1
- * Ubuntu 12.04 LTS
- * Ubuntu 14.04 LTS
- * Ubuntu 16.04 LTS
- * Ubuntu 18.04 LTS
  * Debian 7
- * Debian 8
- * Debian 9
+ * Ubuntu 12.04 LTS
 
 ## Development
 

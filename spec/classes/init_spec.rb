@@ -221,11 +221,11 @@ describe 'pam' do
       |#
       |
       |# allow only the groups listed
-      |+ : user1 : cron tty0
-      |+ : user2 : test1 test2
+      |+:user1:cron tty0
+      |+:user2:test1 test2
       |
       |# default deny
-      |- : ALL : ALL
+      |-:ALL:ALL
     END
     it { should contain_file('access_conf').with_content(file_header + content) }
   end

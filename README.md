@@ -75,12 +75,12 @@ This would create `/etc/security/access.conf` with the following content.
 #
 
 # allow only the groups listed
-+ : root : ALL
-+ : ops : ALL
-+ : devs : ALL
++:root:ALL
++:ops:ALL
++:devs:ALL
 
 # default deny
-- : ALL : ALL
+-:ALL:ALL
 ```
 
 ##### Example using a hash
@@ -104,12 +104,12 @@ This would create `/etc/security/access.conf` with the following content.
 #
 
 #allow only the groups listed
-+ : username : ALL
-+ : username1 : cron tty0
-+ : username2 : tty1
++:username:ALL
++:username1:cron tty0
++:username2:tty1
 
 # default deny
-- : ALL : ALL
+-:ALL:ALL
 ```
 
 #### Setting limits

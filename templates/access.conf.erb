@@ -4,8 +4,8 @@
 
 # allow only the groups listed
 <% @allowed_users_hash.sort.each do |user, origin| -%>
-+ : <%= user %> : <%= origin %>
++:<%= user %>:<%= origin %>
 <% end -%>
 
 # default deny
-- : ALL : ALL
+-:ALL:ALL

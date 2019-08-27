@@ -44,8 +44,8 @@ describe 'pam' do
       it { should be_owned_by 'root' }
       it { should be_grouped_into 'root' }
       it { should be_mode 644 }
-      it { should contain('+ : root : ALL').before('- : ALL : ALL') }
-      it { should contain('- : ALL : ALL').after('\+ : root : ALL') }
+      it { should contain('+:root:ALL').before('-:ALL:ALL') }
+      it { should contain('-:ALL:ALL').after('\+:root:ALL') }
     end
 
     describe file('/etc/security/limits.conf') do

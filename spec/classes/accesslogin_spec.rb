@@ -13,10 +13,10 @@ describe 'pam::accesslogin' do
       |#
       |
       |# allow only the groups listed
-      |+ : root : ALL
+      |+:root:ALL
       |
       |# default deny
-      |- : ALL : ALL
+      |-:ALL:ALL
     END
 
     it do
@@ -59,22 +59,22 @@ describe 'pam::accesslogin' do
 
   context 'with allowed_users set to a valid string for one user' do
     let(:params) { {:allowed_users => 'tester'} }
-    it { should contain_file('access_conf').with_content(%r{^# allow only the groups listed\n\+ : tester : ALL\n\n# default deny}) }
+    it { should contain_file('access_conf').with_content(%r{^# allow only the groups listed\n\+:tester:ALL\n\n# default deny}) }
   end
 
   context 'with allowed_users set to a valid array for two users' do
     let(:params) { {:allowed_users => [ 'spec', 'tester' ] } }
-    it { should contain_file('access_conf').with_content(%r{^# allow only the groups listed\n\+ : spec : ALL\n\+ : tester : ALL\n\n# default deny}) }
+    it { should contain_file('access_conf').with_content(%r{^# allow only the groups listed\n\+:spec:ALL\n\+:tester:ALL\n\n# default deny}) }
   end
 
   context 'with allowed_users set to a valid hash for two users with specific origins' do
     let(:params) { {:allowed_users => { 'spec' => 'cron', 'tester' => [ 'cron', 'tty0' ] } } }
-    it { should contain_file('access_conf').with_content(%r{^# allow only the groups listed\n\+ : spec : cron\n\+ : tester : cron tty0\n\n# default deny}) }
+    it { should contain_file('access_conf').with_content(%r{^# allow only the groups listed\n\+:spec:cron\n\+:tester:cron tty0\n\n# default deny}) }
   end
 
   context 'with allowed_users set to a valid hash for one users without specific origins should default to <ALL>' do
     let(:params) { {:allowed_users => { 'tester' => {} } } }
-    it { should contain_file('access_conf').with_content(%r{^# allow only the groups listed\n\+ : tester : ALL\n\n# default deny}) }
+    it { should contain_file('access_conf').with_content(%r{^# allow only the groups listed\n\+:tester:ALL\n\n# default deny}) }
   end
 
   context 'with allowed_users set to a valid hash for five users with all possible cases' do
@@ -85,14 +85,14 @@ describe 'pam::accesslogin' do
       |#
       |
       |# allow only the groups listed
-      |+ : user1 : tty5
-      |+ : user2 : cron tty0
-      |+ : user3 : cron
-      |+ : user4 : tty0
-      |+ : user5 : ALL
+      |+:user1:tty5
+      |+:user2:cron tty0
+      |+:user3:cron
+      |+:user4:tty0
+      |+:user5:ALL
       |
       |# default deny
-      |- : ALL : ALL
+      |-:ALL:ALL
     END
 
     it { should contain_file('access_conf').with_content(content) }

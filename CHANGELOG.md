@@ -1,11 +1,18 @@
 # Change Log
 
-## [v3.3.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.3.0) (2019-05-23)
-[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.2.0...v3.3.0)
+## [v3.3.1](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.3.1) (2019-08-26)
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.3.0...v3.3.1)
 
 **Closed issues:**
 
 - Add support for SLES 15 [\#210](https://github.com/ghoneycutt/puppet-module-pam/issues/210)
+
+**Merged pull requests:**
+
+- Fixed a compatibility issue that effects listsep changes [\#215](https://github.com/ghoneycutt/puppet-module-pam/pull/215) ([mears148](https://github.com/mears148))
+
+## [v3.3.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.3.0) (2019-05-23)
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.2.0...v3.3.0)
 
 **Merged pull requests:**
 

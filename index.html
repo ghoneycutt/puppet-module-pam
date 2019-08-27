@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.19
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
@@ -140,12 +140,12 @@ additional SSSD entries added via hiera.</p>
 #
 
 # allow only the groups listed
-+ : root : ALL
-+ : ops : ALL
-+ : devs : ALL
++:root:ALL
++:ops:ALL
++:devs:ALL
 
 # default deny
-- : ALL : ALL
+-:ALL:ALL
 </code></pre>
 
 <h5>Example using a hash</h5>
@@ -167,12 +167,12 @@ additional SSSD entries added via hiera.</p>
 #
 
 #allow only the groups listed
-+ : username : ALL
-+ : username1 : cron tty0
-+ : username2 : tty1
++:username:ALL
++:username1:cron tty0
++:username2:tty1
 
 # default deny
-- : ALL : ALL
+-:ALL:ALL
 </code></pre>
 
 <h4>Setting limits</h4>
@@ -232,9 +232,22 @@ Please see <code>.travis.yml</code> for a full matrix of supported versions. Thi
 module aims to support the current and previous major Puppet versions.</p>
 
 <ul>
-<li>EL 5</li>
 <li>EL 6</li>
 <li>EL 7</li>
+<li>Debian 8</li>
+<li>Debian 9</li>
+<li>Ubuntu 14.04 LTS</li>
+<li>Ubuntu 16.04 LTS</li>
+<li>Ubuntu 18.04 LTS</li>
+</ul>
+
+<h3>May work</h3>
+
+<p>These platforms have spec tests and have been verified in the past,
+though are not functionally tested and formally supported.</p>
+
+<ul>
+<li>EL 5</li>
 <li>Solaris 9</li>
 <li>Solaris 10</li>
 <li>Solaris 11</li>
@@ -244,13 +257,8 @@ module aims to support the current and previous major Puppet versions.</p>
 <li>Suse 12</li>
 <li>Suse 15</li>
 <li>OpenSuSE 13.1</li>
-<li>Ubuntu 12.04 LTS</li>
-<li>Ubuntu 14.04 LTS</li>
-<li>Ubuntu 16.04 LTS</li>
-<li>Ubuntu 18.04 LTS</li>
 <li>Debian 7</li>
-<li>Debian 8</li>
-<li>Debian 9</li>
+<li>Ubuntu 12.04 LTS</li>
 </ul>
 
 <h2>Development</h2>

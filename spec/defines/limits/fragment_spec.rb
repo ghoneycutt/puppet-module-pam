@@ -191,7 +191,7 @@ root soft nproc unlimited
     let(:facts) {
       {
         :osfamily               => 'Suse',
-        :lsbmajdistrelease      => '10',
+        :operatingsystemrelease => '10',
       }
     }
     it 'should fail' do

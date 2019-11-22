@@ -457,8 +457,8 @@ class pam (
       }
     }
     'Suse': {
-      case $::lsbmajdistrelease {
-        '9': {
+      case $::operatingsystemrelease {
+        /^9/: {
           $default_pam_d_login_template = 'pam/login.suse9.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.suse9.erb'
           $default_package_name         = [ 'pam', 'pam-modules' ]
@@ -484,7 +484,7 @@ class pam (
           ]
         }
 
-        '10': {
+        /^10/: {
           $default_pam_d_login_template = 'pam/login.suse10.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.suse10.erb'
           $default_package_name         = 'pam'
@@ -539,7 +539,7 @@ class pam (
             ]
           }
         }
-        '11': {
+        /^11/: {
           $default_pam_d_login_template = 'pam/login.suse11.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.suse11.erb'
           $default_package_name         = 'pam'
@@ -572,62 +572,6 @@ class pam (
               'session  required   pam_unix2.so',
               'session  optional   pam_umask.so',
             ]
-            } else {
-              $default_pam_auth_lines = [
-                'auth  required  pam_env.so',
-                'auth  required  pam_unix2.so',
-              ]
-
-              $default_pam_account_lines = [
-                'account  required  pam_unix2.so',
-              ]
-
-              $default_pam_password_lines = [
-                'password  required  pam_pwcheck.so nullok cracklib',
-                'password  required  pam_unix2.so nullok use_authtok',
-              ]
-
-              $default_pam_session_lines = [  'session  required  pam_limits.so',
-                'session  required  pam_unix2.so',
-                'session  optional  pam_umask.so',
-              ]
-            }
-        }
-        '12': {
-          $default_pam_d_login_template = 'pam/login.suse12.erb'
-          $default_pam_d_sshd_template  = 'pam/sshd.suse12.erb'
-          $default_package_name         = 'pam'
-
-          if $ensure_vas == 'present' {
-            $default_pam_auth_lines = [
-              'auth  required    pam_env.so',
-              'auth  sufficient  pam_vas3.so create_homedir get_nonvas_pass',
-              'auth  requisite   pam_vas3.so echo_return',
-              'auth  required    pam_unix2.so use_first_pass',
-            ]
-
-            $default_pam_account_lines = [
-              'account  sufficient  pam_vas3.so',
-              'account  requisite   pam_vas3.so echo_return',
-              'account  required    pam_unix2.so',
-            ]
-
-            $default_pam_password_lines = [
-              'password  sufficient  pam_vas3.so',
-              'password  requisite   pam_vas3.so echo_return',
-              'password  requisite   pam_pwcheck.so nullok cracklib',
-              'password  required    pam_unix2.so use_authtok nullok',
-            ]
-
-            $default_pam_session_lines = [
-              'session  required   pam_limits.so',
-              'session  required   pam_vas3.so create_homedir',
-              'session  requisite  pam_vas3.so echo_return',
-              'session  required   pam_unix2.so',
-              'session  optional   pam_umask.so',
-              'session  optional   pam_systemd.so',
-              'session  optional   pam_env.so',
-            ]
           } else {
             $default_pam_auth_lines = [
               'auth  required  pam_env.so',
@@ -643,22 +587,134 @@ class pam (
               'password  required  pam_unix2.so nullok use_authtok',
             ]
 
-            $default_pam_session_lines = [
-              'session  required  pam_limits.so',
+            $default_pam_session_lines = [  'session  required  pam_limits.so',
               'session  required  pam_unix2.so',
               'session  optional  pam_umask.so',
-              'session  optional  pam_systemd.so',
-              'session  optional  pam_env.so',
             ]
           }
         }
-        '13': {
+        /^12/: {
+          $default_pam_d_login_template = 'pam/login.suse12.erb'
+          $default_pam_d_sshd_template  = 'pam/sshd.suse12.erb'
+          $default_package_name         = 'pam'
+
+          if $ensure_vas == 'present' {
+            if $::operatingsystemrelease =~ /^12\.[0123]/ {
+              $default_pam_auth_lines = [
+                'auth  required    pam_env.so',
+                'auth  sufficient  pam_vas3.so create_homedir get_nonvas_pass',
+                'auth  requisite   pam_vas3.so echo_return',
+                'auth  required    pam_unix2.so use_first_pass',
+              ]
+
+              $default_pam_account_lines = [
+                'account  sufficient  pam_vas3.so',
+                'account  requisite   pam_vas3.so echo_return',
+                'account  required    pam_unix2.so',
+              ]
+
+              $default_pam_password_lines = [
+                'password  sufficient  pam_vas3.so',
+                'password  requisite   pam_vas3.so echo_return',
+                'password  requisite   pam_pwcheck.so nullok cracklib',
+                'password  required    pam_unix2.so use_authtok nullok',
+              ]
+
+              $default_pam_session_lines = [
+                'session  required   pam_limits.so',
+                'session  required   pam_vas3.so create_homedir',
+                'session  requisite  pam_vas3.so echo_return',
+                'session  required   pam_unix2.so',
+                'session  optional   pam_umask.so',
+                'session  optional   pam_systemd.so',
+                'session  optional   pam_env.so',
+              ]
+            } else {
+              $default_pam_auth_lines = [
+                'auth  required    pam_env.so',
+                'auth  sufficient  pam_vas3.so create_homedir get_nonvas_pass',
+                'auth  requisite   pam_vas3.so echo_return',
+                'auth  required    pam_unix.so use_first_pass',
+              ]
+
+              $default_pam_account_lines = [
+                'account  sufficient  pam_vas3.so',
+                'account  requisite   pam_vas3.so echo_return',
+                'account  required    pam_unix.so',
+              ]
+
+              $default_pam_password_lines = [
+                'password  sufficient  pam_vas3.so',
+                'password  requisite   pam_vas3.so echo_return',
+                'password  requisite   pam_pwcheck.so nullok cracklib',
+                'password  required    pam_unix.so use_authtok nullok',
+              ]
+
+              $default_pam_session_lines = [
+                'session  required   pam_limits.so',
+                'session  required   pam_vas3.so create_homedir',
+                'session  requisite  pam_vas3.so echo_return',
+                'session  required   pam_unix.so',
+                'session  optional   pam_umask.so',
+                'session  optional   pam_systemd.so',
+                'session  optional   pam_env.so',
+              ]
+            }
+          } else {
+            if $::operatingsystemrelease =~ /^12\.[0123]/ {
+              $default_pam_auth_lines = [
+                'auth  required  pam_env.so',
+                'auth  required  pam_unix2.so',
+              ]
+
+              $default_pam_account_lines = [
+                'account  required  pam_unix2.so',
+              ]
+
+              $default_pam_password_lines = [
+                'password  required  pam_pwcheck.so nullok cracklib',
+                'password  required  pam_unix2.so nullok use_authtok',
+              ]
+
+              $default_pam_session_lines = [
+                'session  required  pam_limits.so',
+                'session  required  pam_unix2.so',
+                'session  optional  pam_umask.so',
+                'session  optional  pam_systemd.so',
+                'session  optional  pam_env.so',
+              ]
+            } else {
+              $default_pam_auth_lines = [
+                'auth  required  pam_env.so',
+                'auth  required  pam_unix.so',
+              ]
+
+              $default_pam_account_lines = [
+                'account  required  pam_unix.so',
+              ]
+
+              $default_pam_password_lines = [
+                'password  required  pam_pwcheck.so nullok cracklib',
+                'password  required  pam_unix.so nullok use_authtok',
+              ]
+
+              $default_pam_session_lines = [
+                'session  required  pam_limits.so',
+                'session  required  pam_unix.so',
+                'session  optional  pam_umask.so',
+                'session  optional  pam_systemd.so',
+                'session  optional  pam_env.so',
+              ]
+            }
+          }
+        }
+        /^13/: {
           $default_pam_d_login_template = 'pam/login.suse13.erb'
           $default_pam_d_sshd_template  = 'pam/sshd.suse13.erb'
           $default_package_name         = 'pam'
 
           if $ensure_vas == 'present' {
-            fail("Pam: vas is not supported on ${::osfamily} ${::lsbmajdistrelease}")
+            fail("Pam: vas is not supported on ${::osfamily} ${::operatingsystemrelease}")
           } else {
             $default_pam_auth_lines = [
               'auth  required  pam_env.so',
@@ -687,7 +743,7 @@ class pam (
           }
         }
         default: {
-          fail("Pam is only supported on Suse 9, 10, 11, 12 and 13. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
+          fail("Pam is only supported on Suse 9, 10, 11, 12 and 13. Your operatingsystemrelease is identified as <${::operatingsystemrelease}>.")
         }
       }
     }
@@ -1477,8 +1533,8 @@ class pam (
           }
         }
         'Suse': {
-          case $::lsbmajdistrelease {
-            '9': {
+          case $::operatingsystemrelease{
+            /^9/: {
 
               file { 'pam_other':
                 ensure  => file,
@@ -1489,7 +1545,7 @@ class pam (
                 content => template('pam/pam.conf.erb'),
               }
             }
-            '10': {
+            /^10/: {
 
               file { 'pam_common_auth':
                 ensure  => file,
@@ -1531,7 +1587,7 @@ class pam (
                 require => Package[$my_package_name],
               }
             }
-            '11': {
+            /^11/: {
 
               file { 'pam_common_auth_pc':
                 ensure  => file,
@@ -1609,7 +1665,7 @@ class pam (
                 require => Package[$my_package_name],
               }
             }
-            '12','13': {
+            /^(12|13)/: {
 
               file { 'pam_common_auth_pc':
                 ensure  => file,
@@ -1688,7 +1744,7 @@ class pam (
               }
             }
             default : {
-              fail("Pam is only supported on Suse 9, 10, 11, 12 and 13. Your lsbmajdistrelease is identified as <${::lsbmajdistrelease}>.")
+              fail("Pam is only supported on Suse 9, 10, 11, 12 and 13. Your operatingsystemrelease is identified as <${::operatingsystemrelease}>.")
             }
           }
         }

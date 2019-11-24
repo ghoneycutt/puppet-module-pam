@@ -40,7 +40,12 @@ Reference the issue number, in the format `(GH-###)`.
 1. update version in `metadata.json`
 1. run `github_changelog_generator` with the version you updated in
    `metadata.json`.
-    `github_changelog_generator --future-release v3.3.0`
+
+    ```
+    github_changelog_generator --user ghoneycutt --project puppet-module-pam \
+      --since-tag v2.1.0 --exclude-tags-regex "v1" --future-release v3.4.0
+    ```
+
 1. Update `REFERENCE.md` with the command `bundle exec rake reference`
 1. Commit changes and push to master
 1. Tag the new version, such as `git tag -a 'v2.0.0' -m 'v2.0.0'`

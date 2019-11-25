@@ -45,7 +45,7 @@ class pam::limits (
       $content = template('pam/limits.conf.erb')
     }
   }
-  if $::osfamily == 'Suse' and $::lsbmajdistrelease == '10'  {
+  if $::osfamily == 'Suse' and $::operatingsystemrelease =~ /^10/ {
   } else {
     common::mkdir_p { $limits_d_dir: }
     file { 'limits_d':

@@ -41,7 +41,7 @@ describe 'pam' do
     'suse9'                 =>
       { :osfamily           => 'Suse',
         :release            => '9',
-        :releasetype        => 'lsbmajdistrelease',
+        :releasetype        => 'operatingsystemrelease',
         :packages           => ['pam', 'pam-modules', ],
         :files              => [
           { :prefix         => 'pam_',
@@ -51,7 +51,7 @@ describe 'pam' do
     'suse10'                =>
       { :osfamily           => 'Suse',
         :release            => '10',
-        :releasetype        => 'lsbmajdistrelease',
+        :releasetype        => 'operatingsystemrelease',
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -61,7 +61,7 @@ describe 'pam' do
     'suse11'                =>
       { :osfamily           => 'Suse',
         :release            => '11',
-        :releasetype        => 'lsbmajdistrelease',
+        :releasetype        => 'operatingsystemrelease',
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -70,10 +70,10 @@ describe 'pam' do
             :symlink        => true,
           }, ],
       },
-    'suse12'                =>
+    'suse12.3'            =>
       { :osfamily           => 'Suse',
-        :release            => '12',
-        :releasetype        => 'lsbmajdistrelease',
+        :release            => '12.3',
+        :releasetype        => 'operatingsystemrelease',
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -82,10 +82,23 @@ describe 'pam' do
             :symlink        => true,
           }, ],
       },
+    'suse12.4'              =>
+      { :osfamily           => 'Suse',
+        :release            => '12.4',
+        :releasetype        => 'operatingsystemrelease',
+        :packages           => ['pam', ],
+        :files              => [
+          { :prefix         => 'pam_common_',
+            :types          => ['auth', 'account', 'password', 'session', ],
+            :suffix         => '_pc',
+            :symlink        => true,
+          }, ],
+      },
+
     'suse13'                =>
       { :osfamily           => 'Suse',
         :release            => '13',
-        :releasetype        => 'lsbmajdistrelease',
+        :releasetype        => 'operatingsystemrelease',
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -211,7 +224,7 @@ describe 'pam' do
     'suse8'                 =>
       { :osfamily           => 'Suse',
         :release            => '8',
-        :releasetype        => 'lsbmajdistrelease',
+        :releasetype        => 'operatingsystemrelease',
       },
     'ubuntu1004'            =>
       { :osfamily           => 'Debian',

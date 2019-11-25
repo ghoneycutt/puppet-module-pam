@@ -364,8 +364,8 @@ describe 'pam::limits' do
     context 'without fragments support on Suse 10' do
       let(:facts) do
         {
-          :osfamily          => 'Suse',
-          :lsbmajdistrelease => '10',
+          :osfamily               => 'Suse',
+          :operatingsystemrelease => '10',
         }
       end
 

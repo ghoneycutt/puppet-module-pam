@@ -247,8 +247,8 @@ class pam (
     fail("osfamily Solaris' kernelrelease is <${facts['kernelrelease']}> and must be 5.9, 5.10 or 5.11")
   } elsif $facts['os']['family'] == 'Suse' and !($facts['os']['release']['major'] in ['9','10','11','12','13','15']) {
     fail("osfamily Suse's os.release.major is <${::facts['os']['release']['major']}> and must be 9, 10, 11, 12, 13 or 15")
-  } elsif $facts['os']['name'] == 'Debian' and !($facts['os']['release']['major'] in ['7','8','9']) {
-    fail("Debian's os.release.major is <${facts['os']['release']['major']}> and must be 7, 8 or 9")
+  } elsif $facts['os']['name'] == 'Debian' and !($facts['os']['release']['major'] in ['7','8','9','10']) {
+    fail("Debian's os.release.major is <${facts['os']['release']['major']}> and must be 7, 8, 9 or 10")
   } elsif $facts['os']['name'] == 'Ubuntu' and !($facts['os']['release']['major'] in ['12.04', '14.04', '16.04', '18.04']) {
     fail("Ubuntu's os.release.major is <${facts['os']['release']['major']}> and must be 12.04, 14.04, 16.04, or 18.04")
   }

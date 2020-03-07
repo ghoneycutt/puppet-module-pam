@@ -1,5 +1,18 @@
 # Changelog
 
+## [v3.5.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.5.0) (2020-03-06)
+
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.4.0...v3.5.0)
+
+**Closed issues:**
+
+- Support for Debian 10 [\#218](https://github.com/ghoneycutt/puppet-module-pam/issues/218)
+- RHEL8 support [\#211](https://github.com/ghoneycutt/puppet-module-pam/issues/211)
+
+**Merged pull requests:**
+
+- Add support for Debian 10 [\#217](https://github.com/ghoneycutt/puppet-module-pam/pull/217) ([thechristschn](https://github.com/thechristschn))
+
 ## [v3.4.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.4.0) (2019-11-24)
 
 [Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.3.1...v3.4.0)
@@ -186,7 +199,6 @@
 **Merged pull requests:**
 
 - Add support for Ruby 2.3.1 [\#140](https://github.com/ghoneycutt/puppet-module-pam/pull/140) ([ghoneycutt](https://github.com/ghoneycutt))
-- Add Ubuntu 16.04 LTS Support [\#136](https://github.com/ghoneycutt/puppet-module-pam/pull/136) ([ghoneycutt](https://github.com/ghoneycutt))
 
 ## [v2.25.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.25.0) (2016-07-21)
 
@@ -200,6 +212,10 @@
 ## [v2.24.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.24.0) (2016-06-15)
 
 [Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.23.0...v2.24.0)
+
+**Merged pull requests:**
+
+- Add Ubuntu 16.04 LTS Support [\#136](https://github.com/ghoneycutt/puppet-module-pam/pull/136) ([ghoneycutt](https://github.com/ghoneycutt))
 
 ## [v2.23.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.23.0) (2016-06-14)
 
@@ -284,13 +300,17 @@
 
 [Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.14.0...v2.15.0)
 
+**Merged pull requests:**
+
+- Trusty [\#99](https://github.com/ghoneycutt/puppet-module-pam/pull/99) ([ghoneycutt](https://github.com/ghoneycutt))
+- Epic change in array layout reduces excessive line length that hurts my editor [\#88](https://github.com/ghoneycutt/puppet-module-pam/pull/88) ([Aethylred](https://github.com/Aethylred))
+
 ## [v2.14.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.14.0) (2015-02-02)
 
 [Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.13.0...v2.14.0)
 
 **Merged pull requests:**
 
-- Trusty [\#99](https://github.com/ghoneycutt/puppet-module-pam/pull/99) ([ghoneycutt](https://github.com/ghoneycutt))
 - Add SLES10.x support [\#96](https://github.com/ghoneycutt/puppet-module-pam/pull/96) ([propyless](https://github.com/propyless))
 
 ## [v2.13.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.13.0) (2015-01-28)
@@ -317,7 +337,6 @@
 
 - Order hash for access.conf, useful for Ruby 1.8.7 [\#91](https://github.com/ghoneycutt/puppet-module-pam/pull/91) ([ghoneycutt](https://github.com/ghoneycutt))
 - Add ability to optionally purge limits\_d [\#90](https://github.com/ghoneycutt/puppet-module-pam/pull/90) ([ghoneycutt](https://github.com/ghoneycutt))
-- Epic change in array layout reduces excessive line length that hurts my editor [\#88](https://github.com/ghoneycutt/puppet-module-pam/pull/88) ([Aethylred](https://github.com/Aethylred))
 
 ## [v2.10.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.10.0) (2014-12-08)
 

@@ -8,8 +8,8 @@ pam::common_files:
   - common_session
   - common_session_noninteractive
 
-pam::pam_d_login_template: pam/login.debian9.erb
-pam::pam_d_sshd_template: pam/sshd.debian9.erb
+pam::pam_d_login_template: pam/login.debian10.erb
+pam::pam_d_sshd_template: pam/sshd.debian10.erb
 pam::package_name: libpam0g
 pam::pam_auth_lines:
   - 'auth  [success=1 default=ignore]  pam_unix.so nullok_secure'

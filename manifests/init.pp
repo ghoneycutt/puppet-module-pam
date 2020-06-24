@@ -259,7 +259,7 @@ class pam (
   }
 
   if $facts['os']['name'] == 'Ubuntu' and !($facts['os']['release']['major'] in ['12.04', '14.04', '16.04', '18.04', '20.04']) {
-    fail("Ubuntu's os.release.major is <${facts['os']['release']['major']}> and must be 12.04, 14.04, 16.04, or 18.04")
+    fail("Ubuntu's os.release.major is <${facts['os']['release']['major']}> and must be 12.04, 14.04, 16.04, 18.04 or 20.04")
   }
 
   if $pam_d_sshd_template == 'pam/sshd.custom.erb' {

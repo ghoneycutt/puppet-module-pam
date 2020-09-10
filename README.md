@@ -183,6 +183,7 @@ module aims to support the current and previous major Puppet versions.
 These platforms have spec tests and have been verified in the past,
 though are not functionally tested and formally supported.
 
+ * Amazon Linux 2
  * EL 8
  * EL 5
  * Solaris 9

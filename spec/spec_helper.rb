@@ -22,6 +22,27 @@ end
 
 def platforms
   {
+    'el2' =>
+      {
+        :facts_hash => {
+          :osfamily => 'RedHat',
+          :operatingsystem => 'Amazon',
+          :operatingsystemmajrelease => '2',
+          :os => {
+            'name' => 'Amazon',
+            'family' => 'RedHat',
+            'release' => {
+              'full'  => '2',
+              'major' => '2',
+            }
+          },
+        },
+        :packages           => ['pam', ],
+        :files              => [
+          { :prefix         => 'pam_',
+            :types          => ['system_auth', ],
+          }, ],
+      },
     'el5' =>
       {
         :facts_hash => {

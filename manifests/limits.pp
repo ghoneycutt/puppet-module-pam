@@ -35,7 +35,7 @@ class pam::limits (
   Boolean $purge_limits_d_dir          = false,
 ) {
 
-  include ::pam
+  include pam
 
   if $config_file_lines or $config_file_source {
     # config_file_lines takes priority over config_file_source

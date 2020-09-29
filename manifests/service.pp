@@ -32,7 +32,7 @@ define pam::service (
   Optional[Array] $lines                = undef
 ) {
 
-  include ::pam
+  include pam
 
   case $ensure {
     'present': {

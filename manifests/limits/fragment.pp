@@ -23,8 +23,8 @@ define pam::limits::fragment (
     $ensure                = 'file',
 ) {
 
-  include ::pam
-  include ::pam::limits
+  include pam
+  include pam::limits
 
   if $::osfamily == 'Suse' and $::operatingsystemmajrelease == '10' {
     fail('You can not use pam::limits::fragment together with Suse 10.x releases')

@@ -270,8 +270,8 @@ class pam (
   }
 
   if ($facts['os']['family'] in ['RedHat','Suse','Debian']) {
-    include ::pam::accesslogin
-    include ::pam::limits
+    include pam::accesslogin
+    include pam::limits
 
     package { $package_name:
       ensure => installed,
@@ -297,7 +297,7 @@ class pam (
   }
 
   if $manage_nsswitch {
-    include ::nsswitch
+    include nsswitch
   }
 
   if $services {

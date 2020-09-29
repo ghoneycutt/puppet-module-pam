@@ -1,15 +1,11 @@
 ---
+os: linux
+dist: xenial
 language: ruby
-
-bundler_args: --without system_tests development
-
 cache: bundler
-
 before_install:
   - bundle -v
   - rm Gemfile.lock || true
-  - gem update --system
-  - gem update bundler
   - gem --version
   - bundle -v
 

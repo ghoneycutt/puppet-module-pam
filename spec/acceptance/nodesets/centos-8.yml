@@ -9,7 +9,9 @@ HOSTS:
     docker_cmd:
       - '/usr/sbin/init'
     docker_image_commands:
-      - 'yum install -y wget'
+      - 'yum install -y dnf-utils'
+      - 'dnf config-manager --set-enabled PowerTools'
+      - 'dnf install -y wget which initscripts iproute langpacks-en glibc-all-langpacks'
     docker_container_name: 'pam-el8'
 CONFIG:
   log_level: debug

@@ -38,6 +38,8 @@ def platforms
             },
           },
         },
+        :pam_d_login        => 'with_pam_access',
+        :pam_d_sshd         => 'with_pam_access',
         :packages           => ['pam', 'util-linux', ],
         :files              => [
           { :prefix         => 'pam_system_',
@@ -62,6 +64,8 @@ def platforms
             }
           },
         },
+        :pam_d_login        => 'with_pam_access',
+        :pam_d_sshd         => 'with_pam_access',
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_',
@@ -86,6 +90,34 @@ def platforms
             }
           },
         },
+        :pam_d_login        => 'with_pam_access',
+        :pam_d_sshd         => 'with_pam_access',
+        :packages           => ['pam', ],
+        :files              => [
+          { :prefix         => 'pam_',
+            :types          => ['system_auth', ],
+            :suffix         => '_ac',
+            :symlink        => true,
+          }, ],
+      },
+    'el8' =>
+      {
+        :facts_hash => {
+          :osfamily => 'RedHat',
+          :operatingsystem => 'RedHat',
+          :operatingsystemmajrelease => '8',
+          :os => {
+            'name' => 'RedHat',
+            'family' => 'RedHat',
+            'release' => {
+              'full'  => '8.0',
+              'major' => '8',
+              'minor' => '0'
+            }
+          },
+        },
+        :pam_d_login        => 'without_pam_access',
+        :pam_d_sshd         => 'without_pam_access',
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_',
@@ -110,6 +142,8 @@ def platforms
             }
           },
         },
+        :pam_d_login        => 'without_pam_access',
+        :pam_d_sshd         => 'without_pam_access',
         :packages           => ['pam', 'pam-modules', ],
         :files              => [
           { :prefix         => 'pam_',
@@ -132,6 +166,8 @@ def platforms
             }
           },
         },
+        :pam_d_login        => 'without_pam_access',
+        :pam_d_sshd         => 'without_pam_access',
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -154,6 +190,8 @@ def platforms
             }
           },
         },
+        :pam_d_login        => 'with_pam_access',
+        :pam_d_sshd         => 'with_pam_access',
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -178,6 +216,8 @@ def platforms
             }
           },
         },
+        :pam_d_login        => 'without_pam_access',
+        :pam_d_sshd         => 'without_pam_access',
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -202,6 +242,8 @@ def platforms
             }
           },
         },
+        :pam_d_login        => 'without_pam_access',
+        :pam_d_sshd         => 'without_pam_access',
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -226,6 +268,8 @@ def platforms
             }
           },
         },
+        :pam_d_login        => 'without_pam_access',
+        :pam_d_sshd         => 'without_pam_access',
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -250,6 +294,8 @@ def platforms
             }
           },
         },
+        :pam_d_login        => 'not_present',
+        :pam_d_sshd         => 'not_present',
         :packages           => [],
         :files              => [
           { :prefix         => 'pam_',
@@ -274,6 +320,8 @@ def platforms
             }
           },
         },
+        :pam_d_login        => 'not_present',
+        :pam_d_sshd         => 'not_present',
         :packages           => [],
         :files              => [
           { :prefix         => 'pam_',
@@ -298,6 +346,8 @@ def platforms
             },
           },
         },
+        :pam_d_login        => 'not_present',
+        :pam_d_sshd         => 'not_present',
         :packages           => [],
         :files              => [
           { :prefix         => 'pam_',
@@ -319,6 +369,8 @@ def platforms
             'family' => 'Debian'
           },
         },
+        :pam_d_login        => 'without_pam_access',
+        :pam_d_sshd         => 'with_pam_access',
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -339,6 +391,8 @@ def platforms
             'family' => 'Debian'
           },
         },
+        :pam_d_login        => 'without_pam_access',
+        :pam_d_sshd         => 'with_pam_access',
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -359,6 +413,8 @@ def platforms
             'family' => 'Debian'
           },
         },
+        :pam_d_login        => 'without_pam_access',
+        :pam_d_sshd         => 'with_pam_access',
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -379,6 +435,8 @@ def platforms
             'family' => 'Debian'
           },
         },
+        :pam_d_login        => 'without_pam_access',
+        :pam_d_sshd         => 'with_pam_access',
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -400,6 +458,8 @@ def platforms
             },
           },
         },
+        :pam_d_login        => 'without_pam_access',
+        :pam_d_sshd         => 'with_pam_access',
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -421,6 +481,8 @@ def platforms
             },
           },
         },
+        :pam_d_login        => 'without_pam_access',
+        :pam_d_sshd         => 'with_pam_access',
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -442,6 +504,8 @@ def platforms
             },
           },
         },
+        :pam_d_login        => 'without_pam_access',
+        :pam_d_sshd         => 'with_pam_access',
         :packages           => [ 'libpam0g', ],
         :files              => [
           { :prefix         => 'pam_common_',
@@ -524,6 +588,9 @@ def unsupported_platforms
           :osfamily => 'Solaris',
           :operatingsystem => 'Solaris',
           :kernelrelease => '5.8',
+          :os => {
+            'family' => 'Solaris',
+          },
         }
       },
   }

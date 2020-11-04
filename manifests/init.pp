@@ -1,7 +1,7 @@
 # @summary This module manages PAM.
 #
 # @example Declaring the class
-#   include ::pam
+#   include pam
 #
 # @param allowed_users
 #   String, Array or Hash of strings and/or arrays to configure users and

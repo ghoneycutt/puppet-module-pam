@@ -4,7 +4,7 @@ describe 'pam' do
   context 'default' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::pam
+      include pam
       EOS
 
       apply_manifest(pp, :catch_failures => true)
@@ -27,7 +27,11 @@ describe 'pam' do
       it { should be_grouped_into 'root' }
       it { should be_mode 644 }
       if fact('osfamily') == 'RedHat'
-        its(:content) { should match /^account\s+required\s+pam_access.so$/ }
+        if fact('operatingsystemmajrelease') == '8'
+          its(:content) { should_not match /^account\s+required\s+pam_access.so$/ }
+        else
+          its(:content) { should match /^account\s+required\s+pam_access.so$/ }
+        end
       end
     end
 
@@ -36,7 +40,11 @@ describe 'pam' do
       it { should be_owned_by 'root' }
       it { should be_grouped_into 'root' }
       it { should be_mode 644 }
-      its(:content) { should match /^account\s+required\s+pam_access.so$/ }
+      if fact('osfamily') == 'RedHat' and fact('operatingsystemmajrelease') == '8'
+        its(:content) { should_not match /^account\s+required\s+pam_access.so$/ }
+      else
+        its(:content) { should match /^account\s+required\s+pam_access.so$/ }
+      end
     end
 
     describe file('/etc/security/access.conf') do
@@ -57,7 +65,7 @@ describe 'pam' do
     end
 
     if fact('osfamily') == 'RedHat'
-      ['password-auth','system-auth'].each do |f|
+      ['password-auth', 'system-auth'].each do |f|
         describe file("/etc/pam.d/#{f}-ac") do
           it { should be_file }
           it { should be_owned_by 'root' }
@@ -72,7 +80,7 @@ describe 'pam' do
     end
 
     if fact('osfamily') == 'Debian'
-      ['auth', 'account', 'password', 'session', 'session-noninteractive' ].each do |f|
+      ['auth', 'account', 'password', 'session', 'session-noninteractive'].each do |f|
         describe file("/etc/pam.d/common-#{f}") do
           it { should be_file }
           it { should be_owned_by 'root' }

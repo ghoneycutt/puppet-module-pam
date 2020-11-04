@@ -21,9 +21,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", "512"]
   end
-  
+
   config.vm.define "el8-pam", autostart: false do |c|
-    c.vm.box = "generic/rhel8"
+    c.vm.box = "centos/8"
     c.vm.hostname = 'el8-pam.example.com'
     c.vm.provision :shell, :path => "tests/provision_basic_el.sh"
     c.vm.provision :shell, :inline => "puppet apply /vagrant/tests/init.pp"

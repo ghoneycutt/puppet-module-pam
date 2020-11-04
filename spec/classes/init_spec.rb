@@ -61,27 +61,22 @@ describe 'pam' do
         'target'  => '/etc/pam.d/password-auth-ac',
         'owner'   => 'root',
         'group'   => 'root',
-        'require' => [ 'Package[pam]' ],
+        'require' => ['Package[pam]'],
       })
     end
   end
 
   describe 'on unsupported platforms' do
-    unsupported_platforms.sort.each do |k,v|
+    unsupported_platforms.sort.each do |k, v|
       context "with defaults params on #{k}" do
         let(:facts) { v[:facts_hash] }
 
-        it 'should fail' do
-          expect {
-            should contain_class('pam')
-          }.to raise_error(Puppet::Error)
-        end
+        it { is_expected.to compile.and_raise_error(/must be/) }
       end
     end
   end
 
-  platforms.sort.each do |os,v|
-
+  platforms.sort.each do |os, v|
     # testing platform dependent package_name and the dependencies on common_files
     context "defaults for package_name on OS #{os}" do
       let(:facts) { v[:facts_hash] }
@@ -92,7 +87,6 @@ describe 'pam' do
 
       # OS dependent package dependencies
       v[:files].each do |file|
-        group = file[:group] || 'root'
         dirpath = file[:dirpath] || '/etc/pam.d/'
 
         file[:types].each do |type|
@@ -191,10 +185,11 @@ describe 'pam' do
       let(:facts) { v[:facts_hash] }
       let(:params) {{ :login_pam_access => 'sufficient' }}
 
-      if os =~ /el/ or os == 'suse11'
-        it { should contain_file('pam_d_login').with_content(/^account[\s]+sufficient[\s]+pam_access.so$/) }
-      elsif v[:facts_hash][:osfamily] != 'Solaris'
+      case v[:pam_d_login]
+      when 'without_pam_access'
         it { should contain_file('pam_d_login').without_content(/account[\s]+sufficient[\s]+pam_access.so/) }
+      when 'with_pam_access'
+        it { should contain_file('pam_d_login').with_content(/^account[\s]+sufficient[\s]+pam_access.so$/) }
       else
         it { should_not contain_file('pam_d_login') }
       end
@@ -204,15 +199,15 @@ describe 'pam' do
       let(:facts) { v[:facts_hash] }
       let(:params) {{ :sshd_pam_access => 'sufficient' }}
 
-      if os =~ /(debian|el|ubuntu)/ or os == 'suse11'
-        it { should contain_file('pam_d_sshd').with_content(/^account[\s]+sufficient[\s]+pam_access.so$/) }
-      elsif v[:facts_hash][:osfamily] != 'Solaris'
+      case v[:pam_d_sshd]
+      when 'without_pam_access'
         it { should contain_file('pam_d_sshd').without_content(/account[\s]+sufficient[\s]+pam_access.so/) }
+      when 'with_pam_access'
+        it { should contain_file('pam_d_sshd').with_content(/^account[\s]+sufficient[\s]+pam_access.so$/) }
       else
         it { should_not contain_file('pam_d_sshd') }
       end
     end
-
   end
 
   context 'with allowed_users set to a valid hash with two users' do
@@ -230,19 +225,19 @@ describe 'pam' do
     it { should contain_file('access_conf').with_content(file_header + content) }
   end
 
-  platforms.sort.each do |k,v|
+  platforms.sort.each do |k, v|
     describe "on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
       let(:facts) { v[:facts_hash] }
 
       describe 'config files' do
         context 'when configuring pam_d_sshd_template' do
-          let (:params) do
+          let(:params) do
             {
               :pam_d_sshd_template     => 'pam/sshd.custom.erb',
-              :pam_sshd_auth_lines     => [ 'auth_line1', 'auth_line2' ],
-              :pam_sshd_account_lines  => [ 'account_line1', 'account_line2' ],
-              :pam_sshd_session_lines  => [ 'session_line1', 'session_line2' ],
-              :pam_sshd_password_lines => [ 'password_line1', 'password_line2' ],
+              :pam_sshd_auth_lines     => ['auth_line1', 'auth_line2'],
+              :pam_sshd_account_lines  => ['account_line1', 'account_line2'],
+              :pam_sshd_session_lines  => ['session_line1', 'session_line2'],
+              :pam_sshd_password_lines => ['password_line1', 'password_line2'],
             }
           end
 
@@ -330,7 +325,7 @@ describe 'pam' do
   end
 
   describe 'validating params' do
-    platforms.sort.slice(0,1).each do |k,v|
+    platforms.sort.slice(0,1).each do |k, v|
       context "on #{v[:facts_hash][:osfamily]} with os.release.major #{v[:facts_hash][:os]}" do
         let(:facts) { v[:facts_hash] }
 

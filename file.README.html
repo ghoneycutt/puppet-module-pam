@@ -6,15 +6,15 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "";
   relpath = '';
 </script>
@@ -57,9 +57,9 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><div id='filecontents'><h1>puppet-module-pam</h1>
+      <div id="content"><div id='filecontents'><h1 id="puppet-module-pam">puppet-module-pam</h1>
 
-<h4>Table of Contents</h4>
+<h4 id="table-of-contents">Table of Contents</h4>
 
 <ol>
 <li><a href="#label-Module+description">Module Description - What the module does and why it is useful</a></li>
@@ -75,15 +75,15 @@
 <li><a href="#label-Development">Development - Guide for contributing to the module</a></li>
 </ol>
 
-<h2>Module description</h2>
+<h2 id="module-description">Module description</h2>
 
 <p>This module manages PAM including accesslogin and limits.conf with
 functionality to create limits fragments for use in other modules. There
 are examples for using this with VAS/QAS.</p>
 
-<h2>Setup</h2>
+<h2 id="setup">Setup</h2>
 
-<h3>What pam affects</h3>
+<h3 id="what-pam-affects">What pam affects</h3>
 
 <p>Manages the packages and files regarding PAM. These vary by platform
 though generally include things such as the following.</p>
@@ -96,34 +96,34 @@ though generally include things such as the following.</p>
 <li><code>/etc/security/limits.d</code></li>
 </ul>
 
-<h3>Setup requirements</h3>
+<h3 id="setup-requirements">Setup requirements</h3>
 
 <p>This module requires <code>stdlib</code>. When deployed by default it will require
 <code>nsswitch</code>. See below for more information.</p>
 
-<h4>Optional</h4>
+<h4 id="optional">Optional</h4>
 
-<h5>nsswitch</h5>
+<h5 id="nsswitch">nsswitch</h5>
 
 <p>By default this module will include the <code>nsswitch</code> class with the
 settings <code>pam::manage_nsswitch</code>. This module is meant to be used with
 the Approved <a href="https://github.com/trlinkin/puppet-nsswitch">nsswitch</a>
 module.</p>
 
-<h5>SSSD</h5>
+<h5 id="sssd">SSSD</h5>
 
 <p>This module has been deployed in production along with
 <a href="https://github.com/sgnl05/sgnl05-sssd">sgnl05/sssd</a>. Please see
 <code>examples/hiera/sssd/RedHat-6.yaml</code> file for an example with the
 additional SSSD entries added via hiera.</p>
 
-<h3>Beginning with pam</h3>
+<h3 id="beginning-with-pam">Beginning with pam</h3>
 
-<p>Include the main <code>::pam</code> class.</p>
+<p>Include the main <code>pam</code> class.</p>
 
-<h4>Specifying the allowed users</h4>
+<h4 id="specifying-the-allowed-users">Specifying the allowed users</h4>
 
-<h5>Example using an array</h5>
+<h5 id="example-using-an-array">Example using an array</h5>
 
 <p>As an array where the origin for each is &#39;ALL&#39;.</p>
 
@@ -148,7 +148,7 @@ additional SSSD entries added via hiera.</p>
 -:ALL:ALL
 </code></pre>
 
-<h5>Example using a hash</h5>
+<h5 id="example-using-a-hash">Example using a hash</h5>
 
 <p>As a hash where the user/group can optionally specify the origin.</p>
 
@@ -175,9 +175,9 @@ additional SSSD entries added via hiera.</p>
 -:ALL:ALL
 </code></pre>
 
-<h4>Setting limits</h4>
+<h4 id="setting-limits">Setting limits</h4>
 
-<h5>Example:</h5>
+<h5 id="example">Example:</h5>
 
 <pre class="code yaml"><code class="yaml">pam::limits_fragments:
   custom:
@@ -204,11 +204,11 @@ additional SSSD entries added via hiera.</p>
 * hard cpu 1440
 </code></pre>
 
-<h4>Specifying the content of a service</h4>
+<h4 id="specifying-the-content-of-a-service">Specifying the content of a service</h4>
 
 <p>Manage PAM file for specific service.</p>
 
-<h5>Example:</h5>
+<h5 id="example">Example:</h5>
 
 <p>You can specify a hash to manage the services in Hiera</p>
 
@@ -217,14 +217,14 @@ additional SSSD entries added via hiera.</p>
     content : &#39;auth     required       pam_unix2.so&#39;
 </code></pre>
 
-<h2>Usage</h2>
+<h2 id="usage">Usage</h2>
 
 <p>Minimal and normal usage.</p>
 
-<pre class="code puppet"><code class="puppet">include ::pam
+<pre class="code puppet"><code class="puppet">include pam
 </code></pre>
 
-<h2>Limitations</h2>
+<h2 id="limitations">Limitations</h2>
 
 <p>This module has been tested to work on the following systems with Puppet
 versions 5 and 6 with the Ruby version associated with those releases.
@@ -234,6 +234,7 @@ module aims to support the current and previous major Puppet versions.</p>
 <ul>
 <li>EL 6</li>
 <li>EL 7</li>
+<li>EL 8</li>
 <li>Debian 8</li>
 <li>Debian 9</li>
 <li>Debian 10</li>
@@ -242,13 +243,12 @@ module aims to support the current and previous major Puppet versions.</p>
 <li>Ubuntu 18.04 LTS</li>
 </ul>
 
-<h3>May work</h3>
+<h3 id="may-work">May work</h3>
 
 <p>These platforms have spec tests and have been verified in the past,
 though are not functionally tested and formally supported.</p>
 
 <ul>
-<li>EL 8</li>
 <li>EL 5</li>
 <li>Solaris 9</li>
 <li>Solaris 10</li>
@@ -263,7 +263,7 @@ though are not functionally tested and formally supported.</p>
 <li>Ubuntu 12.04 LTS</li>
 </ul>
 
-<h2>Development</h2>
+<h2 id="development">Development</h2>
 
 <p>See <code>CONTRIBUTING.md</code> for information related to the development of this
 module.</p>

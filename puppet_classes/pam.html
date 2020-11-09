@@ -6,15 +6,15 @@
 <title>
   Puppet Class: pam
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::pam";
   relpath = '../';
 </script>
@@ -64,6 +64,15 @@
   
   
   <dl>
+    <dt>Inherited by:</dt>
+    <dd>
+      
+      <span class='object_link'><a href="pam_3A_3Aaccesslogin.html" title="puppet_classes::pam::accesslogin (puppet_class)">pam::accesslogin</a></span><br/>
+      
+    </dd>
+  </dl>
+  
+  <dl>
     <dt>Defined in:</dt>
     <dd>
       manifests/init.pp
@@ -91,7 +100,7 @@
         <p class="example_title"><div class='inline'><p>Declaring the class</p>
 </div></p>
       
-      <pre class="example code"><code>include ::pam</code></pre>
+      <pre class="example code"><code><span class='id identifier rubyid_include'>include</span> <span class='id identifier rubyid_pam'>pam</span></code></pre>
     
   </div>
 <p class="tag_title">Parameters:</p>
@@ -969,6 +978,7 @@ suffixed files to the originals without the suffix.</p>
 </ul>
 
 
+
 </div><div class="method_details_list">
   <table class="source_code">
     <tr>
@@ -1239,8 +1249,8 @@ class pam (
   }
 
   if ($facts[&#39;os&#39;][&#39;family&#39;] in [&#39;RedHat&#39;,&#39;Suse&#39;,&#39;Debian&#39;]) {
-    include ::pam::accesslogin
-    include ::pam::limits
+    include pam::accesslogin
+    include pam::limits
 
     package { $package_name:
       ensure =&gt; installed,
@@ -1266,7 +1276,7 @@ class pam (
   }
 
   if $manage_nsswitch {
-    include ::nsswitch
+    include nsswitch
   }
 
   if $services {

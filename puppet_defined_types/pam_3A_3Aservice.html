@@ -6,15 +6,15 @@
 <title>
   Defined Type: pam::service
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_defined_types::pam::service";
   relpath = '../';
 </script>
@@ -173,6 +173,7 @@ of these parameters will result in an empty service definition file.</p>
 </ul>
 
 
+
 </div><div class="method_details_list">
   <table class="source_code">
     <tr>
@@ -228,7 +229,7 @@ define pam::service (
   Optional[Array] $lines                = undef
 ) {
 
-  include ::pam
+  include pam
 
   case $ensure {
     &#39;present&#39;: {

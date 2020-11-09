@@ -6,15 +6,15 @@
 <title>
   Puppet Class: pam::accesslogin
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::pam::accesslogin";
   relpath = '../';
 </script>
@@ -64,7 +64,7 @@
   
   <dl>
     <dt>Inherits:</dt>
-    <dd>::pam</dd>
+    <dd><span class='object_link'><a href="pam.html" title="puppet_classes::pam (puppet_class)">pam</a></span></dd>
   </dl>
   
   
@@ -207,6 +207,7 @@ origin &#39;ALL&#39;.</p>
 </ul>
 
 
+
 </div><div class="method_details_list">
   <table class="source_code">
     <tr>
@@ -268,7 +269,7 @@ class pam::accesslogin (
   Stdlib::Filemode $access_conf_mode          = &#39;0644&#39;,
   String $access_conf_template                = &#39;pam/access.conf.erb&#39;,
   Variant[Array, Hash, String] $allowed_users = $pam::allowed_users,
-) inherits ::pam {
+) inherits pam {
 
   # transform $allowed_users into a valid hash
   # origin defaults to &#39;ALL&#39; if unset

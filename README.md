@@ -52,7 +52,7 @@ additional SSSD entries added via hiera.
 
 ### Beginning with pam
 
-Include the main `::pam` class.
+Include the main `pam` class.
 
 #### Specifying the allowed users
 
@@ -159,7 +159,7 @@ pam::services:
 Minimal and normal usage.
 
 ```puppet
-include ::pam
+include pam
 ```
 
 ## Limitations
@@ -171,6 +171,7 @@ module aims to support the current and previous major Puppet versions.
 
  * EL 6
  * EL 7
+ * EL 8
  * Debian 8
  * Debian 9
  * Debian 10
@@ -183,7 +184,6 @@ module aims to support the current and previous major Puppet versions.
 These platforms have spec tests and have been verified in the past,
 though are not functionally tested and formally supported.
 
- * EL 8
  * EL 5
  * Solaris 9
  * Solaris 10

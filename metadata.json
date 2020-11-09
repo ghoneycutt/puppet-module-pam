@@ -47,7 +47,8 @@
       "operatingsystemrelease": [
         "5",
         "6",
-        "7"
+        "7",
+        "8"
       ]
     },
     {
@@ -55,7 +56,8 @@
       "operatingsystemrelease": [
         "5",
         "6",
-        "7"
+        "7",
+        "8"
       ]
     },
     {
@@ -104,6 +106,6 @@
   ],
   "dependencies": [
     {"name":"trlinkin/nsswitch","version_requirement":">= 2.1.0 < 3.0.0"},
-    {"name":"puppetlabs/stdlib","version_requirement":">= 4.22.0 < 6.0.0"}
+    {"name":"puppetlabs/stdlib","version_requirement":">= 4.25.0 < 7.0.0"}
   ]
 }

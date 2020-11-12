@@ -8,8 +8,8 @@ pam::common_files:
   - common_session
   - common_session_noninteractive
 
-pam::pam_d_login_template: pam/login.ubuntu18.erb
-pam::pam_d_sshd_template: pam/sshd.ubuntu18.erb
+pam::pam_d_login_template: pam/login.ubuntu20.erb
+pam::pam_d_sshd_template: pam/sshd.ubuntu20.erb
 pam::package_name: libpam0g
 pam::pam_auth_lines:
   - 'auth  [success=1 default=ignore]  pam_unix.so nullok_secure'

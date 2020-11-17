@@ -25,18 +25,14 @@ gem 'puppet-lint-undef_in_function-check',              :require => false
 gem 'puppet-lint-unquoted_string-check',                :require => false
 gem 'puppet-lint-variable_contains_upcase',             :require => false
 
-group :documentation do
-  gem 'puppet-strings', require: false
-  gem 'redcarpet',      require: false
-  gem 'yard',           require: false
-end
+gem 'puppet-strings', require: false
+gem 'redcarpet',      require: false
+gem 'yard',           require: false
 
-group :system_tests do
-  gem 'beaker',                       :require => false
-  gem 'beaker-docker',                :require => false
-  gem 'beaker-module_install_helper', :require => false
-  gem 'beaker-puppet',                :require => false
-  gem 'beaker-puppet_install_helper', :require => false
-  gem 'beaker-rspec',                 :require => false
-  gem 'serverspec',                   :require => false
-end
+gem 'beaker',                       :require => false
+gem 'beaker-docker',                :require => false
+gem 'beaker-module_install_helper', :require => false
+gem 'beaker-puppet',                :require => false
+gem 'beaker-puppet_install_helper', :require => false
+gem 'beaker-rspec',                 :require => false
+gem 'serverspec',                   :require => false

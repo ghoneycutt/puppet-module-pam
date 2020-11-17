@@ -128,6 +128,14 @@ matrix:
     env: BEAKER_set="ubuntu-1804" BEAKER_PUPPET_COLLECTION=puppet6
     bundler_args:
     script: bundle exec rake beaker
+  # puppet5 packages are not provided for Ubuntu 20.04, so this
+  # OS is not tested with puppet5
+  - rvm: 2.5.1
+    sudo: required
+    services: docker
+    env: BEAKER_set="ubuntu-2004" BEAKER_PUPPET_COLLECTION=puppet6
+    bundler_args:
+    script: bundle exec rake beaker
 
 notifications:
   email: false

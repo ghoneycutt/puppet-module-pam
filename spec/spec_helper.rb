@@ -443,6 +443,28 @@ def platforms
             :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
           }, ],
       },
+    'ubuntu2004' =>
+      {
+        :facts_hash => {
+          :osfamily => 'Debian',
+          :operatingsystem => 'Ubuntu',
+          :os => {
+            'release' => {
+              'full'  => '20.04',
+              'major' => '20.04'
+            },
+            'name'   => 'Ubuntu',
+            'family' => 'Debian'
+          },
+        },
+        :pam_d_login        => 'without_pam_access',
+        :pam_d_sshd         => 'with_pam_access',
+        :packages           => [ 'libpam0g', ],
+        :files              => [
+          { :prefix         => 'pam_common_',
+            :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
+          }, ],
+      },
     'debian7' =>
       {
         :facts_hash => {

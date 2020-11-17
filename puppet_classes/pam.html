@@ -1160,7 +1160,16 @@ suffixed files to the originals without the suffix.</p>
 360
 361
 362
-363</pre>
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/init.pp', line 189</span>
@@ -1219,17 +1228,26 @@ class pam (
   Optional[String] $common_files_suffix                     = undef,
 ) {
 
+
   # Fail on unsupported platforms
   if $facts[&#39;os&#39;][&#39;family&#39;] == &#39;RedHat&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;5&#39;,&#39;6&#39;,&#39;7&#39;,&#39;8&#39;]) {
     fail(&quot;osfamily RedHat&#39;s os.release.major is &lt;${::facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 5, 6, 7 or 8&quot;)
-  } elsif $facts[&#39;os&#39;][&#39;family&#39;] == &#39;Solaris&#39; and !($facts[&#39;kernelrelease&#39;] in [&#39;5.9&#39;,&#39;5.10&#39;,&#39;5.11&#39;]) {
+  }
+
+  if $facts[&#39;os&#39;][&#39;family&#39;] == &#39;Solaris&#39; and !($facts[&#39;kernelrelease&#39;] in [&#39;5.9&#39;,&#39;5.10&#39;,&#39;5.11&#39;]) {
     fail(&quot;osfamily Solaris&#39; kernelrelease is &lt;${facts[&#39;kernelrelease&#39;]}&gt; and must be 5.9, 5.10 or 5.11&quot;)
-  } elsif $facts[&#39;os&#39;][&#39;family&#39;] == &#39;Suse&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;9&#39;,&#39;10&#39;,&#39;11&#39;,&#39;12&#39;,&#39;13&#39;,&#39;15&#39;]) {
+  }
+
+  if $facts[&#39;os&#39;][&#39;family&#39;] == &#39;Suse&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;9&#39;,&#39;10&#39;,&#39;11&#39;,&#39;12&#39;,&#39;13&#39;,&#39;15&#39;]) {
     fail(&quot;osfamily Suse&#39;s os.release.major is &lt;${::facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 9, 10, 11, 12, 13 or 15&quot;)
-  } elsif $facts[&#39;os&#39;][&#39;name&#39;] == &#39;Debian&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;7&#39;,&#39;8&#39;,&#39;9&#39;,&#39;10&#39;]) {
+  }
+
+  if $facts[&#39;os&#39;][&#39;name&#39;] == &#39;Debian&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;7&#39;,&#39;8&#39;,&#39;9&#39;,&#39;10&#39;]) {
     fail(&quot;Debian&#39;s os.release.major is &lt;${facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 7, 8, 9 or 10&quot;)
-  } elsif $facts[&#39;os&#39;][&#39;name&#39;] == &#39;Ubuntu&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;12.04&#39;, &#39;14.04&#39;, &#39;16.04&#39;, &#39;18.04&#39;]) {
-    fail(&quot;Ubuntu&#39;s os.release.major is &lt;${facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 12.04, 14.04, 16.04, or 18.04&quot;)
+  }
+
+  if $facts[&#39;os&#39;][&#39;name&#39;] == &#39;Ubuntu&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;12.04&#39;, &#39;14.04&#39;, &#39;16.04&#39;, &#39;18.04&#39;, &#39;20.04&#39;]) {
+    fail(&quot;Ubuntu&#39;s os.release.major is &lt;${facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 12.04, 14.04, 16.04, 18.04 or 20.04&quot;)
   }
 
   if $pam_d_sshd_template == &#39;pam/sshd.custom.erb&#39; {
@@ -1244,7 +1262,7 @@ class pam (
       $pam_sshd_account_lines or
       $pam_sshd_password_lines or
       $pam_sshd_session_lines {
-        fail(&#39;pam_sshd_[auth|account|password|session]_lines are only valid when pam_d_sshd_template is configured with the pam/sshd.custom.erb template&#39;)
+        fail(&#39;pam_sshd_[auth|account|password|session]_lines are only valid when pam_d_sshd_template is configured with the pam/sshd.custom.erb template&#39;) # lint:ignore:140chars
     }
   }
 

@@ -43,13 +43,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     c.vm.provision :shell, :inline => "puppet apply /vagrant/tests/init.pp"
   end
 
-  config.vm.define "debian8-pam", autostart: false do |c|
-    c.vm.box = "debian/jessie64"
-    c.vm.hostname = 'debian8-pam.example.com'
-    c.vm.provision :shell, :path => "tests/provision_basic_debian.sh"
-    c.vm.provision :shell, :inline => "puppet apply /vagrant/tests/init.pp"
-  end
-
   config.vm.define "debian9-pam", autostart: false do |c|
     c.vm.box = "debian/stretch64"
     c.vm.hostname = 'debian9-pam.example.com'

@@ -70,4 +70,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     c.vm.provision :shell, :path => "tests/provision_basic_debian.sh"
     c.vm.provision :shell, :inline => "puppet apply /vagrant/tests/init.pp"
   end
+
+  config.vm.define "ubuntu2004-pam", autostart: false do |c|
+    c.vm.box = "ubuntu/focal64"
+    c.vm.hostname = 'ubuntu2004-pam.example.com'
+    c.vm.provision :shell, :path => "tests/provision_basic_debian.sh"
+    c.vm.provision :shell, :inline => "puppet apply /vagrant/tests/init.pp"
+  end
 end

@@ -6,7 +6,7 @@ nsswitch::group: 'files sss'
 nsswitch::services: 'files sss'
 nsswitch::netgroup: 'files sss'
 nsswitch::automount: 'files sss'
-pam::allowed_users: 
+pam::allowed_users:
   - (Domain Users) # This is an example of an AD group that would not work without the pam_access module line below due to the space not being permitted using default line seperators
 
 # PAM Customized for use with sssd
@@ -68,4 +68,3 @@ pam::pam_password_session_lines:
   - 'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid'
   - 'session     required      pam_unix.so'
   - 'session     optional      pam_sss.so'
-

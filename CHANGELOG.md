@@ -1,17 +1,50 @@
 # Changelog
 
-## [v3.5.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.5.0) (2020-03-06)
+## [v3.7.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.7.0) (2020-11-17)
 
-[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.4.0...v3.5.0)
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.6.0...v3.7.0)
+
+**Merged pull requests:**
+
+- Ubuntu 20.04 [\#225](https://github.com/ghoneycutt/puppet-module-pam/pull/225) ([amateo](https://github.com/amateo))
+
+## [v3.6.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.6.0) (2020-11-09)
+
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.5.0...v3.6.0)
+
+**Implemented enhancements:**
+
+- Support EL8 [\#231](https://github.com/ghoneycutt/puppet-module-pam/pull/231) ([ghoneycutt](https://github.com/ghoneycutt))
+
+**Closed issues:**
+
+- Restrict Root user from switching users without password prompt [\#222](https://github.com/ghoneycutt/puppet-module-pam/issues/222)
+- pam\_d\_login\_oracle\_options not available for el7 [\#197](https://github.com/ghoneycutt/puppet-module-pam/issues/197)
+
+**Merged pull requests:**
+
+- Fix style issues [\#228](https://github.com/ghoneycutt/puppet-module-pam/pull/228) ([ghoneycutt](https://github.com/ghoneycutt))
+- Use correct templates for sshd and login in Debian 10 [\#220](https://github.com/ghoneycutt/puppet-module-pam/pull/220) ([thechristschn](https://github.com/thechristschn))
+
+## [v3.5.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.5.0) (2020-03-07)
+
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.35.0...v3.5.0)
 
 **Closed issues:**
 
 - Support for Debian 10 [\#218](https://github.com/ghoneycutt/puppet-module-pam/issues/218)
-- RHEL8 support [\#211](https://github.com/ghoneycutt/puppet-module-pam/issues/211)
 
 **Merged pull requests:**
 
 - Add support for Debian 10 [\#217](https://github.com/ghoneycutt/puppet-module-pam/pull/217) ([thechristschn](https://github.com/thechristschn))
+
+## [v2.35.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.35.0) (2019-11-25)
+
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.4.0...v2.35.0)
+
+**Closed issues:**
+
+- RHEL8 support [\#211](https://github.com/ghoneycutt/puppet-module-pam/issues/211)
 
 ## [v3.4.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.4.0) (2019-11-24)
 
@@ -96,16 +129,7 @@
 
 ## [v3.0.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.0.0) (2018-11-09)
 
-[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.33.0...v3.0.0)
-
-**Closed issues:**
-
-- Add support for Debian 9 [\#187](https://github.com/ghoneycutt/puppet-module-pam/issues/187)
-- /etc/pam.d/passwd for RHEL 7 or is there a way to include a custom file path ? [\#180](https://github.com/ghoneycutt/puppet-module-pam/issues/180)
-- By default users are not restricted per ssh. [\#157](https://github.com/ghoneycutt/puppet-module-pam/issues/157)
-- \[Feature\] - Ability to add options for pam\_access lines added [\#156](https://github.com/ghoneycutt/puppet-module-pam/issues/156)
-- pam::allowed\_users removes user from multiple files, and only adds back to access\_conf [\#154](https://github.com/ghoneycutt/puppet-module-pam/issues/154)
-- Unwanted 'deny all' in allowed\_users [\#131](https://github.com/ghoneycutt/puppet-module-pam/issues/131)
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/2.34.0...v3.0.0)
 
 **Merged pull requests:**
 
@@ -119,6 +143,26 @@
 - Replacing lsb\* facts for SuSE distros [\#171](https://github.com/ghoneycutt/puppet-module-pam/pull/171) ([v4ld3r5](https://github.com/v4ld3r5))
 - Use Hiera 5 module data [\#170](https://github.com/ghoneycutt/puppet-module-pam/pull/170) ([treydock](https://github.com/treydock))
 - Remove VAS logic and create examples that show old behavior [\#169](https://github.com/ghoneycutt/puppet-module-pam/pull/169) ([treydock](https://github.com/treydock))
+
+## [2.34.0](https://github.com/ghoneycutt/puppet-module-pam/tree/2.34.0) (2018-09-18)
+
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.34.0...2.34.0)
+
+## [v2.34.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.34.0) (2018-09-18)
+
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.33.0...v2.34.0)
+
+**Closed issues:**
+
+- Add support for Debian 9 [\#187](https://github.com/ghoneycutt/puppet-module-pam/issues/187)
+- /etc/pam.d/passwd for RHEL 7 or is there a way to include a custom file path ? [\#180](https://github.com/ghoneycutt/puppet-module-pam/issues/180)
+- By default users are not restricted per ssh. [\#157](https://github.com/ghoneycutt/puppet-module-pam/issues/157)
+- \[Feature\] - Ability to add options for pam\_access lines added [\#156](https://github.com/ghoneycutt/puppet-module-pam/issues/156)
+- pam::allowed\_users removes user from multiple files, and only adds back to access\_conf [\#154](https://github.com/ghoneycutt/puppet-module-pam/issues/154)
+- Unwanted 'deny all' in allowed\_users [\#131](https://github.com/ghoneycutt/puppet-module-pam/issues/131)
+
+**Merged pull requests:**
+
 - Add example SSSD integration using hiera [\#143](https://github.com/ghoneycutt/puppet-module-pam/pull/143) ([jeffmccune](https://github.com/jeffmccune))
 
 ## [v2.33.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.33.0) (2017-04-20)
@@ -303,7 +347,6 @@
 **Merged pull requests:**
 
 - Trusty [\#99](https://github.com/ghoneycutt/puppet-module-pam/pull/99) ([ghoneycutt](https://github.com/ghoneycutt))
-- Epic change in array layout reduces excessive line length that hurts my editor [\#88](https://github.com/ghoneycutt/puppet-module-pam/pull/88) ([Aethylred](https://github.com/Aethylred))
 
 ## [v2.14.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.14.0) (2015-02-02)
 
@@ -337,6 +380,7 @@
 
 - Order hash for access.conf, useful for Ruby 1.8.7 [\#91](https://github.com/ghoneycutt/puppet-module-pam/pull/91) ([ghoneycutt](https://github.com/ghoneycutt))
 - Add ability to optionally purge limits\_d [\#90](https://github.com/ghoneycutt/puppet-module-pam/pull/90) ([ghoneycutt](https://github.com/ghoneycutt))
+- Epic change in array layout reduces excessive line length that hurts my editor [\#88](https://github.com/ghoneycutt/puppet-module-pam/pull/88) ([Aethylred](https://github.com/Aethylred))
 
 ## [v2.10.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.10.0) (2014-12-08)
 
@@ -357,7 +401,7 @@
 
 **Merged pull requests:**
 
-- Add suse 12 support [\#80](https://github.com/ghoneycutt/puppet-module-pam/pull/80) ([juliengk](https://github.com/juliengk))
+- Add suse 12 support [\#80](https://github.com/ghoneycutt/puppet-module-pam/pull/80) ([ghost](https://github.com/ghost))
 - Add suse 12 support [\#77](https://github.com/ghoneycutt/puppet-module-pam/pull/77) ([eabecho](https://github.com/eabecho))
 
 ## [v2.8.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.8.0) (2014-09-30)
@@ -366,7 +410,7 @@
 
 **Merged pull requests:**
 
-- Add ensure\_vas for Solaris 10 [\#79](https://github.com/ghoneycutt/puppet-module-pam/pull/79) ([juliengk](https://github.com/juliengk))
+- Add ensure\_vas for Solaris 10 [\#79](https://github.com/ghoneycutt/puppet-module-pam/pull/79) ([ghost](https://github.com/ghost))
 
 ## [v2.7.1-el7](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.7.1-el7) (2014-09-10)
 

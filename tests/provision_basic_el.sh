@@ -20,7 +20,7 @@ yum install -y wget
 rpm -qa | grep -q puppet
 if [ $? -ne 0 ]
 then
-  rpm_install http://yum.puppetlabs.com/puppet5/puppet5-release-el-${release}.noarch.rpm
+  rpm_install http://yum.puppetlabs.com/puppet6/puppet6-release-el-${release}.noarch.rpm
   yum -y install puppet-agent
   ln -s /opt/puppetlabs/puppet/bin/puppet /usr/bin/puppet
 fi
@@ -29,5 +29,5 @@ fi
 puppet resource file /etc/puppetlabs/code/environments/production/modules/pam ensure=link target=/vagrant
 
 # setup module dependencies
-puppet module install puppetlabs/stdlib --version 4.22.0
+puppet module install puppetlabs/stdlib --version 4.25.0
 puppet module install trlinkin/nsswitch --version 2.1.0

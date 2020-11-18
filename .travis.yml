@@ -59,18 +59,6 @@ matrix:
   - rvm: 2.4.9
     sudo: required
     services: docker
-    env: BEAKER_set="debian-8" BEAKER_PUPPET_COLLECTION=puppet5
-    bundler_args:
-    script: bundle exec rake beaker
-  - rvm: 2.5.7
-    sudo: required
-    services: docker
-    env: BEAKER_set="debian-8" BEAKER_PUPPET_COLLECTION=puppet6
-    bundler_args:
-    script: bundle exec rake beaker
-  - rvm: 2.4.9
-    sudo: required
-    services: docker
     env: BEAKER_set="debian-9" BEAKER_PUPPET_COLLECTION=puppet5
     bundler_args:
     script: bundle exec rake beaker

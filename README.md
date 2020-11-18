@@ -172,7 +172,6 @@ module aims to support the current and previous major Puppet versions.
  * EL 6
  * EL 7
  * EL 8
- * Debian 8
  * Debian 9
  * Debian 10
  * Ubuntu 14.04 LTS
@@ -196,6 +195,7 @@ though are not functionally tested and formally supported.
  * Suse 15
  * OpenSuSE 13.1
  * Debian 7
+ * Debian 8
  * Ubuntu 12.04 LTS
 
 ## Development

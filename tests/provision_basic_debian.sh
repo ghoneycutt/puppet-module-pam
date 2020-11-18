@@ -31,7 +31,7 @@ apt-key adv --fetch-keys http://apt.puppetlabs.com/DEB-GPG-KEY-puppet
 apt-get -y install wget
 
 # install and configure puppet
-deb_install http://apt.puppetlabs.com/puppet5-release-${CODENAME}.deb
+deb_install http://apt.puppetlabs.com/puppet6-release-${CODENAME}.deb
 apt-get update
 apt-get -y install puppet-agent
 ln -s /opt/puppetlabs/puppet/bin/puppet /usr/bin/puppet
@@ -40,5 +40,5 @@ ln -s /opt/puppetlabs/puppet/bin/puppet /usr/bin/puppet
 puppet resource file /etc/puppetlabs/code/environments/production/modules/pam ensure=link target=/vagrant
 
 # setup module dependencies
-puppet module install puppetlabs/stdlib --version 4.22.0
+puppet module install puppetlabs/stdlib --version 4.25.0
 puppet module install trlinkin/nsswitch --version 2.1.0

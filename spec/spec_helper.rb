@@ -37,6 +37,8 @@ def platforms
             }
           },
         },
+        :pam_d_login        => 'with_pam_access',
+        :pam_d_sshd         => 'with_pam_access',
         :packages           => ['pam', ],
         :files              => [
           { :prefix         => 'pam_',

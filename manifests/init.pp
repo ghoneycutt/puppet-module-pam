@@ -111,6 +111,10 @@
 #   An ordered array of strings that define the content for PAM session. If
 #   undef, parameter is set based on the OS version.
 #
+# @param pam_session_noninteractive_lines
+#   An ordered array of strings that define the content for PAM
+#   session-noninteractive. If undef, values of pam_session_lines will be used.
+#
 # @param other_file
 #   Path to PAM other file. Used on Suse 9 and Solaris.
 #
@@ -216,6 +220,7 @@ class pam (
   Optional[Array] $pam_account_lines                        = undef,
   Optional[Array] $pam_password_lines                       = undef,
   Optional[Array] $pam_session_lines                        = undef,
+  Optional[Array] $pam_session_noninteractive_lines         = undef,
   Stdlib::Absolutepath $other_file                          = '/etc/pam.d/other',
   Stdlib::Absolutepath $common_auth_file                    = '/etc/pam.d/common-auth',
   Stdlib::Absolutepath $common_auth_pc_file                 = '/etc/pam.d/common-auth-pc',

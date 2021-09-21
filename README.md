@@ -174,6 +174,7 @@ module aims to support the current and previous major Puppet versions.
  * EL 8
  * Debian 9
  * Debian 10
+ * Debian 11
  * Ubuntu 14.04 LTS
  * Ubuntu 16.04 LTS
  * Ubuntu 18.04 LTS

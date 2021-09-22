@@ -37,3 +37,7 @@ log/
 # Vagrant
 .vagrant/*
 ubuntu*.log
+
+# JUnit
+junit
+spec/junit

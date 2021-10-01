@@ -11,6 +11,7 @@ session  optional     pam_keyinit.so force revoke
 session  optional     pam_motd.so  motd=/run/motd.dynamic
 session  optional     pam_motd.so  noupdate
 session  required     pam_limits.so
+session  required     pam_env.so # [1]
 session  required     pam_env.so user_readenv=1 envfile=/etc/default/locale
 session  [success=ok ignore=ignore module_unknown=ignore default=bad]        pam_selinux.so open
 @include common-password

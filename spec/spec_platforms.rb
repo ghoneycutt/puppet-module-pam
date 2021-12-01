@@ -67,7 +67,7 @@ def sshd_pam_access(os)
   case os_id(os)
   when %r{redhat-5}, %r{redhat-6}, %r{redhat-7}, %r{sles-11}, %r{debian}, %r{ubuntu}
     'required'
-  when %r{redhat-8}, %r{sles-9}, %r{sles-10}, %r{sles-12}, %r{sles-15}
+  when %r{redhat-8}, %r{redhat-9}, %r{sles-9}, %r{sles-10}, %r{sles-12}, %r{sles-15}
     'absent'
   else
     nil

@@ -1,0 +1,21 @@
+HOSTS:
+  centos9:
+    roles:
+      - agent
+    platform: el-9-x86_64
+    hypervisor: docker
+    image: centos:9
+    docker_preserve_image: true
+    docker_cmd:
+      - '/usr/sbin/init'
+    docker_image_commands:
+      - 'yum install -y dnf-utils'
+      - 'dnf config-manager --set-enabled PowerTools'
+      - 'dnf install -y wget which initscripts iproute langpacks-en glibc-all-langpacks'
+    docker_container_name: 'pam-el9'
+CONFIG:
+  log_level: debug
+  type: foss
+ssh:
+  password: root
+  auth_methods: ["password"]

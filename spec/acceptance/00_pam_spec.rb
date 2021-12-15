@@ -2,79 +2,81 @@ require 'spec_helper_acceptance'
 
 describe 'pam' do
   context 'default' do
-    it 'should work without errors' do
+    it 'works without errors' do
       pp = <<-EOS
       include pam
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
-    if fact('osfamily') == 'Debian'
-      package_name = 'libpam0g'
-    else
-      package_name = 'pam'
-    end
+    package_name = if fact('osfamily') == 'Debian'
+                     'libpam0g'
+                   else
+                     'pam'
+                   end
 
     describe package(package_name) do
-      it { should be_installed }
+      it { is_expected.to be_installed }
     end
 
     describe file('/etc/pam.d/login') do
-      it { should be_file }
-      it { should be_owned_by 'root' }
-      it { should be_grouped_into 'root' }
-      it { should be_mode 644 }
-      if fact('osfamily') == 'RedHat'
-        if fact('operatingsystemmajrelease') == '8'
-          its(:content) { should_not match /^account\s+required\s+pam_access.so$/ }
+      it { is_expected.to be_file }
+      it { is_expected.to be_owned_by 'root' }
+      it { is_expected.to be_grouped_into 'root' }
+      it { is_expected.to be_mode 644 }
+      it {
+        if (fact('osfamily') == 'RedHat') && (fact('operatingsystemmajrelease') == '8')
+          is_expected.not_to match(%r{^account\s+required\s+pam_access.so$})
         else
-          its(:content) { should match /^account\s+required\s+pam_access.so$/ }
+          is_expected.to match(%r{^account\s+required\s+pam_access.so$})
         end
-      end
+      }
     end
 
     describe file('/etc/pam.d/sshd') do
-      it { should be_file }
-      it { should be_owned_by 'root' }
-      it { should be_grouped_into 'root' }
-      it { should be_mode 644 }
-      if fact('osfamily') == 'RedHat' and fact('operatingsystemmajrelease') == '8'
-        its(:content) { should_not match /^account\s+required\s+pam_access.so$/ }
-      else
-        its(:content) { should match /^account\s+required\s+pam_access.so$/ }
-      end
+      it { is_expected.to be_file }
+      it { is_expected.to be_owned_by 'root' }
+      it { is_expected.to be_grouped_into 'root' }
+      it { is_expected.to be_mode 644 }
+      it {
+        if (fact('osfamily') == 'RedHat') && (fact('operatingsystemmajrelease') == '8')
+          is_expected.not_to match(%r{^account\s+required\s+pam_access.so$})
+        else
+          is_expected.to match(%r{^account\s+required\s+pam_access.so$})
+        end
+      }
     end
 
     describe file('/etc/security/access.conf') do
-      it { should be_file }
-      it { should be_owned_by 'root' }
-      it { should be_grouped_into 'root' }
-      it { should be_mode 644 }
-      it { should contain('+:root:ALL').before('-:ALL:ALL') }
-      it { should contain('-:ALL:ALL').after('\+:root:ALL') }
+      it { is_expected.to be_file }
+      it { is_expected.to be_owned_by 'root' }
+      it { is_expected.to be_grouped_into 'root' }
+      it { is_expected.to be_mode 644 }
+      it { is_expected.to contain('+:root:ALL').before('-:ALL:ALL') }
+      it { is_expected.to contain('-:ALL:ALL').after('\+:root:ALL') }
     end
 
     describe file('/etc/security/limits.conf') do
-      it { should be_file }
-      it { should be_owned_by 'root' }
-      it { should be_grouped_into 'root' }
-      it { should be_mode 640 }
-      its(:content) { should match /^$|^#/ }
+      it { is_expected.to be_file }
+      it { is_expected.to be_owned_by 'root' }
+      it { is_expected.to be_grouped_into 'root' }
+      it { is_expected.to be_mode 640 }
+      its(:content) { is_expected.to match(%r{^$|^#}) }
     end
 
     if fact('osfamily') == 'RedHat'
       ['password-auth', 'system-auth'].each do |f|
         describe file("/etc/pam.d/#{f}-ac") do
-          it { should be_file }
-          it { should be_owned_by 'root' }
-          it { should be_grouped_into 'root' }
-          it { should be_mode 644 }
+          it { is_expected.to be_file }
+          it { is_expected.to be_owned_by 'root' }
+          it { is_expected.to be_grouped_into 'root' }
+          it { is_expected.to be_mode 644 }
         end
         describe file("/etc/pam.d/#{f}") do
-          it { should be_symlink }
-          it { should be_linked_to "/etc/pam.d/#{f}-ac" }
+          it { is_expected.to be_symlink }
+          it { is_expected.to be_linked_to "/etc/pam.d/#{f}-ac" }
         end
       end
     end
@@ -82,13 +84,12 @@ describe 'pam' do
     if fact('osfamily') == 'Debian'
       ['auth', 'account', 'password', 'session', 'session-noninteractive'].each do |f|
         describe file("/etc/pam.d/common-#{f}") do
-          it { should be_file }
-          it { should be_owned_by 'root' }
-          it { should be_grouped_into 'root' }
-          it { should be_mode 644 }
+          it { is_expected.to be_file }
+          it { is_expected.to be_owned_by 'root' }
+          it { is_expected.to be_grouped_into 'root' }
+          it { is_expected.to be_mode 644 }
         end
       end
     end
   end
 end
-

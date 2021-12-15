@@ -3,10 +3,10 @@ describe 'pam::limits' do
   let(:facts) { platforms['el7'][:facts_hash] }
 
   context 'with default values on supported platform EL7' do
-    it { should compile.with_all_deps }
-    it { should contain_class('pam') }
+    it { is_expected.to compile.with_all_deps }
+    it { is_expected.to contain_class('pam') }
 
-    content = <<-END.gsub(/^\s+\|/, '')
+    content = <<-END.gsub(%r{^\s+\|}, '')
       |# This file is being maintained by Puppet.
       |# DO NOT EDIT
       |
@@ -63,7 +63,7 @@ describe 'pam::limits' do
     END
 
     it do
-      should contain_file('limits_d').with({
+      is_expected.to contain_file('limits_d').with(
         'ensure'  => 'directory',
         'path'    => '/etc/security/limits.d',
         'owner'   => 'root',
@@ -72,12 +72,12 @@ describe 'pam::limits' do
         'purge'   => false,
         'recurse' => false,
         'require' => [ 'Package[pam]', 'Exec[mkdir_p-/etc/security/limits.d]' ],
-      })
+      )
     end
 
-    it { should contain_exec('mkdir_p-/etc/security/limits.d') }
+    it { is_expected.to contain_exec('mkdir_p-/etc/security/limits.d') }
     it do
-      should contain_file('limits_conf').with({
+      is_expected.to contain_file('limits_conf').with(
         'ensure'  => 'file',
         'path'    => '/etc/security/limits.conf',
         'source'  => nil,
@@ -86,64 +86,73 @@ describe 'pam::limits' do
         'group'   => 'root',
         'mode'    => '0640',
         'require' => [ 'Package[pam]' ],
-      })
+      )
     end
   end
 
   context 'with config_file set to a valid path' do
-    let(:params) { {:config_file => '/testing'} }
-    it { should contain_file('limits_conf').with_path('/testing') }
+    let(:params) { { config_file: '/testing' } }
+
+    it { is_expected.to contain_file('limits_conf').with_path('/testing') }
   end
 
   context 'with config_file_lines set to a valid array' do
-    let(:params) { {:config_file_lines => [ '* soft nofile 2048', '* hard nofile 8192' ]} }
-    it { should contain_file('limits_conf').with_content(%r{\* soft nofile 2048\n\* hard nofile 8192\n}) }
+    let(:params) { { config_file_lines: [ '* soft nofile 2048', '* hard nofile 8192' ] } }
+
+    it { is_expected.to contain_file('limits_conf').with_content(%r{\* soft nofile 2048\n\* hard nofile 8192\n}) }
   end
 
   context 'with config_file_source set to a valid string' do
-    let(:params) { {:config_file_source => 'puppet:///pam/unit_tests.erb' } }
-    it { should contain_file('limits_conf').with_source('puppet:///pam/unit_tests.erb') }
-    it { should contain_file('limits_conf').with_content(nil) }
+    let(:params) { { config_file_source: 'puppet:///pam/unit_tests.erb' } }
+
+    it { is_expected.to contain_file('limits_conf').with_source('puppet:///pam/unit_tests.erb') }
+    it { is_expected.to contain_file('limits_conf').with_content(nil) }
   end
 
   context 'with config_file_lines and config_file_source both set to valid strings (config_file_lines takes priority)' do
     let(:params) do
       {
-        :config_file_lines  => [ '* soft nofile 2048', '* hard nofile 8192' ],
-        :config_file_source => 'pam/unit_tests.erb',
+        config_file_lines: [ '* soft nofile 2048', '* hard nofile 8192' ],
+        config_file_source: 'pam/unit_tests.erb',
       }
     end
-    it { should contain_file('limits_conf').with_source(nil) }
-    it { should contain_file('limits_conf').with_content( %r{\* soft nofile 2048\n\* hard nofile 8192\n}) }
+
+    it { is_expected.to contain_file('limits_conf').with_source(nil) }
+    it { is_expected.to contain_file('limits_conf').with_content(%r{\* soft nofile 2048\n\* hard nofile 8192\n}) }
   end
 
   context 'with config_file_mode set to a valid string' do
-    let(:params) { {:config_file_mode => '0242' } }
-    it { should contain_file('limits_conf').with_mode('0242') }
+    let(:params) { { config_file_mode: '0242' } }
+
+    it { is_expected.to contain_file('limits_conf').with_mode('0242') }
   end
 
   context 'with limits_d_dir set to a valid string' do
-    let(:params) { {:limits_d_dir => '/testing.d' } }
-    it { should contain_exec('mkdir_p-/testing.d') }
-    it { should contain_file('limits_d').with_path('/testing.d') }
-    it { should contain_file('limits_d').with_require([ 'Package[pam]', 'Exec[mkdir_p-/testing.d]' ]) }
+    let(:params) { { limits_d_dir: '/testing.d' } }
+
+    it { is_expected.to contain_exec('mkdir_p-/testing.d') }
+    it { is_expected.to contain_file('limits_d').with_path('/testing.d') }
+    it { is_expected.to contain_file('limits_d').with_require([ 'Package[pam]', 'Exec[mkdir_p-/testing.d]' ]) }
   end
 
   context 'with limits_d_dir_mode set to a valid string' do
-    let(:params) { {:limits_d_dir_mode => '0242' } }
-    it { should contain_file('limits_d').with_mode('0242') }
+    let(:params) { { limits_d_dir_mode: '0242' } }
+
+    it { is_expected.to contain_file('limits_d').with_mode('0242') }
   end
 
   context 'with purge_limits_d_dir set to a valid boolean true' do
-    let(:params) { {:purge_limits_d_dir => true } }
-    it { should contain_file('limits_d').with_purge(true) }
-    it { should contain_file('limits_d').with_recurse(true) }
+    let(:params) { { purge_limits_d_dir: true } }
+
+    it { is_expected.to contain_file('limits_d').with_purge(true) }
+    it { is_expected.to contain_file('limits_d').with_recurse(true) }
   end
 
   context 'with default values on supported platform Suse 10 without fragments support' do
     let(:facts) { platforms['suse10'][:facts_hash] }
-    it { should contain_class('pam') }
-    it { should_not contain_exec('mkdir_p-/etc/security/limits.d') }
-    it { should_not contain_file('limits_d') }
+
+    it { is_expected.to contain_class('pam') }
+    it { is_expected.not_to contain_exec('mkdir_p-/etc/security/limits.d') }
+    it { is_expected.not_to contain_file('limits_d') }
   end
 end

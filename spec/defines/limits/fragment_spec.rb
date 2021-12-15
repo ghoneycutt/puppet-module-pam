@@ -5,69 +5,75 @@ describe 'pam::limits::fragment' do
   let(:title) { '80-nproc' }
 
   mandatory_params = {
-    :list => [ 'test1', 'test2' ],
+    list: [ 'test1', 'test2' ],
   }
 
-  file_header = <<-END.gsub(/^\s+\|/, '')
+  file_header = <<-END.gsub(%r{^\s+\|}, '')
     |# This file is being maintained by Puppet.
     |# DO NOT EDIT
   END
 
   context 'with defaults for all parameters' do
-    it 'should fail' do
-      expect { should contain_class(subject) }.to raise_error(Puppet::Error, /pam::limits::fragment must specify source or list/)
+    it 'fails' do
+      expect { is_expected.to contain_class(:subject) }.to raise_error(Puppet::Error, %r{pam::limits::fragment must specify source or list})
     end
   end
 
   context 'with mandatory parameters set to valid values' do
     let(:params) { mandatory_params }
-    it { should compile.with_all_deps }
-    it { should contain_class('pam') }
-    it { should contain_class('pam::limits') }
+
+    it { is_expected.to compile.with_all_deps }
+    it { is_expected.to contain_class('pam') }
+    it { is_expected.to contain_class('pam::limits') }
     it do
-      should contain_file('/etc/security/limits.d/80-nproc.conf').with({
-        'ensure'  => 'file',
+      is_expected.to contain_file('/etc/security/limits.d/80-nproc.conf').with(
+        'ensure' => 'file',
         'source'  => nil,
         'content' => file_header + "test1\ntest2\n",
         'owner'   => 'root',
         'group'   => 'root',
         'mode'    => '0644',
         'require' => [ 'Package[pam]' ],
-      })
+      )
     end
   end
 
   context 'with source set to a valid string puppet:///modules/pam/example.conf' do
-    let(:params) { { :source => 'puppet:///modules/pam/example.conf' } }
-    it { should contain_file('/etc/security/limits.d/80-nproc.conf').with_source('puppet:///modules/pam/example.conf') }
+    let(:params) { { source: 'puppet:///modules/pam/example.conf' } }
+
+    it { is_expected.to contain_file('/etc/security/limits.d/80-nproc.conf').with_source('puppet:///modules/pam/example.conf') }
   end
 
   context 'with list set to a valid array [test1, test2]' do
-    let(:params) { { :list => [ 'test1', 'test2' ] } }
-    it { should contain_file('/etc/security/limits.d/80-nproc.conf').with_content(file_header + "test1\ntest2\n") }
+    let(:params) { { list: [ 'test1', 'test2' ] } }
+
+    it { is_expected.to contain_file('/etc/security/limits.d/80-nproc.conf').with_content(file_header + "test1\ntest2\n") }
   end
 
   context 'with source and list both set to valid values' do
     let(:params) do
       {
-        :source => 'puppet:///modules/pam/example.conf',
-        :list => [ 'test1', 'test2' ],
+        source: 'puppet:///modules/pam/example.conf',
+        list: [ 'test1', 'test2' ],
       }
     end
-    it { should contain_file('/etc/security/limits.d/80-nproc.conf').with_content(file_header + "test1\ntest2\n") }
+
+    it { is_expected.to contain_file('/etc/security/limits.d/80-nproc.conf').with_content(file_header + "test1\ntest2\n") }
   end
 
-  %w(absent present file).each do |value|
+  ['absent', 'present', 'file'].each do |value|
     context "with ensure set to a valid string #{value}" do
-      let(:params) { mandatory_params.merge({ :ensure => value }) }
-      it { should contain_file('/etc/security/limits.d/80-nproc.conf').with_ensure(value) }
+      let(:params) { mandatory_params.merge({ ensure: value }) }
+
+      it { is_expected.to contain_file('/etc/security/limits.d/80-nproc.conf').with_ensure(value) }
     end
   end
 
   context 'on unsupported platform Suse 10.x' do
     let(:facts) { platforms['suse10'][:facts_hash] }
-    it 'should fail' do
-      expect { should contain_class(subject) }.to raise_error(Puppet::Error, /You can not use pam::limits::fragment together with Suse 10.x releases/)
+
+    it 'fails' do
+      expect { is_expected.to contain_class(:subject) }.to raise_error(Puppet::Error, %r{You can not use pam::limits::fragment together with Suse 10.x releases})
     end
   end
 end

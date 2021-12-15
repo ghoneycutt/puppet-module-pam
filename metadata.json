@@ -3,15 +3,18 @@
   "version": "3.7.0",
   "author": "ghoneycutt",
   "summary": "Manage PAM",
-  "description": "Manages PAM, including specifying users and groups in access.conf, limits.conf, and limits fragments",
   "license": "Apache-2.0",
   "source": "git://github.com/ghoneycutt/puppet-module-pam.git",
   "project_page": "https://github.com/ghoneycutt/puppet-module-pam",
   "issues_url": "https://github.com/ghoneycutt/puppet-module-pam/issues",
-  "requirements": [
+  "dependencies": [
     {
-      "name": "puppet",
-      "version_requirement": ">= 5.0.0 < 7.0.0"
+      "name": "trlinkin/nsswitch",
+      "version_requirement": ">= 2.1.0 < 3.0.0"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.25.0 < 7.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -106,8 +109,14 @@
       ]
     }
   ],
-  "dependencies": [
-    {"name":"trlinkin/nsswitch","version_requirement":">= 2.1.0 < 3.0.0"},
-    {"name":"puppetlabs/stdlib","version_requirement":">= 4.25.0 < 7.0.0"}
-  ]
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 5.0.0 < 7.0.0"
+    }
+  ],
+  "description": "Manages PAM, including specifying users and groups in access.conf, limits.conf, and limits fragments",
+  "pdk-version": "2.3.0",
+  "template-url": "pdk-default#2.3.0",
+  "template-ref": "tags/2.3.0-0-g8aaceff"
 }

@@ -1,21 +1,62 @@
-# This RSpec.configure block is listed twice due to a bug with
-# puppetlabs_spec_helper. https://tickets.puppetlabs.com/browse/PDK-916
-RSpec.configure do |config|
-  config.mock_with :rspec
-end
-require 'puppetlabs_spec_helper/module_spec_helper'
+# frozen_string_literal: true
 
-RSpec.configure do |config|
-  #config.hiera_config = 'spec/hiera.yaml'
-  config.before :each do
-    # Ensure that we don't accidentally cache facts and environment between
-    # test cases.  This requires each example group to explicitly load the
-    # facts being exercised with something like
-    # Facter.collection.loader.load(:ipaddress)
-    Facter.clear
-    Facter.clear_messages
+RSpec.configure do |c|
+  c.mock_with :rspec
+end
+
+require 'puppetlabs_spec_helper/module_spec_helper'
+require 'rspec-puppet-facts'
+
+require 'spec_helper_local' if File.file?(File.join(File.dirname(__FILE__), 'spec_helper_local.rb'))
+
+include RspecPuppetFacts
+
+default_facts = {
+  puppetversion: Puppet.version,
+  facterversion: Facter.version,
+}
+
+default_fact_files = [
+  File.expand_path(File.join(File.dirname(__FILE__), 'default_facts.yml')),
+  File.expand_path(File.join(File.dirname(__FILE__), 'default_module_facts.yml')),
+]
+
+default_fact_files.each do |f|
+  next unless File.exist?(f) && File.readable?(f) && File.size?(f)
+
+  begin
+    default_facts.merge!(YAML.safe_load(File.read(f), [], [], true))
+  rescue => e
+    RSpec.configuration.reporter.message "WARNING: Unable to load #{f}: #{e}"
   end
-  config.default_facts = {
-    :environment => 'rp_env',
-  }
+end
+
+# read default_facts and merge them over what is provided by facterdb
+default_facts.each do |fact, value|
+  add_custom_fact fact, value
+end
+
+RSpec.configure do |c|
+  c.default_facts = default_facts
+  c.before :each do
+    # set to strictest setting for testing
+    # by default Puppet runs at warning level
+    Puppet.settings[:strict] = :warning
+    Puppet.settings[:strict_variables] = true
+  end
+  c.filter_run_excluding(bolt: true) unless ENV['GEM_BOLT']
+  c.after(:suite) do
+  end
+
+  # Filter backtrace noise
+  backtrace_exclusion_patterns = [
+    %r{spec_helper},
+    %r{gems},
+  ]
+
+  if c.respond_to?(:backtrace_exclusion_patterns)
+    c.backtrace_exclusion_patterns = backtrace_exclusion_patterns
+  elsif c.respond_to?(:backtrace_clean_patterns)
+    c.backtrace_clean_patterns = backtrace_exclusion_patterns
+  end
 end

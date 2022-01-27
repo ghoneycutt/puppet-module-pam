@@ -465,7 +465,7 @@ describe 'pam' do
         :message => 'expects a match for Enum\[\'absent\', \'optional\', \'required\', \'requisite\', \'sufficient\'\]', # Puppet  4 & 5
       },
       'array (optional)' => {
-        :name    => %w(pam_auth_lines pam_account_lines pam_password_lines pam_session_lines pam_password_auth_lines pam_password_account_lines pam_password_password_lines pam_password_session_lines),
+        :name    => %w(pam_auth_lines pam_account_lines pam_password_lines pam_session_lines pam_session_noninteractive_lines pam_password_auth_lines pam_password_account_lines pam_password_password_lines pam_password_session_lines),
         :valid   => [%w(array)],
         :invalid => ['string', { 'ha' => 'sh' }, 3, 2.42, false, nil],
         :message => 'expects a value of type Undef or Array', # Puppet 4 & 5

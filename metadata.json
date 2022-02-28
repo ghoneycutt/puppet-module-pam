@@ -92,12 +92,12 @@
         "15"
       ]
     },
-    {
-      "operatingsystem": "OpenSuSE",
-      "operatingsystemrelease": [
-        "13.1"
-      ]
-    },
+//    {
+//      "operatingsystem": "OpenSuSE",
+//      "operatingsystemrelease": [
+//        "13.1"
+//      ]
+//    },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [

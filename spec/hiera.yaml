@@ -1,8 +1,0 @@
----
-:backends: yaml
-:yaml:
-  :datadir: "data"
-:hierarchy:
-  - "os/%{facts.os.family}/%{facts.kernelrelease}.yaml"
-  - "os/%{facts.os.family}/%{facts.os.release.major}.yaml"
-  - "os/%{facts.os.name}/%{facts.os.release.major}.yaml"

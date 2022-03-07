@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'pam' do
-  on_supported_os.each do |os, os_facts|
+  on_supported_os.sort.each do |os, os_facts|
     case os_facts[:os]['name']
     when 'Debian'
       platform_identifier = "debian#{os_facts[:os]['release']['major']}"

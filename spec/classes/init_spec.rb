@@ -2,24 +2,94 @@ require 'spec_helper'
 
 describe 'pam' do
   on_supported_os.sort.each do |os, os_facts|
-    case os_facts[:os]['name']
-    when 'Debian'
-      platform_identifier = "debian#{os_facts[:os]['release']['major']}"
-    when %r{RedHat|CentOS|OracleLinux|Scientific}
-      platform_identifier = "el#{os_facts[:os]['release']['major']}"
-    when %r{SLE[DS]}
-      platform_identifier = "suse#{os_facts[:os]['release']['major']}"
-    when 'SunOS'
-      platform_identifier = "solaris#{os_facts[:os]['release']['major']}"
-    when 'Ubuntu'
-      # Remove dot in version
-      platform_identifier = "ubuntu#{os_facts[:os]['release']['major']}".tr('.', '')
-    when 'Solaris'
-      platform_identifier = "solaris#{os_facts[:os]['release']['major']}"
-    end
-    platform_data = platforms[platform_identifier]
+    # use RedHat for CentOS, OracleLinux, Scientific
+    os_id = os.sub(%r{(centos|oraclelinux|scientific)}, 'redhat')
 
-    context "on #{os}" do
+    # OS specific module defaults
+    case os_id
+    when %r{redhat-5}
+      files        = ['pam_system_auth']
+      files_suffix = '_ac'
+      packages     = ['pam', 'util-linux']
+      pam_d_login  = true
+      pam_d_sshd   = true
+      symlink      = true
+    when %r{redhat-6}
+      files        = ['pam_system_auth', 'pam_password_auth']
+      files_suffix = '_ac'
+      packages     = ['pam']
+      pam_d_login  = true
+      pam_d_sshd   = true
+      symlink      = true
+    when %r{redhat-7}
+      files        = ['pam_system_auth']
+      files_suffix = '_ac'
+      packages     = ['pam']
+      pam_d_login  = true
+      pam_d_sshd   = true
+      symlink      = true
+    when %r{redhat-8}
+      files        = ['pam_system_auth']
+      files_suffix = '_ac'
+      packages     = ['pam']
+      pam_d_login  = false
+      pam_d_sshd   = false
+      symlink      = true
+    when %r{sles-9}
+      files        = ['pam_other']
+      packages     = ['pam', 'pam-modules']
+      pam_d_login  = false
+      pam_d_sshd   = false
+    when %r{sles-10}
+      files        = ['pam_common_account', 'pam_common_auth', 'pam_common_password', 'pam_common_session']
+      packages     = ['pam']
+      pam_d_login  = false
+      pam_d_sshd   = false
+    when %r{sles-11}
+      files        = ['pam_common_account', 'pam_common_auth', 'pam_common_password', 'pam_common_session']
+      files_suffix = '_pc'
+      packages     = ['pam']
+      pam_d_login  = true
+      pam_d_sshd   = true
+      symlink      = true
+    when %r{sles-12}
+      files        = ['pam_common_account', 'pam_common_auth', 'pam_common_password', 'pam_common_session']
+      files_suffix = '_pc'
+      packages     = ['pam']
+      pam_d_login  = false
+      pam_d_sshd   = false
+      symlink      = true
+    when %r{sles-15}
+      files        = ['pam_common_account', 'pam_common_auth', 'pam_common_password', 'pam_common_session']
+      files_suffix = '_pc'
+      packages     = ['pam']
+      pam_d_login  = false
+      pam_d_sshd   = false
+      symlink      = true
+    when %r{solaris-11}
+      files       = ['pam_other']
+      packages    = []
+    when %r{solaris}
+      dirpath     = '/etc/pam.'
+      files       = ['pam_conf']
+      packages    = []
+    when %r{debian}, %r{ubuntu}
+      files       = ['pam_common_auth', 'pam_common_account', 'pam_common_password', 'pam_common_session', 'pam_common_session_noninteractive']
+      packages    = ['libpam0g']
+      pam_d_login = false
+      pam_d_sshd  = true
+    end
+    # use global defaults for undefined variables
+    dirpath = '/etc/pam.d/' if dirpath.nil?
+    files_suffix = '' if files_suffix.nil?
+
+    group = if %r{solaris}.match?(os_id)
+              'sys'
+            else
+              'root'
+            end
+
+    context "on #{os} with module default settings" do
       let(:facts) { os_facts }
 
       file_header = <<-END.gsub(%r{^\s+\|}, '')
@@ -28,93 +98,72 @@ describe 'pam' do
       END
 
       it { is_expected.to compile.with_all_deps }
-
       it { is_expected.to contain_class('pam') }
 
-      it { is_expected.to have_package_resource_count(platform_data[:packages].count) }
-      platform_data[:packages].each do |pkg|
-        it { is_expected.to contain_package(pkg).with_ensure('installed') }
+      it { is_expected.to have_package_resource_count(packages.count) }
+      packages.each do |package|
+        it { is_expected.to contain_package(package).with_ensure('installed') }
       end
 
-      # OS dependent package dependencies
-      platform_data[:files].each do |file|
-        group = file[:group] || 'root'
-        dirpath = file[:dirpath] || '/etc/pam.d/'
-
-        file[:types].each do |type|
-          filename = "#{file[:prefix]}#{type}#{file[:suffix]}"
-          path = "#{dirpath}#{file[:prefix]}#{type}#{file[:suffix]}"
-          path.tr! '_', '-'
-          path.sub! 'pam-', ''
-          symlinkname = "#{file[:prefix]}#{type}"
-          symlinkpath = "#{dirpath}#{file[:prefix]}#{type}"
-          symlinkpath.tr! '_', '-'
-          symlinkpath.sub! 'pam-', ''
-
-          platform_data[:packages].sort.each do |pkg|
-            it { is_expected.to contain_file(filename).that_requires("Package[#{pkg}]") }
-            if file[:symlink]
-              it { is_expected.to contain_file(symlinkname).that_requires("Package[#{pkg}]") }
-            end
-          end
-
-          it do
-            is_expected.to contain_file(filename).with(
-              'ensure'  => 'file',
-              'path'    => path,
-              'content' => File.read(fixtures("#{filename}.defaults.#{platform_identifier}")),
-              'owner'   => 'root',
-              'group'   => group,
-              'mode'    => '0644',
-            )
-          end
-
-          next unless file[:symlink]
-          symlinkname   = "#{file[:prefix]}#{type}"
-          symlinkpath   = "#{dirpath}#{file[:prefix]}#{type}"
-          symlinkpath.tr! '_', '-'
-          symlinkpath.sub! 'pam-', ''
-
-          it do
-            is_expected.to contain_file(symlinkname).with(
-              'ensure' => 'link',
-              'path'   => symlinkpath,
-              'target' => path,
-              'owner'  => 'root',
-              'group'  => 'root',
-            )
+      files.each do |file|
+        packages.sort.each do |package|
+          it { is_expected.to contain_file(file + files_suffix).that_requires("Package[#{package}]") }
+          if symlink == true
+            it { is_expected.to contain_file(file).that_requires("Package[#{package}]") }
           end
         end
 
-        if os_facts[:os]['family'] != 'Solaris'
-          it do
-            is_expected.to contain_file('pam_d_login').with(
-              'ensure'  => 'file',
-              'path'    => '/etc/pam.d/login',
-              'content' => File.read(fixtures("pam_d_login.defaults.#{platform_identifier}")),
-              'owner'   => 'root',
-              'group'   => 'root',
-              'mode'    => '0644',
-            )
-          end
+        it do
+          is_expected.to contain_file(file + files_suffix).with(
+            'ensure'  => 'file',
+            'path'    => (dirpath + file + files_suffix).tr('_', '-').sub('pam-', ''),
+            'content' => File.read(fixtures(os_id + '-' + file + files_suffix)),
+            'owner'   => 'root',
+            'group'   => group,
+            'mode'    => '0644',
+          )
+        end
 
-          it do
-            is_expected.to contain_file('pam_d_sshd').with(
-              'ensure'  => 'file',
-              'path'    => '/etc/pam.d/sshd',
-              'content' => File.read(fixtures("pam_d_sshd.defaults.#{platform_identifier}")),
-              'owner'   => 'root',
-              'group'   => 'root',
-              'mode'    => '0644',
-            )
-          end
-        else
-          it { is_expected.not_to contain_file('pam_d_login') }
-          it { is_expected.not_to contain_file('pam_d_sshd') }
+        next unless symlink == true
+        it do
+          is_expected.to contain_file(file).with(
+            'ensure' => 'link',
+            'path'   => (dirpath + file).tr('_', '-').sub('pam-', ''),
+            'target' => (dirpath + file + files_suffix).tr('_', '-').sub('pam-', ''),
+            'owner'  => 'root',
+            'group'  => 'root',
+          )
         end
       end
 
-      if %r{^(RedHat|Suse|Debian)$}.match?(os_facts[:os]['family'])
+      if %r{solaris}.match?(os_id)
+        it { is_expected.not_to contain_file('pam_d_login') }
+        it { is_expected.not_to contain_file('pam_d_sshd') }
+      else
+        it do
+          is_expected.to contain_file('pam_d_login').with(
+            'ensure'  => 'file',
+            'path'    => '/etc/pam.d/login',
+            'content' => File.read(fixtures(os_id + '-pam_d_login')),
+            'owner'   => 'root',
+            'group'   => 'root',
+            'mode'    => '0644',
+          )
+        end
+
+        it do
+          is_expected.to contain_file('pam_d_sshd').with(
+            'ensure'  => 'file',
+            'path'    => '/etc/pam.d/sshd',
+            'content' => File.read(fixtures(os_id + '-pam_d_sshd')),
+            'owner'   => 'root',
+            'group'   => 'root',
+            'mode'    => '0644',
+          )
+        end
+      end
+
+      unless %r{solaris}.match?(os_id)
         it { is_expected.to contain_class('pam::accesslogin') }
         it { is_expected.to contain_class('pam::limits') }
       end
@@ -126,9 +175,9 @@ describe 'pam' do
       context "with login_pam_access set to valid string sufficient on OS #{os}" do
         let(:params) { { login_pam_access: 'sufficient' } }
 
-        if platform_data[:pam_d_login] == 'without_pam_access'
+        if pam_d_login == false
           it { is_expected.to contain_file('pam_d_login').without_content(%r{account[\s]+sufficient[\s]+pam_access.so}) }
-        elsif platform_data[:pam_d_login] == 'with_pam_access'
+        elsif pam_d_login == true
           it { is_expected.to contain_file('pam_d_login').with_content(%r{^account[\s]+sufficient[\s]+pam_access.so$}) }
         else
           it { is_expected.not_to contain_file('pam_d_login') }
@@ -138,9 +187,9 @@ describe 'pam' do
       context "with sshd_pam_access set to valid string sufficient on OS #{os}" do
         let(:params) { { sshd_pam_access: 'sufficient' } }
 
-        if platform_data[:pam_d_sshd] == 'without_pam_access'
+        if pam_d_sshd == false
           it { is_expected.to contain_file('pam_d_sshd').without_content(%r{account[\s]+sufficient[\s]+pam_access.so}) }
-        elsif platform_data[:pam_d_sshd] == 'with_pam_access'
+        elsif pam_d_sshd == true
           it { is_expected.to contain_file('pam_d_sshd').with_content(%r{^account[\s]+sufficient[\s]+pam_access.so$}) }
         else
           it { is_expected.not_to contain_file('pam_d_sshd') }
@@ -161,10 +210,10 @@ describe 'pam' do
           |-:ALL:ALL
         END
 
-        if os_facts[:kernel] == 'Linux'
-          it { is_expected.to contain_file('access_conf').with_content(file_header + content) }
-        else
+        if %r{solaris}.match?(os_id)
           it { is_expected.not_to contain_file('access_conf') }
+        else
+          it { is_expected.to contain_file('access_conf').with_content(file_header + content) }
         end
       end
 
@@ -194,7 +243,7 @@ describe 'pam' do
             |session_line2
           END
 
-          if os_facts[:os]['family'] == 'Solaris'
+          if %r{solaris}.match?(os_id)
             it { is_expected.not_to contain_file('pam_d_sshd') }
           else
             it { is_expected.to contain_file('pam_d_sshd').with_content(sshd_custom_content) }
@@ -220,7 +269,7 @@ describe 'pam' do
         context 'with login_pam_access => absent' do
           let(:params) { { login_pam_access: 'absent' } }
 
-          if os_facts[:os]['family'] != 'Solaris'
+          unless %r{solaris}.match?(os_id)
             it { is_expected.to contain_file('pam_d_login').without_content(%r{^account.*pam_access.so$}) }
           end
         end
@@ -228,19 +277,19 @@ describe 'pam' do
         context 'with sshd_pam_access => absent' do
           let(:params) { { sshd_pam_access: 'absent' } }
 
-          if os_facts[:os]['family'] != 'Solaris'
+          unless %r{solaris}.match?(os_id)
             it { is_expected.to contain_file('pam_d_sshd').without_content(%r{^account.*pam_access.so$}) }
           end
         end
 
         context 'with password_auth_ac => path' do
-          if (os_facts[:os]['family'] == 'RedHat') && (os_facts[:os]['release']['major'] == '5')
+          if %r{redhat-5}.match?(os_id)
             it { is_expected.not_to contain_file('password_auth_ac') }
           end
         end
 
         context 'with password_auth_ac_file => path' do
-          if (os_facts[:os]['family'] == 'RedHat') && (os_facts[:os]['release']['major'] == '5')
+          if %r{redhat-5}.match?(os_id)
             it { is_expected.not_to contain_file('password_auth_ac_file') }
           end
         end
@@ -248,9 +297,9 @@ describe 'pam' do
         context 'with pam_d_login_oracle_options set to valid array' do
           let(:params) { { pam_d_login_oracle_options: [ 'session required pam_spectest.so', 'session optional pam_spectest.so' ] } }
 
-          if platform_identifier == 'el5'
+          if %r{redhat-5}.match?(os_id)
             it { is_expected.to contain_file('pam_d_login').with_content(%r{^# oracle options\nsession required pam_spectest.so\nsession optional pam_spectest.so$}) }
-          elsif %r{solaris.*}.match?(platform_identifier)
+          elsif %r{solaris}.match?(os_id)
             it { is_expected.not_to contain_file('pam_d_login') }
           else
             it { is_expected.to contain_file('pam_d_login').without_content(%r{^# oracle options\nsession required pam_spectest.so\nsession optional pam_spectest.so$}) }

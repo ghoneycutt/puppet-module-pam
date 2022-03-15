@@ -1,93 +1,18 @@
 require 'spec_helper'
+require 'spec_platforms'
 
 describe 'pam' do
   on_supported_os.sort.each do |os, os_facts|
-    # use RedHat for CentOS, OracleLinux, Scientific
-    os_id = os.sub(%r{(centos|oraclelinux|scientific)}, 'redhat')
-
-    # OS specific module defaults
-    case os_id
-    when %r{redhat-5}
-      files        = ['pam_system_auth']
-      files_suffix = '_ac'
-      packages     = ['pam', 'util-linux']
-      pam_d_login  = true
-      pam_d_sshd   = true
-      symlink      = true
-    when %r{redhat-6}
-      files        = ['pam_system_auth', 'pam_password_auth']
-      files_suffix = '_ac'
-      packages     = ['pam']
-      pam_d_login  = true
-      pam_d_sshd   = true
-      symlink      = true
-    when %r{redhat-7}
-      files        = ['pam_system_auth']
-      files_suffix = '_ac'
-      packages     = ['pam']
-      pam_d_login  = true
-      pam_d_sshd   = true
-      symlink      = true
-    when %r{redhat-8}
-      files        = ['pam_system_auth']
-      files_suffix = '_ac'
-      packages     = ['pam']
-      pam_d_login  = false
-      pam_d_sshd   = false
-      symlink      = true
-    when %r{sles-9}
-      files        = ['pam_other']
-      packages     = ['pam', 'pam-modules']
-      pam_d_login  = false
-      pam_d_sshd   = false
-    when %r{sles-10}
-      files        = ['pam_common_account', 'pam_common_auth', 'pam_common_password', 'pam_common_session']
-      packages     = ['pam']
-      pam_d_login  = false
-      pam_d_sshd   = false
-    when %r{sles-11}
-      files        = ['pam_common_account', 'pam_common_auth', 'pam_common_password', 'pam_common_session']
-      files_suffix = '_pc'
-      packages     = ['pam']
-      pam_d_login  = true
-      pam_d_sshd   = true
-      symlink      = true
-    when %r{sles-12}
-      files        = ['pam_common_account', 'pam_common_auth', 'pam_common_password', 'pam_common_session']
-      files_suffix = '_pc'
-      packages     = ['pam']
-      pam_d_login  = false
-      pam_d_sshd   = false
-      symlink      = true
-    when %r{sles-15}
-      files        = ['pam_common_account', 'pam_common_auth', 'pam_common_password', 'pam_common_session']
-      files_suffix = '_pc'
-      packages     = ['pam']
-      pam_d_login  = false
-      pam_d_sshd   = false
-      symlink      = true
-    when %r{solaris-11}
-      files       = ['pam_other']
-      packages    = []
-    when %r{solaris}
-      dirpath     = '/etc/pam.'
-      files       = ['pam_conf']
-      packages    = []
-    when %r{debian}, %r{ubuntu}
-      files       = ['pam_common_auth', 'pam_common_account', 'pam_common_password', 'pam_common_session', 'pam_common_session_noninteractive']
-      packages    = ['libpam0g']
-      pam_d_login = false
-      pam_d_sshd  = true
-    end
-    # use global defaults for undefined variables
-    dirpath = '/etc/pam.d/' if dirpath.nil?
-    files_suffix = '' if files_suffix.nil?
-
-    group = if %r{solaris}.match?(os_id)
-              'sys'
-            else
-              'root'
-            end
+    # these function calls mimic hiera data, they are sourced in from spec/spec_platforms.rb
+    os_id = os_id(os)
+    packages = packages(os)
+    files = files(os)
+    files_suffix = files_suffix(os)
+    pam_d_login = pam_d_login(os)
+    pam_d_sshd = pam_d_sshd(os)
+    symlink = symlink(os)
+    dirpath = dirpath(os)
+    group = group(os)
 
     context "on #{os} with module default settings" do
       let(:facts) { os_facts }

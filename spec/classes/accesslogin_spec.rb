@@ -1,23 +1,10 @@
 require 'spec_helper'
+require 'spec_platforms'
 
 describe 'pam::accesslogin' do
   on_supported_os.each do |os, os_facts|
-    case os_facts[:os]['name']
-    when 'Debian'
-      platform_identifier = "debian#{os_facts[:os]['release']['major']}"
-    when %r{RedHat|CentOS|OracleLinux|Scientific}
-      platform_identifier = "el#{os_facts[:os]['release']['major']}"
-    when %r{SLE[DS]}
-      platform_identifier = "suse#{os_facts[:os]['release']['major']}"
-    when 'SunOS'
-      platform_identifier = "solaris#{os_facts[:os]['release']['major']}"
-    when 'Ubuntu'
-      # Remove dot in version
-      platform_identifier = "ubuntu#{os_facts[:os]['release']['major']}".tr('.', '')
-    when 'Solaris'
-      platform_identifier = "solaris#{os_facts[:os]['release']['major']}"
-    end
-    platform_data = platforms[platform_identifier]
+    # this function call mimic hiera data, it is sourced in from spec/spec_platforms.rb
+    packages = packages(os)
 
     context "on #{os}" do
       let(:facts) { os_facts }
@@ -49,7 +36,7 @@ describe 'pam::accesslogin' do
         )
       end
 
-      platform_data[:packages].each do |package|
+      packages.each do |package|
         it { is_expected.to contain_file('access_conf').that_requires("Package[#{package}]") }
       end
 

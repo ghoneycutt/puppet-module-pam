@@ -5,7 +5,7 @@ def os_id(os)
   os.sub(%r{(centos|oraclelinux|scientific)}, 'redhat')
 end
 
-def packages(os)
+def package_name(os)
   case os_id(os)
   when %r{redhat-5}
     ['pam', 'util-linux']
@@ -22,26 +22,26 @@ def packages(os)
   end
 end
 
-def files(os)
+def common_files(os)
   case os_id(os)
   when %r{redhat-5}
-    ['pam_system_auth']
+    ['system_auth']
   when %r{redhat}
-    ['pam_password_auth', 'pam_system_auth']
+    ['password_auth', 'system_auth']
   when %r{sles-9}
     ['other']
   when %r{sles}
-    ['pam_common_account', 'pam_common_auth', 'pam_common_password', 'pam_common_session']
+    ['common_account', 'common_auth', 'common_password', 'common_session']
   when %r{solaris-9}, %r{solaris-10}
-    ['pam_conf']
+    ['conf']
   when %r{solaris}
-    ['pam_other']
+    ['other']
   when %r{debian}, %r{ubuntu}
-    ['pam_common_account', 'pam_common_auth', 'pam_common_password', 'pam_common_session', 'pam_common_session_noninteractive']
+    ['common_account', 'common_auth', 'common_password', 'common_session', 'common_session_noninteractive']
   end
 end
 
-def files_suffix(os)
+def common_files_suffix(os)
   case os_id(os)
   when %r{redhat}
     '_ac'
@@ -52,29 +52,29 @@ def files_suffix(os)
   end
 end
 
-def pam_d_login(os)
+def login_pam_access(os)
   case os_id(os)
   when %r{redhat-5}, %r{redhat-6}, %r{redhat-7}, %r{sles-11}
-    true
+    'required'
   when %r{redhat}, %r{sles}, %r{debian}, %r{ubuntu}
-    false
+    'absent'
   else
     nil
   end
 end
 
-def pam_d_sshd(os)
+def sshd_pam_access(os)
   case os_id(os)
   when %r{redhat-5}, %r{redhat-6}, %r{redhat-7}, %r{sles-11}, %r{debian}, %r{ubuntu}
-    true
+    'required'
   when %r{redhat-8}, %r{sles-9}, %r{sles-10}, %r{sles-12}, %r{sles-15}
-    false
+    'absent'
   else
     nil
   end
 end
 
-def symlink(os)
+def common_files_create_links(os)
   case os_id(os)
   when %r{redhat}, %r{sles-11}, %r{sles-12}, %r{sles-15}
     true

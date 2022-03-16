@@ -5,12 +5,12 @@ describe 'pam' do
   on_supported_os.sort.each do |os, os_facts|
     # these function calls mimic hiera data, they are sourced in from spec/spec_platforms.rb
     os_id = os_id(os)
-    packages = packages(os)
-    files = files(os)
-    files_suffix = files_suffix(os)
-    pam_d_login = pam_d_login(os)
-    pam_d_sshd = pam_d_sshd(os)
-    symlink = symlink(os)
+    package_name = package_name(os)
+    common_files = common_files(os)
+    common_files_suffix = common_files_suffix(os)
+    login_pam_access = login_pam_access(os)
+    sshd_pam_access = sshd_pam_access(os)
+    common_files_create_links = common_files_create_links(os)
     dirpath = dirpath(os)
     group = group(os)
 
@@ -25,36 +25,36 @@ describe 'pam' do
       it { is_expected.to compile.with_all_deps }
       it { is_expected.to contain_class('pam') }
 
-      it { is_expected.to have_package_resource_count(packages.count) }
-      packages.each do |package|
+      it { is_expected.to have_package_resource_count(package_name.count) }
+      package_name.each do |package|
         it { is_expected.to contain_package(package).with_ensure('installed') }
       end
 
-      files.each do |file|
-        packages.sort.each do |package|
-          it { is_expected.to contain_file(file + files_suffix).that_requires("Package[#{package}]") }
-          if symlink == true
-            it { is_expected.to contain_file(file).that_requires("Package[#{package}]") }
+      common_files.each do |common_file|
+        package_name.sort.each do |package|
+          it { is_expected.to contain_file('pam_' + common_file + common_files_suffix).that_requires("Package[#{package}]") }
+          if common_files_create_links == true
+            it { is_expected.to contain_file('pam_' + common_file).that_requires("Package[#{package}]") }
           end
         end
 
         it do
-          is_expected.to contain_file(file + files_suffix).with(
+          is_expected.to contain_file('pam_' + common_file + common_files_suffix).with(
             'ensure'  => 'file',
-            'path'    => (dirpath + file + files_suffix).tr('_', '-').sub('pam-', ''),
-            'content' => File.read(fixtures(os_id + '-' + file + files_suffix)),
+            'path'    => (dirpath + common_file + common_files_suffix).tr('_', '-'),
+            'content' => File.read(fixtures(os_id + '-pam_' + common_file + common_files_suffix)),
             'owner'   => 'root',
             'group'   => group,
             'mode'    => '0644',
           )
         end
 
-        next unless symlink == true
+        next unless common_files_create_links == true
         it do
-          is_expected.to contain_file(file).with(
+          is_expected.to contain_file('pam_' + common_file).with(
             'ensure' => 'link',
-            'path'   => (dirpath + file).tr('_', '-').sub('pam-', ''),
-            'target' => (dirpath + file + files_suffix).tr('_', '-').sub('pam-', ''),
+            'path'   => (dirpath + common_file).tr('_', '-'),
+            'target' => (dirpath + common_file + common_files_suffix).tr('_', '-'),
             'owner'  => 'root',
             'group'  => 'root',
           )
@@ -100,9 +100,9 @@ describe 'pam' do
       context "with login_pam_access set to valid string sufficient on OS #{os}" do
         let(:params) { { login_pam_access: 'sufficient' } }
 
-        if pam_d_login == false
+        if login_pam_access == 'absent'
           it { is_expected.to contain_file('pam_d_login').without_content(%r{account[\s]+sufficient[\s]+pam_access.so}) }
-        elsif pam_d_login == true
+        elsif login_pam_access == 'required'
           it { is_expected.to contain_file('pam_d_login').with_content(%r{^account[\s]+sufficient[\s]+pam_access.so$}) }
         else
           it { is_expected.not_to contain_file('pam_d_login') }
@@ -112,9 +112,9 @@ describe 'pam' do
       context "with sshd_pam_access set to valid string sufficient on OS #{os}" do
         let(:params) { { sshd_pam_access: 'sufficient' } }
 
-        if pam_d_sshd == false
+        if sshd_pam_access == 'absent'
           it { is_expected.to contain_file('pam_d_sshd').without_content(%r{account[\s]+sufficient[\s]+pam_access.so}) }
-        elsif pam_d_sshd == true
+        elsif sshd_pam_access == 'required'
           it { is_expected.to contain_file('pam_d_sshd').with_content(%r{^account[\s]+sufficient[\s]+pam_access.so$}) }
         else
           it { is_expected.not_to contain_file('pam_d_sshd') }

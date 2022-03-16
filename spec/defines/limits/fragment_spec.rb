@@ -4,7 +4,7 @@ require 'spec_platforms'
 describe 'pam::limits::fragment', type: :define do
   on_supported_os.each do |os, os_facts|
     # this function call mimic hiera data, it is sourced in from spec/spec_platforms.rb
-    packages = packages(os)
+    package_name = package_name(os)
 
     context "on #{os}" do
       let(:facts) { os_facts }
@@ -41,7 +41,7 @@ describe 'pam::limits::fragment', type: :define do
             'mode'    => '0644',
           )
         end
-        packages.each do |pkg|
+        package_name.each do |pkg|
           it { is_expected.to contain_file('/etc/security/limits.d/80-nproc.conf').that_requires("Package[#{pkg}]") }
         end
       end

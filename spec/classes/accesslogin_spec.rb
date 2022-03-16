@@ -4,7 +4,7 @@ require 'spec_platforms'
 describe 'pam::accesslogin' do
   on_supported_os.each do |os, os_facts|
     # this function call mimic hiera data, it is sourced in from spec/spec_platforms.rb
-    packages = packages(os)
+    package_name = package_name(os)
 
     context "on #{os}" do
       let(:facts) { os_facts }
@@ -36,7 +36,7 @@ describe 'pam::accesslogin' do
         )
       end
 
-      packages.each do |package|
+      package_name.each do |package|
         it { is_expected.to contain_file('access_conf').that_requires("Package[#{package}]") }
       end
 

@@ -24,12 +24,12 @@ end
 
 def files(os)
   case os_id(os)
-  when %r{redhat-6}
-    ['pam_system_auth', 'pam_password_auth']
-  when %r{redhat}
+  when %r{redhat-5}
     ['pam_system_auth']
+  when %r{redhat}
+    ['pam_password_auth', 'pam_system_auth']
   when %r{sles-9}
-    ['pam_other']
+    ['other']
   when %r{sles}
     ['pam_common_account', 'pam_common_auth', 'pam_common_password', 'pam_common_session']
   when %r{solaris-9}, %r{solaris-10}
@@ -37,7 +37,7 @@ def files(os)
   when %r{solaris}
     ['pam_other']
   when %r{debian}, %r{ubuntu}
-    ['pam_common_auth', 'pam_common_account', 'pam_common_password', 'pam_common_session', 'pam_common_session_noninteractive']
+    ['pam_common_account', 'pam_common_auth', 'pam_common_password', 'pam_common_session', 'pam_common_session_noninteractive']
   end
 end
 
@@ -45,11 +45,7 @@ def files_suffix(os)
   case os_id(os)
   when %r{redhat}
     '_ac'
-  when %r{sles-11}
-    '_pc'
-  when %r{sles-12}
-    '_pc'
-  when %r{sles-15}
+  when %r{sles-11}, %r{sles-12}, %r{sles-15}
     '_pc'
   else
     ''

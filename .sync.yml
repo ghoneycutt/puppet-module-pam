@@ -5,4 +5,13 @@
 #
 # See https://github.com/puppetlabs/pdk-templates/blob/main/config_defaults.yml
 # for the default values.
---- {}
+---
+appveyor.yml:
+  delete: true
+
+.gitlab-ci.yml:
+  delete: true
+
+.travis.yml:
+  delete: true
+

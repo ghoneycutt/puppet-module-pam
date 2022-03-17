@@ -178,6 +178,8 @@ describe 'pam' do
         context 'with specifying services param' do
           let(:params) { { services: { 'testservice' => { 'content' => 'foo' } } } }
 
+          it { is_expected.to contain_pam__service('testservice') }
+
           it do
             is_expected.to contain_file('pam.d-service-testservice').with(
               'ensure'  => 'file',

@@ -12,9 +12,9 @@ pam::pam_d_login_template: pam/login.debian11.erb
 pam::pam_d_sshd_template: pam/sshd.debian11.erb
 pam::package_name: libpam0g
 pam::pam_auth_lines:
-  - 'auth	 [success=1 default=ignore]	 pam_unix.so nullok'
-  - 'auth	 requisite   pam_deny.so'
-  - 'auth	 required    pam_permit.so'
+  - 'auth  [success=1 default=ignore]  pam_unix.so nullok'
+  - 'auth  requisite   pam_deny.so'
+  - 'auth  required    pam_permit.so'
 pam::pam_account_lines:
   - 'account [success=1 new_authtok_reqd=done default=ignore]  pam_unix.so'
   - 'account requisite     pam_deny.so'

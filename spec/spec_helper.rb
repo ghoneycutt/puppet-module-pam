@@ -1,619 +1,74 @@
-# This RSpec.configure block is listed twice due to a bug with
-# puppetlabs_spec_helper. https://tickets.puppetlabs.com/browse/PDK-916
-RSpec.configure do |config|
-  config.mock_with :rspec
+# frozen_string_literal: true
+
+RSpec.configure do |c|
+  c.mock_with :rspec
 end
+
 require 'puppetlabs_spec_helper/module_spec_helper'
+require 'rspec-puppet-facts'
 
-RSpec.configure do |config|
-  #config.hiera_config = 'spec/hiera.yaml'
-  config.before :each do
-    # Ensure that we don't accidentally cache facts and environment between
-    # test cases.  This requires each example group to explicitly load the
-    # facts being exercised with something like
-    # Facter.collection.loader.load(:ipaddress)
-    Facter.clear
-    Facter.clear_messages
+require 'spec_helper_local' if File.file?(File.join(File.dirname(__FILE__), 'spec_helper_local.rb'))
+
+include RspecPuppetFacts
+
+default_facts = {
+  puppetversion: Puppet.version,
+  facterversion: Facter.version,
+}
+
+default_fact_files = [
+  File.expand_path(File.join(File.dirname(__FILE__), 'default_facts.yml')),
+  File.expand_path(File.join(File.dirname(__FILE__), 'default_module_facts.yml')),
+]
+
+default_fact_files.each do |f|
+  next unless File.exist?(f) && File.readable?(f) && File.size?(f)
+
+  begin
+    default_facts.merge!(YAML.safe_load(File.read(f), [], [], true))
+  rescue => e
+    RSpec.configuration.reporter.message "WARNING: Unable to load #{f}: #{e}"
   end
-  config.default_facts = {
-    :environment => 'rp_env',
-  }
 end
 
-def platforms
-  {
-    'el5' =>
-      {
-        :facts_hash => {
-          :osfamily => 'RedHat',
-          :operatingsystem => 'RedHat',
-          :operatingsystemmajrelease => '5',
-          :os => {
-            'name' => 'RedHat',
-            'family' => 'RedHat',
-            'release' => {
-              'full'  => '5.10',
-              'major' => '5',
-              'minor' => '10'
-            },
-          },
-        },
-        :pam_d_login        => 'with_pam_access',
-        :pam_d_sshd         => 'with_pam_access',
-        :packages           => ['pam', 'util-linux', ],
-        :files              => [
-          { :prefix         => 'pam_system_',
-            :types          => ['auth', ],
-            :suffix         => '_ac',
-            :symlink        => true,
-          }, ],
-      },
-    'el6' =>
-      {
-        :facts_hash => {
-          :osfamily => 'RedHat',
-          :operatingsystem => 'RedHat',
-          :operatingsystemmajrelease => '6',
-          :os => {
-            'name' => 'RedHat',
-            'family' => 'RedHat',
-            'release' => {
-              'full'  => '6.5',
-              'major' => '6',
-              'minor' => '5'
-            }
-          },
-        },
-        :pam_d_login        => 'with_pam_access',
-        :pam_d_sshd         => 'with_pam_access',
-        :packages           => ['pam', ],
-        :files              => [
-          { :prefix         => 'pam_',
-            :types          => ['system_auth', 'password_auth', ],
-            :suffix         => '_ac',
-            :symlink        => true,
-          }, ],
-      },
-    'el7' =>
-      {
-        :facts_hash => {
-          :osfamily => 'RedHat',
-          :operatingsystem => 'RedHat',
-          :operatingsystemmajrelease => '7',
-          :os => {
-            'name' => 'RedHat',
-            'family' => 'RedHat',
-            'release' => {
-              'full'  => '7.0.1406',
-              'major' => '7',
-              'minor' => '0'
-            }
-          },
-        },
-        :pam_d_login        => 'with_pam_access',
-        :pam_d_sshd         => 'with_pam_access',
-        :packages           => ['pam', ],
-        :files              => [
-          { :prefix         => 'pam_',
-            :types          => ['system_auth', ],
-            :suffix         => '_ac',
-            :symlink        => true,
-          }, ],
-      },
-    'el8' =>
-      {
-        :facts_hash => {
-          :osfamily => 'RedHat',
-          :operatingsystem => 'RedHat',
-          :operatingsystemmajrelease => '8',
-          :os => {
-            'name' => 'RedHat',
-            'family' => 'RedHat',
-            'release' => {
-              'full'  => '8.0',
-              'major' => '8',
-              'minor' => '0'
-            }
-          },
-        },
-        :pam_d_login        => 'without_pam_access',
-        :pam_d_sshd         => 'without_pam_access',
-        :packages           => ['pam', ],
-        :files              => [
-          { :prefix         => 'pam_',
-            :types          => ['system_auth', ],
-            :suffix         => '_ac',
-            :symlink        => true,
-          }, ],
-      },
-    'suse9' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Suse',
-          :operatingsystem => 'SLES',
-          :operatingsystemmajrelease => '9',
-          :os => {
-            'name' => 'openSUSE',
-            'family' => 'Suse',
-            'release' => {
-              'full'  => '9.1',
-              'major' => '9',
-              'minor' => '1'
-            }
-          },
-        },
-        :pam_d_login        => 'without_pam_access',
-        :pam_d_sshd         => 'without_pam_access',
-        :packages           => ['pam', 'pam-modules', ],
-        :files              => [
-          { :prefix         => 'pam_',
-            :types          => ['other', ],
-          }, ],
-      },
-    'suse10' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Suse',
-          :operatingsystem => 'SLES',
-          :operatingsystemmajrelease => '10',
-          :os => {
-            'name' => 'openSUSE',
-            'family' => 'Suse',
-            'release' => {
-              'full'  => '10.1',
-              'major' => '10',
-              'minor' => '1'
-            }
-          },
-        },
-        :pam_d_login        => 'without_pam_access',
-        :pam_d_sshd         => 'without_pam_access',
-        :packages           => ['pam', ],
-        :files              => [
-          { :prefix         => 'pam_common_',
-            :types          => ['auth', 'account', 'password', 'session', ],
-          }, ],
-      },
-    'suse11' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Suse',
-          :operatingsystem => 'SLES',
-          :operatingsystemmajrelease => '11',
-          :os => {
-            'name' => 'openSUSE',
-            'family' => 'Suse',
-            'release' => {
-              'full'  => '11.1',
-              'major' => '11',
-              'minor' => '1'
-            }
-          },
-        },
-        :pam_d_login        => 'with_pam_access',
-        :pam_d_sshd         => 'with_pam_access',
-        :packages           => ['pam', ],
-        :files              => [
-          { :prefix         => 'pam_common_',
-            :types          => ['auth', 'account', 'password', 'session', ],
-            :suffix         => '_pc',
-            :symlink        => true,
-          }, ],
-      },
-    'suse12' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Suse',
-          :operatingsystem => 'SLES',
-          :operatingsystemmajrelease => '12',
-          :os => {
-            'name' => 'openSUSE',
-            'family' => 'Suse',
-            'release' => {
-              'full'  => '12.1',
-              'major' => '12',
-              'minor' => '1'
-            }
-          },
-        },
-        :pam_d_login        => 'without_pam_access',
-        :pam_d_sshd         => 'without_pam_access',
-        :packages           => ['pam', ],
-        :files              => [
-          { :prefix         => 'pam_common_',
-            :types          => ['auth', 'account', 'password', 'session', ],
-            :suffix         => '_pc',
-            :symlink        => true,
-          }, ],
-      },
-    'suse13' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Suse',
-          :operatingsystem => 'SLES',
-          :operatingsystemmajrelease => '13',
-          :os => {
-            'name' => 'openSUSE',
-            'family' => 'Suse',
-            'release' => {
-              'full'  => '13.1',
-              'major' => '13',
-              'minor' => '1'
-            }
-          },
-        },
-        :pam_d_login        => 'without_pam_access',
-        :pam_d_sshd         => 'without_pam_access',
-        :packages           => ['pam', ],
-        :files              => [
-          { :prefix         => 'pam_common_',
-            :types          => ['auth', 'account', 'password', 'session', ],
-            :suffix         => '_pc',
-            :symlink        => true,
-          }, ],
-      },
-    'suse15' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Suse',
-          :operatingsystem => 'SLES',
-          :operatingsystemmajrelease => '15',
-          :os => {
-            'name' => 'openSUSE',
-            'family' => 'Suse',
-            'release' => {
-              'full'  => '15.0',
-              'major' => '15',
-              'minor' => '0'
-            }
-          },
-        },
-        :pam_d_login        => 'without_pam_access',
-        :pam_d_sshd         => 'without_pam_access',
-        :packages           => ['pam', ],
-        :files              => [
-          { :prefix         => 'pam_common_',
-            :types          => ['auth', 'account', 'password', 'session', ],
-            :suffix         => '_pc',
-            :symlink        => true,
-          }, ],
-      },
-    'solaris9' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Solaris',
-          :operatingsystem => 'Solaris',
-          :kernelrelease => '5.9',
-          :os => {
-            'name' => 'Solaris',
-            'family' => 'Solaris',
-            'release' => {
-              'full'  => '5.9',
-              'major' => '5',
-              'minor' => '9'
-            }
-          },
-        },
-        :pam_d_login        => 'not_present',
-        :pam_d_sshd         => 'not_present',
-        :packages           => [],
-        :files              => [
-          { :prefix         => 'pam_',
-            :types          => ['conf', ],
-            :group          => 'sys',
-            :dirpath        => '/etc/pam.',
-          }, ],
-      },
-    'solaris10' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Solaris',
-          :operatingsystem => 'Solaris',
-          :kernelrelease => '5.10',
-          :os => {
-            'name' => 'Solaris',
-            'family' => 'Solaris',
-            'release' => {
-              'full'  => '5.10',
-              'major' => '5',
-              'minor' => '10'
-            }
-          },
-        },
-        :pam_d_login        => 'not_present',
-        :pam_d_sshd         => 'not_present',
-        :packages           => [],
-        :files              => [
-          { :prefix         => 'pam_',
-            :types          => ['conf', ],
-            :group          => 'sys',
-            :dirpath        => '/etc/pam.',
-          }, ],
-      },
-    'solaris11' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Solaris',
-          :operatingsystem => 'Solaris',
-          :kernelrelease => '5.11',
-          :os => {
-            'name' => 'Solaris',
-            'family' => 'Solaris',
-            'release' => {
-              'full'  => '5.11',
-              'major' => '5',
-              'minor' => '11'
-            },
-          },
-        },
-        :pam_d_login        => 'not_present',
-        :pam_d_sshd         => 'not_present',
-        :packages           => [],
-        :files              => [
-          { :prefix         => 'pam_',
-            :types          => ['other', ],
-            :group          => 'sys',
-          }, ],
-      },
-    'ubuntu1204' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Debian',
-          :operatingsystem => 'Ubuntu',
-          :os => {
-            'release' => {
-              'full'  => '12.04',
-              'major' => '12.04'
-            },
-            'name'   => 'Ubuntu',
-            'family' => 'Debian'
-          },
-        },
-        :pam_d_login        => 'without_pam_access',
-        :pam_d_sshd         => 'with_pam_access',
-        :packages           => [ 'libpam0g', ],
-        :files              => [
-          { :prefix         => 'pam_common_',
-            :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
-          }, ],
-      },
-    'ubuntu1404' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Debian',
-          :operatingsystem => 'Ubuntu',
-          :os => {
-            'release' => {
-              'full'  => '14.04',
-              'major' => '14.04'
-            },
-            'name'   => 'Ubuntu',
-            'family' => 'Debian'
-          },
-        },
-        :pam_d_login        => 'without_pam_access',
-        :pam_d_sshd         => 'with_pam_access',
-        :packages           => [ 'libpam0g', ],
-        :files              => [
-          { :prefix         => 'pam_common_',
-            :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
-          }, ],
-      },
-    'ubuntu1604' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Debian',
-          :operatingsystem => 'Ubuntu',
-          :os => {
-            'release' => {
-              'full'  => '16.04',
-              'major' => '16.04'
-            },
-            'name'   => 'Ubuntu',
-            'family' => 'Debian'
-          },
-        },
-        :pam_d_login        => 'without_pam_access',
-        :pam_d_sshd         => 'with_pam_access',
-        :packages           => [ 'libpam0g', ],
-        :files              => [
-          { :prefix         => 'pam_common_',
-            :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
-          }, ],
-      },
-    'ubuntu1804' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Debian',
-          :operatingsystem => 'Ubuntu',
-          :os => {
-            'release' => {
-              'full'  => '18.04',
-              'major' => '18.04'
-            },
-            'name'   => 'Ubuntu',
-            'family' => 'Debian'
-          },
-        },
-        :pam_d_login        => 'without_pam_access',
-        :pam_d_sshd         => 'with_pam_access',
-        :packages           => [ 'libpam0g', ],
-        :files              => [
-          { :prefix         => 'pam_common_',
-            :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
-          }, ],
-      },
-    'ubuntu2004' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Debian',
-          :operatingsystem => 'Ubuntu',
-          :os => {
-            'release' => {
-              'full'  => '20.04',
-              'major' => '20.04'
-            },
-            'name'   => 'Ubuntu',
-            'family' => 'Debian'
-          },
-        },
-        :pam_d_login        => 'without_pam_access',
-        :pam_d_sshd         => 'with_pam_access',
-        :packages           => [ 'libpam0g', ],
-        :files              => [
-          { :prefix         => 'pam_common_',
-            :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
-          }, ],
-      },
-    'debian7' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Debian',
-          :operatingsystem => 'Debian',
-          :os => {
-            'name' => 'Debian',
-            'family' => 'Debian',
-            'release' => {
-              'full'  => '7.8',
-              'major' => '7',
-              'minor' => '8'
-            },
-          },
-        },
-        :pam_d_login        => 'without_pam_access',
-        :pam_d_sshd         => 'with_pam_access',
-        :packages           => [ 'libpam0g', ],
-        :files              => [
-          { :prefix         => 'pam_common_',
-            :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
-          }, ],
-      },
-    'debian8' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Debian',
-          :operatingsystem => 'Debian',
-          :os => {
-            'name' => 'Debian',
-            'family' => 'Debian',
-            'release' => {
-              'full'  => '8.0',
-              'major' => '8',
-              'minor' => '0'
-            },
-          },
-        },
-        :pam_d_login        => 'without_pam_access',
-        :pam_d_sshd         => 'with_pam_access',
-        :packages           => [ 'libpam0g', ],
-        :files              => [
-          { :prefix         => 'pam_common_',
-            :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
-          }, ],
-      },
-    'debian9' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Debian',
-          :operatingsystem => 'Debian',
-          :os => {
-            'name' => 'Debian',
-            'family' => 'Debian',
-            'release' => {
-              'full'  => '9.0',
-              'major' => '9',
-              'minor' => '0'
-            },
-          },
-        },
-        :pam_d_login        => 'without_pam_access',
-        :pam_d_sshd         => 'with_pam_access',
-        :packages           => [ 'libpam0g', ],
-        :files              => [
-          { :prefix         => 'pam_common_',
-            :types          => ['auth', 'account', 'password', 'session', 'session_noninteractive' ],
-          }, ],
-      }
-  }
+# read default_facts and merge them over what is provided by facterdb
+default_facts.each do |fact, value|
+  add_custom_fact fact, value
 end
 
-def unsupported_platforms
-  {
-    'el4' =>
-      {
-        :facts_hash => {
-          :osfamily => 'RedHat',
-          :operatingsystem => 'RedHat',
-          :operatingsystemmajrelease => '4',
-          :os => {
-            'name' => 'RedHat',
-            'family' => 'RedHat',
-            'release' => {
-              'full'  => '4.10',
-              'major' => '4',
-              'minor' => '10'
-            },
-          },
-        }
-      },
-    'debian6' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Debian',
-          :operatingsystem => 'Debian',
-          :os => {
-            'name' => 'Debian',
-            'family' => 'Debian',
-            'release' => {
-              'full'  => '6.8',
-              'major' => '6',
-              'minor' => '8'
-            },
-          },
-        }
-      },
-    'suse8' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Suse',
-          :operatingsystem => 'SLES',
-          :operatingsystemmajrelease => '8',
-          :os => {
-            'name' => 'openSUSE',
-            'family' => 'Suse',
-            'release' => {
-              'full'  => '8.1',
-              'major' => '8',
-              'minor' => '1'
-            }
-          },
-        }
-      },
-    'ubuntu1004' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Debian',
-          :operatingsystem => 'Ubuntu',
-          :os => {
-            'release' => {
-              'full'  => '10.04',
-              'major' => '10.04'
-            },
-            'name'   => 'Ubuntu',
-            'family' => 'Debian'
-          },
-        }
-      },
-    'solaris8' =>
-      {
-        :facts_hash => {
-          :osfamily => 'Solaris',
-          :operatingsystem => 'Solaris',
-          :kernelrelease => '5.8',
-          :os => {
-            'family' => 'Solaris',
-          },
-        }
-      },
-  }
+RSpec.configure do |c|
+  c.default_facts = default_facts
+  c.before :each do
+    # set to strictest setting for testing
+    # by default Puppet runs at warning level
+    Puppet.settings[:strict] = :warning
+    Puppet.settings[:strict_variables] = true
+  end
+  c.filter_run_excluding(bolt: true) unless ENV['GEM_BOLT']
+  c.after(:suite) do
+    RSpec::Puppet::Coverage.report!(100)
+  end
+
+  # Filter backtrace noise
+  backtrace_exclusion_patterns = [
+    %r{spec_helper},
+    %r{gems},
+  ]
+
+  if c.respond_to?(:backtrace_exclusion_patterns)
+    c.backtrace_exclusion_patterns = backtrace_exclusion_patterns
+  elsif c.respond_to?(:backtrace_clean_patterns)
+    c.backtrace_clean_patterns = backtrace_exclusion_patterns
+  end
 end
+
+# Ensures that a module is defined
+# @param module_name Name of the module
+def ensure_module_defined(module_name)
+  module_name.split('::').reduce(Object) do |last_module, next_module|
+    last_module.const_set(next_module, Module.new) unless last_module.const_defined?(next_module, false)
+    last_module.const_get(next_module, false)
+  end
+end
+
+# 'spec_overrides' from sync.yml will appear below this line

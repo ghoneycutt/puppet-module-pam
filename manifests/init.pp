@@ -188,59 +188,55 @@
 #
 class pam (
   Variant[Array, Hash, String] $allowed_users               = 'root',
-  Enum['absent', 'optional', 'required', 'requisite', 'sufficient']
-    $login_pam_access                                       = 'required',
-  Enum['absent', 'optional', 'required', 'requisite', 'sufficient']
-    $sshd_pam_access                                        = 'required',
-  Optional[Variant[Array, String]] $package_name            = undef,
-  Stdlib::Absolutepath $pam_conf_file                       = '/etc/pam.conf',
-  Optional[Hash] $services                                  = undef,
-  Optional[Hash] $limits_fragments                          = undef,
-  Boolean $limits_fragments_hiera_merge                     = false,
-  Array $pam_d_login_oracle_options                         = [],
-  Stdlib::Absolutepath $pam_d_login_path                    = '/etc/pam.d/login',
-  String $pam_d_login_owner                                 = 'root',
-  String $pam_d_login_group                                 = 'root',
-  Stdlib::Filemode $pam_d_login_mode                        = '0644',
-  Optional[String] $pam_d_login_template                    = undef,
-  Stdlib::Absolutepath $pam_d_sshd_path                     = '/etc/pam.d/sshd',
-  String $pam_d_sshd_owner                                  = 'root',
-  String $pam_d_sshd_group                                  = 'root',
-  Stdlib::Filemode $pam_d_sshd_mode                         = '0644',
-  Optional[String] $pam_d_sshd_template                     = undef,
-  Optional[Array] $pam_sshd_auth_lines                      = undef,
-  Optional[Array] $pam_sshd_account_lines                   = undef,
-  Optional[Array] $pam_sshd_password_lines                  = undef,
-  Optional[Array] $pam_sshd_session_lines                   = undef,
-  Optional[Array] $pam_auth_lines                           = undef,
-  Optional[Array] $pam_account_lines                        = undef,
-  Optional[Array] $pam_password_lines                       = undef,
-  Optional[Array] $pam_session_lines                        = undef,
-  Stdlib::Absolutepath $other_file                          = '/etc/pam.d/other',
-  Stdlib::Absolutepath $common_auth_file                    = '/etc/pam.d/common-auth',
-  Stdlib::Absolutepath $common_auth_pc_file                 = '/etc/pam.d/common-auth-pc',
-  Stdlib::Absolutepath $common_account_file                 = '/etc/pam.d/common-account',
-  Stdlib::Absolutepath $common_account_pc_file              = '/etc/pam.d/common-account-pc',
-  Stdlib::Absolutepath $common_password_file                = '/etc/pam.d/common-password',
-  Stdlib::Absolutepath $common_password_pc_file             = '/etc/pam.d/common-password-pc',
-  Stdlib::Absolutepath $common_session_file                 = '/etc/pam.d/common-session',
-  Stdlib::Absolutepath $common_session_pc_file              = '/etc/pam.d/common-session-pc',
-  Stdlib::Absolutepath $common_session_noninteractive_file  = '/etc/pam.d/common-session-noninteractive',
-  Stdlib::Absolutepath $system_auth_file                    = '/etc/pam.d/system-auth',
-  Stdlib::Absolutepath $system_auth_ac_file                 = '/etc/pam.d/system-auth-ac',
-  Stdlib::Absolutepath $password_auth_file                  = '/etc/pam.d/password-auth',
-  Stdlib::Absolutepath $password_auth_ac_file               = '/etc/pam.d/password-auth-ac',
-  Optional[Array] $pam_password_auth_lines                  = undef,
-  Optional[Array] $pam_password_account_lines               = undef,
-  Optional[Array] $pam_password_password_lines              = undef,
-  Optional[Array] $pam_password_session_lines               = undef,
-  Boolean $manage_nsswitch                                  = true,
-  Array $common_files                                       = [],
-  Boolean $common_files_create_links                        = false,
-  Optional[String] $common_files_suffix                     = undef,
+  Enum['absent', 'optional', 'required', 'requisite', 'sufficient'] $login_pam_access                   = 'required',
+  Enum['absent', 'optional', 'required', 'requisite', 'sufficient'] $sshd_pam_access                    = 'required',
+  Optional[Variant[Array, String]]                                  $package_name                       = undef,
+  Stdlib::Absolutepath                                              $pam_conf_file                      = '/etc/pam.conf',
+  Optional[Hash]                                                    $services                           = undef,
+  Optional[Hash]                                                    $limits_fragments                   = undef,
+  Boolean                                                           $limits_fragments_hiera_merge       = false,
+  Array                                                             $pam_d_login_oracle_options         = [],
+  Stdlib::Absolutepath                                              $pam_d_login_path                   = '/etc/pam.d/login',
+  String                                                            $pam_d_login_owner                  = 'root',
+  String                                                            $pam_d_login_group                  = 'root',
+  Stdlib::Filemode                                                  $pam_d_login_mode                   = '0644',
+  Optional[String]                                                  $pam_d_login_template               = undef,
+  Stdlib::Absolutepath                                              $pam_d_sshd_path                    = '/etc/pam.d/sshd',
+  String                                                            $pam_d_sshd_owner                   = 'root',
+  String                                                            $pam_d_sshd_group                   = 'root',
+  Stdlib::Filemode                                                  $pam_d_sshd_mode                    = '0644',
+  Optional[String]                                                  $pam_d_sshd_template                = undef,
+  Optional[Array]                                                   $pam_sshd_auth_lines                = undef,
+  Optional[Array]                                                   $pam_sshd_account_lines             = undef,
+  Optional[Array]                                                   $pam_sshd_password_lines            = undef,
+  Optional[Array]                                                   $pam_sshd_session_lines             = undef,
+  Optional[Array]                                                   $pam_auth_lines                     = undef,
+  Optional[Array]                                                   $pam_account_lines                  = undef,
+  Optional[Array]                                                   $pam_password_lines                 = undef,
+  Optional[Array]                                                   $pam_session_lines                  = undef,
+  Stdlib::Absolutepath                                              $other_file                         = '/etc/pam.d/other',
+  Stdlib::Absolutepath                                              $common_auth_file                   = '/etc/pam.d/common-auth',
+  Stdlib::Absolutepath                                              $common_auth_pc_file                = '/etc/pam.d/common-auth-pc',
+  Stdlib::Absolutepath                                              $common_account_file                = '/etc/pam.d/common-account',
+  Stdlib::Absolutepath                                              $common_account_pc_file             = '/etc/pam.d/common-account-pc',
+  Stdlib::Absolutepath                                              $common_password_file               = '/etc/pam.d/common-password',
+  Stdlib::Absolutepath                                              $common_password_pc_file            = '/etc/pam.d/common-password-pc',
+  Stdlib::Absolutepath                                              $common_session_file                = '/etc/pam.d/common-session',
+  Stdlib::Absolutepath                                              $common_session_pc_file             = '/etc/pam.d/common-session-pc',
+  Stdlib::Absolutepath                                              $common_session_noninteractive_file = '/etc/pam.d/common-session-noninteractive', # lint:ignore:140chars
+  Stdlib::Absolutepath                                              $system_auth_file                   = '/etc/pam.d/system-auth',
+  Stdlib::Absolutepath                                              $system_auth_ac_file                = '/etc/pam.d/system-auth-ac',
+  Stdlib::Absolutepath                                              $password_auth_file                 = '/etc/pam.d/password-auth',
+  Stdlib::Absolutepath                                              $password_auth_ac_file              = '/etc/pam.d/password-auth-ac',
+  Optional[Array]                                                   $pam_password_auth_lines            = undef,
+  Optional[Array]                                                   $pam_password_account_lines         = undef,
+  Optional[Array]                                                   $pam_password_password_lines        = undef,
+  Optional[Array]                                                   $pam_password_session_lines         = undef,
+  Boolean                                                           $manage_nsswitch                    = true,
+  Array                                                             $common_files                       = [],
+  Boolean                                                           $common_files_create_links          = false,
+  Optional[String]                                                  $common_files_suffix                = undef,
 ) {
-
-
   # Fail on unsupported platforms
   if $facts['os']['family'] == 'RedHat' and !($facts['os']['release']['major'] in ['5','6','7','8']) {
     fail("osfamily RedHat's os.release.major is <${::facts['os']['release']['major']}> and must be 5, 6, 7 or 8")
@@ -263,18 +259,12 @@ class pam (
   }
 
   if $pam_d_sshd_template == 'pam/sshd.custom.erb' {
-    unless $pam_sshd_auth_lines and
-      $pam_sshd_account_lines and
-      $pam_sshd_password_lines and
-      $pam_sshd_session_lines {
-        fail('pam_sshd_[auth|account|password|session]_lines required when using the pam/sshd.custom.erb template')
+    unless $pam_sshd_auth_lines and $pam_sshd_account_lines and $pam_sshd_password_lines and $pam_sshd_session_lines {
+      fail('pam_sshd_[auth|account|password|session]_lines required when using the pam/sshd.custom.erb template')
     }
   } else {
-    if $pam_sshd_auth_lines or
-      $pam_sshd_account_lines or
-      $pam_sshd_password_lines or
-      $pam_sshd_session_lines {
-        fail('pam_sshd_[auth|account|password|session]_lines are only valid when pam_d_sshd_template is configured with the pam/sshd.custom.erb template') # lint:ignore:140chars
+    if $pam_sshd_auth_lines or $pam_sshd_account_lines or $pam_sshd_password_lines or $pam_sshd_session_lines {
+      fail('pam_sshd_[auth|account|password|session]_lines are only valid when pam_d_sshd_template is configured with the pam/sshd.custom.erb template') # lint:ignore:140chars
     }
   }
 

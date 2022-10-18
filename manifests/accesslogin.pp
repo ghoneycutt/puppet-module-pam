@@ -32,7 +32,6 @@ class pam::accesslogin (
   String $access_conf_template                = 'pam/access.conf.erb',
   Variant[Array, Hash, String] $allowed_users = $pam::allowed_users,
 ) inherits pam {
-
   # transform $allowed_users into a valid hash
   # origin defaults to 'ALL' if unset
   # if origin is an array, create a space separated list
@@ -41,12 +40,12 @@ class pam::accesslogin (
       $allowed_users_hash = { $allowed_users => 'ALL' }
     }
     Array: {
-      $allowed_users_hash = $allowed_users.reduce( {} ) |$memo, $x| {
+      $allowed_users_hash = $allowed_users.reduce( {}) |$memo, $x| {
         $memo + { $x => 'ALL' }
       }
     }
     default: {
-      $allowed_users_hash = $allowed_users.reduce( {} ) |$memo, $x| {
+      $allowed_users_hash = $allowed_users.reduce( {}) |$memo, $x| {
         $origin = $x[1] ? {
           String  => $x[1],
           Array   => join($x[1], ' '),

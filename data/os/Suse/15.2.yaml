@@ -7,8 +7,8 @@ pam::common_files:
   - common_password
   - common_session
 
-pam::pam_d_login_template: pam/login.suse15-new.erb
-pam::pam_d_sshd_template: pam/sshd.suse15-new.erb
+pam::pam_d_login_template: pam/login.suse15-old.erb
+pam::pam_d_sshd_template: pam/sshd.suse15-old.erb
 pam::package_name: pam
 pam::pam_auth_lines:
   - 'auth  required  pam_env.so'

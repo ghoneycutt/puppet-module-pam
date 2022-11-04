@@ -7,6 +7,8 @@ hierarchy:
   # Used for Solaris
   - name: "osfamily/kernelrelease"
     path: "os/%{facts.os.family}/%{facts.kernelrelease}.yaml"
+  - name: "osfamily/full_release"
+    path: "os/%{facts.os.family}/%{facts.os.release.full}.yaml"
   - name: "osfamily/major_release"
     path: "os/%{facts.os.family}/%{facts.os.release.major}.yaml"
   # Used to distinguish between Debian and Ubuntu

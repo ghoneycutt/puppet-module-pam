@@ -6,7 +6,7 @@
 <title>
   Puppet Class: pam::limits
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.28
   
 </title>
 
@@ -106,7 +106,8 @@
       
       
         &mdash;
-        <div class='inline'><p>Path to limits.conf.</p>
+        <div class='inline'>
+<p>Path to limits.conf.</p>
 </div>
       
     </li>
@@ -123,7 +124,8 @@
       
       
         &mdash;
-        <div class='inline'><p>Mode for config_file.</p>
+        <div class='inline'>
+<p>Mode for config_file.</p>
 </div>
       
     </li>
@@ -140,7 +142,8 @@
       
       
         &mdash;
-        <div class='inline'><p>Ordered array of limits that should be placed into limits.conf. Useful for
+        <div class='inline'>
+<p>Ordered array of limits that should be placed into limits.conf. Useful for
 Suse 10 which does not use limits.d.</p>
 </div>
       
@@ -158,7 +161,8 @@ Suse 10 which does not use limits.d.</p>
       
       
         &mdash;
-        <div class='inline'><p>String with source path to a limits.conf</p>
+        <div class='inline'>
+<p>String with source path to a limits.conf</p>
 </div>
       
     </li>
@@ -175,7 +179,8 @@ Suse 10 which does not use limits.d.</p>
       
       
         &mdash;
-        <div class='inline'><p>Path to limits.d directory.</p>
+        <div class='inline'>
+<p>Path to limits.d directory.</p>
 </div>
       
     </li>
@@ -192,7 +197,8 @@ Suse 10 which does not use limits.d.</p>
       
       
         &mdash;
-        <div class='inline'><p>Mode for limits_d_dir.</p>
+        <div class='inline'>
+<p>Mode for limits_d_dir.</p>
 </div>
       
     </li>
@@ -209,7 +215,8 @@ Suse 10 which does not use limits.d.</p>
       
       
         &mdash;
-        <div class='inline'><p>Boolean to purge the limits.d directory.</p>
+        <div class='inline'>
+<p>Boolean to purge the limits.d directory.</p>
 </div>
       
     </li>
@@ -283,9 +290,7 @@ Suse 10 which does not use limits.d.</p>
 83
 84
 85
-86
-87
-88</pre>
+86</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/limits.pp', line 28</span>
@@ -299,7 +304,6 @@ class pam::limits (
   Stdlib::Filemode $limits_d_dir_mode  = &#39;0750&#39;,
   Boolean $purge_limits_d_dir          = false,
 ) {
-
   include pam
 
   if $config_file_lines or $config_file_source {
@@ -315,10 +319,9 @@ class pam::limits (
     $content = template(&#39;pam/limits.conf.erb&#39;)
     $config_file_source_real = undef
   }
-  if $::osfamily == &#39;Suse&#39; and $::operatingsystemmajrelease == &#39;10&#39;  {
+  if $facts[&#39;os&#39;][&#39;family&#39;] == &#39;Suse&#39; and $facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] == &#39;10&#39; {
     # do nothing
   } else {
-
     exec { &quot;mkdir_p-${limits_d_dir}&quot;:
       command =&gt; &quot;mkdir -p ${limits_d_dir}&quot;,
       unless  =&gt; &quot;test -d ${limits_d_dir}&quot;,
@@ -334,7 +337,7 @@ class pam::limits (
       purge   =&gt; $purge_limits_d_dir,
       recurse =&gt; $purge_limits_d_dir,
       require =&gt; [
-        Package[$::pam::package_name],
+        Package[$pam::package_name],
         Exec[&quot;mkdir_p-${limits_d_dir}&quot;],
       ],
     }
@@ -348,7 +351,7 @@ class pam::limits (
     owner   =&gt; &#39;root&#39;,
     group   =&gt; &#39;root&#39;,
     mode    =&gt; $config_file_mode,
-    require =&gt; Package[$::pam::package_name],
+    require =&gt; Package[$pam::package_name],
   }
 }</pre>
       </td>

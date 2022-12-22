@@ -6,7 +6,7 @@
 <title>
   Defined Type: pam::limits::fragment
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.28
   
 </title>
 
@@ -107,7 +107,8 @@ or `list` **must** be set.
       
       
         &mdash;
-        <div class='inline'><p>Ensure attribute for the fragment file.</p>
+        <div class='inline'>
+<p>Ensure attribute for the fragment file.</p>
 </div>
       
     </li>
@@ -124,7 +125,9 @@ or `list` **must** be set.
       
       
         &mdash;
-        <div class='inline'><p>Path to the fragment file, such as &#39;puppet:///modules/pam/limits.nproc&#39;</p>
+        <div class='inline'>
+<p>Path to the fragment file, such as
+&#39;puppet:///modules/pam/limits.nproc&#39;</p>
 </div>
       
     </li>
@@ -141,7 +144,8 @@ or `list` **must** be set.
       
       
         &mdash;
-        <div class='inline'><p>Array of lines to add to the fragment file.</p>
+        <div class='inline'>
+<p>Array of lines to add to the fragment file.</p>
 </div>
       
     </li>
@@ -194,8 +198,7 @@ or `list` **must** be set.
 53
 54
 55
-56
-57</pre>
+56</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/limits/fragment.pp', line 19</span>
@@ -204,13 +207,12 @@ define pam::limits::fragment (
   Optional[String] $source = undef,
   Optional[Array] $list    = undef,
   Enum[&#39;file&#39;, &#39;present&#39;, &#39;absent&#39;]
-    $ensure                = &#39;file&#39;,
+  $ensure                = &#39;file&#39;,
 ) {
-
   include pam
   include pam::limits
 
-  if $::osfamily == &#39;Suse&#39; and $::operatingsystemmajrelease == &#39;10&#39; {
+  if $facts[&#39;os&#39;][&#39;family&#39;] == &#39;Suse&#39; and $facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] == &#39;10&#39; {
     fail(&#39;You can not use pam::limits::fragment together with Suse 10.x releases&#39;)
   }
 

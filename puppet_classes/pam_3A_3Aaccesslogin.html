@@ -6,7 +6,7 @@
 <title>
   Puppet Class: pam::accesslogin
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.28
   
 </title>
 
@@ -112,7 +112,8 @@ See PAM_ACCESS(8)
       
       
         &mdash;
-        <div class='inline'><p>Path to access.conf.</p>
+        <div class='inline'>
+<p>Path to access.conf.</p>
 </div>
       
     </li>
@@ -129,7 +130,8 @@ See PAM_ACCESS(8)
       
       
         &mdash;
-        <div class='inline'><p>Owner of access.conf.</p>
+        <div class='inline'>
+<p>Owner of access.conf.</p>
 </div>
       
     </li>
@@ -146,7 +148,8 @@ See PAM_ACCESS(8)
       
       
         &mdash;
-        <div class='inline'><p>Group of access.conf.</p>
+        <div class='inline'>
+<p>Group of access.conf.</p>
 </div>
       
     </li>
@@ -163,7 +166,8 @@ See PAM_ACCESS(8)
       
       
         &mdash;
-        <div class='inline'><p>Mode of access.conf.</p>
+        <div class='inline'>
+<p>Mode of access.conf.</p>
 </div>
       
     </li>
@@ -180,7 +184,8 @@ See PAM_ACCESS(8)
       
       
         &mdash;
-        <div class='inline'><p>Content template of access.conf.</p>
+        <div class='inline'>
+<p>Content template of access.conf.</p>
 </div>
       
     </li>
@@ -197,9 +202,10 @@ See PAM_ACCESS(8)
       
       
         &mdash;
-        <div class='inline'><p>String, Array or Hash of strings and/or arrays to configure users and
-origins in access.conf. The default allows the root user/group from
-origin &#39;ALL&#39;.</p>
+        <div class='inline'>
+<p>String, Array or Hash of strings and/or arrays to configure users and
+origins in access.conf. The default allows the root user/group from origin
+&#39;ALL&#39;.</p>
 </div>
       
     </li>
@@ -256,8 +262,7 @@ origin &#39;ALL&#39;.</p>
 65
 66
 67
-68
-69</pre>
+68</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/accesslogin.pp', line 27</span>
@@ -270,7 +275,6 @@ class pam::accesslogin (
   String $access_conf_template                = &#39;pam/access.conf.erb&#39;,
   Variant[Array, Hash, String] $allowed_users = $pam::allowed_users,
 ) inherits pam {
-
   # transform $allowed_users into a valid hash
   # origin defaults to &#39;ALL&#39; if unset
   # if origin is an array, create a space separated list
@@ -279,12 +283,12 @@ class pam::accesslogin (
       $allowed_users_hash = { $allowed_users =&gt; &#39;ALL&#39; }
     }
     Array: {
-      $allowed_users_hash = $allowed_users.reduce( {} ) |$memo, $x| {
+      $allowed_users_hash = $allowed_users.reduce( {}) |$memo, $x| {
         $memo + { $x =&gt; &#39;ALL&#39; }
       }
     }
     default: {
-      $allowed_users_hash = $allowed_users.reduce( {} ) |$memo, $x| {
+      $allowed_users_hash = $allowed_users.reduce( {}) |$memo, $x| {
         $origin = $x[1] ? {
           String  =&gt; $x[1],
           Array   =&gt; join($x[1], &#39; &#39;),

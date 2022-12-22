@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.28
   
 </title>
 
@@ -57,83 +57,94 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><div id='filecontents'><h1 id="puppet-module-pam">puppet-module-pam</h1>
+      <div id="content"><div id='filecontents'>
+<h1 id="label-puppet-module-pam">puppet-module-pam</h1>
 
-<h4 id="table-of-contents">Table of Contents</h4>
+<h4 id="label-Table+of+Contents">Table of Contents</h4>
+<ol><li>
+<p><a href="#module-description">Module Description - What the module does and
+why it is useful</a></p>
+</li><li>
+<p><a href="#setup">Setup - The basics of getting started with pam</a></p>
+</li><li>
+<p><a href="#what-pam-affects">What pam affects</a></p>
+</li><li>
+<p><a href="#setup-requirements">Setup requirements</a></p>
+</li><li>
+<p><a href="#beginning-with-pam">Beginning with pam</a></p>
+</li><li>
+<p><a href="#usage">Usage - Configuration options and additional
+functionality</a></p>
+</li><li>
+<p><a href="#limitations">Limitations - OS compatibility, etc.</a></p>
+</li><li>
+<p><a href="#development">Development - Guide for contributing to the
+module</a></p>
+</li></ol>
 
-<ol>
-<li><a href="#label-Module+description">Module Description - What the module does and why it is useful</a></li>
-<li><a href="#label-Setup">Setup - The basics of getting started with pam</a>
-
-<ul>
-<li><a href="#label-What+pam+affects">What pam affects</a></li>
-<li><a href="#label-Setup+requirements">Setup requirements</a></li>
-<li><a href="#label-Beginning+with+pam">Beginning with pam</a></li>
-</ul></li>
-<li><a href="#label-Usage">Usage - Configuration options and additional functionality</a></li>
-<li><a href="#label-Limitations">Limitations - OS compatibility, etc.</a></li>
-<li><a href="#label-Development">Development - Guide for contributing to the module</a></li>
-</ol>
-
-<h2 id="module-description">Module description</h2>
+<h2 id="label-Module+description">Module description</h2>
 
 <p>This module manages PAM including accesslogin and limits.conf with
 functionality to create limits fragments for use in other modules. There
 are examples for using this with VAS/QAS.</p>
 
-<h2 id="setup">Setup</h2>
+<h2 id="label-Setup">Setup</h2>
 
-<h3 id="what-pam-affects">What pam affects</h3>
+<h3 id="label-What+pam+affects">What pam affects</h3>
 
-<p>Manages the packages and files regarding PAM. These vary by platform
-though generally include things such as the following.</p>
+<p>Manages the packages and files regarding PAM. These vary by platform though
+generally include things such as the following.</p>
+<ul><li>
+<p><code>/etc/pam.conf</code></p>
+</li><li>
+<p><code>/etc/pam.d</code></p>
+</li><li>
+<p><code>/etc/security/access.conf</code></p>
+</li><li>
+<p><code>/etc/security/limits.conf</code></p>
+</li><li>
+<p><code>/etc/security/limits.d</code></p>
+</li></ul>
 
-<ul>
-<li><code>/etc/pam.conf</code></li>
-<li><code>/etc/pam.d</code></li>
-<li><code>/etc/security/access.conf</code></li>
-<li><code>/etc/security/limits.conf</code></li>
-<li><code>/etc/security/limits.d</code></li>
-</ul>
+<h3 id="label-Setup+requirements">Setup requirements</h3>
 
-<h3 id="setup-requirements">Setup requirements</h3>
+<p>This module requires <code>stdlib</code>. When deployed by default it will
+require <code>nsswitch</code>. See below for more information.</p>
 
-<p>This module requires <code>stdlib</code>. When deployed by default it will require
-<code>nsswitch</code>. See below for more information.</p>
+<h4 id="label-Optional">Optional</h4>
 
-<h4 id="optional">Optional</h4>
+<h5 id="label-nsswitch">nsswitch</h5>
 
-<h5 id="nsswitch">nsswitch</h5>
+<p>By default this module will include the <code>nsswitch</code> class with
+the settings <code>pam::manage_nsswitch</code>. This module is meant to be
+used with the Approved <a
+href="https://github.com/trlinkin/puppet-nsswitch">nsswitch</a> module.</p>
 
-<p>By default this module will include the <code>nsswitch</code> class with the
-settings <code>pam::manage_nsswitch</code>. This module is meant to be used with
-the Approved <a href="https://github.com/trlinkin/puppet-nsswitch">nsswitch</a>
-module.</p>
+<h5 id="label-SSSD">SSSD</h5>
 
-<h5 id="sssd">SSSD</h5>
-
-<p>This module has been deployed in production along with
-<a href="https://github.com/sgnl05/sgnl05-sssd">sgnl05/sssd</a>. Please see
+<p>This module has been deployed in production along with <a
+href="https://github.com/sgnl05/sgnl05-sssd">sgnl05/sssd</a>. Please see
 <code>examples/hiera/sssd/RedHat-6.yaml</code> file for an example with the
 additional SSSD entries added via hiera.</p>
 
-<h3 id="beginning-with-pam">Beginning with pam</h3>
+<h3 id="label-Beginning+with+pam">Beginning with pam</h3>
 
 <p>Include the main <code>pam</code> class.</p>
 
-<h4 id="specifying-the-allowed-users">Specifying the allowed users</h4>
+<h4 id="label-Specifying+the+allowed+users">Specifying the allowed users</h4>
 
-<h5 id="example-using-an-array">Example using an array</h5>
+<h5 id="label-Example+using+an+array">Example using an array</h5>
 
 <p>As an array where the origin for each is &#39;ALL&#39;.</p>
 
-<pre class="code yaml"><code class="yaml">pam::allowed_users:
+<pre class="code ruby"><code class="ruby">pam::allowed_users:
   - root
   - ops
   - devs
 </code></pre>
 
-<p>This would create <code>/etc/security/access.conf</code> with the following content.</p>
+<p>This would create <code>/etc/security/access.conf</code> with the following
+content.</p>
 
 <pre class="code ruby"><code class="ruby"># This file is being maintained by Puppet.
 # DO NOT EDIT
@@ -148,11 +159,11 @@ additional SSSD entries added via hiera.</p>
 -:ALL:ALL
 </code></pre>
 
-<h5 id="example-using-a-hash">Example using a hash</h5>
+<h5 id="label-Example+using+a+hash">Example using a hash</h5>
 
 <p>As a hash where the user/group can optionally specify the origin.</p>
 
-<pre class="code yaml"><code class="yaml">pam::allowed_users:
+<pre class="code ruby"><code class="ruby">pam::allowed_users:
   &#39;username&#39;:
   &#39;username1&#39;:
     - &#39;cron&#39;
@@ -160,7 +171,8 @@ additional SSSD entries added via hiera.</p>
   &#39;username2&#39;: &#39;tty1&#39;
 </code></pre>
 
-<p>This would create <code>/etc/security/access.conf</code> with the following content.</p>
+<p>This would create <code>/etc/security/access.conf</code> with the following
+content.</p>
 
 <pre class="code ruby"><code class="ruby"># This file is being maintained by Puppet.
 # DO NOT EDIT
@@ -175,11 +187,11 @@ additional SSSD entries added via hiera.</p>
 -:ALL:ALL
 </code></pre>
 
-<h4 id="setting-limits">Setting limits</h4>
+<h4 id="label-Setting+limits">Setting limits</h4>
 
-<h5 id="example">Example:</h5>
+<h5 id="label-Example-3A">Example:</h5>
 
-<pre class="code yaml"><code class="yaml">pam::limits_fragments:
+<pre class="code ruby"><code class="ruby">pam::limits_fragments:
   custom:
     list:
       - &#39;* soft nofile 2048&#39;
@@ -191,7 +203,8 @@ additional SSSD entries added via hiera.</p>
       - &#39;* hard cpu 1440&#39;
 </code></pre>
 
-<p>This would create <code>/etc/security/limits.d/custom.conf</code> with content</p>
+<p>This would create <code>/etc/security/limits.d/custom.conf</code> with
+content</p>
 
 <pre class="code ruby"><code class="ruby"># This file is being maintained by Puppet.
 # DO NOT EDIT
@@ -204,70 +217,91 @@ additional SSSD entries added via hiera.</p>
 * hard cpu 1440
 </code></pre>
 
-<h4 id="specifying-the-content-of-a-service">Specifying the content of a service</h4>
+<h4 id="label-Specifying+the+content+of+a+service">Specifying the content of a service</h4>
 
 <p>Manage PAM file for specific service.</p>
 
-<h5 id="example">Example:</h5>
+<h5 id="label-Example-3A">Example:</h5>
 
 <p>You can specify a hash to manage the services in Hiera</p>
 
-<pre class="code yaml"><code class="yaml">pam::services:
+<pre class="code ruby"><code class="ruby">pam::services:
   &#39;sudo&#39;:
     content : &#39;auth     required       pam_unix2.so&#39;
 </code></pre>
 
-<h2 id="usage">Usage</h2>
+<h2 id="label-Usage">Usage</h2>
 
 <p>Minimal and normal usage.</p>
 
-<pre class="code puppet"><code class="puppet">include pam
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_include'>include</span> <span class='id identifier rubyid_pam'>pam</span>
 </code></pre>
 
-<h2 id="limitations">Limitations</h2>
+<h2 id="label-Limitations">Limitations</h2>
 
 <p>This module has been tested to work on the following systems with Puppet
 versions 5 and 6 with the Ruby version associated with those releases.
-Please see <code>.travis.yml</code> for a full matrix of supported versions. This
-module aims to support the current and previous major Puppet versions.</p>
+Please see <code>.travis.yml</code> for a full matrix of supported
+versions. This module aims to support the current and previous major Puppet
+versions.</p>
+<ul><li>
+<p>EL 6</p>
+</li><li>
+<p>EL 7</p>
+</li><li>
+<p>EL 8</p>
+</li><li>
+<p>Debian 9</p>
+</li><li>
+<p>Debian 10</p>
+</li><li>
+<p>Debian 11</p>
+</li><li>
+<p>Ubuntu 14.04 LTS</p>
+</li><li>
+<p>Ubuntu 16.04 LTS</p>
+</li><li>
+<p>Ubuntu 18.04 LTS</p>
+</li><li>
+<p>Ubuntu 20.04 LTS</p>
+</li></ul>
 
-<ul>
-<li>EL 6</li>
-<li>EL 7</li>
-<li>EL 8</li>
-<li>Debian 8</li>
-<li>Debian 9</li>
-<li>Debian 10</li>
-<li>Ubuntu 14.04 LTS</li>
-<li>Ubuntu 16.04 LTS</li>
-<li>Ubuntu 18.04 LTS</li>
-<li>Ubuntu 20.04 LTS</li>
-</ul>
+<h3 id="label-May+work">May work</h3>
 
-<h3 id="may-work">May work</h3>
+<p>These platforms have spec tests and have been verified in the past, though
+are not functionally tested and formally supported.</p>
+<ul><li>
+<p>EL 5</p>
+</li><li>
+<p>Solaris 9</p>
+</li><li>
+<p>Solaris 10</p>
+</li><li>
+<p>Solaris 11</p>
+</li><li>
+<p>Suse 9</p>
+</li><li>
+<p>Suse 10</p>
+</li><li>
+<p>Suse 11</p>
+</li><li>
+<p>Suse 12</p>
+</li><li>
+<p>Suse 15</p>
+</li><li>
+<p>OpenSuSE 13.1</p>
+</li><li>
+<p>Debian 7</p>
+</li><li>
+<p>Debian 8</p>
+</li><li>
+<p>Ubuntu 12.04 LTS</p>
+</li></ul>
 
-<p>These platforms have spec tests and have been verified in the past,
-though are not functionally tested and formally supported.</p>
+<h2 id="label-Development">Development</h2>
 
-<ul>
-<li>EL 5</li>
-<li>Solaris 9</li>
-<li>Solaris 10</li>
-<li>Solaris 11</li>
-<li>Suse 9</li>
-<li>Suse 10</li>
-<li>Suse 11</li>
-<li>Suse 12</li>
-<li>Suse 15</li>
-<li>OpenSuSE 13.1</li>
-<li>Debian 7</li>
-<li>Ubuntu 12.04 LTS</li>
-</ul>
-
-<h2 id="development">Development</h2>
-
-<p>See <code>CONTRIBUTING.md</code> for information related to the development of this
-module.</p>
+<p>See <code>CONTRIBUTING.md</code> for information related to the development
+of this module.</p>
 </div></div>
 
       <div id="footer">

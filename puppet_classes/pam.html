@@ -6,7 +6,7 @@
 <title>
   Puppet Class: pam
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.28
   
 </title>
 
@@ -97,7 +97,8 @@
     <p class="tag_title">Examples:</p>
     
       
-        <p class="example_title"><div class='inline'><p>Declaring the class</p>
+        <p class="example_title"><div class='inline'>
+<p>Declaring the class</p>
 </div></p>
       
       <pre class="example code"><code><span class='id identifier rubyid_include'>include</span> <span class='id identifier rubyid_pam'>pam</span></code></pre>
@@ -118,7 +119,8 @@
       
       
         &mdash;
-        <div class='inline'><p>String, Array or Hash of strings and/or arrays to configure users and
+        <div class='inline'>
+<p>String, Array or Hash of strings and/or arrays to configure users and
 origins in access.conf. The default allows the root user/group from origin
 &#39;ALL&#39;.</p>
 </div>
@@ -137,8 +139,10 @@ origins in access.conf. The default allows the root user/group from origin
       
       
         &mdash;
-        <div class='inline'><p>Control module to be used for pam_access.so for login. Valid values are
-&#39;required&#39;, &#39;requisite&#39;, &#39;sufficient&#39;, &#39;optional&#39; and &#39;absent&#39;.</p>
+        <div class='inline'>
+<p>Control module to be used for pam_access.so for login. Valid values are
+&#39;required&#39;, &#39;requisite&#39;, &#39;sufficient&#39;,
+&#39;optional&#39; and &#39;absent&#39;.</p>
 </div>
       
     </li>
@@ -155,8 +159,10 @@ origins in access.conf. The default allows the root user/group from origin
       
       
         &mdash;
-        <div class='inline'><p>Control module to be used for pam_access.so for sshd. Valid values are
-&#39;required&#39;, &#39;requisite&#39;, &#39;sufficient&#39;, &#39;optional&#39; and &#39;absent&#39;.</p>
+        <div class='inline'>
+<p>Control module to be used for pam_access.so for sshd. Valid values are
+&#39;required&#39;, &#39;requisite&#39;, &#39;sufficient&#39;,
+&#39;optional&#39; and &#39;absent&#39;.</p>
 </div>
       
     </li>
@@ -173,7 +179,8 @@ origins in access.conf. The default allows the root user/group from origin
       
       
         &mdash;
-        <div class='inline'><p>Hash of fragments to pass to pam::limits::fragments</p>
+        <div class='inline'>
+<p>Hash of fragments to pass to pam::limits::fragments</p>
 </div>
       
     </li>
@@ -190,7 +197,8 @@ origins in access.conf. The default allows the root user/group from origin
       
       
         &mdash;
-        <div class='inline'><p>Boolean to control merges of all found instances of pam::limits_fragments
+        <div class='inline'>
+<p>Boolean to control merges of all found instances of pam::limits_fragments
 in Hiera. This is useful for specifying fragments at different levels of
 the hierarchy and having them all included in the catalog.</p>
 </div>
@@ -209,7 +217,8 @@ the hierarchy and having them all included in the catalog.</p>
       
       
         &mdash;
-        <div class='inline'><p>String or Array of packages providing the pam functionality. If undef,
+        <div class='inline'>
+<p>String or Array of packages providing the pam functionality. If undef,
 parameter is set based on the OS version.</p>
 </div>
       
@@ -227,7 +236,8 @@ parameter is set based on the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>Absolute path to pam.conf.</p>
+        <div class='inline'>
+<p>Absolute path to pam.conf.</p>
 </div>
       
     </li>
@@ -244,7 +254,8 @@ parameter is set based on the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>Hash of pam::service entries to be created.</p>
+        <div class='inline'>
+<p>Hash of pam::service entries to be created.</p>
 </div>
       
     </li>
@@ -261,7 +272,8 @@ parameter is set based on the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>Allow array of extra lines at the bottom of pam.d/login for oracle systems
+        <div class='inline'>
+<p>Allow array of extra lines at the bottom of pam.d/login for oracle systems
 on EL5.</p>
 </div>
       
@@ -279,7 +291,8 @@ on EL5.</p>
       
       
         &mdash;
-        <div class='inline'><p>Absolute path to PAM login file.</p>
+        <div class='inline'>
+<p>Absolute path to PAM login file.</p>
 </div>
       
     </li>
@@ -296,7 +309,8 @@ on EL5.</p>
       
       
         &mdash;
-        <div class='inline'><p>Owner of $pam_d_login_path.</p>
+        <div class='inline'>
+<p>Owner of $pam_d_login_path.</p>
 </div>
       
     </li>
@@ -313,7 +327,8 @@ on EL5.</p>
       
       
         &mdash;
-        <div class='inline'><p>Group of $pam_d_login_path.</p>
+        <div class='inline'>
+<p>Group of $pam_d_login_path.</p>
 </div>
       
     </li>
@@ -330,7 +345,8 @@ on EL5.</p>
       
       
         &mdash;
-        <div class='inline'><p>Mode of $pam_d_login_path.</p>
+        <div class='inline'>
+<p>Mode of $pam_d_login_path.</p>
 </div>
       
     </li>
@@ -347,7 +363,8 @@ on EL5.</p>
       
       
         &mdash;
-        <div class='inline'><p>Content template of $pam_d_login_path. If undef, parameter is set based on
+        <div class='inline'>
+<p>Content template of $pam_d_login_path. If undef, parameter is set based on
 the OS version.</p>
 </div>
       
@@ -365,7 +382,8 @@ the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>PAM sshd path.</p>
+        <div class='inline'>
+<p>PAM sshd path.</p>
 </div>
       
     </li>
@@ -382,7 +400,8 @@ the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>Owner of $pam_d_sshd_path.</p>
+        <div class='inline'>
+<p>Owner of $pam_d_sshd_path.</p>
 </div>
       
     </li>
@@ -399,7 +418,8 @@ the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>Group of $pam_d_sshd_path.</p>
+        <div class='inline'>
+<p>Group of $pam_d_sshd_path.</p>
 </div>
       
     </li>
@@ -416,7 +436,8 @@ the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>Mode of $pam_d_sshd_path.</p>
+        <div class='inline'>
+<p>Mode of $pam_d_sshd_path.</p>
 </div>
       
     </li>
@@ -433,7 +454,8 @@ the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>Content template of $pam_d_sshd_path. If undef, parameter is set based on
+        <div class='inline'>
+<p>Content template of $pam_d_sshd_path. If undef, parameter is set based on
 the OS version. For cases where a full customization of the sshd PAM
 configuration is required, set pam_d_sshd_template to use
 pam/sshd.custom.erb that is provided with this module. pam/sshd.custom.erb
@@ -456,9 +478,10 @@ Note that the pam_d_sshd_template parameter is a no-op on Solaris.</p>
       
       
         &mdash;
-        <div class='inline'><p>An ordered array of strings that define the content for PAM sshd auth.
-This setting is required and only valid if pam_d_sshd_template is
-configured to use the pam/sshd.custom.erb template.</p>
+        <div class='inline'>
+<p>An ordered array of strings that define the content for PAM sshd auth. This
+setting is required and only valid if pam_d_sshd_template is configured to
+use the pam/sshd.custom.erb template.</p>
 </div>
       
     </li>
@@ -475,7 +498,8 @@ configured to use the pam/sshd.custom.erb template.</p>
       
       
         &mdash;
-        <div class='inline'><p>An ordered array of strings that define the content for PAM sshd account.
+        <div class='inline'>
+<p>An ordered array of strings that define the content for PAM sshd account.
 This setting is required and only valid if pam_d_sshd_template is
 configured to use the pam/sshd.custom.erb template.</p>
 </div>
@@ -494,7 +518,8 @@ configured to use the pam/sshd.custom.erb template.</p>
       
       
         &mdash;
-        <div class='inline'><p>An ordered array of strings that define the content for PAM sshd password.
+        <div class='inline'>
+<p>An ordered array of strings that define the content for PAM sshd password.
 This setting is required and only valid if pam_d_sshd_template is
 configured to use the pam/sshd.custom.erb template.</p>
 </div>
@@ -513,7 +538,8 @@ configured to use the pam/sshd.custom.erb template.</p>
       
       
         &mdash;
-        <div class='inline'><p>An ordered array of strings that define the content for PAM sshd session.
+        <div class='inline'>
+<p>An ordered array of strings that define the content for PAM sshd session.
 This setting is required and only valid if pam_d_sshd_template is
 configured to use the pam/sshd.custom.erb template.</p>
 </div>
@@ -532,8 +558,9 @@ configured to use the pam/sshd.custom.erb template.</p>
       
       
         &mdash;
-        <div class='inline'><p>An ordered array of strings that define the content for PAM auth. If
-undef, parameter is set based on the OS version.</p>
+        <div class='inline'>
+<p>An ordered array of strings that define the content for PAM auth. If undef,
+parameter is set based on the OS version.</p>
 </div>
       
     </li>
@@ -550,7 +577,8 @@ undef, parameter is set based on the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>An ordered array of strings that define the content for PAM account. If
+        <div class='inline'>
+<p>An ordered array of strings that define the content for PAM account. If
 undef, parameter is set based on the OS version.</p>
 </div>
       
@@ -568,7 +596,8 @@ undef, parameter is set based on the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>An ordered array of strings that define the content for PAM password. If
+        <div class='inline'>
+<p>An ordered array of strings that define the content for PAM password. If
 undef, parameter is set based on the OS version.</p>
 </div>
       
@@ -586,7 +615,8 @@ undef, parameter is set based on the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>An ordered array of strings that define the content for PAM session. If
+        <div class='inline'>
+<p>An ordered array of strings that define the content for PAM session. If
 undef, parameter is set based on the OS version.</p>
 </div>
       
@@ -604,7 +634,8 @@ undef, parameter is set based on the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>Path to PAM other file. Used on Suse 9 and Solaris.</p>
+        <div class='inline'>
+<p>Path to PAM other file. Used on Suse 9 and Solaris.</p>
 </div>
       
     </li>
@@ -621,7 +652,8 @@ undef, parameter is set based on the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>Path to PAM common-auth file. Used on Debian/Ubuntu and Suse.</p>
+        <div class='inline'>
+<p>Path to PAM common-auth file. Used on Debian/Ubuntu and Suse.</p>
 </div>
       
     </li>
@@ -638,7 +670,8 @@ undef, parameter is set based on the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>Path to PAM common-auth-pc file. Used on Suse.</p>
+        <div class='inline'>
+<p>Path to PAM common-auth-pc file. Used on Suse.</p>
 </div>
       
     </li>
@@ -655,7 +688,8 @@ undef, parameter is set based on the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>Path to PAM common-account file. Used on Suse.</p>
+        <div class='inline'>
+<p>Path to PAM common-account file. Used on Suse.</p>
 </div>
       
     </li>
@@ -672,7 +706,8 @@ undef, parameter is set based on the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>Path to PAM common-account-pc file. Used on Suse.</p>
+        <div class='inline'>
+<p>Path to PAM common-account-pc file. Used on Suse.</p>
 </div>
       
     </li>
@@ -689,7 +724,8 @@ undef, parameter is set based on the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>Path to PAM common-password file. Used on Suse.</p>
+        <div class='inline'>
+<p>Path to PAM common-password file. Used on Suse.</p>
 </div>
       
     </li>
@@ -706,7 +742,8 @@ undef, parameter is set based on the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>Path to PAM common-password-pc file. Used on Suse.</p>
+        <div class='inline'>
+<p>Path to PAM common-password-pc file. Used on Suse.</p>
 </div>
       
     </li>
@@ -723,7 +760,8 @@ undef, parameter is set based on the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>Path to PAM common-session file. Used on Suse.</p>
+        <div class='inline'>
+<p>Path to PAM common-session file. Used on Suse.</p>
 </div>
       
     </li>
@@ -740,7 +778,8 @@ undef, parameter is set based on the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>Path to PAM common-session-pc file. Used on Suse.</p>
+        <div class='inline'>
+<p>Path to PAM common-session-pc file. Used on Suse.</p>
 </div>
       
     </li>
@@ -757,7 +796,8 @@ undef, parameter is set based on the OS version.</p>
       
       
         &mdash;
-        <div class='inline'><p>Path to PAM common-session-noninteractive file, which is the same as
+        <div class='inline'>
+<p>Path to PAM common-session-noninteractive file, which is the same as
 common-session-pc used on Suse. Used on Ubuntu 12.04 LTS.</p>
 </div>
       
@@ -775,7 +815,8 @@ common-session-pc used on Suse. Used on Ubuntu 12.04 LTS.</p>
       
       
         &mdash;
-        <div class='inline'><p>Path to PAM system-auth file. Used on RedHat.</p>
+        <div class='inline'>
+<p>Path to PAM system-auth file. Used on RedHat.</p>
 </div>
       
     </li>
@@ -792,7 +833,8 @@ common-session-pc used on Suse. Used on Ubuntu 12.04 LTS.</p>
       
       
         &mdash;
-        <div class='inline'><p>Path to PAM system-auth-ac file. Used on RedHat.</p>
+        <div class='inline'>
+<p>Path to PAM system-auth-ac file. Used on RedHat.</p>
 </div>
       
     </li>
@@ -809,7 +851,8 @@ common-session-pc used on Suse. Used on Ubuntu 12.04 LTS.</p>
       
       
         &mdash;
-        <div class='inline'><p>Path to PAM password-auth file. Used on RedHat.</p>
+        <div class='inline'>
+<p>Path to PAM password-auth file. Used on RedHat.</p>
 </div>
       
     </li>
@@ -826,7 +869,8 @@ common-session-pc used on Suse. Used on Ubuntu 12.04 LTS.</p>
       
       
         &mdash;
-        <div class='inline'><p>Path to PAM password-auth-ac file. Used on RedHat.</p>
+        <div class='inline'>
+<p>Path to PAM password-auth-ac file. Used on RedHat.</p>
 </div>
       
     </li>
@@ -843,7 +887,8 @@ common-session-pc used on Suse. Used on Ubuntu 12.04 LTS.</p>
       
       
         &mdash;
-        <div class='inline'><p>Array of lines used in content template of $password_auth_ac_file. If
+        <div class='inline'>
+<p>Array of lines used in content template of $password_auth_ac_file. If
 undef, parameter is set based on defaults for the detected platform.</p>
 </div>
       
@@ -861,7 +906,8 @@ undef, parameter is set based on defaults for the detected platform.</p>
       
       
         &mdash;
-        <div class='inline'><p>Array of lines used in content template of $password_auth_ac_file. If
+        <div class='inline'>
+<p>Array of lines used in content template of $password_auth_ac_file. If
 undef, parameter is set based on defaults for the detected platform.</p>
 </div>
       
@@ -879,7 +925,8 @@ undef, parameter is set based on defaults for the detected platform.</p>
       
       
         &mdash;
-        <div class='inline'><p>Array of lines used in content template of $password_auth_ac_file. If
+        <div class='inline'>
+<p>Array of lines used in content template of $password_auth_ac_file. If
 undef, parameter is set based on defaults for the detected platform.</p>
 </div>
       
@@ -897,7 +944,8 @@ undef, parameter is set based on defaults for the detected platform.</p>
       
       
         &mdash;
-        <div class='inline'><p>Array of lines used in content template of $password_auth_ac_file. If
+        <div class='inline'>
+<p>Array of lines used in content template of $password_auth_ac_file. If
 undef, parameter is set based on defaults for the detected platform.</p>
 </div>
       
@@ -915,7 +963,8 @@ undef, parameter is set based on defaults for the detected platform.</p>
       
       
         &mdash;
-        <div class='inline'><p>Boolean to manage the inclusion of the nsswitch class.</p>
+        <div class='inline'>
+<p>Boolean to manage the inclusion of the nsswitch class.</p>
 </div>
       
     </li>
@@ -932,7 +981,8 @@ undef, parameter is set based on defaults for the detected platform.</p>
       
       
         &mdash;
-        <div class='inline'><p>Private, do not specify. Manage pam files where the entries match existing
+        <div class='inline'>
+<p>Private, do not specify. Manage pam files where the entries match existing
 template names. These common_files* parameters are used internally to
 specify which files and names are needed. The data is coming out of Hiera
 in <code>data/os/</code>.</p>
@@ -952,7 +1002,8 @@ in <code>data/os/</code>.</p>
       
       
         &mdash;
-        <div class='inline'><p>Private, do not specify. If true, then symlinks are created from the
+        <div class='inline'>
+<p>Private, do not specify. If true, then symlinks are created from the
 suffixed files to the originals without the suffix.</p>
 </div>
       
@@ -970,7 +1021,8 @@ suffixed files to the originals without the suffix.</p>
       
       
         &mdash;
-        <div class='inline'><p>Suffix added to the common_files entries for the filename.</p>
+        <div class='inline'>
+<p>Suffix added to the common_files entries for the filename.</p>
 </div>
       
     </li>
@@ -1167,9 +1219,7 @@ suffixed files to the originals without the suffix.</p>
 367
 368
 369
-370
-371
-372</pre>
+370</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/init.pp', line 189</span>
@@ -1177,9 +1227,9 @@ suffixed files to the originals without the suffix.</p>
 class pam (
   Variant[Array, Hash, String] $allowed_users               = &#39;root&#39;,
   Enum[&#39;absent&#39;, &#39;optional&#39;, &#39;required&#39;, &#39;requisite&#39;, &#39;sufficient&#39;]
-    $login_pam_access                                       = &#39;required&#39;,
+  $login_pam_access                                       = &#39;required&#39;,
   Enum[&#39;absent&#39;, &#39;optional&#39;, &#39;required&#39;, &#39;requisite&#39;, &#39;sufficient&#39;]
-    $sshd_pam_access                                        = &#39;required&#39;,
+  $sshd_pam_access                                        = &#39;required&#39;,
   Optional[Variant[Array, String]] $package_name            = undef,
   Stdlib::Absolutepath $pam_conf_file                       = &#39;/etc/pam.conf&#39;,
   Optional[Hash] $services                                  = undef,
@@ -1227,8 +1277,6 @@ class pam (
   Boolean $common_files_create_links                        = false,
   Optional[String] $common_files_suffix                     = undef,
 ) {
-
-
   # Fail on unsupported platforms
   if $facts[&#39;os&#39;][&#39;family&#39;] == &#39;RedHat&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;5&#39;,&#39;6&#39;,&#39;7&#39;,&#39;8&#39;]) {
     fail(&quot;osfamily RedHat&#39;s os.release.major is &lt;${::facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 5, 6, 7 or 8&quot;)
@@ -1242,8 +1290,8 @@ class pam (
     fail(&quot;osfamily Suse&#39;s os.release.major is &lt;${::facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 9, 10, 11, 12, 13 or 15&quot;)
   }
 
-  if $facts[&#39;os&#39;][&#39;name&#39;] == &#39;Debian&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;7&#39;,&#39;8&#39;,&#39;9&#39;,&#39;10&#39;]) {
-    fail(&quot;Debian&#39;s os.release.major is &lt;${facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 7, 8, 9 or 10&quot;)
+  if $facts[&#39;os&#39;][&#39;name&#39;] == &#39;Debian&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;7&#39;,&#39;8&#39;,&#39;9&#39;,&#39;10&#39;, &#39;11&#39;]) {
+    fail(&quot;Debian&#39;s os.release.major is &lt;${facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 7, 8, 9, 10 or 11&quot;)
   }
 
   if $facts[&#39;os&#39;][&#39;name&#39;] == &#39;Ubuntu&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;12.04&#39;, &#39;14.04&#39;, &#39;16.04&#39;, &#39;18.04&#39;, &#39;20.04&#39;]) {
@@ -1252,17 +1300,17 @@ class pam (
 
   if $pam_d_sshd_template == &#39;pam/sshd.custom.erb&#39; {
     unless $pam_sshd_auth_lines and
-      $pam_sshd_account_lines and
-      $pam_sshd_password_lines and
-      $pam_sshd_session_lines {
-        fail(&#39;pam_sshd_[auth|account|password|session]_lines required when using the pam/sshd.custom.erb template&#39;)
+    $pam_sshd_account_lines and
+    $pam_sshd_password_lines and
+    $pam_sshd_session_lines {
+      fail(&#39;pam_sshd_[auth|account|password|session]_lines required when using the pam/sshd.custom.erb template&#39;)
     }
   } else {
     if $pam_sshd_auth_lines or
-      $pam_sshd_account_lines or
-      $pam_sshd_password_lines or
-      $pam_sshd_session_lines {
-        fail(&#39;pam_sshd_[auth|account|password|session]_lines are only valid when pam_d_sshd_template is configured with the pam/sshd.custom.erb template&#39;) # lint:ignore:140chars
+    $pam_sshd_account_lines or
+    $pam_sshd_password_lines or
+    $pam_sshd_session_lines {
+      fail(&#39;pam_sshd_[auth|account|password|session]_lines are only valid when pam_d_sshd_template is configured with the pam/sshd.custom.erb template&#39;) # lint:ignore:140chars
     }
   }
 

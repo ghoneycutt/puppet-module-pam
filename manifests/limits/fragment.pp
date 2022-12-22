@@ -20,13 +20,12 @@ define pam::limits::fragment (
   Optional[String] $source = undef,
   Optional[Array] $list    = undef,
   Enum['file', 'present', 'absent']
-    $ensure                = 'file',
+  $ensure                = 'file',
 ) {
-
   include pam
   include pam::limits
 
-  if $::osfamily == 'Suse' and $::operatingsystemmajrelease == '10' {
+  if $facts['os']['family'] == 'Suse' and $facts['os']['release']['major'] == '10' {
     fail('You can not use pam::limits::fragment together with Suse 10.x releases')
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "ghoneycutt-pam",
-  "version": "3.7.0",
+  "version": "3.8.0",
   "author": "ghoneycutt",
   "summary": "Manage PAM",
   "license": "Apache-2.0",
@@ -110,7 +110,7 @@
     }
   ],
   "description": "Manages PAM, including specifying users and groups in access.conf, limits.conf, and limits fragments",
-  "pdk-version": "2.4.0",
-  "template-url": "pdk-default#2.4.0",
-  "template-ref": "tags/2.4.0-0-gfa6b6d2"
+  "pdk-version": "2.5.0",
+  "template-url": "pdk-default#2.5.0",
+  "template-ref": "tags/2.5.0-0-g369d483"
 }

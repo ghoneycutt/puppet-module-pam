@@ -34,7 +34,6 @@ class pam::limits (
   Stdlib::Filemode $limits_d_dir_mode  = '0750',
   Boolean $purge_limits_d_dir          = false,
 ) {
-
   include pam
 
   if $config_file_lines or $config_file_source {
@@ -50,10 +49,9 @@ class pam::limits (
     $content = template('pam/limits.conf.erb')
     $config_file_source_real = undef
   }
-  if $::osfamily == 'Suse' and $::operatingsystemmajrelease == '10'  {
+  if $facts['os']['family'] == 'Suse' and $facts['os']['release']['major'] == '10' {
     # do nothing
   } else {
-
     exec { "mkdir_p-${limits_d_dir}":
       command => "mkdir -p ${limits_d_dir}",
       unless  => "test -d ${limits_d_dir}",
@@ -69,7 +67,7 @@ class pam::limits (
       purge   => $purge_limits_d_dir,
       recurse => $purge_limits_d_dir,
       require => [
-        Package[$::pam::package_name],
+        Package[$pam::package_name],
         Exec["mkdir_p-${limits_d_dir}"],
       ],
     }
@@ -83,6 +81,6 @@ class pam::limits (
     owner   => 'root',
     group   => 'root',
     mode    => $config_file_mode,
-    require => Package[$::pam::package_name],
+    require => Package[$pam::package_name],
   }
 }

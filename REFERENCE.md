@@ -19,7 +19,7 @@ or `list` **must** be set.
 
 ## Classes
 
-### `pam`
+### <a name="pam"></a>`pam`
 
 This module manages PAM.
 
@@ -33,9 +33,59 @@ include pam
 
 #### Parameters
 
-The following parameters are available in the `pam` class.
+The following parameters are available in the `pam` class:
 
-##### `allowed_users`
+* [`allowed_users`](#allowed_users)
+* [`login_pam_access`](#login_pam_access)
+* [`sshd_pam_access`](#sshd_pam_access)
+* [`limits_fragments`](#limits_fragments)
+* [`limits_fragments_hiera_merge`](#limits_fragments_hiera_merge)
+* [`package_name`](#package_name)
+* [`pam_conf_file`](#pam_conf_file)
+* [`services`](#services)
+* [`pam_d_login_oracle_options`](#pam_d_login_oracle_options)
+* [`pam_d_login_path`](#pam_d_login_path)
+* [`pam_d_login_owner`](#pam_d_login_owner)
+* [`pam_d_login_group`](#pam_d_login_group)
+* [`pam_d_login_mode`](#pam_d_login_mode)
+* [`pam_d_login_template`](#pam_d_login_template)
+* [`pam_d_sshd_path`](#pam_d_sshd_path)
+* [`pam_d_sshd_owner`](#pam_d_sshd_owner)
+* [`pam_d_sshd_group`](#pam_d_sshd_group)
+* [`pam_d_sshd_mode`](#pam_d_sshd_mode)
+* [`pam_d_sshd_template`](#pam_d_sshd_template)
+* [`pam_sshd_auth_lines`](#pam_sshd_auth_lines)
+* [`pam_sshd_account_lines`](#pam_sshd_account_lines)
+* [`pam_sshd_password_lines`](#pam_sshd_password_lines)
+* [`pam_sshd_session_lines`](#pam_sshd_session_lines)
+* [`pam_auth_lines`](#pam_auth_lines)
+* [`pam_account_lines`](#pam_account_lines)
+* [`pam_password_lines`](#pam_password_lines)
+* [`pam_session_lines`](#pam_session_lines)
+* [`other_file`](#other_file)
+* [`common_auth_file`](#common_auth_file)
+* [`common_auth_pc_file`](#common_auth_pc_file)
+* [`common_account_file`](#common_account_file)
+* [`common_account_pc_file`](#common_account_pc_file)
+* [`common_password_file`](#common_password_file)
+* [`common_password_pc_file`](#common_password_pc_file)
+* [`common_session_file`](#common_session_file)
+* [`common_session_pc_file`](#common_session_pc_file)
+* [`common_session_noninteractive_file`](#common_session_noninteractive_file)
+* [`system_auth_file`](#system_auth_file)
+* [`system_auth_ac_file`](#system_auth_ac_file)
+* [`password_auth_file`](#password_auth_file)
+* [`password_auth_ac_file`](#password_auth_ac_file)
+* [`pam_password_auth_lines`](#pam_password_auth_lines)
+* [`pam_password_account_lines`](#pam_password_account_lines)
+* [`pam_password_password_lines`](#pam_password_password_lines)
+* [`pam_password_session_lines`](#pam_password_session_lines)
+* [`manage_nsswitch`](#manage_nsswitch)
+* [`common_files`](#common_files)
+* [`common_files_create_links`](#common_files_create_links)
+* [`common_files_suffix`](#common_files_suffix)
+
+##### <a name="allowed_users"></a>`allowed_users`
 
 Data type: `Variant[Array, Hash, String]`
 
@@ -45,7 +95,7 @@ origins in access.conf. The default allows the root user/group from origin
 
 Default value: `'root'`
 
-##### `login_pam_access`
+##### <a name="login_pam_access"></a>`login_pam_access`
 
 Data type: `Enum['absent', 'optional', 'required', 'requisite', 'sufficient']`
 
@@ -54,7 +104,7 @@ Control module to be used for pam_access.so for login. Valid values are
 
 Default value: `'required'`
 
-##### `sshd_pam_access`
+##### <a name="sshd_pam_access"></a>`sshd_pam_access`
 
 Data type: `Enum['absent', 'optional', 'required', 'requisite', 'sufficient']`
 
@@ -63,7 +113,7 @@ Control module to be used for pam_access.so for sshd. Valid values are
 
 Default value: `'required'`
 
-##### `limits_fragments`
+##### <a name="limits_fragments"></a>`limits_fragments`
 
 Data type: `Optional[Hash]`
 
@@ -71,7 +121,7 @@ Hash of fragments to pass to pam::limits::fragments
 
 Default value: ``undef``
 
-##### `limits_fragments_hiera_merge`
+##### <a name="limits_fragments_hiera_merge"></a>`limits_fragments_hiera_merge`
 
 Data type: `Boolean`
 
@@ -81,7 +131,7 @@ the hierarchy and having them all included in the catalog.
 
 Default value: ``false``
 
-##### `package_name`
+##### <a name="package_name"></a>`package_name`
 
 Data type: `Optional[Variant[Array, String]]`
 
@@ -90,7 +140,7 @@ parameter is set based on the OS version.
 
 Default value: ``undef``
 
-##### `pam_conf_file`
+##### <a name="pam_conf_file"></a>`pam_conf_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -98,7 +148,7 @@ Absolute path to pam.conf.
 
 Default value: `'/etc/pam.conf'`
 
-##### `services`
+##### <a name="services"></a>`services`
 
 Data type: `Optional[Hash]`
 
@@ -106,7 +156,7 @@ Hash of pam::service entries to be created.
 
 Default value: ``undef``
 
-##### `pam_d_login_oracle_options`
+##### <a name="pam_d_login_oracle_options"></a>`pam_d_login_oracle_options`
 
 Data type: `Array`
 
@@ -115,7 +165,7 @@ on EL5.
 
 Default value: `[]`
 
-##### `pam_d_login_path`
+##### <a name="pam_d_login_path"></a>`pam_d_login_path`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -123,7 +173,7 @@ Absolute path to PAM login file.
 
 Default value: `'/etc/pam.d/login'`
 
-##### `pam_d_login_owner`
+##### <a name="pam_d_login_owner"></a>`pam_d_login_owner`
 
 Data type: `String`
 
@@ -131,7 +181,7 @@ Owner of $pam_d_login_path.
 
 Default value: `'root'`
 
-##### `pam_d_login_group`
+##### <a name="pam_d_login_group"></a>`pam_d_login_group`
 
 Data type: `String`
 
@@ -139,7 +189,7 @@ Group of $pam_d_login_path.
 
 Default value: `'root'`
 
-##### `pam_d_login_mode`
+##### <a name="pam_d_login_mode"></a>`pam_d_login_mode`
 
 Data type: `Stdlib::Filemode`
 
@@ -147,7 +197,7 @@ Mode of $pam_d_login_path.
 
 Default value: `'0644'`
 
-##### `pam_d_login_template`
+##### <a name="pam_d_login_template"></a>`pam_d_login_template`
 
 Data type: `Optional[String]`
 
@@ -156,7 +206,7 @@ the OS version.
 
 Default value: ``undef``
 
-##### `pam_d_sshd_path`
+##### <a name="pam_d_sshd_path"></a>`pam_d_sshd_path`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -164,7 +214,7 @@ PAM sshd path.
 
 Default value: `'/etc/pam.d/sshd'`
 
-##### `pam_d_sshd_owner`
+##### <a name="pam_d_sshd_owner"></a>`pam_d_sshd_owner`
 
 Data type: `String`
 
@@ -172,7 +222,7 @@ Owner of $pam_d_sshd_path.
 
 Default value: `'root'`
 
-##### `pam_d_sshd_group`
+##### <a name="pam_d_sshd_group"></a>`pam_d_sshd_group`
 
 Data type: `String`
 
@@ -180,7 +230,7 @@ Group of $pam_d_sshd_path.
 
 Default value: `'root'`
 
-##### `pam_d_sshd_mode`
+##### <a name="pam_d_sshd_mode"></a>`pam_d_sshd_mode`
 
 Data type: `Stdlib::Filemode`
 
@@ -188,7 +238,7 @@ Mode of $pam_d_sshd_path.
 
 Default value: `'0644'`
 
-##### `pam_d_sshd_template`
+##### <a name="pam_d_sshd_template"></a>`pam_d_sshd_template`
 
 Data type: `Optional[String]`
 
@@ -202,7 +252,7 @@ Note that the pam_d_sshd_template parameter is a no-op on Solaris.
 
 Default value: ``undef``
 
-##### `pam_sshd_auth_lines`
+##### <a name="pam_sshd_auth_lines"></a>`pam_sshd_auth_lines`
 
 Data type: `Optional[Array]`
 
@@ -212,7 +262,7 @@ configured to use the pam/sshd.custom.erb template.
 
 Default value: ``undef``
 
-##### `pam_sshd_account_lines`
+##### <a name="pam_sshd_account_lines"></a>`pam_sshd_account_lines`
 
 Data type: `Optional[Array]`
 
@@ -222,7 +272,7 @@ configured to use the pam/sshd.custom.erb template.
 
 Default value: ``undef``
 
-##### `pam_sshd_password_lines`
+##### <a name="pam_sshd_password_lines"></a>`pam_sshd_password_lines`
 
 Data type: `Optional[Array]`
 
@@ -232,7 +282,7 @@ configured to use the pam/sshd.custom.erb template.
 
 Default value: ``undef``
 
-##### `pam_sshd_session_lines`
+##### <a name="pam_sshd_session_lines"></a>`pam_sshd_session_lines`
 
 Data type: `Optional[Array]`
 
@@ -242,7 +292,7 @@ configured to use the pam/sshd.custom.erb template.
 
 Default value: ``undef``
 
-##### `pam_auth_lines`
+##### <a name="pam_auth_lines"></a>`pam_auth_lines`
 
 Data type: `Optional[Array]`
 
@@ -251,7 +301,7 @@ undef, parameter is set based on the OS version.
 
 Default value: ``undef``
 
-##### `pam_account_lines`
+##### <a name="pam_account_lines"></a>`pam_account_lines`
 
 Data type: `Optional[Array]`
 
@@ -260,7 +310,7 @@ undef, parameter is set based on the OS version.
 
 Default value: ``undef``
 
-##### `pam_password_lines`
+##### <a name="pam_password_lines"></a>`pam_password_lines`
 
 Data type: `Optional[Array]`
 
@@ -269,7 +319,7 @@ undef, parameter is set based on the OS version.
 
 Default value: ``undef``
 
-##### `pam_session_lines`
+##### <a name="pam_session_lines"></a>`pam_session_lines`
 
 Data type: `Optional[Array]`
 
@@ -278,7 +328,7 @@ undef, parameter is set based on the OS version.
 
 Default value: ``undef``
 
-##### `other_file`
+##### <a name="other_file"></a>`other_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -286,7 +336,7 @@ Path to PAM other file. Used on Suse 9 and Solaris.
 
 Default value: `'/etc/pam.d/other'`
 
-##### `common_auth_file`
+##### <a name="common_auth_file"></a>`common_auth_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -294,7 +344,7 @@ Path to PAM common-auth file. Used on Debian/Ubuntu and Suse.
 
 Default value: `'/etc/pam.d/common-auth'`
 
-##### `common_auth_pc_file`
+##### <a name="common_auth_pc_file"></a>`common_auth_pc_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -302,7 +352,7 @@ Path to PAM common-auth-pc file. Used on Suse.
 
 Default value: `'/etc/pam.d/common-auth-pc'`
 
-##### `common_account_file`
+##### <a name="common_account_file"></a>`common_account_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -310,7 +360,7 @@ Path to PAM common-account file. Used on Suse.
 
 Default value: `'/etc/pam.d/common-account'`
 
-##### `common_account_pc_file`
+##### <a name="common_account_pc_file"></a>`common_account_pc_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -318,7 +368,7 @@ Path to PAM common-account-pc file. Used on Suse.
 
 Default value: `'/etc/pam.d/common-account-pc'`
 
-##### `common_password_file`
+##### <a name="common_password_file"></a>`common_password_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -326,7 +376,7 @@ Path to PAM common-password file. Used on Suse.
 
 Default value: `'/etc/pam.d/common-password'`
 
-##### `common_password_pc_file`
+##### <a name="common_password_pc_file"></a>`common_password_pc_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -334,7 +384,7 @@ Path to PAM common-password-pc file. Used on Suse.
 
 Default value: `'/etc/pam.d/common-password-pc'`
 
-##### `common_session_file`
+##### <a name="common_session_file"></a>`common_session_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -342,7 +392,7 @@ Path to PAM common-session file. Used on Suse.
 
 Default value: `'/etc/pam.d/common-session'`
 
-##### `common_session_pc_file`
+##### <a name="common_session_pc_file"></a>`common_session_pc_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -350,7 +400,7 @@ Path to PAM common-session-pc file. Used on Suse.
 
 Default value: `'/etc/pam.d/common-session-pc'`
 
-##### `common_session_noninteractive_file`
+##### <a name="common_session_noninteractive_file"></a>`common_session_noninteractive_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -359,7 +409,7 @@ common-session-pc used on Suse. Used on Ubuntu 12.04 LTS.
 
 Default value: `'/etc/pam.d/common-session-noninteractive'`
 
-##### `system_auth_file`
+##### <a name="system_auth_file"></a>`system_auth_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -367,7 +417,7 @@ Path to PAM system-auth file. Used on RedHat.
 
 Default value: `'/etc/pam.d/system-auth'`
 
-##### `system_auth_ac_file`
+##### <a name="system_auth_ac_file"></a>`system_auth_ac_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -375,7 +425,7 @@ Path to PAM system-auth-ac file. Used on RedHat.
 
 Default value: `'/etc/pam.d/system-auth-ac'`
 
-##### `password_auth_file`
+##### <a name="password_auth_file"></a>`password_auth_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -383,7 +433,7 @@ Path to PAM password-auth file. Used on RedHat.
 
 Default value: `'/etc/pam.d/password-auth'`
 
-##### `password_auth_ac_file`
+##### <a name="password_auth_ac_file"></a>`password_auth_ac_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -391,7 +441,7 @@ Path to PAM password-auth-ac file. Used on RedHat.
 
 Default value: `'/etc/pam.d/password-auth-ac'`
 
-##### `pam_password_auth_lines`
+##### <a name="pam_password_auth_lines"></a>`pam_password_auth_lines`
 
 Data type: `Optional[Array]`
 
@@ -400,7 +450,7 @@ undef, parameter is set based on defaults for the detected platform.
 
 Default value: ``undef``
 
-##### `pam_password_account_lines`
+##### <a name="pam_password_account_lines"></a>`pam_password_account_lines`
 
 Data type: `Optional[Array]`
 
@@ -409,7 +459,7 @@ undef, parameter is set based on defaults for the detected platform.
 
 Default value: ``undef``
 
-##### `pam_password_password_lines`
+##### <a name="pam_password_password_lines"></a>`pam_password_password_lines`
 
 Data type: `Optional[Array]`
 
@@ -418,7 +468,7 @@ undef, parameter is set based on defaults for the detected platform.
 
 Default value: ``undef``
 
-##### `pam_password_session_lines`
+##### <a name="pam_password_session_lines"></a>`pam_password_session_lines`
 
 Data type: `Optional[Array]`
 
@@ -427,7 +477,7 @@ undef, parameter is set based on defaults for the detected platform.
 
 Default value: ``undef``
 
-##### `manage_nsswitch`
+##### <a name="manage_nsswitch"></a>`manage_nsswitch`
 
 Data type: `Boolean`
 
@@ -435,7 +485,7 @@ Boolean to manage the inclusion of the nsswitch class.
 
 Default value: ``true``
 
-##### `common_files`
+##### <a name="common_files"></a>`common_files`
 
 Data type: `Array`
 
@@ -446,7 +496,7 @@ in `data/os/`.
 
 Default value: `[]`
 
-##### `common_files_create_links`
+##### <a name="common_files_create_links"></a>`common_files_create_links`
 
 Data type: `Boolean`
 
@@ -455,7 +505,7 @@ suffixed files to the originals without the suffix.
 
 Default value: ``false``
 
-##### `common_files_suffix`
+##### <a name="common_files_suffix"></a>`common_files_suffix`
 
 Data type: `Optional[String]`
 
@@ -463,7 +513,7 @@ Suffix added to the common_files entries for the filename.
 
 Default value: ``undef``
 
-### `pam::accesslogin`
+### <a name="pamaccesslogin"></a>`pam::accesslogin`
 
 Manage login access
 See PAM_ACCESS(8)
@@ -478,9 +528,16 @@ This class is included by the pam class for platforms which use it.
 
 #### Parameters
 
-The following parameters are available in the `pam::accesslogin` class.
+The following parameters are available in the `pam::accesslogin` class:
 
-##### `access_conf_path`
+* [`access_conf_path`](#access_conf_path)
+* [`access_conf_owner`](#access_conf_owner)
+* [`access_conf_group`](#access_conf_group)
+* [`access_conf_mode`](#access_conf_mode)
+* [`access_conf_template`](#access_conf_template)
+* [`allowed_users`](#allowed_users)
+
+##### <a name="access_conf_path"></a>`access_conf_path`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -488,7 +545,7 @@ Path to access.conf.
 
 Default value: `'/etc/security/access.conf'`
 
-##### `access_conf_owner`
+##### <a name="access_conf_owner"></a>`access_conf_owner`
 
 Data type: `String`
 
@@ -496,7 +553,7 @@ Owner of access.conf.
 
 Default value: `'root'`
 
-##### `access_conf_group`
+##### <a name="access_conf_group"></a>`access_conf_group`
 
 Data type: `String`
 
@@ -504,7 +561,7 @@ Group of access.conf.
 
 Default value: `'root'`
 
-##### `access_conf_mode`
+##### <a name="access_conf_mode"></a>`access_conf_mode`
 
 Data type: `Stdlib::Filemode`
 
@@ -512,7 +569,7 @@ Mode of access.conf.
 
 Default value: `'0644'`
 
-##### `access_conf_template`
+##### <a name="access_conf_template"></a>`access_conf_template`
 
 Data type: `String`
 
@@ -520,7 +577,7 @@ Content template of access.conf.
 
 Default value: `'pam/access.conf.erb'`
 
-##### `allowed_users`
+##### <a name="allowed_users"></a>`allowed_users`
 
 Data type: `Variant[Array, Hash, String]`
 
@@ -530,7 +587,7 @@ origin 'ALL'.
 
 Default value: `$pam::allowed_users`
 
-### `pam::limits`
+### <a name="pamlimits"></a>`pam::limits`
 
 Manage PAM limits.conf
 
@@ -544,9 +601,17 @@ This class is included by the pam class for platforms which use it.
 
 #### Parameters
 
-The following parameters are available in the `pam::limits` class.
+The following parameters are available in the `pam::limits` class:
 
-##### `config_file`
+* [`config_file`](#config_file)
+* [`config_file_mode`](#config_file_mode)
+* [`config_file_lines`](#config_file_lines)
+* [`config_file_source`](#config_file_source)
+* [`limits_d_dir`](#limits_d_dir)
+* [`limits_d_dir_mode`](#limits_d_dir_mode)
+* [`purge_limits_d_dir`](#purge_limits_d_dir)
+
+##### <a name="config_file"></a>`config_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -554,7 +619,7 @@ Path to limits.conf.
 
 Default value: `'/etc/security/limits.conf'`
 
-##### `config_file_mode`
+##### <a name="config_file_mode"></a>`config_file_mode`
 
 Data type: `Stdlib::Filemode`
 
@@ -562,7 +627,7 @@ Mode for config_file.
 
 Default value: `'0640'`
 
-##### `config_file_lines`
+##### <a name="config_file_lines"></a>`config_file_lines`
 
 Data type: `Optional[Array]`
 
@@ -571,7 +636,7 @@ Suse 10 which does not use limits.d.
 
 Default value: ``undef``
 
-##### `config_file_source`
+##### <a name="config_file_source"></a>`config_file_source`
 
 Data type: `Optional[String]`
 
@@ -579,7 +644,7 @@ String with source path to a limits.conf
 
 Default value: ``undef``
 
-##### `limits_d_dir`
+##### <a name="limits_d_dir"></a>`limits_d_dir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -587,7 +652,7 @@ Path to limits.d directory.
 
 Default value: `'/etc/security/limits.d'`
 
-##### `limits_d_dir_mode`
+##### <a name="limits_d_dir_mode"></a>`limits_d_dir_mode`
 
 Data type: `Stdlib::Filemode`
 
@@ -595,7 +660,7 @@ Mode for limits_d_dir.
 
 Default value: `'0750'`
 
-##### `purge_limits_d_dir`
+##### <a name="purge_limits_d_dir"></a>`purge_limits_d_dir`
 
 Data type: `Boolean`
 
@@ -605,7 +670,7 @@ Default value: ``false``
 
 ## Defined types
 
-### `pam::limits::fragment`
+### <a name="pamlimitsfragment"></a>`pam::limits::fragment`
 
 Places a fragment in $limits_d_dir directory One of the parameters `source`
 or `list` **must** be set.
@@ -622,9 +687,13 @@ pam::limits::fragment { 'nproc':
 
 #### Parameters
 
-The following parameters are available in the `pam::limits::fragment` defined type.
+The following parameters are available in the `pam::limits::fragment` defined type:
 
-##### `ensure`
+* [`ensure`](#ensure)
+* [`source`](#source)
+* [`list`](#list)
+
+##### <a name="ensure"></a>`ensure`
 
 Data type: `Enum['file', 'present', 'absent']`
 
@@ -632,7 +701,7 @@ Ensure attribute for the fragment file.
 
 Default value: `'file'`
 
-##### `source`
+##### <a name="source"></a>`source`
 
 Data type: `Optional[String]`
 
@@ -640,7 +709,7 @@ Path to the fragment file, such as 'puppet:///modules/pam/limits.nproc'
 
 Default value: ``undef``
 
-##### `list`
+##### <a name="list"></a>`list`
 
 Data type: `Optional[Array]`
 
@@ -648,7 +717,7 @@ Array of lines to add to the fragment file.
 
 Default value: ``undef``
 
-### `pam::service`
+### <a name="pamservice"></a>`pam::service`
 
 reversible, so that any service that Puppet has locked using PAM can be
 unlocked by setting the resource ensure to absent and waiting for the next
@@ -666,9 +735,14 @@ pam::service { 'sudo':
 
 #### Parameters
 
-The following parameters are available in the `pam::service` defined type.
+The following parameters are available in the `pam::service` defined type:
 
-##### `ensure`
+* [`ensure`](#ensure)
+* [`pam_config_dir`](#pam_config_dir)
+* [`content`](#content)
+* [`lines`](#lines)
+
+##### <a name="ensure"></a>`ensure`
 
 Data type: `Enum['present', 'absent']`
 
@@ -677,7 +751,7 @@ exist. The default is set to 'present'
 
 Default value: `'present'`
 
-##### `pam_config_dir`
+##### <a name="pam_config_dir"></a>`pam_config_dir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -685,7 +759,7 @@ Path to PAM files.
 
 Default value: `'/etc/pam.d'`
 
-##### `content`
+##### <a name="content"></a>`content`
 
 Data type: `Optional[String]`
 
@@ -695,7 +769,7 @@ will result in an empty service definition file.
 
 Default value: ``undef``
 
-##### `lines`
+##### <a name="lines"></a>`lines`
 
 Data type: `Optional[Array]`
 

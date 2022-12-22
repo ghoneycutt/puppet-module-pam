@@ -31,7 +31,6 @@ define pam::service (
   Optional[String] $content             = undef,
   Optional[Array] $lines                = undef
 ) {
-
   include pam
 
   case $ensure {

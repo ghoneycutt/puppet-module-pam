@@ -1,6 +1,7 @@
 ---
 # EL8 does not use pam_access by default
 pam::login_pam_access: absent
+pam::sshd_pam_access: absent
 
 pam::common_files_create_links: true
 pam::common_files_suffix: '_ac'

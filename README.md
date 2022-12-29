@@ -179,6 +179,7 @@ module aims to support the current and previous major Puppet versions.
  * Ubuntu 16.04 LTS
  * Ubuntu 18.04 LTS
  * Ubuntu 20.04 LTS
+ * Ubuntu 22.04 LTS
 
 ### May work
 

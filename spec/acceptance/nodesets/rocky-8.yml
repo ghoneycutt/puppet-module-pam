@@ -1,17 +1,17 @@
 HOSTS:
-  centos8:
+  rocky-8:
     roles:
       - agent
     platform: el-8-x86_64
     hypervisor: docker
-    image: centos:8
+    image: rockylinux/rockylinux:8
     docker_preserve_image: true
     docker_cmd:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y dnf-utils'
-      - 'dnf config-manager --set-enabled PowerTools'
-      - 'dnf install -y wget which initscripts iproute langpacks-en glibc-all-langpacks'
+      - 'dnf config-manager --set-enabled powertools'
+      - 'yum install -y wget which cronie iproute initscripts'
     docker_container_name: 'pam-el8'
 CONFIG:
   log_level: debug
@@ -19,3 +19,4 @@ CONFIG:
 ssh:
   password: root
   auth_methods: ["password"]
+

@@ -111,6 +111,6 @@
   ],
   "description": "Manages PAM, including specifying users and groups in access.conf, limits.conf, and limits fragments",
   "pdk-version": "2.5.0",
-  "template-url": "pdk-default#2.5.0",
-  "template-ref": "tags/2.5.0-0-g369d483"
+  "template-url": "https://github.com/tailored-automation/pdk-templates#main",
+  "template-ref": "heads/main-0-g37b4517"
 }

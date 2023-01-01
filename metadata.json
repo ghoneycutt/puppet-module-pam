@@ -10,7 +10,7 @@
   "dependencies": [
     {
       "name": "trlinkin/nsswitch",
-      "version_requirement": ">= 2.1.0 < 3.0.0"
+      "version_requirement": ">= 2.2.0 < 3.0.0"
     },
     {
       "name": "puppetlabs/stdlib",

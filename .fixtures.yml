@@ -1,3 +1,4 @@
+---
 fixtures:
   repositories:
     stdlib:
@@ -5,6 +6,6 @@ fixtures:
       ref: '4.25.0'
     nsswitch:
       repo: 'https://github.com/trlinkin/puppet-nsswitch.git'
-      ref: '2.1.0'
+      ref: '2.2.0'
   symlinks:
     pam: "#{source_dir}"

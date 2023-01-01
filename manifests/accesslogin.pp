@@ -40,12 +40,12 @@ class pam::accesslogin (
       $allowed_users_hash = { $allowed_users => 'ALL' }
     }
     Array: {
-      $allowed_users_hash = $allowed_users.reduce( {}) |$memo, $x| {
+      $allowed_users_hash = $allowed_users.reduce({}) |$memo, $x| {
         $memo + { $x => 'ALL' }
       }
     }
     default: {
-      $allowed_users_hash = $allowed_users.reduce( {}) |$memo, $x| {
+      $allowed_users_hash = $allowed_users.reduce({}) |$memo, $x| {
         $origin = $x[1] ? {
           String  => $x[1],
           Array   => join($x[1], ' '),

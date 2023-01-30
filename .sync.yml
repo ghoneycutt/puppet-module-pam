@@ -6,16 +6,23 @@
 # See https://github.com/puppetlabs/pdk-templates/blob/main/config_defaults.yml
 # for the default values.
 ---
-appveyor.yml:
-  delete: true
-
-.gitlab-ci.yml:
-  delete: true
-
-.travis.yml:
-  delete: true
-
+.github/workflows/ci.yaml:
+  acceptance_matrix:
+    set:
+      - rocky-8
+      - debian-10
+      - ubuntu-1804
+      - ubuntu-2004
+    puppet:
+      - puppet7
+.github/workflows/release.yaml:
+  unmanaged: true
 spec/spec_helper.rb:
   coverage_report: true
   minimum_code_coverage_percentage: 100
-
+appveyor.yml:
+  delete: true
+.gitlab-ci.yml:
+  delete: true
+.travis.yml:
+  delete: true

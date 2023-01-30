@@ -203,9 +203,7 @@ See PAM_ACCESS(8)
       
         &mdash;
         <div class='inline'>
-<p>String, Array or Hash of strings and/or arrays to configure users and
-origins in access.conf. The default allows the root user/group from origin
-&#39;ALL&#39;.</p>
+<p>String, Array or Hash of strings and/or arrays to configure users and origins in access.conf. The default allows the root user/group from origin &#39;ALL&#39;.</p>
 </div>
       
     </li>
@@ -283,12 +281,12 @@ class pam::accesslogin (
       $allowed_users_hash = { $allowed_users =&gt; &#39;ALL&#39; }
     }
     Array: {
-      $allowed_users_hash = $allowed_users.reduce( {}) |$memo, $x| {
+      $allowed_users_hash = $allowed_users.reduce({}) |$memo, $x| {
         $memo + { $x =&gt; &#39;ALL&#39; }
       }
     }
     default: {
-      $allowed_users_hash = $allowed_users.reduce( {}) |$memo, $x| {
+      $allowed_users_hash = $allowed_users.reduce({}) |$memo, $x| {
         $origin = $x[1] ? {
           String  =&gt; $x[1],
           Array   =&gt; join($x[1], &#39; &#39;),

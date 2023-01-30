@@ -20,6 +20,7 @@ jobs:
         with:
           ruby-version: '2.7'
           bundler-cache: true
+          cache-version: 2
           bundler: '2.1.0'
       - name: Build and Deploy
         env:

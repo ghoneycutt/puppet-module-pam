@@ -27,10 +27,12 @@ describe 'pam' do
       it { is_expected.to be_grouped_into 'root' }
       it { is_expected.to be_mode 644 }
       it {
-        if (fact('osfamily') == 'RedHat') && (fact('operatingsystemmajrelease') == '8')
-          is_expected.not_to match(%r{^account\s+required\s+pam_access.so$})
-        else
-          is_expected.to match(%r{^account\s+required\s+pam_access.so$})
+        if fact('osfamily') == 'RedHat'
+          if fact('operatingsystemmajrelease') == '8'
+            is_expected.not_to match(%r{^account\s+required\s+pam_access.so$})
+          else
+            is_expected.to match(%r{^account\s+required\s+pam_access.so$})
+          end
         end
       }
     end
@@ -41,10 +43,12 @@ describe 'pam' do
       it { is_expected.to be_grouped_into 'root' }
       it { is_expected.to be_mode 644 }
       it {
-        if (fact('osfamily') == 'RedHat') && (fact('operatingsystemmajrelease') == '8')
-          is_expected.not_to match(%r{^account\s+required\s+pam_access.so$})
-        else
-          is_expected.to match(%r{^account\s+required\s+pam_access.so$})
+        if fact('osfamily') == 'RedHat'
+          if fact('operatingsystemmajrelease') == '8'
+            is_expected.not_to match(%r{^account\s+required\s+pam_access.so$})
+          else
+            is_expected.to match(%r{^account\s+required\s+pam_access.so$})
+          end
         end
       }
     end

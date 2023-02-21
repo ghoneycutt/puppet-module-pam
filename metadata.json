@@ -19,6 +19,12 @@
   ],
   "operatingsystem_support": [
     {
+      "operatingsystem": "Amazon",
+      "operatingsystemrelease": [
+        "2"
+      ]
+    },
+    {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
         "7",

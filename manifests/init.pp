@@ -240,8 +240,8 @@ class pam (
   Optional[String] $common_files_suffix                     = undef,
 ) {
   # Fail on unsupported platforms
-  if $facts['os']['family'] == 'RedHat' and !($facts['os']['release']['major'] in ['5','6','7','8', '9']) {
-    fail("osfamily RedHat's os.release.major is <${::facts['os']['release']['major']}> and must be 5, 6, 7, 8 or 9")
+  if $facts['os']['family'] == 'RedHat' and !($facts['os']['release']['major'] in ['2','5','6','7','8', '9']) {
+    fail("osfamily RedHat's os.release.major is <${::facts['os']['release']['major']}> and must be 2, 5, 6, 7, 8 or 9")
   }
 
   if $facts['os']['family'] == 'Solaris' and !($facts['kernelrelease'] in ['5.9','5.10','5.11']) {

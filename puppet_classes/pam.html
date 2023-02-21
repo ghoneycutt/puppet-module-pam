@@ -1240,8 +1240,8 @@ class pam (
   Optional[String] $common_files_suffix                     = undef,
 ) {
   # Fail on unsupported platforms
-  if $facts[&#39;os&#39;][&#39;family&#39;] == &#39;RedHat&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;5&#39;,&#39;6&#39;,&#39;7&#39;,&#39;8&#39;, &#39;9&#39;]) {
-    fail(&quot;osfamily RedHat&#39;s os.release.major is &lt;${::facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 5, 6, 7, 8 or 9&quot;)
+  if $facts[&#39;os&#39;][&#39;family&#39;] == &#39;RedHat&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;2&#39;,&#39;5&#39;,&#39;6&#39;,&#39;7&#39;,&#39;8&#39;, &#39;9&#39;]) {
+    fail(&quot;osfamily RedHat&#39;s os.release.major is &lt;${::facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 2, 5, 6, 7, 8 or 9&quot;)
   }
 
   if $facts[&#39;os&#39;][&#39;family&#39;] == &#39;Solaris&#39; and !($facts[&#39;kernelrelease&#39;] in [&#39;5.9&#39;,&#39;5.10&#39;,&#39;5.11&#39;]) {
@@ -1256,8 +1256,8 @@ class pam (
     fail(&quot;Debian&#39;s os.release.major is &lt;${facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 7, 8, 9, 10 or 11&quot;)
   }
 
-  if $facts[&#39;os&#39;][&#39;name&#39;] == &#39;Ubuntu&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;12.04&#39;, &#39;14.04&#39;, &#39;16.04&#39;, &#39;18.04&#39;, &#39;20.04&#39;]) {
-    fail(&quot;Ubuntu&#39;s os.release.major is &lt;${facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 12.04, 14.04, 16.04, 18.04 or 20.04&quot;)
+  if $facts[&#39;os&#39;][&#39;name&#39;] == &#39;Ubuntu&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;12.04&#39;, &#39;14.04&#39;, &#39;16.04&#39;, &#39;18.04&#39;, &#39;20.04&#39;, &#39;22.04&#39;]) {
+    fail(&quot;Ubuntu&#39;s os.release.major is &lt;${facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 12.04, 14.04, 16.04, 18.04, 20.04 or 22.04&quot;)
   }
 
   if $pam_d_sshd_template == &#39;pam/sshd.custom.erb&#39; {

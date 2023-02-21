@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v3.10.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.10.0) (2023-02-21)
+
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.9.0...v3.10.0)
+
+### Merged pull requests:
+
+- Add amazon linux 2 support [\#259](https://github.com/ghoneycutt/puppet-module-pam/pull/259) ([treydock](https://github.com/treydock))
+- Support Ubuntu 22.04 [\#245](https://github.com/ghoneycutt/puppet-module-pam/pull/245) ([anders-larsson](https://github.com/anders-larsson))
+
 ## [v3.9.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.9.0) (2023-01-30)
 
 [Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.8.0...v3.9.0)
@@ -117,7 +126,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [v3.0.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.0.0) (2018-11-09)
 
-[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.34.0...v3.0.0)
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/2.34.0...v3.0.0)
 
 ### Merged pull requests:
 
@@ -133,13 +142,13 @@ All notable changes to this project will be documented in this file. The format 
 - Remove VAS logic and create examples that show old behavior [\#169](https://github.com/ghoneycutt/puppet-module-pam/pull/169) ([treydock](https://github.com/treydock))
 - Add example SSSD integration using hiera [\#143](https://github.com/ghoneycutt/puppet-module-pam/pull/143) ([jeffmccune](https://github.com/jeffmccune))
 
-## [v2.34.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.34.0) (2018-09-18)
-
-[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/2.34.0...v2.34.0)
-
 ## [2.34.0](https://github.com/ghoneycutt/puppet-module-pam/tree/2.34.0) (2018-09-18)
 
-[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.33.0...2.34.0)
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.34.0...2.34.0)
+
+## [v2.34.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.34.0) (2018-09-18)
+
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.33.0...v2.34.0)
 
 ## [v2.33.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.33.0) (2017-04-20)
 

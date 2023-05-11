@@ -8,6 +8,11 @@
 #   origins in access.conf. The default allows the root user/group from origin
 #   'ALL'.
 #
+# @manage_accesslogin
+#   Boolean to manage the inclusion of the pam::accesslogin class.
+#   Can be useful if /etc/security/access.conf is managed externally.
+#   Defaults to true.
+#
 # @param login_pam_access
 #   Control module to be used for pam_access.so for login. Valid values are
 #   'required', 'requisite', 'sufficient', 'optional' and 'absent'.
@@ -188,6 +193,7 @@
 #
 class pam (
   Variant[Array, Hash, String] $allowed_users               = 'root',
+  Boolean $manage_accesslogin                               = true,
   Enum['absent', 'optional', 'required', 'requisite', 'sufficient']
   $login_pam_access                                       = 'required',
   Enum['absent', 'optional', 'required', 'requisite', 'sufficient']
@@ -277,7 +283,9 @@ class pam (
   }
 
   if ($facts['os']['family'] in ['RedHat','Suse','Debian']) {
-    include pam::accesslogin
+    if $manage_accesslogin {
+      include pam::accesslogin
+    }
     include pam::limits
 
     package { $package_name:

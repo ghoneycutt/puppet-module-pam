@@ -30,6 +30,9 @@ though generally include things such as the following.
 * `/etc/security/limits.conf`
 * `/etc/security/limits.d`
 
+The management of `/etc/security/access.conf` can be controlled by the
+`pam::manage_accesslogin` parameter (enabled by default).
+
 ### Setup requirements
 This module requires `stdlib`. When deployed by default it will require
 `nsswitch`. See below for more information.

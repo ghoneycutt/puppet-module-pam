@@ -8,7 +8,7 @@
 #   origins in access.conf. The default allows the root user/group from origin
 #   'ALL'.
 #
-# @manage_accesslogin
+# @param manage_accesslogin
 #   Boolean to manage the inclusion of the pam::accesslogin class.
 #   Can be useful if /etc/security/access.conf is managed externally.
 #   Defaults to true.

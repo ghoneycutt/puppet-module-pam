@@ -27,8 +27,8 @@ describe 'pam' do
       it { is_expected.to be_grouped_into 'root' }
       it { is_expected.to be_mode 644 }
       it {
-        if fact('osfamily') == 'RedHat'
-          if fact('operatingsystemmajrelease') == '8'
+        if fact('os.family') == 'RedHat'
+          if fact('os.release.major') =~ %r{8|9}
             is_expected.not_to match(%r{^account\s+required\s+pam_access.so$})
           else
             is_expected.to match(%r{^account\s+required\s+pam_access.so$})
@@ -43,8 +43,8 @@ describe 'pam' do
       it { is_expected.to be_grouped_into 'root' }
       it { is_expected.to be_mode 644 }
       it {
-        if fact('osfamily') == 'RedHat'
-          if fact('operatingsystemmajrelease') == '8'
+        if fact('os.family') == 'RedHat'
+          if fact('os.release.major') =~ %r{8|9}
             is_expected.not_to match(%r{^account\s+required\s+pam_access.so$})
           else
             is_expected.to match(%r{^account\s+required\s+pam_access.so$})
@@ -70,7 +70,7 @@ describe 'pam' do
       its(:content) { is_expected.to match(%r{^$|^#}) }
     end
 
-    if fact('osfamily') == 'RedHat'
+    if fact('os.family') == 'RedHat' && fact('os.release.major') != '9'
       ['password-auth', 'system-auth'].each do |f|
         describe file("/etc/pam.d/#{f}-ac") do
           it { is_expected.to be_file }
@@ -85,7 +85,18 @@ describe 'pam' do
       end
     end
 
-    if fact('osfamily') == 'Debian'
+    if fact('os.family') == 'RedHat' && fact('os.release.major') == '9'
+      ['password-auth', 'system-auth'].each do |f|
+        describe file("/etc/pam.d/#{f}") do
+          it { is_expected.to be_file }
+          it { is_expected.to be_owned_by 'root' }
+          it { is_expected.to be_grouped_into 'root' }
+          it { is_expected.to be_mode 644 }
+        end
+      end
+    end
+
+    if fact('os.family') == 'Debian'
       ['auth', 'account', 'password', 'session', 'session-noninteractive'].each do |f|
         describe file("/etc/pam.d/common-#{f}") do
           it { is_expected.to be_file }

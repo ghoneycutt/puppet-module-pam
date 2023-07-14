@@ -61,7 +61,7 @@ describe 'pam' do
         end
       end
 
-      if %r{solaris}.match?(os_id)
+      if os_id.include?('solaris')
         it { is_expected.not_to contain_file('pam_d_login') }
         it { is_expected.not_to contain_file('pam_d_sshd') }
       else
@@ -88,7 +88,7 @@ describe 'pam' do
         end
       end
 
-      unless %r{solaris}.match?(os_id)
+      unless os_id.include?('solaris')
         it { is_expected.to contain_class('pam::accesslogin') }
         it { is_expected.to contain_class('pam::limits') }
       end
@@ -135,7 +135,7 @@ describe 'pam' do
           |-:ALL:ALL
         END
 
-        if %r{solaris}.match?(os_id)
+        if os_id.include?('solaris')
           it { is_expected.not_to contain_file('access_conf') }
         else
           it { is_expected.to contain_file('access_conf').with_content(file_header + content) }
@@ -168,7 +168,7 @@ describe 'pam' do
             |session_line2
           END
 
-          if %r{solaris}.match?(os_id)
+          if os_id.include?('solaris')
             it { is_expected.not_to contain_file('pam_d_sshd') }
           else
             it { is_expected.to contain_file('pam_d_sshd').with_content(sshd_custom_content) }
@@ -196,7 +196,7 @@ describe 'pam' do
         context 'with login_pam_access => absent' do
           let(:params) { { login_pam_access: 'absent' } }
 
-          unless %r{solaris}.match?(os_id)
+          unless os_id.include?('solaris')
             it { is_expected.to contain_file('pam_d_login').without_content(%r{^account.*pam_access.so$}) }
           end
         end
@@ -204,19 +204,19 @@ describe 'pam' do
         context 'with sshd_pam_access => absent' do
           let(:params) { { sshd_pam_access: 'absent' } }
 
-          unless %r{solaris}.match?(os_id)
+          unless os_id.include?('solaris')
             it { is_expected.to contain_file('pam_d_sshd').without_content(%r{^account.*pam_access.so$}) }
           end
         end
 
         context 'with password_auth_ac => path' do
-          if %r{redhat-5}.match?(os_id)
+          if os_id.include?('redhat-5')
             it { is_expected.not_to contain_file('password_auth_ac') }
           end
         end
 
         context 'with password_auth_ac_file => path' do
-          if %r{redhat-5}.match?(os_id)
+          if os_id.include?('redhat-5')
             it { is_expected.not_to contain_file('password_auth_ac_file') }
           end
         end
@@ -224,9 +224,9 @@ describe 'pam' do
         context 'with pam_d_login_oracle_options set to valid array' do
           let(:params) { { pam_d_login_oracle_options: [ 'session required pam_spectest.so', 'session optional pam_spectest.so' ] } }
 
-          if %r{redhat-5}.match?(os_id)
+          if os_id.include?('redhat-5')
             it { is_expected.to contain_file('pam_d_login').with_content(%r{^# oracle options\nsession required pam_spectest.so\nsession optional pam_spectest.so$}) }
-          elsif %r{solaris}.match?(os_id)
+          elsif os_id.include?('solaris')
             it { is_expected.not_to contain_file('pam_d_login') }
           else
             it { is_expected.to contain_file('pam_d_login').without_content(%r{^# oracle options\nsession required pam_spectest.so\nsession optional pam_spectest.so$}) }

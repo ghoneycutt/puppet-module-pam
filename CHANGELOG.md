@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v4.0.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v4.0.0) (2023-07-14)
+
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.10.0...v4.0.0)
+
+### Merged pull requests:
+
+- Numerous updates plus remove EOL OS support [\#261](https://github.com/ghoneycutt/puppet-module-pam/pull/261) ([treydock](https://github.com/treydock))
+
 ## [v3.10.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.10.0) (2023-02-21)
 
 [Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.9.0...v3.10.0)

@@ -188,21 +188,16 @@ include pam
 ## Limitations
 
 This module has been tested to work on the following systems with Puppet
-versions 5 and 6 with the Ruby version associated with those releases.
-Please see `.travis.yml` for a full matrix of supported versions. This
+versions 7 with the Ruby version associated with those releases.
+Please see `.github/workflows/ci.yaml` for a full matrix of supported versions. This
 module aims to support the current and previous major Puppet versions.
 
- * EL 6
  * EL 7
  * EL 8
  * EL 9
  * Amazon Linux 2
- * Debian 9
  * Debian 10
  * Debian 11
- * Ubuntu 14.04 LTS
- * Ubuntu 16.04 LTS
- * Ubuntu 18.04 LTS
  * Ubuntu 20.04 LTS
  * Ubuntu 22.04 LTS
 
@@ -211,7 +206,10 @@ module aims to support the current and previous major Puppet versions.
 These platforms have spec tests and have been verified in the past,
 though are not functionally tested and formally supported.
 
+The Hiera data for some of these platforms can be found in `examples/hiera/eol`.
+
  * EL 5
+ * EL 6
  * Solaris 9
  * Solaris 10
  * Solaris 11
@@ -223,7 +221,11 @@ though are not functionally tested and formally supported.
  * OpenSuSE 13.1
  * Debian 7
  * Debian 8
+ * Debian 9
  * Ubuntu 12.04 LTS
+ * Ubuntu 14.04 LTS
+ * Ubuntu 16.04 LTS
+ * Ubuntu 18.04 LTS
 
 ## Development
 

@@ -25,6 +25,9 @@
 # @param purge_limits_d_dir
 #   Boolean to purge the limits.d directory.
 #
+# @param purge_limits_d_dir_ignore
+#   A glob or array of file names to ignore when purging limits.d
+#
 class pam::limits (
   Stdlib::Absolutepath $config_file    = '/etc/security/limits.conf',
   Optional[Array] $config_file_lines   = undef,
@@ -33,6 +36,7 @@ class pam::limits (
   Stdlib::Absolutepath $limits_d_dir   = '/etc/security/limits.d',
   Stdlib::Filemode $limits_d_dir_mode  = '0750',
   Boolean $purge_limits_d_dir          = false,
+  Optional[Variant[String[1], Array[String[1]]]] $purge_limits_d_dir_ignore = undef,
 ) {
   include pam
 
@@ -66,6 +70,7 @@ class pam::limits (
       mode    => $limits_d_dir_mode,
       purge   => $purge_limits_d_dir,
       recurse => $purge_limits_d_dir,
+      ignore  => $purge_limits_d_dir_ignore,
       require => [
         Package[$pam::package_name],
         Exec["mkdir_p-${limits_d_dir}"],

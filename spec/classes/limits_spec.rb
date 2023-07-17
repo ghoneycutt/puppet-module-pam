@@ -81,6 +81,7 @@ describe 'pam::limits' do
             'mode'    => '0750',
             'purge'   => false,
             'recurse' => false,
+            'ignore'  => nil,
           )
         end
         it do
@@ -164,6 +165,18 @@ describe 'pam::limits' do
 
         it { is_expected.to contain_file('limits_d').with_purge(true) }
         it { is_expected.to contain_file('limits_d').with_recurse(true) }
+
+        context 'with purge_limits_d_dir_ignore set to glob pattern' do
+          let(:params) { { purge_limits_d_dir: true, purge_limits_d_dir_ignore: '{foo,bar}.conf' } }
+
+          it { is_expected.to contain_file('limits_d').with_ignore('{foo,bar}.conf') }
+        end
+
+        context 'with purge_limits_d_dir_ignore set to array' do
+          let(:params) { { purge_limits_d_dir: true, purge_limits_d_dir_ignore: ['foo.conf', 'bar.conf'] } }
+
+          it { is_expected.to contain_file('limits_d').with_ignore(['foo.conf', 'bar.conf']) }
+        end
       end
     end
   end

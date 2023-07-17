@@ -36,6 +36,7 @@ include pam
 The following parameters are available in the `pam` class:
 
 * [`allowed_users`](#-pam--allowed_users)
+* [`manage_accesslogin`](#-pam--manage_accesslogin)
 * [`login_pam_access`](#-pam--login_pam_access)
 * [`sshd_pam_access`](#-pam--sshd_pam_access)
 * [`limits_fragments`](#-pam--limits_fragments)
@@ -94,6 +95,16 @@ origins in access.conf. The default allows the root user/group from origin
 'ALL'.
 
 Default value: `'root'`
+
+##### <a name="-pam--manage_accesslogin"></a>`manage_accesslogin`
+
+Data type: `Boolean`
+
+Boolean to manage the inclusion of the pam::accesslogin class.
+Can be useful if /etc/security/access.conf is managed externally.
+Defaults to true.
+
+Default value: `true`
 
 ##### <a name="-pam--login_pam_access"></a>`login_pam_access`
 

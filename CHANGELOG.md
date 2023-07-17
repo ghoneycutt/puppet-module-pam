@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v4.1.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v4.1.0) (2023-07-17)
+
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v4.0.0...v4.1.0)
+
+### Merged pull requests:
+
+- add parameter to control manamgent of access.conf [\#262](https://github.com/ghoneycutt/puppet-module-pam/pull/262) ([treydock](https://github.com/treydock))
+
 ## [v4.0.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v4.0.0) (2023-07-14)
 
 [Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.10.0...v4.0.0)
@@ -31,7 +39,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [v3.8.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.8.0) (2022-12-28)
 
-[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.7.0...v3.8.0)
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.8.1...v3.8.0)
 
 ### Fixed
 
@@ -45,6 +53,14 @@ All notable changes to this project will be documented in this file. The format 
 - Added support for Debian 11 [\#239](https://github.com/ghoneycutt/puppet-module-pam/pull/239) ([ZloeSabo](https://github.com/ZloeSabo))
 - Upgrade to GitHub-native Dependabot [\#235](https://github.com/ghoneycutt/puppet-module-pam/pull/235) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Debian8 eol [\#232](https://github.com/ghoneycutt/puppet-module-pam/pull/232) ([ghoneycutt](https://github.com/ghoneycutt))
+
+## [v3.8.1](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.8.1) (2022-11-04)
+
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.7.1...v3.8.1)
+
+## [v3.7.1](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.7.1) (2022-10-18)
+
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v3.7.0...v3.7.1)
 
 ## [v3.7.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.7.0) (2020-11-17)
 
@@ -134,7 +150,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [v3.0.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.0.0) (2018-11-09)
 
-[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/2.34.0...v3.0.0)
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.34.0...v3.0.0)
 
 ### Merged pull requests:
 
@@ -150,13 +166,13 @@ All notable changes to this project will be documented in this file. The format 
 - Remove VAS logic and create examples that show old behavior [\#169](https://github.com/ghoneycutt/puppet-module-pam/pull/169) ([treydock](https://github.com/treydock))
 - Add example SSSD integration using hiera [\#143](https://github.com/ghoneycutt/puppet-module-pam/pull/143) ([jeffmccune](https://github.com/jeffmccune))
 
-## [2.34.0](https://github.com/ghoneycutt/puppet-module-pam/tree/2.34.0) (2018-09-18)
-
-[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.34.0...2.34.0)
-
 ## [v2.34.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.34.0) (2018-09-18)
 
-[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.33.0...v2.34.0)
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/2.34.0...v2.34.0)
+
+## [2.34.0](https://github.com/ghoneycutt/puppet-module-pam/tree/2.34.0) (2018-09-18)
+
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.33.0...2.34.0)
 
 ## [v2.33.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.33.0) (2017-04-20)
 

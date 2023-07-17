@@ -149,6 +149,8 @@ describe 'pam::limits' do
         it { is_expected.to contain_exec('mkdir_p-/testing.d') }
         it { is_expected.to contain_file('limits_d').with_path('/testing.d') }
         it { is_expected.to contain_file('limits_d').that_requires('Exec[mkdir_p-/testing.d]') }
+        # Included by default due to unit testing Hiera adding to tests-only common.yaml
+        it { is_expected.to contain_file('/testing.d/test.conf') }
       end
 
       context 'with limits_d_dir_mode set to a valid string' do

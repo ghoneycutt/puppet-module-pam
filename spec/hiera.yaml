@@ -1,0 +1,10 @@
+---
+version: 5
+defaults:
+  datadir: fixtures/data
+  data_hash: yaml_data
+hierarchy:
+  - name: testing
+    path: test.yaml
+  - name: common
+    path: common.yaml

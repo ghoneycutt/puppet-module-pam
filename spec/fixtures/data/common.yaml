@@ -1,0 +1,6 @@
+---
+pam::limits_fragments:
+  test:
+    list:
+      - '* soft nofile 2048'
+      - '* hard nofile 8192'

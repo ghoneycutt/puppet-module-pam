@@ -38,6 +38,7 @@ end
 
 RSpec.configure do |c|
   c.default_facts = default_facts
+  c.hiera_config = 'spec/hiera.yaml'
   c.before :each do
     # set to strictest setting for testing
     # by default Puppet runs at warning level

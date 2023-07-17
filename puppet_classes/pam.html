@@ -128,6 +128,24 @@
   
     <li>
       
+        <span class='name'>manage_accesslogin</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean to manage the inclusion of the pam::accesslogin class. Can be useful if /etc/security/access.conf is managed externally. Defaults to true.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>login_pam_access</span>
       
       
@@ -1001,11 +1019,6 @@
         <pre class="lines">
 
 
-189
-190
-191
-192
-193
 194
 195
 196
@@ -1182,13 +1195,22 @@
 367
 368
 369
-370</pre>
+370
+371
+372
+373
+374
+375
+376
+377
+378</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 189</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 194</span>
 
 class pam (
   Variant[Array, Hash, String] $allowed_users               = &#39;root&#39;,
+  Boolean $manage_accesslogin                               = true,
   Enum[&#39;absent&#39;, &#39;optional&#39;, &#39;required&#39;, &#39;requisite&#39;, &#39;sufficient&#39;]
   $login_pam_access                                       = &#39;required&#39;,
   Enum[&#39;absent&#39;, &#39;optional&#39;, &#39;required&#39;, &#39;requisite&#39;, &#39;sufficient&#39;]
@@ -1278,7 +1300,9 @@ class pam (
   }
 
   if ($facts[&#39;os&#39;][&#39;family&#39;] in [&#39;RedHat&#39;,&#39;Suse&#39;,&#39;Debian&#39;]) {
-    include pam::accesslogin
+    if $manage_accesslogin {
+      include pam::accesslogin
+    }
     include pam::limits
 
     package { $package_name:

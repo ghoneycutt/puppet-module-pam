@@ -95,7 +95,24 @@ describe 'pam' do
 
       it { is_expected.to contain_class('nsswitch') }
       it { is_expected.to have_pam__service_resource_count(0) }
-      it { is_expected.to have_pam__limits__fragment_resource_count(0) }
+      it { is_expected.to have_pam__limits__fragment_resource_count(1) }
+      it do
+        is_expected.to contain_pam__limits__fragment('test').with(
+          list: ['* soft as 3145728', '* hard as 4194304'],
+        )
+      end
+      # Validate presence to ensure coverage stays 100%
+      it { is_expected.to contain_file('/etc/security/limits.d/test.conf') }
+
+      context 'when limits_fragments_hiera_merge => true' do
+        let(:params) { { limits_fragments_hiera_merge: true } }
+
+        it do
+          is_expected.to contain_pam__limits__fragment('test').with(
+            list: ['* soft nofile 2048', '* hard nofile 8192', '* soft as 3145728', '* hard as 4194304'],
+          )
+        end
+      end
 
       context "with login_pam_access set to valid string sufficient on OS #{os}" do
         let(:params) { { login_pam_access: 'sufficient' } }

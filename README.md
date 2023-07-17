@@ -145,6 +145,26 @@ This would create `/etc/security/limits.d/custom.conf` with content
 * hard cpu 1440
 ```
 
+The parameter `pam::limits_fragments_hiera_merge` can be set to `true` to allow Hiera to define and merge limits from multiple locations.  Example:
+
+```yaml
+# data/common.yaml
+---
+pam::limits_fragments_hiera_merge: true
+pam::limits_fragments:
+  custom:
+    list:
+      - '* soft nofile 2048'
+      - '* hard nofile 8192'
+# data/os/RedHat/8.yaml
+---
+pam::limits_fragments:
+  custom:
+    list:
+      - '* soft as 3145728'
+      - '* hard as 4194304'
+```
+
 #### Specifying the content of a service
 Manage PAM file for specific service.
 

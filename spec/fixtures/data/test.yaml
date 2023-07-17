@@ -1,0 +1,6 @@
+---
+pam::limits_fragments:
+  test:
+    list:
+      - '* soft as 3145728'
+      - '* hard as 4194304'

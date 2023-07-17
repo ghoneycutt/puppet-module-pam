@@ -1342,7 +1342,7 @@ class pam (
 
   if $limits_fragments {
     if $limits_fragments_hiera_merge {
-      $limits_fragments_real = hiera_hash(&#39;pam::limits_fragments&#39;)
+      $limits_fragments_real = lookup(&#39;pam::limits_fragments&#39;, Hash, &#39;deep&#39;, {})
     } else {
       $limits_fragments_real = $limits_fragments
     }

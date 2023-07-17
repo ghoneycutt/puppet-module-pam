@@ -203,6 +203,25 @@
 * hard cpu 1440
 </code></pre>
 
+<p>The parameter <code>pam::limits_fragments_hiera_merge</code> can be set to <code>true</code> to allow Hiera to define and merge limits from multiple locations. Example:</p>
+
+<pre class="code ruby"><code class="ruby"># data/common.yaml
+---
+pam::limits_fragments_hiera_merge: true
+pam::limits_fragments:
+  custom:
+    list:
+      - &#39;* soft nofile 2048&#39;
+      - &#39;* hard nofile 8192&#39;
+# data/os/RedHat/8.yaml
+---
+pam::limits_fragments:
+  custom:
+    list:
+      - &#39;* soft as 3145728&#39;
+      - &#39;* hard as 4194304&#39;
+</code></pre>
+
 <h4 id="label-Specifying+the+content+of+a+service">Specifying the content of a service</h4>
 
 <p>Manage PAM file for specific service.</p>

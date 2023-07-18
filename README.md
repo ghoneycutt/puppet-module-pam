@@ -53,6 +53,11 @@ This module has been deployed in production along with
 `examples/hiera/sssd/RedHat-6.yaml` file for an example with the
 additional SSSD entries added via hiera.
 
+##### pwquality
+
+An example of using [pam_pwquality](https://linux.die.net/man/8/pam_pwquality) can be found
+in the `examples/hiera/pwquality.yaml`.
+
 ### Beginning with pam
 
 Include the main `pam` class.

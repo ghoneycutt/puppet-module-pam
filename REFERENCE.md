@@ -621,6 +621,7 @@ The following parameters are available in the `pam::limits` class:
 * [`limits_d_dir`](#-pam--limits--limits_d_dir)
 * [`limits_d_dir_mode`](#-pam--limits--limits_d_dir_mode)
 * [`purge_limits_d_dir`](#-pam--limits--purge_limits_d_dir)
+* [`purge_limits_d_dir_ignore`](#-pam--limits--purge_limits_d_dir_ignore)
 
 ##### <a name="-pam--limits--config_file"></a>`config_file`
 
@@ -678,6 +679,14 @@ Data type: `Boolean`
 Boolean to purge the limits.d directory.
 
 Default value: `false`
+
+##### <a name="-pam--limits--purge_limits_d_dir_ignore"></a>`purge_limits_d_dir_ignore`
+
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
+
+A glob or array of file names to ignore when purging limits.d
+
+Default value: `undef`
 
 ## Defined types
 

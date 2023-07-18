@@ -170,6 +170,26 @@ pam::limits_fragments:
       - '* hard as 4194304'
 ```
 
+The contents of `/etc/security/limits.d` can optionally be purged of unmanaged files.
+
+```yaml
+pam::limits::purge_limits_d_dir: true
+```
+
+Below is an example of ignoring certain files from the limits.d purge:
+
+```yaml
+pam::limits::purge_limits_d_dir_ignore: 'ignore*.conf'
+```
+
+The ignore can also be an Array of file names
+
+```yaml
+pam::limits::purge_limits_d_dir_ignore:
+  - custom.conf
+  - foo.conf
+```
+
 #### Specifying the content of a service
 Manage PAM file for specific service.
 

@@ -1,0 +1,9 @@
+---
+pam::pam_password_lines:
+  - 'password    requisite     pam_pwquality.so try_first_pass local_users_only difok=3 minlen=15 dcredit= 2 ocredit=2'
+  - 'password    sufficient    pam_unix.so try_first_pass use_authtok nullok sha512 shadow'
+  - 'password    required      pam_deny.so'
+pam::pam_password_password_lines:
+  - 'password    requisite     pam_pwquality.so try_first_pass local_users_only difok=3 minlen=15 dcredit= 2 ocredit=2'
+  - 'password    sufficient    pam_unix.so try_first_pass use_authtok nullok sha512 shadow'
+  - 'password    required      pam_deny.so'

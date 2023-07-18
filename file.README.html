@@ -116,6 +116,10 @@
 
 <p>This module has been deployed in production along with <a href="https://github.com/sgnl05/sgnl05-sssd">sgnl05/sssd</a>. Please see <code>examples/hiera/sssd/RedHat-6.yaml</code> file for an example with the additional SSSD entries added via hiera.</p>
 
+<h5 id="label-pwquality">pwquality</h5>
+
+<p>An example of using <a href="https://linux.die.net/man/8/pam_pwquality">pam_pwquality</a> can be found in the <code>examples/hiera/pwquality.yaml</code>.</p>
+
 <h3 id="label-Beginning+with+pam">Beginning with pam</h3>
 
 <p>Include the main <code>pam</code> class.</p>
@@ -222,6 +226,23 @@ pam::limits_fragments:
       - &#39;* hard as 4194304&#39;
 </code></pre>
 
+<p>The contents of <code>/etc/security/limits.d</code> can optionally be purged of unmanaged files.</p>
+
+<pre class="code ruby"><code class="ruby">pam::limits::purge_limits_d_dir: true
+</code></pre>
+
+<p>Below is an example of ignoring certain files from the limits.d purge:</p>
+
+<pre class="code ruby"><code class="ruby">pam::limits::purge_limits_d_dir_ignore: &#39;ignore*.conf&#39;
+</code></pre>
+
+<p>The ignore can also be an Array of file names</p>
+
+<pre class="code ruby"><code class="ruby">pam::limits::purge_limits_d_dir_ignore:
+  - custom.conf
+  - foo.conf
+</code></pre>
+
 <h4 id="label-Specifying+the+content+of+a+service">Specifying the content of a service</h4>
 
 <p>Manage PAM file for specific service.</p>
@@ -244,10 +265,8 @@ pam::limits_fragments:
 
 <h2 id="label-Limitations">Limitations</h2>
 
-<p>This module has been tested to work on the following systems with Puppet versions 5 and 6 with the Ruby version associated with those releases. Please see <code>.travis.yml</code> for a full matrix of supported versions. This module aims to support the current and previous major Puppet versions.</p>
+<p>This module has been tested to work on the following systems with Puppet versions 7 with the Ruby version associated with those releases. Please see <code>.github/workflows/ci.yaml</code> for a full matrix of supported versions. This module aims to support the current and previous major Puppet versions.</p>
 <ul><li>
-<p>EL 6</p>
-</li><li>
 <p>EL 7</p>
 </li><li>
 <p>EL 8</p>
@@ -256,17 +275,9 @@ pam::limits_fragments:
 </li><li>
 <p>Amazon Linux 2</p>
 </li><li>
-<p>Debian 9</p>
-</li><li>
 <p>Debian 10</p>
 </li><li>
 <p>Debian 11</p>
-</li><li>
-<p>Ubuntu 14.04 LTS</p>
-</li><li>
-<p>Ubuntu 16.04 LTS</p>
-</li><li>
-<p>Ubuntu 18.04 LTS</p>
 </li><li>
 <p>Ubuntu 20.04 LTS</p>
 </li><li>
@@ -276,8 +287,12 @@ pam::limits_fragments:
 <h3 id="label-May+work">May work</h3>
 
 <p>These platforms have spec tests and have been verified in the past, though are not functionally tested and formally supported.</p>
+
+<p>The Hiera data for some of these platforms can be found in <code>examples/hiera/eol</code>.</p>
 <ul><li>
 <p>EL 5</p>
+</li><li>
+<p>EL 6</p>
 </li><li>
 <p>Solaris 9</p>
 </li><li>
@@ -301,7 +316,15 @@ pam::limits_fragments:
 </li><li>
 <p>Debian 8</p>
 </li><li>
+<p>Debian 9</p>
+</li><li>
 <p>Ubuntu 12.04 LTS</p>
+</li><li>
+<p>Ubuntu 14.04 LTS</p>
+</li><li>
+<p>Ubuntu 16.04 LTS</p>
+</li><li>
+<p>Ubuntu 18.04 LTS</p>
 </li></ul>
 
 <h2 id="label-Development">Development</h2>

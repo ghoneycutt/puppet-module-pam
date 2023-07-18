@@ -221,6 +221,24 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>purge_limits_d_dir_ignore</span>
+      
+      
+        <span class='type'>(<tt>Optional[Variant[String[1], Array[String[1]]]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A glob or array of file names to ignore when purging limits.d</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -232,9 +250,6 @@
         <pre class="lines">
 
 
-28
-29
-30
 31
 32
 33
@@ -290,10 +305,15 @@
 83
 84
 85
-86</pre>
+86
+87
+88
+89
+90
+91</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/limits.pp', line 28</span>
+        <pre class="code"><span class="info file"># File 'manifests/limits.pp', line 31</span>
 
 class pam::limits (
   Stdlib::Absolutepath $config_file    = &#39;/etc/security/limits.conf&#39;,
@@ -303,6 +323,7 @@ class pam::limits (
   Stdlib::Absolutepath $limits_d_dir   = &#39;/etc/security/limits.d&#39;,
   Stdlib::Filemode $limits_d_dir_mode  = &#39;0750&#39;,
   Boolean $purge_limits_d_dir          = false,
+  Optional[Variant[String[1], Array[String[1]]]] $purge_limits_d_dir_ignore = undef,
 ) {
   include pam
 
@@ -336,6 +357,7 @@ class pam::limits (
       mode    =&gt; $limits_d_dir_mode,
       purge   =&gt; $purge_limits_d_dir,
       recurse =&gt; $purge_limits_d_dir,
+      ignore  =&gt; $purge_limits_d_dir_ignore,
       require =&gt; [
         Package[$pam::package_name],
         Exec[&quot;mkdir_p-${limits_d_dir}&quot;],

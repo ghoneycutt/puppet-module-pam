@@ -191,6 +191,9 @@
 # @param common_files_suffix
 #   Suffix added to the common_files entries for the filename.
 #
+# @param noop_value
+#   Noop value to write access_conf file.
+#
 class pam (
   Variant[Array, Hash, String] $allowed_users               = 'root',
   Boolean $manage_accesslogin                               = true,
@@ -244,6 +247,7 @@ class pam (
   Array $common_files                                       = [],
   Boolean $common_files_create_links                        = false,
   Optional[String] $common_files_suffix                     = undef,
+  Optional[Boolean] $noop_value                             = undef,
 ) {
   # Fail on unsupported platforms
   if $facts['os']['family'] == 'RedHat' and !($facts['os']['release']['major'] in ['2','5','6','7','8', '9']) {

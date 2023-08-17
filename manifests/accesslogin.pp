@@ -16,6 +16,9 @@
 # @param access_conf_mode
 #   Mode of access.conf.
 #
+# @param noop_value
+#   Noop value to write access_conf file.
+#
 # @param access_conf_template
 #   Content template of access.conf.
 #
@@ -31,6 +34,7 @@ class pam::accesslogin (
   Stdlib::Filemode $access_conf_mode          = '0644',
   String $access_conf_template                = 'pam/access.conf.erb',
   Variant[Array, Hash, String] $allowed_users = $pam::allowed_users,
+  Optional[Boolean] $noop_value               = $pam::noop_value,
 ) inherits pam {
   # transform $allowed_users into a valid hash
   # origin defaults to 'ALL' if unset
@@ -63,6 +67,7 @@ class pam::accesslogin (
     owner   => $access_conf_owner,
     group   => $access_conf_group,
     mode    => $access_conf_mode,
+    noop    => $noop_value,
     require => Package[$pam::package_name],
   }
 }

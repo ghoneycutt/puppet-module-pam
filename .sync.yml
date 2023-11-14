@@ -7,23 +7,16 @@
 # for the default values.
 ---
 .github/workflows/ci.yaml:
-  unit_excludes:
-    # TODO: nsswitch module uses legacy facts so can't test against Puppet 8 yet.
-    # https://github.com/trlinkin/puppet-nsswitch/pull/49
-    puppet: '8'
   acceptance_matrix:
     set:
       - el8
       - el9
-      - debian-10
       - debian-11
       - ubuntu-2004
       - ubuntu-2204
     puppet:
       - puppet7
-      # TODO: nsswitch module uses legacy facts so can't test against Puppet 8 yet.
-      # https://github.com/trlinkin/puppet-nsswitch/pull/49
-      - ---puppet8
+      - puppet8
 .github/workflows/release.yaml:
   username: ghoneycutt
 spec/spec_helper.rb:

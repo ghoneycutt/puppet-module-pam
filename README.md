@@ -213,7 +213,7 @@ include pam
 ## Limitations
 
 This module has been tested to work on the following systems with Puppet
-versions 7 with the Ruby version associated with those releases.
+versions 7 and 8 with the Ruby version associated with those releases.
 Please see `.github/workflows/ci.yaml` for a full matrix of supported versions. This
 module aims to support the current and previous major Puppet versions.
 

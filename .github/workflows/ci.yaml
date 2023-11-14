@@ -23,6 +23,14 @@ jobs:
             puppet: 7
             fixtures: .fixtures-latest.yml
             allow_failure: true
+          - ruby: 3.2.2
+            puppet: 8
+            fixtures: .fixtures.yml
+            allow_failure: false
+          - ruby: 3.2.2
+            puppet: 8
+            fixtures: .fixtures-latest.yml
+            allow_failure: true
     env:
       BUNDLE_WITHOUT: system_tests:release
       PUPPET_GEM_VERSION: "~> ${{ matrix.puppet }}.0"
@@ -49,12 +57,12 @@ jobs:
         set:
           - "el8"
           - "el9"
-          - "debian-10"
           - "debian-11"
           - "ubuntu-2004"
           - "ubuntu-2204"
         puppet:
           - "puppet7"
+          - "puppet8"
     env:
       BUNDLE_WITHOUT: development:release
       BEAKER_debug: true

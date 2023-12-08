@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v5.0.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v5.0.0) (2023-12-08)
+
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v4.3.0...v5.0.0)
+
+### Merged pull requests:
+
+- Support Puppet 8 and stdlib 9.x [\#269](https://github.com/ghoneycutt/puppet-module-pam/pull/269) ([treydock](https://github.com/treydock))
+
 ## [v4.3.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v4.3.0) (2023-07-18)
 
 [Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v4.2.0...v4.3.0)
@@ -10,16 +18,22 @@ All notable changes to this project will be documented in this file. The format 
 
 - Add examples for pwquality and faillock [\#267](https://github.com/ghoneycutt/puppet-module-pam/pull/267) ([treydock](https://github.com/treydock))
 - Make EOL OS Hiera data accessible via examples directory [\#265](https://github.com/ghoneycutt/puppet-module-pam/pull/265) ([treydock](https://github.com/treydock))
-- Ensure limits\_fragments\_hiera\_merge is using proper lookup function [\#263](https://github.com/ghoneycutt/puppet-module-pam/pull/263) ([treydock](https://github.com/treydock))
 
 ### Merged pull requests:
 
 - Add pam::limits::purge\_limits\_d\_dir\_ignore parameter [\#266](https://github.com/ghoneycutt/puppet-module-pam/pull/266) ([treydock](https://github.com/treydock))
-- Remove support for Vagrant [\#264](https://github.com/ghoneycutt/puppet-module-pam/pull/264) ([ghoneycutt](https://github.com/ghoneycutt))
 
 ## [v4.2.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v4.2.0) (2023-07-17)
 
 [Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v4.1.0...v4.2.0)
+
+### Added
+
+- Ensure limits\_fragments\_hiera\_merge is using proper lookup function [\#263](https://github.com/ghoneycutt/puppet-module-pam/pull/263) ([treydock](https://github.com/treydock))
+
+### Merged pull requests:
+
+- Remove support for Vagrant [\#264](https://github.com/ghoneycutt/puppet-module-pam/pull/264) ([ghoneycutt](https://github.com/ghoneycutt))
 
 ## [v4.1.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v4.1.0) (2023-07-17)
 

@@ -9,12 +9,12 @@
   "issues_url": "https://github.com/ghoneycutt/puppet-module-pam/issues",
   "dependencies": [
     {
-      "name": "trlinkin/nsswitch",
-      "version_requirement": ">= 2.2.0 < 3.0.0"
+      "name": "puppet/nsswitch",
+      "version_requirement": ">= 3.0.0 < 4.0.0"
     },
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 8.5.0 < 9.0.0"
+      "version_requirement": ">= 8.5.0 < 10.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -27,7 +27,6 @@
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "10",
         "11"
       ]
     },
@@ -92,11 +91,11 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 7.0.0 < 8.0.0"
+      "version_requirement": ">= 7.0.0 < 9.0.0"
     }
   ],
   "description": "Manages PAM, including specifying users and groups in access.conf, limits.conf, and limits fragments",
   "pdk-version": "3.0.0",
   "template-url": "https://github.com/tailored-automation/pdk-templates#main",
-  "template-ref": "heads/main-0-g53868f7"
+  "template-ref": "heads/main-0-g8e0611a"
 }

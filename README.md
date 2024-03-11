@@ -33,6 +33,9 @@ though generally include things such as the following.
 The management of `/etc/security/access.conf` can be controlled by the
 `pam::manage_accesslogin` parameter (enabled by default).
 
+The management of `/etc/security/pwquality.conf` and `/etc/security/pwquality.conf.d`
+can be controlled by the `pam::manage_pwquality` parameter (disabled by default).
+
 ### Setup requirements
 This module requires `stdlib`. When deployed by default it will require
 `nsswitch`. See below for more information.

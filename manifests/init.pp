@@ -29,6 +29,9 @@
 #   in Hiera. This is useful for specifying fragments at different levels of
 #   the hierarchy and having them all included in the catalog.
 #
+# @param manage_pwquality
+#   Controls whether to manage pwquality.conf and pwquality.conf.d
+#
 # @param package_name
 #   String or Array of packages providing the pam functionality. If undef,
 #   parameter is set based on the OS version.
@@ -203,6 +206,7 @@ class pam (
   Optional[Hash] $services                                  = undef,
   Optional[Hash] $limits_fragments                          = undef,
   Boolean $limits_fragments_hiera_merge                     = false,
+  Boolean $manage_pwquality                                 = false,
   Array $pam_d_login_oracle_options                         = [],
   Stdlib::Absolutepath $pam_d_login_path                    = '/etc/pam.d/login',
   String $pam_d_login_owner                                 = 'root',
@@ -309,6 +313,10 @@ class pam (
       group   => $pam_d_sshd_group,
       mode    => $pam_d_sshd_mode,
     }
+  }
+
+  if $manage_pwquality {
+    include pam::pwquality
   }
 
   if $manage_nsswitch {

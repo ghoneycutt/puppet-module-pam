@@ -268,6 +268,16 @@ describe 'pam' do
           end
         end
 
+        context 'with manage_pwquality parameter default value' do
+          it { is_expected.not_to contain_class('pam::pwquality') }
+        end
+
+        context 'with manage_pwquality parameter set to true' do
+          let(:params) { { manage_pwquality: true } }
+
+          it { is_expected.to contain_class('pam::pwquality') }
+        end
+
         context 'with manage_nsswitch parameter default value' do
           it { is_expected.to contain_class('nsswitch') }
         end

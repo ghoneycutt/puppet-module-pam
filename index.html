@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.34
+    &mdash; Documentation by YARD 0.9.36
   
 </title>
 
@@ -102,6 +102,10 @@
 
 <p>The management of <code>/etc/security/access.conf</code> can be controlled by the <code>pam::manage_accesslogin</code> parameter (enabled by default).</p>
 
+<p>The management of <code>/etc/security/faillock.conf</code> can be controlled by the <code>pam::manage_faillock</code> parameter (disabled by default).</p>
+
+<p>The management of <code>/etc/security/pwquality.conf</code> and <code>/etc/security/pwquality.conf.d</code> can be controlled by the <code>pam::manage_pwquality</code> parameter (disabled by default).</p>
+
 <h3 id="label-Setup+requirements">Setup requirements</h3>
 
 <p>This module requires <code>stdlib</code>. When deployed by default it will require <code>nsswitch</code>. See below for more information.</p>
@@ -115,10 +119,6 @@
 <h5 id="label-SSSD">SSSD</h5>
 
 <p>This module has been deployed in production along with <a href="https://github.com/sgnl05/sgnl05-sssd">sgnl05/sssd</a>. Please see <code>examples/hiera/sssd/RedHat-6.yaml</code> file for an example with the additional SSSD entries added via hiera.</p>
-
-<h5 id="label-pwquality">pwquality</h5>
-
-<p>An example of using <a href="https://linux.die.net/man/8/pam_pwquality">pam_pwquality</a> can be found in the <code>examples/hiera/pwquality.yaml</code>.</p>
 
 <h3 id="label-Beginning+with+pam">Beginning with pam</h3>
 
@@ -254,6 +254,57 @@ pam::limits_fragments:
 <pre class="code ruby"><code class="ruby">pam::services:
   &#39;sudo&#39;:
     content : &#39;auth     required       pam_unix2.so&#39;
+</code></pre>
+
+<h4 id="label-Manage+faillock">Manage faillock</h4>
+
+<p>Management of faillock and faillock.conf is enabled via <code>pam::manage_faillock</code>.</p>
+
+<p>The following example would enable faillock, configure it, and add it to the PAM stack.</p>
+
+<pre class="code ruby"><code class="ruby">pam::manage_faillock: true
+pam::faillock::deny: 3
+pam::pam_auth_lines:
+  - &#39;auth        required      pam_env.so&#39;
+  - &#39;auth        required      pam_faillock.so preauth silent audit deny=5 unlock_time=900&#39;
+  - &#39;auth        sufficient    pam_unix.so try_first_pass nullok&#39;
+  - &#39;auth        [default=die] pam_faillock.so authfail audit deny=5 unlock_time=900&#39;
+  - &#39;auth        required      pam_deny.so&#39;
+pam::pam_account_lines:
+  - &#39;account     required      pam_faillock.so&#39;
+  - &#39;account     required      pam_unix.so&#39;
+pam::pam_password_auth_lines:
+  - &#39;auth        required      pam_env.so&#39;
+  - &#39;auth        required      pam_faillock.so preauth silent audit deny=5 unlock_time=900&#39;
+  - &#39;auth        sufficient    pam_unix.so try_first_pass nullok&#39;
+  - &#39;auth        [default=die] pam_faillock.so authfail audit deny=5 unlock_time=900&#39;
+  - &#39;auth        required      pam_deny.so&#39;
+pam::pam_password_account_lines:
+  - &#39;account     required      pam_faillock.so&#39;
+  - &#39;account     required      pam_unix.so&#39;
+</code></pre>
+
+<h4 id="label-Manage+pwquality">Manage pwquality</h4>
+
+<p>Management of pwquality and pwquality.conf is enabled via <code>pam::manage_pwquality</code>.</p>
+
+<p>The following example would enable pwquality, configure it, and add it to the PAM stack.</p>
+
+<pre class="code ruby"><code class="ruby">pam::manage_pwquality: true
+pam::pwquality::retry: 3
+pam::pwquality::maxclassrepeat: 4
+pam::pwquality::maxrepeat: 3
+pam::pwquality::minclass: 4
+pam::pwquality::difok: 8
+pam::pwquality::minlen: 15
+pam::pam_password_lines:
+  - &#39;password    requisite     pam_pwquality.so try_first_pass local_users_only difok=3 minlen=15 dcredit= 2 ocredit=2&#39;
+  - &#39;password    sufficient    pam_unix.so try_first_pass use_authtok nullok sha512 shadow&#39;
+  - &#39;password    required      pam_deny.so&#39;
+pam::pam_password_password_lines:
+  - &#39;password    requisite     pam_pwquality.so try_first_pass local_users_only difok=3 minlen=15 dcredit= 2 ocredit=2&#39;
+  - &#39;password    sufficient    pam_unix.so try_first_pass use_authtok nullok sha512 shadow&#39;
+  - &#39;password    required      pam_deny.so&#39;
 </code></pre>
 
 <h2 id="label-Usage">Usage</h2>

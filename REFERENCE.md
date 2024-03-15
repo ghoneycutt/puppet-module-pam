@@ -9,7 +9,9 @@
 * [`pam`](#pam): This module manages PAM.
 * [`pam::accesslogin`](#pam--accesslogin): Manage login access
 See PAM_ACCESS(8)
+* [`pam::faillock`](#pam--faillock): Manage faillock.conf
 * [`pam::limits`](#pam--limits): Manage PAM limits.conf
+* [`pam::pwquality`](#pam--pwquality): Manage pwquality.conf
 
 ### Defined types
 
@@ -41,6 +43,8 @@ The following parameters are available in the `pam` class:
 * [`sshd_pam_access`](#-pam--sshd_pam_access)
 * [`limits_fragments`](#-pam--limits_fragments)
 * [`limits_fragments_hiera_merge`](#-pam--limits_fragments_hiera_merge)
+* [`manage_faillock`](#-pam--manage_faillock)
+* [`manage_pwquality`](#-pam--manage_pwquality)
 * [`package_name`](#-pam--package_name)
 * [`pam_conf_file`](#-pam--pam_conf_file)
 * [`services`](#-pam--services)
@@ -139,6 +143,22 @@ Data type: `Boolean`
 Boolean to control merges of all found instances of pam::limits_fragments
 in Hiera. This is useful for specifying fragments at different levels of
 the hierarchy and having them all included in the catalog.
+
+Default value: `false`
+
+##### <a name="-pam--manage_faillock"></a>`manage_faillock`
+
+Data type: `Boolean`
+
+Controls whether to manage faillock.conf
+
+Default value: `false`
+
+##### <a name="-pam--manage_pwquality"></a>`manage_pwquality`
+
+Data type: `Boolean`
+
+Controls whether to manage pwquality.conf and pwquality.conf.d
 
 Default value: `false`
 
@@ -598,6 +618,168 @@ origin 'ALL'.
 
 Default value: `$pam::allowed_users`
 
+### <a name="pam--faillock"></a>`pam::faillock`
+
+Manage faillock.conf
+
+#### Parameters
+
+The following parameters are available in the `pam::faillock` class:
+
+* [`config_file`](#-pam--faillock--config_file)
+* [`config_file_owner`](#-pam--faillock--config_file_owner)
+* [`config_file_group`](#-pam--faillock--config_file_group)
+* [`config_file_mode`](#-pam--faillock--config_file_mode)
+* [`config_file_template`](#-pam--faillock--config_file_template)
+* [`config_file_source`](#-pam--faillock--config_file_source)
+* [`dir`](#-pam--faillock--dir)
+* [`audit_enabled`](#-pam--faillock--audit_enabled)
+* [`silent`](#-pam--faillock--silent)
+* [`no_log_info`](#-pam--faillock--no_log_info)
+* [`local_users_only`](#-pam--faillock--local_users_only)
+* [`deny`](#-pam--faillock--deny)
+* [`fail_interval`](#-pam--faillock--fail_interval)
+* [`unlock_time`](#-pam--faillock--unlock_time)
+* [`even_deny_root`](#-pam--faillock--even_deny_root)
+* [`root_unlock_time`](#-pam--faillock--root_unlock_time)
+* [`admin_group`](#-pam--faillock--admin_group)
+
+##### <a name="-pam--faillock--config_file"></a>`config_file`
+
+Data type: `Stdlib::Absolutepath`
+
+The faillock config path
+
+Default value: `'/etc/security/faillock.conf'`
+
+##### <a name="-pam--faillock--config_file_owner"></a>`config_file_owner`
+
+Data type: `String[1]`
+
+The faillock config owner
+
+Default value: `'root'`
+
+##### <a name="-pam--faillock--config_file_group"></a>`config_file_group`
+
+Data type: `String[1]`
+
+The faillock config group
+
+Default value: `'root'`
+
+##### <a name="-pam--faillock--config_file_mode"></a>`config_file_mode`
+
+Data type: `Stdlib::Filemode`
+
+The faillock config mode
+
+Default value: `'0644'`
+
+##### <a name="-pam--faillock--config_file_template"></a>`config_file_template`
+
+Data type: `String[1]`
+
+The faillock config template
+
+Default value: `'pam/faillock.conf.erb'`
+
+##### <a name="-pam--faillock--config_file_source"></a>`config_file_source`
+
+Data type: `Optional[Stdlib::Filesource]`
+
+The faillock config source
+
+Default value: `undef`
+
+##### <a name="-pam--faillock--dir"></a>`dir`
+
+Data type: `Stdlib::Absolutepath`
+
+The faillock 'dir' config option
+
+Default value: `'/var/run/faillock'`
+
+##### <a name="-pam--faillock--audit_enabled"></a>`audit_enabled`
+
+Data type: `Optional[Boolean]`
+
+The faillock 'audit' config option
+
+Default value: `undef`
+
+##### <a name="-pam--faillock--silent"></a>`silent`
+
+Data type: `Optional[Boolean]`
+
+The faillock 'silent' config option
+
+Default value: `undef`
+
+##### <a name="-pam--faillock--no_log_info"></a>`no_log_info`
+
+Data type: `Optional[Boolean]`
+
+The faillock 'no_log_info' config option
+
+Default value: `undef`
+
+##### <a name="-pam--faillock--local_users_only"></a>`local_users_only`
+
+Data type: `Optional[Boolean]`
+
+The faillock 'local_users_only' config option
+
+Default value: `undef`
+
+##### <a name="-pam--faillock--deny"></a>`deny`
+
+Data type: `Integer[0]`
+
+The faillock 'deny' config option
+
+Default value: `3`
+
+##### <a name="-pam--faillock--fail_interval"></a>`fail_interval`
+
+Data type: `Integer[0]`
+
+The faillock 'fail_interval' config option
+
+Default value: `900`
+
+##### <a name="-pam--faillock--unlock_time"></a>`unlock_time`
+
+Data type: `Integer[0]`
+
+The faillock 'unlock_time' config option
+
+Default value: `600`
+
+##### <a name="-pam--faillock--even_deny_root"></a>`even_deny_root`
+
+Data type: `Optional[Boolean]`
+
+The faillock 'even_deny_root' config option
+
+Default value: `undef`
+
+##### <a name="-pam--faillock--root_unlock_time"></a>`root_unlock_time`
+
+Data type: `Integer[0]`
+
+The faillock 'root_unlock_time' config option
+
+Default value: `$unlock_time`
+
+##### <a name="-pam--faillock--admin_group"></a>`admin_group`
+
+Data type: `Optional[String[1]]`
+
+The faillock 'admin_group' config option
+
+Default value: `undef`
+
 ### <a name="pam--limits"></a>`pam::limits`
 
 Manage PAM limits.conf
@@ -685,6 +867,311 @@ Default value: `false`
 Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
 A glob or array of file names to ignore when purging limits.d
+
+Default value: `undef`
+
+### <a name="pam--pwquality"></a>`pam::pwquality`
+
+Manage pwquality.conf
+
+#### Examples
+
+##### 
+
+```puppet
+This class is included by the pam class for platforms which use it.
+```
+
+#### Parameters
+
+The following parameters are available in the `pam::pwquality` class:
+
+* [`config_file`](#-pam--pwquality--config_file)
+* [`config_file_owner`](#-pam--pwquality--config_file_owner)
+* [`config_file_group`](#-pam--pwquality--config_file_group)
+* [`config_file_mode`](#-pam--pwquality--config_file_mode)
+* [`config_file_source`](#-pam--pwquality--config_file_source)
+* [`config_file_template`](#-pam--pwquality--config_file_template)
+* [`config_d_dir`](#-pam--pwquality--config_d_dir)
+* [`config_d_dir_owner`](#-pam--pwquality--config_d_dir_owner)
+* [`config_d_dir_group`](#-pam--pwquality--config_d_dir_group)
+* [`config_d_dir_mode`](#-pam--pwquality--config_d_dir_mode)
+* [`purge_config_d_dir`](#-pam--pwquality--purge_config_d_dir)
+* [`purge_config_d_dir_ignore`](#-pam--pwquality--purge_config_d_dir_ignore)
+* [`difok`](#-pam--pwquality--difok)
+* [`minlen`](#-pam--pwquality--minlen)
+* [`dcredit`](#-pam--pwquality--dcredit)
+* [`ucredit`](#-pam--pwquality--ucredit)
+* [`lcredit`](#-pam--pwquality--lcredit)
+* [`ocredit`](#-pam--pwquality--ocredit)
+* [`minclass`](#-pam--pwquality--minclass)
+* [`maxrepeat`](#-pam--pwquality--maxrepeat)
+* [`maxsequence`](#-pam--pwquality--maxsequence)
+* [`maxclassrepeat`](#-pam--pwquality--maxclassrepeat)
+* [`gecoscheck`](#-pam--pwquality--gecoscheck)
+* [`dictcheck`](#-pam--pwquality--dictcheck)
+* [`usercheck`](#-pam--pwquality--usercheck)
+* [`usersubstr`](#-pam--pwquality--usersubstr)
+* [`enforcing`](#-pam--pwquality--enforcing)
+* [`badwords`](#-pam--pwquality--badwords)
+* [`dictpath`](#-pam--pwquality--dictpath)
+* [`retry`](#-pam--pwquality--retry)
+* [`enforce_for_root`](#-pam--pwquality--enforce_for_root)
+* [`local_users_only`](#-pam--pwquality--local_users_only)
+
+##### <a name="-pam--pwquality--config_file"></a>`config_file`
+
+Data type: `Stdlib::Absolutepath`
+
+Path to pwquality.conf.
+
+Default value: `'/etc/security/pwquality.conf'`
+
+##### <a name="-pam--pwquality--config_file_owner"></a>`config_file_owner`
+
+Data type: `String[1]`
+
+Owner for pwquality.conf
+
+Default value: `'root'`
+
+##### <a name="-pam--pwquality--config_file_group"></a>`config_file_group`
+
+Data type: `String[1]`
+
+Group for pwquality.conf
+
+Default value: `'root'`
+
+##### <a name="-pam--pwquality--config_file_mode"></a>`config_file_mode`
+
+Data type: `Stdlib::Filemode`
+
+Mode for config_file.
+
+Default value: `'0644'`
+
+##### <a name="-pam--pwquality--config_file_source"></a>`config_file_source`
+
+Data type: `Optional[Stdlib::Filesource]`
+
+String with source path to a pwquality.conf
+
+Default value: `undef`
+
+##### <a name="-pam--pwquality--config_file_template"></a>`config_file_template`
+
+Data type: `String[1]`
+
+Template to render pwquality.conf
+
+Default value: `'pam/pwquality.conf.erb'`
+
+##### <a name="-pam--pwquality--config_d_dir"></a>`config_d_dir`
+
+Data type: `Stdlib::Absolutepath`
+
+Path to pwquality.conf.d directory.
+
+Default value: `'/etc/security/pwquality.conf.d'`
+
+##### <a name="-pam--pwquality--config_d_dir_owner"></a>`config_d_dir_owner`
+
+Data type: `String[1]`
+
+Owner for pwquality.conf.d
+
+Default value: `'root'`
+
+##### <a name="-pam--pwquality--config_d_dir_group"></a>`config_d_dir_group`
+
+Data type: `String[1]`
+
+Group for pwquality.conf.d
+
+Default value: `'root'`
+
+##### <a name="-pam--pwquality--config_d_dir_mode"></a>`config_d_dir_mode`
+
+Data type: `Stdlib::Filemode`
+
+Mode for pwquality.conf.d
+
+Default value: `'0755'`
+
+##### <a name="-pam--pwquality--purge_config_d_dir"></a>`purge_config_d_dir`
+
+Data type: `Boolean`
+
+Boolean to purge the pwquality.conf.d directory.
+
+Default value: `true`
+
+##### <a name="-pam--pwquality--purge_config_d_dir_ignore"></a>`purge_config_d_dir_ignore`
+
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
+
+A glob or array of file names to ignore when purging pwquality.conf.d
+
+Default value: `undef`
+
+##### <a name="-pam--pwquality--difok"></a>`difok`
+
+Data type: `Integer[0]`
+
+The pwquality.conf 'difok' option
+
+Default value: `1`
+
+##### <a name="-pam--pwquality--minlen"></a>`minlen`
+
+Data type: `Integer[6]`
+
+The pwquality.conf 'minlen' option
+
+Default value: `8`
+
+##### <a name="-pam--pwquality--dcredit"></a>`dcredit`
+
+Data type: `Integer`
+
+The pwquality.conf 'dcredit' option
+
+Default value: `0`
+
+##### <a name="-pam--pwquality--ucredit"></a>`ucredit`
+
+Data type: `Integer`
+
+The pwquality.conf 'ucredit' option
+
+Default value: `0`
+
+##### <a name="-pam--pwquality--lcredit"></a>`lcredit`
+
+Data type: `Integer`
+
+The pwquality.conf 'lcredit' option
+
+Default value: `0`
+
+##### <a name="-pam--pwquality--ocredit"></a>`ocredit`
+
+Data type: `Integer`
+
+The pwquality.conf 'ocredit' option
+
+Default value: `0`
+
+##### <a name="-pam--pwquality--minclass"></a>`minclass`
+
+Data type: `Integer[0]`
+
+The pwquality.conf 'minclass' option
+
+Default value: `0`
+
+##### <a name="-pam--pwquality--maxrepeat"></a>`maxrepeat`
+
+Data type: `Integer[0]`
+
+The pwquality.conf 'maxrepeat' option
+
+Default value: `0`
+
+##### <a name="-pam--pwquality--maxsequence"></a>`maxsequence`
+
+Data type: `Integer[0]`
+
+The pwquality.conf 'maxsequence' option
+
+Default value: `0`
+
+##### <a name="-pam--pwquality--maxclassrepeat"></a>`maxclassrepeat`
+
+Data type: `Integer[0]`
+
+The pwquality.conf 'maxclassrepeat' option
+
+Default value: `0`
+
+##### <a name="-pam--pwquality--gecoscheck"></a>`gecoscheck`
+
+Data type: `Integer[0]`
+
+The pwquality.conf 'gecoscheck' option
+
+Default value: `0`
+
+##### <a name="-pam--pwquality--dictcheck"></a>`dictcheck`
+
+Data type: `Integer[0]`
+
+The pwquality.conf 'dictcheck' option
+
+Default value: `1`
+
+##### <a name="-pam--pwquality--usercheck"></a>`usercheck`
+
+Data type: `Integer[0]`
+
+The pwquality.conf 'usercheck' option
+
+Default value: `1`
+
+##### <a name="-pam--pwquality--usersubstr"></a>`usersubstr`
+
+Data type: `Integer[0]`
+
+The pwquality.conf 'usersubstr' option
+
+Default value: `0`
+
+##### <a name="-pam--pwquality--enforcing"></a>`enforcing`
+
+Data type: `Integer[0]`
+
+The pwquality.conf 'enforcing' option
+
+Default value: `1`
+
+##### <a name="-pam--pwquality--badwords"></a>`badwords`
+
+Data type: `Optional[Array[String[1]]]`
+
+The pwquality.conf 'badwords' option
+
+Default value: `undef`
+
+##### <a name="-pam--pwquality--dictpath"></a>`dictpath`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+The pwquality.conf 'dictpath' option
+
+Default value: `undef`
+
+##### <a name="-pam--pwquality--retry"></a>`retry`
+
+Data type: `Integer[0]`
+
+The pwquality.conf 'retry' option
+
+Default value: `1`
+
+##### <a name="-pam--pwquality--enforce_for_root"></a>`enforce_for_root`
+
+Data type: `Optional[Boolean]`
+
+The pwquality.conf 'enforce_for_root' option
+
+Default value: `undef`
+
+##### <a name="-pam--pwquality--local_users_only"></a>`local_users_only`
+
+Data type: `Optional[Boolean]`
+
+The pwquality.conf 'local_users_only' option
 
 Default value: `undef`
 

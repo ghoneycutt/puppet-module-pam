@@ -33,6 +33,12 @@ though generally include things such as the following.
 The management of `/etc/security/access.conf` can be controlled by the
 `pam::manage_accesslogin` parameter (enabled by default).
 
+The management of `/etc/security/faillock.conf` can be controlled by the
+`pam::manage_faillock` parameter (disabled by default).
+
+The management of `/etc/security/pwquality.conf` and `/etc/security/pwquality.conf.d`
+can be controlled by the `pam::manage_pwquality` parameter (disabled by default).
+
 ### Setup requirements
 This module requires `stdlib`. When deployed by default it will require
 `nsswitch`. See below for more information.
@@ -52,11 +58,6 @@ This module has been deployed in production along with
 [sgnl05/sssd](https://github.com/sgnl05/sgnl05-sssd). Please see
 `examples/hiera/sssd/RedHat-6.yaml` file for an example with the
 additional SSSD entries added via hiera.
-
-##### pwquality
-
-An example of using [pam_pwquality](https://linux.die.net/man/8/pam_pwquality) can be found
-in the `examples/hiera/pwquality.yaml`.
 
 ### Beginning with pam
 
@@ -200,6 +201,59 @@ You can specify a hash to manage the services in Hiera
 pam::services:
   'sudo':
     content : 'auth     required       pam_unix2.so'
+```
+
+#### Manage faillock
+
+Management of faillock and faillock.conf is enabled via `pam::manage_faillock`.
+
+The following example would enable faillock, configure it, and add it to the PAM stack.
+
+```yaml
+pam::manage_faillock: true
+pam::faillock::deny: 3
+pam::pam_auth_lines:
+  - 'auth        required      pam_env.so'
+  - 'auth        required      pam_faillock.so preauth silent audit deny=5 unlock_time=900'
+  - 'auth        sufficient    pam_unix.so try_first_pass nullok'
+  - 'auth        [default=die] pam_faillock.so authfail audit deny=5 unlock_time=900'
+  - 'auth        required      pam_deny.so'
+pam::pam_account_lines:
+  - 'account     required      pam_faillock.so'
+  - 'account     required      pam_unix.so'
+pam::pam_password_auth_lines:
+  - 'auth        required      pam_env.so'
+  - 'auth        required      pam_faillock.so preauth silent audit deny=5 unlock_time=900'
+  - 'auth        sufficient    pam_unix.so try_first_pass nullok'
+  - 'auth        [default=die] pam_faillock.so authfail audit deny=5 unlock_time=900'
+  - 'auth        required      pam_deny.so'
+pam::pam_password_account_lines:
+  - 'account     required      pam_faillock.so'
+  - 'account     required      pam_unix.so'
+```
+
+#### Manage pwquality
+
+Management of pwquality and pwquality.conf is enabled via `pam::manage_pwquality`.
+
+The following example would enable pwquality, configure it, and add it to the PAM stack.
+
+```yaml
+pam::manage_pwquality: true
+pam::pwquality::retry: 3
+pam::pwquality::maxclassrepeat: 4
+pam::pwquality::maxrepeat: 3
+pam::pwquality::minclass: 4
+pam::pwquality::difok: 8
+pam::pwquality::minlen: 15
+pam::pam_password_lines:
+  - 'password    requisite     pam_pwquality.so try_first_pass local_users_only difok=3 minlen=15 dcredit= 2 ocredit=2'
+  - 'password    sufficient    pam_unix.so try_first_pass use_authtok nullok sha512 shadow'
+  - 'password    required      pam_deny.so'
+pam::pam_password_password_lines:
+  - 'password    requisite     pam_pwquality.so try_first_pass local_users_only difok=3 minlen=15 dcredit= 2 ocredit=2'
+  - 'password    sufficient    pam_unix.so try_first_pass use_authtok nullok sha512 shadow'
+  - 'password    required      pam_deny.so'
 ```
 
 ## Usage

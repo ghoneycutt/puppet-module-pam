@@ -266,8 +266,8 @@ class pam (
     fail("osfamily Suse's os.release.major is <${::facts['os']['release']['major']}> and must be 9, 10, 11, 12, 13 or 15")
   }
 
-  if $facts['os']['name'] == 'Debian' and !($facts['os']['release']['major'] in ['7','8','9','10', '11']) {
-    fail("Debian's os.release.major is <${facts['os']['release']['major']}> and must be 7, 8, 9, 10 or 11")
+  if $facts['os']['name'] == 'Debian' and !($facts['os']['release']['major'] in ['7','8','9','10','11','12']) {
+    fail("Debian's os.release.major is <${facts['os']['release']['major']}> and must be 7, 8, 9, 10, 11 or 12")
   }
 
   if $facts['os']['name'] == 'Ubuntu' and !($facts['os']['release']['major'] in ['12.04', '14.04', '16.04', '18.04', '20.04', '22.04']) {

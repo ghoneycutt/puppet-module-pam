@@ -121,7 +121,7 @@
       
         &mdash;
         <div class='inline'>
-<p>String, Array or Hash of strings and/or arrays to configure users and origins in access.conf. The default allows the root user/group from origin ‘ALL’.</p>
+<p>String, Array or Hash of strings and/or arrays to configure users and origins in access.conf. The default allows the root user/group from origin &#39;ALL&#39;.</p>
 </div>
       
     </li>
@@ -157,7 +157,7 @@
       
         &mdash;
         <div class='inline'>
-<p>Control module to be used for pam_access.so for login. Valid values are ‘required’, ‘requisite’, ‘sufficient’, ‘optional’ and ‘absent’.</p>
+<p>Control module to be used for pam_access.so for login. Valid values are &#39;required&#39;, &#39;requisite&#39;, &#39;sufficient&#39;, &#39;optional&#39; and &#39;absent&#39;.</p>
 </div>
       
     </li>
@@ -175,7 +175,7 @@
       
         &mdash;
         <div class='inline'>
-<p>Control module to be used for pam_access.so for sshd. Valid values are ‘required’, ‘requisite’, ‘sufficient’, ‘optional’ and ‘absent’.</p>
+<p>Control module to be used for pam_access.so for sshd. Valid values are &#39;required&#39;, &#39;requisite&#39;, &#39;sufficient&#39;, &#39;optional&#39; and &#39;absent&#39;.</p>
 </div>
       
     </li>
@@ -1229,27 +1229,7 @@
 371
 372
 373
-374
-375
-376
-377
-378
-379
-380
-381
-382
-383
-384
-385
-386
-387
-388
-389
-390
-391
-392
-393
-394</pre>
+374</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/init.pp', line 200</span>
@@ -1310,26 +1290,6 @@ class pam (
   Boolean $common_files_create_links                        = false,
   Optional[String] $common_files_suffix                     = undef,
 ) {
-  # Fail on unsupported platforms
-  if $facts[&#39;os&#39;][&#39;family&#39;] == &#39;RedHat&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;2&#39;,&#39;5&#39;,&#39;6&#39;,&#39;7&#39;,&#39;8&#39;, &#39;9&#39;]) {
-    fail(&quot;osfamily RedHat&#39;s os.release.major is &lt;${::facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 2, 5, 6, 7, 8 or 9&quot;)
-  }
-
-  if $facts[&#39;os&#39;][&#39;family&#39;] == &#39;Solaris&#39; and !($facts[&#39;kernelrelease&#39;] in [&#39;5.9&#39;,&#39;5.10&#39;,&#39;5.11&#39;]) {
-    fail(&quot;osfamily Solaris&#39; kernelrelease is &lt;${facts[&#39;kernelrelease&#39;]}&gt; and must be 5.9, 5.10 or 5.11&quot;)
-  }
-
-  if $facts[&#39;os&#39;][&#39;family&#39;] == &#39;Suse&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;9&#39;,&#39;10&#39;,&#39;11&#39;,&#39;12&#39;,&#39;13&#39;,&#39;15&#39;]) {
-    fail(&quot;osfamily Suse&#39;s os.release.major is &lt;${::facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 9, 10, 11, 12, 13 or 15&quot;)
-  }
-
-  if $facts[&#39;os&#39;][&#39;name&#39;] == &#39;Debian&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;7&#39;,&#39;8&#39;,&#39;9&#39;,&#39;10&#39;, &#39;11&#39;]) {
-    fail(&quot;Debian&#39;s os.release.major is &lt;${facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 7, 8, 9, 10 or 11&quot;)
-  }
-
-  if $facts[&#39;os&#39;][&#39;name&#39;] == &#39;Ubuntu&#39; and !($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] in [&#39;12.04&#39;, &#39;14.04&#39;, &#39;16.04&#39;, &#39;18.04&#39;, &#39;20.04&#39;, &#39;22.04&#39;]) {
-    fail(&quot;Ubuntu&#39;s os.release.major is &lt;${facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}&gt; and must be 12.04, 14.04, 16.04, 18.04, 20.04 or 22.04&quot;)
-  }
 
   if $pam_d_sshd_template == &#39;pam/sshd.custom.erb&#39; {
     unless $pam_sshd_auth_lines and

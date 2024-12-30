@@ -10,7 +10,7 @@
   "dependencies": [
     {
       "name": "puppet/nsswitch",
-      "version_requirement": ">= 3.0.0 < 4.0.0"
+      "version_requirement": ">= 3.2.0 < 4.0.0"
     },
     {
       "name": "puppetlabs/stdlib",
@@ -27,7 +27,8 @@
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "11"
+        "11",
+        "12"
       ]
     },
     {

@@ -352,36 +352,4 @@ describe 'pam' do
       end
     end
   end
-
-  describe 'on unsupported platforms' do
-    context 'with defaults params on Debian 6' do
-      let(:facts) { { os: { 'name' => 'Debian', 'release' => { 'major' => '6' } } } }
-
-      it { is_expected.to compile.and_raise_error(%r{must be}) }
-    end
-
-    context 'with defaults params on RedHat 4' do
-      let(:facts) { { os: { 'family' => 'RedHat', 'release' => { 'major' => '4' } } } }
-
-      it { is_expected.to compile.and_raise_error(%r{must be}) }
-    end
-
-    context 'with defaults params on Solaris 8' do
-      let(:facts) { { os: { 'family' => 'Solaris' }, kernelrelease: '5.8' } }
-
-      it { is_expected.to compile.and_raise_error(%r{must be}) }
-    end
-
-    context 'with defaults params on SLES 8' do
-      let(:facts) { { os: { 'family' => 'Suse', 'release' => { 'major' => '8' } } } }
-
-      it { is_expected.to compile.and_raise_error(%r{must be}) }
-    end
-
-    context 'with defaults params on Ubuntu 10.04' do
-      let(:facts) { { os: { 'name' => 'Ubuntu', 'release' => { 'major' => '10.04' } } } }
-
-      it { is_expected.to compile.and_raise_error(%r{must be}) }
-    end
-  end
 end

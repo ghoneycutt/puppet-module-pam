@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v5.2.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v5.2.0) (2024-12-30)
+
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v5.1.0...v5.2.0)
+
+### Merged pull requests:
+
+- Debian12 [\#278](https://github.com/ghoneycutt/puppet-module-pam/pull/278) ([ghoneycutt](https://github.com/ghoneycutt))
+
 ## [v5.1.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v5.1.0) (2024-03-15)
 
 [Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v5.0.0...v5.1.0)

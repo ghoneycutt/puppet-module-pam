@@ -22,7 +22,7 @@ group :development do
   gem "faraday", '~> 1.0',              require: false
   gem "github_changelog_generator",     require: false
   gem "puppet-blacksmith",              require: false
-  gem "puppet-strings",                 require: false
+  gem "puppet-strings",                 require: false, git: 'https://github.com/ghoneycutt/puppet-strings.git', ref: 'configure_push'
 end
 group :system_tests do
   gem "beaker", *location_for(ENV['BEAKER_VERSION'] || '~> 4.29')

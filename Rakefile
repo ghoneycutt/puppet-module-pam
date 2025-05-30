@@ -101,3 +101,7 @@ end
 desc "Release new module version (changelog, reference, commit, tag, gh pages)"
 task :release => [:changelog, "strings:generate:reference", "release:commit", "module:tag"]
 
+desc 'test pushing to gh-pages'
+task :'gh_pages:push' do
+  Rake::Task['strings:gh_pages:push'].invoke("(docs) auto-generated update")
+end

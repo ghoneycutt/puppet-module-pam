@@ -288,6 +288,16 @@ describe 'pam' do
           it { is_expected.to contain_class('pam::pwquality') }
         end
 
+        context 'with manage_pwhistory parameter default value' do
+          it { is_expected.not_to contain_class('pam::pwhistory') }
+        end
+
+        context 'with manage_pwhistory parameter set to true' do
+          let(:params) { { manage_pwhistory: true } }
+
+          it { is_expected.to contain_class('pam::pwhistory') }
+        end
+
         context 'with manage_nsswitch parameter default value' do
           it { is_expected.to contain_class('nsswitch') }
         end

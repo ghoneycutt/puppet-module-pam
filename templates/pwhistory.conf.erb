@@ -1,0 +1,44 @@
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+#
+# Configuration for remembering the last passwords used by a user.
+#
+# Enable the debugging logs.
+# Enabled if option is present.
+<% if @debug == true -%>
+debug
+<% else -%>
+# debug
+<% end -%>
+#
+# root account's passwords are also remembered.
+# Enabled if option is present.
+<% if @enforce_for_root == true -%>
+enforce_for_root
+<% else -%>
+# enforce_for_root
+<% end -%>
+#
+# Number of passwords to remember.
+# The default is 10.
+<% if @remember != nil -%>
+remember = <%= @remember %>
+<% else -%>
+# remember = 10
+<% end -%>
+#
+# Number of times to prompt for the password.
+# The default is 1.
+<% if @retry != nil -%>
+retry = <%= @retry %>
+<% else -%>
+# retry = 1
+<% end -%>
+#
+# The directory where the last passwords are kept.
+# The default is /etc/security/opasswd.
+<% if @file != nil -%>
+file = <%= @file %>
+<% else -%>
+# file = /etc/security/opasswd
+<% end -%>

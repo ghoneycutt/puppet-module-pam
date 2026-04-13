@@ -19,7 +19,7 @@ minor_version = ruby_version_segments[0..1].join('.')
 group :development do
   gem "voxpupuli-test", '6.0.0',        require: false
   gem "rubocop-performance", '~> 1.18', require: false
-  gem "faraday", '~> 1.0',              require: false
+  gem "faraday", '~> 2.14',              require: false
   gem "github_changelog_generator",     require: false
   gem "puppet-blacksmith",              require: false
   gem "puppet-strings",                 require: false

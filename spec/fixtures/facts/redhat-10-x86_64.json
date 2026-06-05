@@ -1,0 +1,39 @@
+{
+  "os": {
+    "name": "RedHat",
+    "family": "RedHat",
+    "release": {
+      "major": "10",
+      "minor": "0",
+      "full": "10.0"
+    },
+    "selinux": {
+      "enabled": true
+    }
+  },
+  "operatingsystem": "RedHat",
+  "operatingsystemrelease": "10.0",
+  "operatingsystemmajrelease": "10",
+  "osfamily": "RedHat",
+  "hardwaremodel": "x86_64",
+  "architecture": "x86_64",
+  "id": "root",
+  "identity": {
+    "user": "root",
+    "group": "root",
+    "uid": 0,
+    "gid": 0
+  },
+  "kernel": "Linux",
+  "path": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+  "fqdn": "://example.com",
+  "hostname": "rhel10-test",
+  "domain": "example.com",
+  "is_virtual": false,
+  "virtual": "physical",
+  "networking": {
+    "fqdn": "://example.com",
+    "hostname": "rhel10-test",
+    "domain": "example.com"
+  }
+}

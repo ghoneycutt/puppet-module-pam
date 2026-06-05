@@ -28,7 +28,7 @@ describe 'pam' do
       it { is_expected.to be_mode 644 }
       it {
         if fact('os.family') == 'RedHat'
-          if fact('os.release.major') =~ %r{8|9}
+          if fact('os.release.major') =~ %r{8|9|10}
             is_expected.not_to match(%r{^account\s+required\s+pam_access.so$})
           else
             is_expected.to match(%r{^account\s+required\s+pam_access.so$})
@@ -44,7 +44,7 @@ describe 'pam' do
       it { is_expected.to be_mode 644 }
       it {
         if fact('os.family') == 'RedHat'
-          if fact('os.release.major') =~ %r{8|9}
+          if fact('os.release.major') =~ %r{8|9|10}
             is_expected.not_to match(%r{^account\s+required\s+pam_access.so$})
           else
             is_expected.to match(%r{^account\s+required\s+pam_access.so$})
@@ -70,7 +70,7 @@ describe 'pam' do
       its(:content) { is_expected.to match(%r{^$|^#}) }
     end
 
-    if fact('os.family') == 'RedHat' && fact('os.release.major') != '9'
+    if fact('os.family') == 'RedHat' && !['9', '10'].include?(fact('os.release.major'))
       ['password-auth', 'system-auth'].each do |f|
         describe file("/etc/pam.d/#{f}-ac") do
           it { is_expected.to be_file }
@@ -85,7 +85,7 @@ describe 'pam' do
       end
     end
 
-    if fact('os.family') == 'RedHat' && fact('os.release.major') == '9'
+    if fact('os.family') == 'RedHat' && ['9', '10'].include?(fact('os.release.major'))
       ['password-auth', 'system-auth'].each do |f|
         describe file("/etc/pam.d/#{f}") do
           it { is_expected.to be_file }

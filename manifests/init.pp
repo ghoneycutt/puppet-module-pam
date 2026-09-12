@@ -35,6 +35,9 @@
 # @param manage_pwquality
 #   Controls whether to manage pwquality.conf and pwquality.conf.d
 #
+# @param manage_pwhistory
+#   Controls whether to manage pwhistory.conf and pwhistory.conf.d
+#
 # @param package_name
 #   String or Array of packages providing the pam functionality. If undef,
 #   parameter is set based on the OS version.
@@ -211,6 +214,7 @@ class pam (
   Boolean $limits_fragments_hiera_merge                     = false,
   Boolean $manage_faillock                                  = false,
   Boolean $manage_pwquality                                 = false,
+  Boolean $manage_pwhistory                                 = false,
   Array $pam_d_login_oracle_options                         = [],
   Stdlib::Absolutepath $pam_d_login_path                    = '/etc/pam.d/login',
   String $pam_d_login_owner                                 = 'root',
@@ -305,6 +309,10 @@ class pam (
 
   if $manage_pwquality {
     include pam::pwquality
+  }
+
+  if $manage_pwhistory {
+    include pam::pwhistory
   }
 
   if $manage_nsswitch {

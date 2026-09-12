@@ -1,5 +1,5 @@
 {
-	"name": "Puppet Development Kit (Community)",
+	"name": "OpenVox Module Development",
 	"dockerFile": "Dockerfile",
 
 	"settings": {

@@ -1,0 +1,137 @@
+---
+# Offenses that predate the adoption of the voxpupuli-rubocop ruleset are
+# excluded here rather than fixed, to avoid a mass style rewrite that would
+# obliterate git history and conflict with open PRs. New code outside these
+# exclusions must comply.
+
+Layout/EmptyLineAfterGuardClause:
+  Exclude:
+    - 'spec/**/*'
+
+Layout/HashAlignment:
+  Exclude:
+    - 'spec/**/*'
+
+Layout/LineLength:
+  Exclude:
+    - 'spec/**/*'
+
+Layout/SpaceAroundMethodCallOperator:
+  Exclude:
+    - 'spec/**/*'
+
+Layout/SpaceInsideArrayLiteralBrackets:
+  Exclude:
+    - 'spec/**/*'
+
+Lint/DuplicateBranch:
+  Exclude:
+    - 'spec/**/*'
+
+Naming/HeredocDelimiterNaming:
+  Exclude:
+    - 'spec/**/*'
+
+Performance/CollectionLiteralInLoop:
+  Exclude:
+    - 'spec/**/*'
+
+Performance/RegexpMatch:
+  Exclude:
+    - 'spec/**/*'
+
+RSpec/ContextWording:
+  Exclude:
+    - 'spec/**/*'
+
+RSpec/DescribeClass:
+  Exclude:
+    - 'spec/**/*'
+
+RSpec/EmptyLineAfterExample:
+  Exclude:
+    - 'spec/**/*'
+
+RSpec/EmptyLineAfterExampleGroup:
+  Exclude:
+    - 'spec/**/*'
+
+RSpec/ExampleLength:
+  Exclude:
+    - 'spec/**/*'
+
+RSpec/HookArgument:
+  Exclude:
+    - 'spec/**/*'
+
+RSpec/ImplicitSubject:
+  Exclude:
+    - 'spec/**/*'
+
+RSpec/MultipleExpectations:
+  Exclude:
+    - 'spec/**/*'
+
+RSpec/NestedGroups:
+  Exclude:
+    - 'spec/**/*'
+
+RSpec/NoExpectationExample:
+  Exclude:
+    - 'spec/**/*'
+
+RSpec/RepeatedExampleGroupBody:
+  Exclude:
+    - 'spec/**/*'
+
+Style/BlockDelimiters:
+  Exclude:
+    - 'spec/**/*'
+
+Style/CombinableLoops:
+  Exclude:
+    - 'spec/**/*'
+
+Style/Dir:
+  Exclude:
+    - 'spec/**/*'
+
+Style/EmptyElse:
+  Exclude:
+    - 'spec/**/*'
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - 'spec/**/*'
+
+Style/IfUnlessModifier:
+  Exclude:
+    - 'spec/**/*'
+
+Style/MixinUsage:
+  Exclude:
+    - 'spec/**/*'
+
+Style/RedundantRegexpCharacterClass:
+  Exclude:
+    - 'spec/**/*'
+
+Style/RegexpLiteral:
+  Exclude:
+    - 'spec/**/*'
+
+Style/RescueStandardError:
+  Exclude:
+    - 'spec/**/*'
+
+Style/StringConcatenation:
+  Exclude:
+    - 'spec/**/*'
+
+Style/SymbolArray:
+  Exclude:
+    - 'spec/**/*'
+
+Style/WordArray:
+  Exclude:
+    - 'spec/**/*'

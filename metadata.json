@@ -92,12 +92,9 @@
   ],
   "requirements": [
     {
-      "name": "puppet",
-      "version_requirement": ">= 7.0.0 < 9.0.0"
+      "name": "openvox",
+      "version_requirement": ">= 8.19.0 < 9.0.0"
     }
   ],
-  "description": "Manages PAM, including specifying users and groups in access.conf, limits.conf, and limits fragments",
-  "pdk-version": "3.3.0",
-  "template-url": "https://github.com/tailored-automation/pdk-templates#main",
-  "template-ref": "heads/main-0-g8e0611a"
+  "description": "Manages PAM, including specifying users and groups in access.conf, limits.conf, and limits fragments"
 }

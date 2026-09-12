@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.0.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v6.0.0) (2026-09-12)
+
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v5.3.0...v6.0.0)
+
+### Merged pull requests:
+
+- Remove end of life platforms from support [\#286](https://github.com/ghoneycutt/puppet-module-pam/pull/286) ([ghoneycutt](https://github.com/ghoneycutt))
+- Adopt OpenVox and Vox Pupuli tooling, drop Puppet 7 and PDK [\#285](https://github.com/ghoneycutt/puppet-module-pam/pull/285) ([ghoneycutt](https://github.com/ghoneycutt))
+
 ## [v5.3.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v5.3.0) (2024-12-30)
 
 [Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v5.2.0...v5.3.0)
@@ -207,7 +216,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [v3.0.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v3.0.0) (2018-11-09)
 
-[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.34.0...v3.0.0)
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/2.34.0...v3.0.0)
 
 ### Merged pull requests:
 
@@ -223,13 +232,13 @@ All notable changes to this project will be documented in this file. The format 
 - Remove VAS logic and create examples that show old behavior [\#169](https://github.com/ghoneycutt/puppet-module-pam/pull/169) ([treydock](https://github.com/treydock))
 - Add example SSSD integration using hiera [\#143](https://github.com/ghoneycutt/puppet-module-pam/pull/143) ([jeffmccune](https://github.com/jeffmccune))
 
-## [v2.34.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.34.0) (2018-09-18)
-
-[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/2.34.0...v2.34.0)
-
 ## [2.34.0](https://github.com/ghoneycutt/puppet-module-pam/tree/2.34.0) (2018-09-18)
 
-[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.33.0...2.34.0)
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.34.0...2.34.0)
+
+## [v2.34.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.34.0) (2018-09-18)
+
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v2.33.0...v2.34.0)
 
 ## [v2.33.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.33.0) (2017-04-20)
 
@@ -404,7 +413,6 @@ All notable changes to this project will be documented in this file. The format 
 
 - Add ensure attribute for limits fragment [\#109](https://github.com/ghoneycutt/puppet-module-pam/pull/109) ([jwennerberg](https://github.com/jwennerberg))
 - Update testing and metadata [\#108](https://github.com/ghoneycutt/puppet-module-pam/pull/108) ([ghoneycutt](https://github.com/ghoneycutt))
-- Refactored spec tests [\#104](https://github.com/ghoneycutt/puppet-module-pam/pull/104) ([ghost](https://github.com/ghost))
 
 ## [v2.15.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.15.0) (2015-02-05)
 
@@ -467,16 +475,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Merged pull requests:
 
-- Add suse 12 support [\#80](https://github.com/ghoneycutt/puppet-module-pam/pull/80) ([ghost](https://github.com/ghost))
 - Add suse 12 support [\#77](https://github.com/ghoneycutt/puppet-module-pam/pull/77) ([eabecho](https://github.com/eabecho))
 
 ## [v2.8.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.8.0) (2014-09-30)
 
 [Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v1.2.0...v2.8.0)
-
-### Merged pull requests:
-
-- Add ensure\_vas for Solaris 10 [\#79](https://github.com/ghoneycutt/puppet-module-pam/pull/79) ([ghost](https://github.com/ghost))
 
 ## [v1.2.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v1.2.0) (2014-09-27)
 
@@ -554,7 +557,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Merged pull requests:
 
 - Improve spec tests - ensure require attribute is tested [\#51](https://github.com/ghoneycutt/puppet-module-pam/pull/51) ([ghoneycutt](https://github.com/ghoneycutt))
-- Fixed refrence to pam-package [\#50](https://github.com/ghoneycutt/puppet-module-pam/pull/50) ([philippvh](https://github.com/philippvh))
 
 ## [v2.4.2](https://github.com/ghoneycutt/puppet-module-pam/tree/v2.4.2) (2014-02-01)
 
@@ -628,7 +630,6 @@ All notable changes to this project will be documented in this file. The format 
 - Collab spec tests with marulkan [\#16](https://github.com/ghoneycutt/puppet-module-pam/pull/16) ([ghoneycutt](https://github.com/ghoneycutt))
 - Collab spec tests with nyren [\#13](https://github.com/ghoneycutt/puppet-module-pam/pull/13) ([ghoneycutt](https://github.com/ghoneycutt))
 - Collab with mwinther spec [\#8](https://github.com/ghoneycutt/puppet-module-pam/pull/8) ([ghoneycutt](https://github.com/ghoneycutt))
-- Add more documentation [\#6](https://github.com/ghoneycutt/puppet-module-pam/pull/6) ([ghost](https://github.com/ghost))
 - Docs working with jonathanbower [\#4](https://github.com/ghoneycutt/puppet-module-pam/pull/4) ([ghoneycutt](https://github.com/ghoneycutt))
 - First stab to document this module. [\#3](https://github.com/ghoneycutt/puppet-module-pam/pull/3) ([jonathanbower](https://github.com/jonathanbower))
 

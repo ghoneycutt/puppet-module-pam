@@ -40,7 +40,9 @@
 #   parameter is set based on the OS version.
 #
 # @param pam_conf_file
-#   Absolute path to pam.conf.
+#   Absolute path to pam.conf. Only used on Solaris 9 and 10, which are end
+#   of life. The parameter is kept so that the EOL platform data in
+#   examples/hiera/eol/ keeps working when copied into a user hierarchy.
 #
 # @param services
 #   Hash of pam::service entries to be created.
@@ -84,8 +86,6 @@
 #   pam/sshd.custom.erb that is provided with this module. pam/sshd.custom.erb
 #   must be further configured with the parameters pam_sshd_auth_lines,
 #   pam_sshd_account_lines, pam_sshd_password_lines and pam_sshd_session_lines.
-#   Note that the pam_d_sshd_template parameter is a no-op on Solaris.
-#
 # @param pam_sshd_auth_lines
 #   An ordered array of strings that define the content for PAM sshd auth.
 #   This setting is required and only valid if pam_d_sshd_template is
@@ -123,7 +123,9 @@
 #   undef, parameter is set based on the OS version.
 #
 # @param other_file
-#   Path to PAM other file. Used on Suse 9 and Solaris.
+#   Path to PAM other file. Only used on Suse 9 and Solaris, which are end
+#   of life. The parameter is kept so that the EOL platform data in
+#   examples/hiera/eol/ keeps working when copied into a user hierarchy.
 #
 # @param common_auth_file
 #   Path to PAM common-auth file. Used on Debian/Ubuntu and Suse.
@@ -333,12 +335,13 @@ class pam (
   }
 
   $common_files.each |$_common_file| {
-    # Solaris specific group
+    # Solaris is end of life, but the 'sys' group and the pam.conf handling
+    # for Solaris 9 and 10 are kept so that the EOL platform data in
+    # examples/hiera/eol/ keeps working when copied into a user hierarchy.
     $_real_group = $facts['os']['family'] ? {
       'Solaris' => 'sys',
       default   => 'root',
     }
-    # Solaris 9 & 10 specific configuration file path and name
     case $facts['kernelrelease'] {
       '5.9','5.10': {
         $_resource_name = 'pam_conf'

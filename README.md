@@ -266,31 +266,31 @@ include pam
 
 ## Limitations
 
-This module has been tested to work on the following systems with Puppet
-versions 7 and 8 with the Ruby version associated with those releases.
-Please see `.github/workflows/ci.yaml` for a full matrix of supported versions. This
-module aims to support the current and previous major Puppet versions.
+This module has been tested to work on the following systems with
+OpenVox 8. Please see `.github/workflows/ci.yaml` for a full matrix of
+supported versions. This module aims to support the current and
+previous major OpenVox versions.
 
- * EL 7
  * EL 8
  * EL 9
- * Amazon Linux 2
- * Debian 10
- * Debian 11
  * Debian 12
- * Ubuntu 20.04 LTS
+ * Suse 15
  * Ubuntu 22.04 LTS
  * Ubuntu 24.04 LTS
 
 ### May work
 
-These platforms have spec tests and have been verified in the past,
-though are not functionally tested and formally supported.
-
-The Hiera data for some of these platforms can be found in `examples/hiera/eol`.
+These platforms have been verified in the past, though are no longer
+tested and formally supported. When a platform reaches end of life its
+Hiera data is moved from `data/` to `examples/hiera/eol`, where it can
+still be used by copying it into your own Hiera hierarchy.
 
  * EL 5
  * EL 6
+ * EL 7
+ * Amazon Linux 2
+ * Debian 10
+ * Debian 11
  * Solaris 9
  * Solaris 10
  * Solaris 11
@@ -298,6 +298,7 @@ The Hiera data for some of these platforms can be found in `examples/hiera/eol`.
  * Suse 10
  * Suse 11
  * Suse 12
+ * Ubuntu 20.04 LTS
  * Suse 15
  * OpenSuSE 13.1
  * Debian 7

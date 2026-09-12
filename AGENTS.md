@@ -37,6 +37,10 @@ it. A UTF-8 locale is required: `export LC_ALL=en_US.UTF-8` or
 
 ## Conventions
 
+- **End of life platforms leave `data/`**: when a platform goes EOL, its
+  Hiera data file is moved from `data/` to `examples/hiera/eol/` (not
+  deleted), its metadata entry, spec coverage, fixtures, nodeset and CI
+  matrix entries are removed, and the README "May work" list documents it.
 - **`data/` holds vanilla distribution defaults only**: what a basic
   install of that OS ships as its PAM configuration, verified against the
   real distribution container (the image named in the platform's nodeset),
@@ -70,3 +74,8 @@ it. A UTF-8 locale is required: `export LC_ALL=en_US.UTF-8` or
   `NameError` at spec load; check them when editing platform case statements.
 - Verify a platform's default PAM settings against the real distribution
   container (the image named in its nodeset), not from memory.
+
+## Common tasks
+
+- [Adding a new operating system release](docs/adding-an-os-release.md)
+- [Removing an end of life platform](docs/removing-an-eol-platform.md)

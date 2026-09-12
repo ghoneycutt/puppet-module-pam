@@ -19,72 +19,40 @@
   ],
   "operatingsystem_support": [
     {
-      "operatingsystem": "Amazon",
-      "operatingsystemrelease": [
-        "2"
-      ]
-    },
-    {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "11",
         "12"
-      ]
-    },
-    {
-      "operatingsystem": "RedHat",
-      "operatingsystemrelease": [
-        "7",
-        "8",
-        "9"
-      ]
-    },
-    {
-      "operatingsystem": "CentOS",
-      "operatingsystemrelease": [
-        "7"
       ]
     },
     {
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
-        "7",
         "8",
         "9"
       ]
     },
     {
-      "operatingsystem": "Scientific",
+      "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "7"
-      ]
-    },
-    {
-      "operatingsystem": "Solaris",
-      "operatingsystemrelease": [
-        "9",
-        "10",
-        "11"
+        "8",
+        "9"
       ]
     },
     {
       "operatingsystem": "SLES",
       "operatingsystemrelease": [
-        "12",
         "15"
       ]
     },
     {
       "operatingsystem": "SLED",
       "operatingsystemrelease": [
-        "12",
         "15"
       ]
     },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "20.04",
         "22.04",
         "24.04"
       ]

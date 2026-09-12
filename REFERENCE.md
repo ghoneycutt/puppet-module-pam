@@ -175,7 +175,9 @@ Default value: `undef`
 
 Data type: `Stdlib::Absolutepath`
 
-Absolute path to pam.conf.
+Absolute path to pam.conf. Only used on Solaris 9 and 10, which are end
+of life. The parameter is kept so that the EOL platform data in
+examples/hiera/eol/ keeps working when copied into a user hierarchy.
 
 Default value: `'/etc/pam.conf'`
 
@@ -279,7 +281,6 @@ configuration is required, set pam_d_sshd_template to use
 pam/sshd.custom.erb that is provided with this module. pam/sshd.custom.erb
 must be further configured with the parameters pam_sshd_auth_lines,
 pam_sshd_account_lines, pam_sshd_password_lines and pam_sshd_session_lines.
-Note that the pam_d_sshd_template parameter is a no-op on Solaris.
 
 Default value: `undef`
 
@@ -363,7 +364,9 @@ Default value: `undef`
 
 Data type: `Stdlib::Absolutepath`
 
-Path to PAM other file. Used on Suse 9 and Solaris.
+Path to PAM other file. Only used on Suse 9 and Solaris, which are end
+of life. The parameter is kept so that the EOL platform data in
+examples/hiera/eol/ keeps working when copied into a user hierarchy.
 
 Default value: `'/etc/pam.d/other'`
 

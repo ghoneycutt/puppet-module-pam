@@ -61,37 +61,30 @@ describe 'pam' do
         end
       end
 
-      if os_id.include?('solaris')
-        it { is_expected.not_to contain_file('pam_d_login') }
-        it { is_expected.not_to contain_file('pam_d_sshd') }
-      else
-        it do
-          is_expected.to contain_file('pam_d_login').with(
-            'ensure'  => 'file',
-            'path'    => '/etc/pam.d/login',
-            'content' => File.read(fixtures(os_id + '-pam_d_login')),
-            'owner'   => 'root',
-            'group'   => 'root',
-            'mode'    => '0644',
-          )
-        end
-
-        it do
-          is_expected.to contain_file('pam_d_sshd').with(
-            'ensure'  => 'file',
-            'path'    => '/etc/pam.d/sshd',
-            'content' => File.read(fixtures(os_id + '-pam_d_sshd')),
-            'owner'   => 'root',
-            'group'   => 'root',
-            'mode'    => '0644',
-          )
-        end
+      it do
+        is_expected.to contain_file('pam_d_login').with(
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/login',
+          'content' => File.read(fixtures(os_id + '-pam_d_login')),
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        )
       end
 
-      unless os_id.include?('solaris')
-        it { is_expected.to contain_class('pam::accesslogin') }
-        it { is_expected.to contain_class('pam::limits') }
+      it do
+        is_expected.to contain_file('pam_d_sshd').with(
+          'ensure'  => 'file',
+          'path'    => '/etc/pam.d/sshd',
+          'content' => File.read(fixtures(os_id + '-pam_d_sshd')),
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        )
       end
+
+      it { is_expected.to contain_class('pam::accesslogin') }
+      it { is_expected.to contain_class('pam::limits') }
 
       it { is_expected.to contain_class('nsswitch') }
       it { is_expected.to have_pam__service_resource_count(0) }
@@ -152,11 +145,7 @@ describe 'pam' do
           |-:ALL:ALL
         END
 
-        if os_id.include?('solaris')
-          it { is_expected.not_to contain_file('access_conf') }
-        else
-          it { is_expected.to contain_file('access_conf').with_content(file_header + content) }
-        end
+        it { is_expected.to contain_file('access_conf').with_content(file_header + content) }
       end
 
       describe 'config files' do
@@ -185,11 +174,7 @@ describe 'pam' do
             |session_line2
           END
 
-          if os_id.include?('solaris')
-            it { is_expected.not_to contain_file('pam_d_sshd') }
-          else
-            it { is_expected.to contain_file('pam_d_sshd').with_content(sshd_custom_content) }
-          end
+          it { is_expected.to contain_file('pam_d_sshd').with_content(sshd_custom_content) }
         end
 
         context 'with specifying services param' do
@@ -213,41 +198,19 @@ describe 'pam' do
         context 'with login_pam_access => absent' do
           let(:params) { { login_pam_access: 'absent' } }
 
-          unless os_id.include?('solaris')
-            it { is_expected.to contain_file('pam_d_login').without_content(%r{^account.*pam_access.so$}) }
-          end
+          it { is_expected.to contain_file('pam_d_login').without_content(%r{^account.*pam_access.so$}) }
         end
 
         context 'with sshd_pam_access => absent' do
           let(:params) { { sshd_pam_access: 'absent' } }
 
-          unless os_id.include?('solaris')
-            it { is_expected.to contain_file('pam_d_sshd').without_content(%r{^account.*pam_access.so$}) }
-          end
-        end
-
-        context 'with password_auth_ac => path' do
-          if os_id.include?('redhat-5')
-            it { is_expected.not_to contain_file('password_auth_ac') }
-          end
-        end
-
-        context 'with password_auth_ac_file => path' do
-          if os_id.include?('redhat-5')
-            it { is_expected.not_to contain_file('password_auth_ac_file') }
-          end
+          it { is_expected.to contain_file('pam_d_sshd').without_content(%r{^account.*pam_access.so$}) }
         end
 
         context 'with pam_d_login_oracle_options set to valid array' do
           let(:params) { { pam_d_login_oracle_options: [ 'session required pam_spectest.so', 'session optional pam_spectest.so' ] } }
 
-          if os_id.include?('redhat-5')
-            it { is_expected.to contain_file('pam_d_login').with_content(%r{^# oracle options\nsession required pam_spectest.so\nsession optional pam_spectest.so$}) }
-          elsif os_id.include?('solaris')
-            it { is_expected.not_to contain_file('pam_d_login') }
-          else
-            it { is_expected.to contain_file('pam_d_login').without_content(%r{^# oracle options\nsession required pam_spectest.so\nsession optional pam_spectest.so$}) }
-          end
+          it { is_expected.to contain_file('pam_d_login').without_content(%r{^# oracle options\nsession required pam_spectest.so\nsession optional pam_spectest.so$}) }
         end
       end
 

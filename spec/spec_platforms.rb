@@ -1,22 +1,14 @@
 # These functions provide the same values as used in hiera
 
 def os_id(os)
-  # for CentOS, OracleLinux, Scientific use RedHat values
-  os.sub(%r{(amazon|centos|oraclelinux|scientific)}, 'redhat')
+  # for OracleLinux use RedHat values
+  os.sub(%r{oraclelinux}, 'redhat')
 end
 
 def package_name(os)
   case os_id(os)
-  when %r{redhat-5}
-    ['pam', 'util-linux']
-  when %r{redhat}
+  when %r{redhat}, %r{sles}, %r{sled}
     ['pam']
-  when %r{sles-9}
-    ['pam', 'pam-modules']
-  when %r{sles}
-    ['pam']
-  when %r{solaris}
-    []
   when %r{debian}, %r{ubuntu}
     ['libpam0g']
   end
@@ -24,18 +16,10 @@ end
 
 def common_files(os)
   case os_id(os)
-  when %r{redhat-5}
-    ['system_auth']
   when %r{redhat}
     ['password_auth', 'system_auth']
-  when %r{sles-9}
-    ['other']
-  when %r{sles}
+  when %r{sles}, %r{sled}
     ['common_account', 'common_auth', 'common_password', 'common_session']
-  when %r{solaris-9}, %r{solaris-10}
-    ['conf']
-  when %r{solaris}
-    ['other']
   when %r{debian}, %r{ubuntu}
     ['common_account', 'common_auth', 'common_password', 'common_session', 'common_session_noninteractive']
   end
@@ -43,9 +27,9 @@ end
 
 def common_files_suffix(os)
   case os_id(os)
-  when %r{redhat-(5|6|7|8)}
+  when %r{redhat-8}
     '_ac'
-  when %r{sles-11}, %r{sles-12}, %r{sles-15}
+  when %r{sles-15}, %r{sled-15}
     '_pc'
   else
     ''
@@ -54,49 +38,35 @@ end
 
 def login_pam_access(os)
   case os_id(os)
-  when %r{redhat-2}, %r{redhat-5}, %r{redhat-6}, %r{redhat-7}, %r{redhat-8}, %r{redhat-9}, %r{sles-11}
+  when %r{redhat}
     'required'
-  when %r{sles}, %r{debian}, %r{ubuntu}
+  when %r{sles}, %r{sled}, %r{debian}, %r{ubuntu}
     'absent'
-  else
-    nil
   end
 end
 
 def sshd_pam_access(os)
   case os_id(os)
-  when %r{redhat-2}, %r{redhat-5}, %r{redhat-6}, %r{redhat-7}, %r{redhat-8}, %r{redhat-9}, %r{sles-11}, %r{debian}, %r{ubuntu}
+  when %r{redhat}, %r{debian}, %r{ubuntu}
     'required'
-  when %r{sles-9}, %r{sles-10}, %r{sles-12}, %r{sles-15}
+  when %r{sles}, %r{sled}
     'absent'
-  else
-    nil
   end
 end
 
 def common_files_create_links(os)
   case os_id(os)
-  when %r{redhat-(5|6|7|8)}, %r{sles-11}, %r{sles-12}, %r{sles-15}
+  when %r{redhat-8}, %r{sles-15}, %r{sled-15}
     true
   else
     false
   end
 end
 
-def dirpath(os)
-  case os_id(os)
-  when %r{solaris-9}, %r{solaris-10}
-    '/etc/pam.'
-  else
-    '/etc/pam.d/'
-  end
+def dirpath(_os)
+  '/etc/pam.d/'
 end
 
-def group(os)
-  case os_id(os)
-  when %r{solaris}
-    'sys'
-  else
-    'root'
-  end
+def group(_os)
+  'root'
 end

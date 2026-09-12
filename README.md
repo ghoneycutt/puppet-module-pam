@@ -298,16 +298,17 @@ still be used by copying it into your own Hiera hierarchy.
  * Suse 10
  * Suse 11
  * Suse 12
- * Ubuntu 20.04 LTS
  * Suse 15
  * OpenSuSE 13.1
  * Debian 7
  * Debian 8
  * Debian 9
+ * Debian 11
  * Ubuntu 12.04 LTS
  * Ubuntu 14.04 LTS
  * Ubuntu 16.04 LTS
  * Ubuntu 18.04 LTS
+ * Ubuntu 20.04 LTS
 
 ## Development
 

@@ -14,14 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.7'
+          ruby-version: '3.2.4'
           bundler-cache: true
           cache-version: 2
-          bundler: '2.1.0'
       - name: Build and Deploy
         env:
           # Configure secrets here:

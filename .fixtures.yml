@@ -7,5 +7,3 @@ fixtures:
     nsswitch:
       repo: 'https://github.com/voxpupuli/puppet-nsswitch.git'
       ref: 'v3.0.0'
-  symlinks:
-    pam: "#{source_dir}"

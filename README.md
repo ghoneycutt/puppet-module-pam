@@ -285,10 +285,16 @@ tested and formally supported. When a platform reaches end of life its
 Hiera data is moved from `data/` to `examples/hiera/eol`, where it can
 still be used by copying it into your own Hiera hierarchy.
 
+EL (Enterprise Linux) covers RHEL and its clones, such as CentOS,
+OracleLinux and Scientific Linux. Suse covers SLES and SLED.
+
  * EL 5
  * EL 6
  * EL 7
  * Amazon Linux 2
+ * Debian 7
+ * Debian 8
+ * Debian 9
  * Debian 10
  * Debian 11
  * Solaris 9
@@ -298,12 +304,7 @@ still be used by copying it into your own Hiera hierarchy.
  * Suse 10
  * Suse 11
  * Suse 12
- * Suse 15
  * OpenSuSE 13.1
- * Debian 7
- * Debian 8
- * Debian 9
- * Debian 11
  * Ubuntu 12.04 LTS
  * Ubuntu 14.04 LTS
  * Ubuntu 16.04 LTS

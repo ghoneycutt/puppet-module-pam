@@ -3,7 +3,7 @@
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
 group :development do
-  gem 'faraday', '~> 1.0',             require: false
+  gem 'faraday', '~> 2.14',             require: false
   gem 'github_changelog_generator',    require: false
   gem 'puppet-blacksmith',             require: false
   # 6.x depends on openfact; without the pin bundler resolves 5.x, which

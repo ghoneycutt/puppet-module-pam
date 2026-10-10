@@ -554,7 +554,7 @@ See PAM_ACCESS(8)
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 This class is included by the pam class for platforms which use it.
@@ -789,7 +789,7 @@ Manage PAM limits.conf
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 This class is included by the pam class for platforms which use it.
@@ -879,7 +879,7 @@ Manage pwquality.conf
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 This class is included by the pam class for platforms which use it.
@@ -1187,7 +1187,7 @@ or `list` **must** be set.
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 pam::limits::fragment { 'nproc':
@@ -1235,7 +1235,7 @@ puppet run.
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 pam::service { 'sudo':
@@ -1288,4 +1288,3 @@ Provides content for the PAM service file as an array of lines. The
 of these parameters will result in an empty service definition file.
 
 Default value: `undef`
-

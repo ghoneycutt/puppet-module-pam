@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.1.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v6.1.0) (2026-10-10)
+
+[Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v6.0.0...v6.1.0)
+
+### Added
+
+- Add OpenVox 9 support [\#289](https://github.com/ghoneycutt/puppet-module-pam/pull/289) ([ghoneycutt](https://github.com/ghoneycutt))
+
+### Merged pull requests:
+
+- Previously supported [\#287](https://github.com/ghoneycutt/puppet-module-pam/pull/287) ([ghoneycutt](https://github.com/ghoneycutt))
+
 ## [v6.0.0](https://github.com/ghoneycutt/puppet-module-pam/tree/v6.0.0) (2026-09-12)
 
 [Full Changelog](https://github.com/ghoneycutt/puppet-module-pam/compare/v5.3.0...v6.0.0)

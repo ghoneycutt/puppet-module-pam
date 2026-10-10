@@ -109,17 +109,7 @@ if Bundler.rubygems.find_name('github_changelog_generator').any?
 else
   desc 'Generate a Changelog from GitHub'
   task :changelog do
-    raise <<EOM
-The changelog tasks depends on recent features of the github_changelog_generator gem.
-Please manually add it to your .sync.yml for now, and run `pdk update`:
----
-Gemfile:
-  optional:
-    ':development':
-      - gem: 'github_changelog_generator'
-        version: '~> 1.15'
-        condition: "Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.3.0')"
-EOM
+    raise 'The changelog task depends on the github_changelog_generator gem; add it to the Gemfile development group.'
   end
 end
 

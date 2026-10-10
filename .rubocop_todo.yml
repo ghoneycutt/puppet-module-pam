@@ -24,11 +24,15 @@ Layout/SpaceInsideArrayLiteralBrackets:
   Exclude:
     - 'spec/**/*'
 
-Lint/DuplicateBranch:
+Lint/RedundantDirGlobSort:
   Exclude:
     - 'spec/**/*'
 
 Naming/HeredocDelimiterNaming:
+  Exclude:
+    - 'spec/**/*'
+
+Naming/PredicateMethod:
   Exclude:
     - 'spec/**/*'
 
@@ -68,7 +72,7 @@ RSpec/ImplicitSubject:
   Exclude:
     - 'spec/**/*'
 
-RSpec/MultipleExpectations:
+RSpec/LeakyLocalVariable:
   Exclude:
     - 'spec/**/*'
 
@@ -93,10 +97,6 @@ Style/CombinableLoops:
     - 'spec/**/*'
 
 Style/Dir:
-  Exclude:
-    - 'spec/**/*'
-
-Style/EmptyElse:
   Exclude:
     - 'spec/**/*'
 
@@ -133,5 +133,9 @@ Style/SymbolArray:
     - 'spec/**/*'
 
 Style/WordArray:
+  Exclude:
+    - 'spec/**/*'
+
+Style/YAMLFileRead:
   Exclude:
     - 'spec/**/*'

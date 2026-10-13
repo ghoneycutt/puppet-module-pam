@@ -18,7 +18,7 @@ end
 
 # jgrep (used by facterdb) calls JSON.create_id=, which the json gem removed
 # in 3.0; constrain json until jgrep ships a fix
-gem 'json', '< 3', require: false
+gem 'json', '< 4', require: false
 gem 'openvox', ENV.fetch('OPENVOX_GEM_VERSION', ['>= 8.19', '< 10']), require: false
 gem 'rake', require: false
 
